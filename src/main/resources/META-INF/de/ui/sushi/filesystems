@@ -1,0 +1,9 @@
+de.ui.sushi.fs.console.ConsoleFilesystem console
+de.ui.sushi.fs.file.FileFilesystem file
+de.ui.sushi.fs.memory.MemoryFilesystem mem
+de.ui.sushi.fs.zip.ZipFilesystem zip jar
+de.ui.sushi.fs.timemachine.TimeMachineFilesystem tm
+de.ui.sushi.fs.ssh.SshFilesystem* ssh
+de.ui.sushi.fs.svn.SvnFilesystem* svn
+de.ui.sushi.fs.webdav.WebdavFilesystem* http https
+

@@ -1,0 +1,104 @@
+/*
+ * Copyright 1&1 Internet AG, http://www.1and1.org
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package de.ui.sushi.fs.ssh;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import de.ui.sushi.fs.NodeTest;
+
+import com.jcraft.jsch.JSchException;
+
+public class SshNodeFullTest extends NodeTest {
+    private static SshRoot root;
+    
+    public SshNodeFullTest() {
+        super(true);
+    }
+    
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        root = ConnectionFullTest.open();
+    }
+
+    @Before @Override
+    public void setUp() throws Exception {
+        super.setUp();
+    }
+    
+    @After
+    public void after() throws Exception {
+    }
+    
+    @AfterClass
+    public static void afterClass() throws Exception {
+        if (root != null) {
+            root.close();
+        }
+    }
+    
+    private SshNode create(String path) throws IOException, JSchException {
+        return new SshNode(root, path);
+    }
+
+    @Override
+    protected SshNode createWork() throws IOException {
+        SshNode node;
+        
+        try {
+            node = create("tmp/sushisshworkdir");
+            node.deleteOpt();
+            node.mkdir();
+            return node;
+        } catch (JSchException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void rootPath() throws Exception {
+        SshNode root;
+        
+        root = create("");
+        assertEquals("", root.getPath());
+        assertEquals("", root.getName());
+        assertTrue(root.list().size() > 0);
+    }
+
+    @Test
+    public void deleteSymlink() throws Exception {
+        SshNode root;
+        List<SshNode> lst;
+        SshNode broken;
+        
+        root = createWork();
+        root.getRoot().exec("ln", "-s", "nosuchfile", "/" + root.getPath() + "/foo");
+        lst = root.list();
+        assertEquals(1, lst.size());
+        broken = lst.get(0);
+        broken.delete();
+    }
+}

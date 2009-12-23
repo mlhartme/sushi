@@ -128,14 +128,11 @@ public class WebdavConnection implements HttpClientConnection {
 
     //-- HttpConnection implementation
     
-    /** CAUTION: HttpCore and Java Sockets have a different terminology here */
     public void close() throws IOException {
         if (!open) {
             return;
         }
         open = false;
-        socket.shutdownOutput();
-        socket.shutdownInput();
         socket.close();
     }
     

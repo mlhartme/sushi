@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.ui.sushi.fs.LengthException;
 import de.ui.sushi.fs.Root;
 import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.io.CheckedByteArrayInputStream;
@@ -65,9 +66,9 @@ public class MemoryRoot implements Root {
         nodes.put(node.getPath(), node);
     }
     
-    public long length(String path) {
+    public long length(String path) throws LengthException {
         Object obj;
-        
+
         obj = store.get(path);
         if (obj instanceof FileNode) {
             return ((FileNode) obj).length();

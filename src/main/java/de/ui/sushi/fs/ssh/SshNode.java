@@ -75,7 +75,11 @@ public class SshNode extends Node {
     @Override
     public long length() throws LengthException {
         try {
-            return channel.stat(slashPath).getSize();
+            SftpATTRS attrs = channel.stat(slashPath);
+            if (attrs.isDir()) {
+                throw new LengthException(this, new IOException("file expected"));
+            }
+            return attrs.getSize();
         } catch (SftpException e) {
             throw new LengthException(this, e);
         }

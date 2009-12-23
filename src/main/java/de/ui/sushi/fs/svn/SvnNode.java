@@ -293,8 +293,13 @@ public class SvnNode extends Node {
 
     @Override
     public long length() throws LengthException {
+        SVNDirEntry entry;
         try {
-            return root.getRepository().info(path, -1).getSize();
+            entry = root.getRepository().info(path, -1);
+            if (entry == null || entry.getKind() != SVNNodeKind.FILE) {
+                throw new LengthException(this, new IOException("file expected"));
+            }
+            return entry.getSize();
         } catch (SVNException e) {
             throw new LengthException(this, e);
         }

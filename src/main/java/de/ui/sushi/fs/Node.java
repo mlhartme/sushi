@@ -158,7 +158,8 @@ public abstract class Node {
     public abstract Node move(Node dest) throws MoveException;
 
     //-- status methods
-    
+
+    /** Throws an Exception if this node is not a file. */
     public abstract long length() throws LengthException;
     
     /** @return true if the file exists, even if it's a dangling link */

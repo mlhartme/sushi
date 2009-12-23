@@ -24,13 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MoveException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.SetLastModifiedException;
+import de.ui.sushi.fs.*;
 import de.ui.sushi.io.CheckedByteArrayOutputStream;
 
 /** You'll normally use IO.stringNode() to create instances */
@@ -85,7 +79,10 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public long length() {
+    public long length() throws LengthException {
+        if (!isFile()) {
+            throw new LengthException(this, new IOException("file expected"));
+        }
         return root.length(path);
     }
 

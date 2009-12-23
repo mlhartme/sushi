@@ -27,19 +27,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.LinkException;
-import de.ui.sushi.fs.ListException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MkfileException;
-import de.ui.sushi.fs.MoveException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.OnShutdown;
-import de.ui.sushi.fs.ReadLinkException;
-import de.ui.sushi.fs.SetLastModifiedException;
+import de.ui.sushi.fs.*;
 import de.ui.sushi.fs.zip.ZipFilesystem;
 import de.ui.sushi.fs.zip.ZipNode;
 import de.ui.sushi.io.Buffer;
@@ -116,7 +104,10 @@ public class FileNode extends Node {
     }
 
     @Override
-    public long length() {
+    public long length() throws LengthException {
+        if (!file.isFile()) {
+            throw new LengthException(this, new IOException("file expected"));
+        }
         return file.length();
     }
 

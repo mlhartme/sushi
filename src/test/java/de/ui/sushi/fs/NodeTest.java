@@ -289,6 +289,32 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         }
     }
 
+    public void lengthFile() throws IOException {
+        Node file;
+
+        file = work.join("file");
+        file.writeBytes();
+        assertEquals(0, file.length());
+        file.writeBytes((byte) 1, (byte) 2, (byte) 3);
+        assertEquals(3, file.length());
+    }
+
+    @Test(expected=LengthException.class)
+    public void lengthDirectory() throws IOException {
+        Node dir;
+
+        dir = work.join("dir");
+        dir.mkdir();
+        dir.length();
+    }
+    @Test(expected=LengthException.class)
+    public void lengthNotFound() throws IOException {
+        Node dir;
+
+        dir = work.join("dir");
+        dir.length();
+    }
+
     @Test
     public void readEmpty() throws IOException {
         Node file;

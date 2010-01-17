@@ -163,6 +163,7 @@ public abstract class Node {
      */
     public Node move(Node dest) throws MoveException {
         try {
+            dest.checkNotExists();
             copy(dest);
             delete();
         } catch (IOException e) {
@@ -463,7 +464,7 @@ public abstract class Node {
     }
 
     /**
-     * Overwrites existing files.
+     * Overwrites dest if it already exists.
      * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
@@ -479,13 +480,16 @@ public abstract class Node {
         }
     }
 
-    /** @return list of files and directories created */
+    /**
+     * Convenience method for copy with filters below.
+     * @return list of files and directories created
+     */
     public List<Node> copyDirectory(Node dest) throws CopyException {
         return copyDirectory(dest, getIO().filter().includeAll());
     }
 
     /**
-     * Overwrites existing files
+     * Throws an exception is this or dest is not a directory. Overwrites existing files in dest.
      * @return list of files and directories created
      */
     public List<Node> copyDirectory(Node destdir, Filter filter) throws CopyException {

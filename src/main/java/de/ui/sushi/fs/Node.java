@@ -118,8 +118,11 @@ public abstract class Node {
     public abstract OutputStream createOutputStream(boolean append) throws IOException;
 
     /**
-     * Lists child nodes or null if this is not a directory.
-     * Throws an exception if this does not exist or permission is denied.
+     * Lists child nodes of this node.
+     * @return List of child nodes or null if this node is a file. Note that returning null allows for optimizations
+     *    because list() may be called on any existing node; otherwise, you'd have to inspect the resulting exception
+     *    whether you called list on a file.
+     * @throws ListException if this does not exist or permission is denied.
      */
     public abstract List<? extends Node> list() throws ListException;
 

@@ -749,23 +749,13 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     //-- move
 
-    private boolean canmove() {
-        return work.getRoot().getFilesystem().getFeatures().move;
-    }
-
     @Test
     public void moveDirectory() throws IOException {
-        if (!canmove()) {
-            return;
-        }
         doMove(work.join("old").mkdir(), work.join("moved"));
     }
 
     @Test
     public void moveFile() throws IOException {
-        if (!canmove()) {
-            return;
-        }
         doMove((work.join("old")).mkfile(), work.join("moved"));
     }
 
@@ -773,18 +763,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void moveToExistingDir() throws IOException {
         Node destdir;
 
-        if (!canmove()) {
-            return;
-        }
         destdir = work.join("subdir").mkdir();
         doMove((work.join("old")).mkfile(), destdir.join("moved"));
     }
 
     @Test(expected=IOException.class)
     public void moveToNonexistingDir() throws IOException {
-        if (!canmove()) {
-            throw new IOException();
-        }
         doMove((work.join("old")).mkfile(), work.join("nosuchdir/moved"));
     }
 
@@ -792,18 +776,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void moveOverExisting() throws IOException {
         Node dest;
 
-        if (!canmove()) {
-            throw new IOException();
-        }
         dest = work.join("moved").mkfile();
         doMove(work.join("old").mkfile(), dest);
     }
 
     @Test(expected=IOException.class)
     public void moveToSame() throws IOException {
-    	if (!canmove()) {
-    		throw new IOException();
-    	}
         Node node;
 
         node = work.join("old").mkdir();

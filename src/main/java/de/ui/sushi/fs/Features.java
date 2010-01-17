@@ -5,13 +5,13 @@ package de.ui.sushi.fs;
  * to a file system. Features do not change during the lifetime of the vm.
  */
 public class Features {
-    /** can move file under the same root. */
-    public final boolean move;
+    /** if not, move is emulated by copy and delete */
+    public final boolean nativeMove;
     public final boolean atomicMkfile;
     public final boolean atomicMkdir;
 
-    public Features(boolean move, boolean atomicMkfile, boolean atomicMkdir) {
-        this.move = move;
+    public Features(boolean nativeMove, boolean atomicMkfile, boolean atomicMkdir) {
+        this.nativeMove = nativeMove;
         this.atomicMkfile = atomicMkfile;
         this.atomicMkdir = atomicMkdir;
     }

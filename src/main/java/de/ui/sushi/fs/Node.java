@@ -49,9 +49,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * <p>Abstraction from a file: something stored under a path and you can get an input or output stream from.
+ * <p>Abstraction from a file: something stored under a path that you can get an input or output stream from.
  * FileNode is the most prominent example of a node. The api is similar to java.io.File. It provides the
- * same functionality, add some methods useful for scripting, and removes some redundant methods to simplify
+ * same functionality, adds some methods useful for scripting, and removes some redundant methods to simplify
  * api (in particular the constructors). </p>
  *
  * <p>A node is identified by a locator. It has a root, and a path. A node can have child nodes and a base.</p>
@@ -75,7 +75,7 @@ import org.xml.sax.SAXException;
  * <p>A node is immutable, except for its base.</p>
  *
  * <p>Method names try to be short, but no abbreviations. Exceptions from this rule are mkfile, mkdir and
- * mklink>, because mkdir is a well-established name.</p>
+ * mklink, because mkdir is a well-established name.</p>
  *
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
@@ -155,10 +155,21 @@ public abstract class Node {
     public abstract Node delete() throws DeleteException;
 
     /**
-     * Throws an unsuppertation exception if move features is not true.
+     * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
+     * This method is a default implementation with copy and delete, derived classes should override it with a native
+     * implementation when available.
+     *
      * @return dest
      */
-    public abstract Node move(Node dest) throws MoveException;
+    public Node move(Node dest) throws MoveException {
+        try {
+            copy(dest);
+            delete();
+        } catch (IOException e) {
+            throw new MoveException(this, dest, "move failed", e);
+        }
+        return dest;
+    }
 
     //-- status methods
 

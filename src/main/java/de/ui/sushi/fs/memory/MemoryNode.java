@@ -42,7 +42,6 @@ public class MemoryNode extends Node {
     
     /** Do not call - use create instead. */
     public MemoryNode(MemoryRoot root, String path, Type type, byte[] data) {
-        super();
         this.root = root;
         this.path = path;
         this.type = type;
@@ -172,11 +171,6 @@ public class MemoryNode extends Node {
         }
         type = Type.NONE;
         return this;
-    }
-
-    @Override
-    public Node move(Node dest) throws MoveException {
-    	throw new MoveException(this, dest, "MemoryNode cannot be moved");
     }
 
     @Override

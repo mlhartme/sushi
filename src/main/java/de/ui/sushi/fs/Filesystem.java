@@ -26,29 +26,35 @@ public abstract class Filesystem {
     private final IO io;
     private final String separator;
     private final char separatorChar;
+    private final Features features;
     private final String scheme;
-    
-    public Filesystem(IO io, char separatorChar, String scheme) {
+
+    public Filesystem(IO io, char separatorChar, Features features, String scheme) {
         this.io = io;
         this.separator = String.valueOf(separatorChar);
         this.separatorChar = separatorChar;
+        this.features = features;
         this.scheme = scheme;
     }
 
     public IO getIO() {
         return io;
     }
-    
-    public String getScheme() {
-    	return scheme;
-    }
 
     public String getSeparator() {
         return separator;
     }
-    
+
     public char getSeparatorChar() {
         return separatorChar;
+    }
+
+    public Features getFeatures() {
+        return features;
+    }
+
+    public String getScheme() {
+    	return scheme;
     }
 
     public Node node(URI uri) throws RootPathException {
@@ -77,7 +83,7 @@ public abstract class Filesystem {
 
     /**
      * Returns the specified root. The root is not necessarily new. You'll normally not use this method directly,
-     * 
+     *
      * @param authority as specified in the uri. For opaque uris the authority is the schemeSpecific part without
      * schemePath (and thus never null)
      */
@@ -85,7 +91,7 @@ public abstract class Filesystem {
 
     public String after(String schemeSpecific, String separator) throws RootPathException {
         int idx;
-        
+
         idx = schemeSpecific.indexOf(separator);
         if (idx == -1) {
             throw new RootPathException("missing '" + separator + "': " + schemeSpecific);
@@ -116,14 +122,14 @@ public abstract class Filesystem {
     }
 
     //--
-    
+
     public String join(String... names) {
         return Strings.join(separator, names);
     }
-    
+
     public String join(String head, List<String> paths) {
         StringBuilder buffer;
-        
+
         buffer = new StringBuilder(head);
         for (String path : paths) {
             if (path.startsWith(separator)) {

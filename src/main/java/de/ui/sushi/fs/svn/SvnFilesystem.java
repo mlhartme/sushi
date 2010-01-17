@@ -17,6 +17,7 @@
 
 package de.ui.sushi.fs.svn;
 
+import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.RootPathException;
@@ -32,15 +33,15 @@ public class SvnFilesystem extends Filesystem {
     static {
         FSRepositoryFactory.setup();
         DAVRepositoryFactory.setup();
-        System.setProperty("svnkit.upgradeWC", "false"); // see https://wiki.svnkit.com/SVNKit_specific_system_properties        
+        System.setProperty("svnkit.upgradeWC", "false"); // see https://wiki.svnkit.com/SVNKit_specific_system_properties
     }
-    
+
     private String username;
     private String password;
-    
+
     public SvnFilesystem(IO io, String name) {
-        super(io, '/', name);
-        
+        super(io, '/', new Features(false, false), name);
+
         this.username = null;
         this.password = null;
     }
@@ -49,8 +50,8 @@ public class SvnFilesystem extends Filesystem {
         this.username = username;
         this.password = password;
     }
-    
-    
+
+
     @Override
     public SvnRoot root(String url) throws RootPathException {
         try {
@@ -59,12 +60,12 @@ public class SvnFilesystem extends Filesystem {
             throw new RootPathException(e);
         }
     }
-    
+
     public SvnRoot doRoot(String url) throws SVNException {
         String separator;
         SVNRepository repository;
         String root;
-        
+
         separator = getSeparator();
         repository = repository(SVNURL.parseURIEncoded(url), username, password);
         root = repository.getRepositoryRoot(true).toString();
@@ -77,7 +78,7 @@ public class SvnFilesystem extends Filesystem {
         }
         return root(repository);
     }
-    
+
     @Override
     public String opaquePath(String url) throws RootPathException {
         try {
@@ -114,14 +115,14 @@ public class SvnFilesystem extends Filesystem {
     }
 
     //--
-    
+
     public static SVNRepository repository(SVNURL url, String username, String password) throws SVNException {
         SVNRepository repository;
-        
+
         repository = SVNRepositoryFactory.create(url);
         repository.setAuthenticationManager(SVNWCUtil.createDefaultAuthenticationManager(
                 SVNWCUtil.getDefaultConfigurationDirectory(),
-                username, password, 
+                username, password,
                 false /* do not store credentials, not even when configured */));
         return repository;
     }

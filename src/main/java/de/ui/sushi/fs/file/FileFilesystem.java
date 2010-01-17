@@ -19,18 +19,19 @@ package de.ui.sushi.fs.file;
 
 import java.io.File;
 
+import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.RootPathException;
 
 public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
-    
+
     public FileFilesystem(IO io, String name) {
-        super(io, File.separatorChar, name);
+        super(io, File.separatorChar, new Features(true, false), name);
 
         File[] rootFiles;
-        
+
         rootFiles = File.listRoots();
         roots = new FileRoot[rootFiles.length];
         for (int i = 0; i < rootFiles.length; i++) {

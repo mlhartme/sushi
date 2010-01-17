@@ -19,29 +19,26 @@ package de.ui.sushi.fs.ssh;
 
 import java.io.IOException;
 
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.*;
 import de.ui.sushi.fs.file.FileNode;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 
-/** 
- * Nodes accessible via sftp. 
+/**
+ * Nodes accessible via sftp.
  * Uses Jsch:  http://www.jcraft.com/jsch/
- * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt 
+ * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
     private Node privateKey;
     private String passphrase;
     private int timeout;
     private JSch jsch;
-    
+
     public SshFilesystem(IO io, String name) {
-        super(io, '/', name);
-        
+        super(io, '/', new Features(false, false), name);
+
         privateKey = null;
         passphrase = null;
         timeout = 0;
@@ -51,11 +48,11 @@ public class SshFilesystem extends Filesystem {
     public void setPrivateKey(Node privateKey) {
         this.privateKey = privateKey;
     }
-    
+
     public Node getPrivateKey() {
         return privateKey;
     }
-    
+
     public void setPassphrase(String passphrase) {
         this.passphrase = passphrase;
     }
@@ -77,13 +74,13 @@ public class SshFilesystem extends Filesystem {
     public JSch getJSch() {
         return jsch;
     }
-    
+
     @Override
     public SshRoot root(String root) throws RootPathException {
         int idx;
         String host;
         String user;
-        
+
         host = root;
         idx = host.indexOf('@');
         try {
@@ -114,7 +111,7 @@ public class SshFilesystem extends Filesystem {
         Node file;
         Node key;
         String pp;
-        
+
         io = getIO();
         if (user == null) {
             user = io.getHome().getName();

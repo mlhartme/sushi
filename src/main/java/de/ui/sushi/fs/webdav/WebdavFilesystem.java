@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.RootPathException;
@@ -34,10 +35,10 @@ import de.ui.sushi.fs.RootPathException;
 public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = "UTF-8";
 	public static final Logger WIRE = Logger.getLogger("sushi.webdav.wire");
-    
+
 	public static void wireLog(String file) {
         Handler handler;
-		
+
         WIRE.setLevel(Level.FINE);
         try {
             handler = new FileHandler(file, false);
@@ -50,7 +51,7 @@ public class WebdavFilesystem extends Filesystem {
                         String message;
                         Throwable e;
                         StringBuilder result;
-                        
+
                         message = record.getMessage();
                         result = new StringBuilder(message.length() + 1);
                         result.append(message);
@@ -62,16 +63,16 @@ public class WebdavFilesystem extends Filesystem {
                         return result.toString();
                     }
                 });
-                
+
         WIRE.addHandler(handler);
 	}
-	
+
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
-    
+
     public WebdavFilesystem(IO io, String name) {
-        super(io, '/', name);
-        
+        super(io, '/', new Features(false, false), name);
+
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
     }
@@ -79,7 +80,7 @@ public class WebdavFilesystem extends Filesystem {
     @Override
     public WebdavRoot root(String root) throws RootPathException {  // TODO
         URL url;
-        
+
         try {
             url = new URL(getScheme() + "://" + root + "/");
         } catch (MalformedURLException e) {
@@ -92,7 +93,7 @@ public class WebdavFilesystem extends Filesystem {
         WebdavRoot result;
         String info;
         int port;
-        
+
         if (url.getRef() != null) {
             throw new IllegalArgumentException(url.toString());
         }
@@ -117,15 +118,15 @@ public class WebdavFilesystem extends Filesystem {
     public int getDefaultConnectionTimeout() {
         return defaultConnectionTimeout;
     }
-    
+
     public void setDefaultConnectionTimeout(int millis) {
         defaultConnectionTimeout = millis;
     }
-    
+
     public int getDefaultSoTimeout() {
         return defaultSoTimeout;
     }
-    
+
     public void setDefaultReadTimeout(int millis) {
         defaultSoTimeout = millis;
     }

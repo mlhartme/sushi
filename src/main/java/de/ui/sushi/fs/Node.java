@@ -49,58 +49,58 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * <p>Abstraction from a file: something stored under a path and you can get an input or output stream from. 
+ * <p>Abstraction from a file: something stored under a path and you can get an input or output stream from.
  * FileNode is the most prominent example of a node. The api is similar to java.io.File. It provides the
  * same functionality, add some methods useful for scripting, and removes some redundant methods to simplify
  * api (in particular the constructors). </p>
- * 
+ *
  * <p>A node is identified by a locator. It has a root, and a path. A node can have child nodes and a base.</p>
  *
  * <p>A locator is similar to a URL, it has the form filesystem ":" root separator path.</p>
- * 
+ *
  * <p>The Root is, e.g. "/" on a unix machine, a drive letter on windows, or a hostname with login
  * information for ssh nodes.</p>
  *
- * <p>The path is a sequence of names separated by the filesystem separator. It never starts 
+ * <p>The path is a sequence of names separated by the filesystem separator. It never starts
  * or ends with a separator. It does not include the root, but it always includes the path
  * of the base. A node with an empty path is called root node.
- *   
+ *
  * <p>The base is a node this node is relative to. It's optional, a node without base is called absolute.
  * It's use to simplify (shorten!) toString output.</p>
- * 
+ *
  * <p>You application usually creates some "working-directory" nodes with <code>io.node(locator)</code>.
- * They will be used to create actual working nodes with <code>node.join(path)</code>. The constructor 
+ * They will be used to create actual working nodes with <code>node.join(path)</code>. The constructor
  * of the respective node class is rarely used directly, it's used indirectly by the filesystem. </p>
- * 
+ *
  * <p>A node is immutable, except for its base.</p>
- * 
+ *
  * <p>Method names try to be short, but no abbreviations. Exceptions from this rule are mkfile, mkdir and
  * mklink>, because mkdir is a well-established name.</p>
- * 
+ *
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
  */
 public abstract class Node {
     /** may be null */
     private Node base;
-    
+
     public Node() {
         this.base = null;
     }
-    
+
     protected UnsupportedOperationException unsupported(String op) {
         return new UnsupportedOperationException(getLocator() + ":" + op);
     }
-    
+
     public abstract Root getRoot();
-    
+
     public IO getIO() {
         return getRoot().getFilesystem().getIO();
     }
 
-    /** 
+    /**
      * Creates a stream to read this node.
-     * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception 
+     * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception
      */
     public abstract InputStream createInputStream() throws IOException;
 
@@ -110,28 +110,28 @@ public abstract class Node {
     public OutputStream createAppendStream() throws IOException {
         return createOutputStream(true);
     }
-    
-    /** 
+
+    /**
      * Create a stream to write this node.
      * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
      */
     public abstract OutputStream createOutputStream(boolean append) throws IOException;
 
-    /** 
+    /**
      * Lists child nodes or null if this is not a directory.
      * Throws an exception if permission is denied.
      */
     public abstract List<? extends Node> list() throws ListException;
 
     /**
-     * Fails if the directory already exists. TODO: atomic operation
+     * Fails if the directory already exists. Features define whether is operation is atomic.
      * @return this
-     */ 
+     */
     public abstract Node mkdir() throws MkdirException;
-    
+
     /**
-     * Fails if the directory already exists. TODO: this is not an atomic implementation;
-     * FileNode overrides it for that reason.
+     * Fails if the directory already exists. Features define whether this operation is atomic.
+     * This default implementation is not atomic.
      * @return this
      */
     public Node mkfile() throws MkfileException {
@@ -145,13 +145,13 @@ public abstract class Node {
 		}
 		return this;
     }
-    
-    
-    /** 
+
+
+    /**
      * Deletes this node, no matter if it's a file, a directory or a link. Deletes links, not the link target.
-     *   
+     *
      * @return this
-     */ 
+     */
     public abstract Node delete() throws DeleteException;
 
     /** @return dest */
@@ -161,18 +161,18 @@ public abstract class Node {
 
     /** Throws an Exception if this node is not a file. */
     public abstract long length() throws LengthException;
-    
+
     /** @return true if the file exists, even if it's a dangling link */
     public abstract boolean exists() throws ExistsException;
-    
+
     public abstract boolean isFile() throws ExistsException;
     public abstract boolean isDirectory() throws ExistsException;
     public abstract boolean isLink() throws ExistsException;
-    
+
     /** Throws an exception is the file does not exist */
     public abstract long getLastModified() throws GetLastModifiedException;
     public abstract void setLastModified(long millis) throws SetLastModifiedException;
-    
+
     public abstract int getMode() throws IOException;
     public abstract void setMode(int mode) throws IOException;
 
@@ -184,10 +184,10 @@ public abstract class Node {
     //-- path functionality
 
     /**
-     * The node to which this node is relative to, aka kind of a working directory. Mostly affects 
-     * toString(). There's currently no setBase, although it would generalize "base" handling to arbitrary 
+     * The node to which this node is relative to, aka kind of a working directory. Mostly affects
+     * toString(). There's currently no setBase, although it would generalize "base" handling to arbitrary
      * node implementations ...
-     * 
+     *
      * @return null for absolute file
      */
     public Node getBase() {
@@ -202,24 +202,24 @@ public abstract class Node {
     }
 
     public abstract String getPath();
-    
+
     public String getLocator() {
         return getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath();
     }
 
-    /** @return the last path segment (or an empty string for the root node */ 
+    /** @return the last path segment (or an empty string for the root node */
     public String getName() {
         String path;
-        
+
         path = getPath();
-        // ok for -1: 
+        // ok for -1:
         return path.substring(path.lastIndexOf(getRoot().getFilesystem().getSeparatorChar()) + 1);
     }
-    
+
     public Node getParent() {
         String path;
         int idx;
-        
+
         path = getPath();
         if ("".equals(path)) {
             return null;
@@ -234,7 +234,7 @@ public abstract class Node {
 
     public boolean hasAnchestor(Node anchestor) {
         Node current;
-        
+
         current = this;
         while (true) {
             current = current.getParent();
@@ -246,7 +246,7 @@ public abstract class Node {
             }
         }
     }
-    
+
     /** @return kind of a path, with . and .. where appropriate. */
     public String getRelative(Node base) {
         String startfilepath;
@@ -257,7 +257,7 @@ public abstract class Node {
         int ups;
         int i;
         Filesystem fs;
-        
+
         if (base.equals(this)) {
             return ".";
         }
@@ -278,25 +278,25 @@ public abstract class Node {
         return result.toString();
     }
 
-    /** @return root.id + getPath, but not the filesystem name. Note that it's not a path! */ 
+    /** @return root.id + getPath, but not the filesystem name. Note that it's not a path! */
     public String getAbsolute() {
         return getRoot().getId() + getPath();
     }
-    
+
     public Node join(List<String> paths) {
         Node result;
-        
+
         result = getRoot().node(getRoot().getFilesystem().join(getPath(), paths));
         result.setBase(getBase());
         return result;
     }
-    
+
     public Node join(String... names) {
         return join(Arrays.asList(names));
     }
 
     //-- input stream functionality
-    
+
     public NodeReader createReader() throws IOException {
         return NodeReader.create(this);
     }
@@ -308,7 +308,7 @@ public abstract class Node {
     public byte[] readBytes() throws IOException {
         InputStream src;
         byte[] result;
-        
+
         src = createInputStream();
         result = getIO().getBuffer().readBytes(src);
         src.close();
@@ -319,7 +319,7 @@ public abstract class Node {
     public String readString() throws IOException {
         return getIO().getSettings().string(readBytes());
     }
-    
+
     public List<String> readLines() throws IOException {
         return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, false, true, null).collect(this);
     }
@@ -327,7 +327,7 @@ public abstract class Node {
     public Object readObject() throws IOException {
         ObjectInputStream src;
         Object result;
-        
+
         src = createObjectInputStream();
         try {
             result = src.readObject();
@@ -355,7 +355,7 @@ public abstract class Node {
     public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
         InputStream in;
         OutputStream out;
-            
+
         in = createInputStream();
         out = dest.createOutputStream();
         transformer.transform(new StreamSource(in), new StreamResult(out));
@@ -364,7 +364,7 @@ public abstract class Node {
     }
 
     //--
-    
+
     public Node checkExists() throws IOException {
         if (!exists()) {
             throw new IOException("no such file or directory: " + this);
@@ -389,7 +389,7 @@ public abstract class Node {
             throw new FileNotFoundException("no such directory: " + this);
         }
     }
-    
+
     public Node checkFile() throws IOException {
         if (isFile()) {
             return this;
@@ -400,13 +400,13 @@ public abstract class Node {
             throw new FileNotFoundException("no such file: " + this);
         }
     }
-    
+
     //--
 
     /**
      * Creates an relative link. The signature of this method resembles the copy method.
-     * 
-     * @return dest; 
+     *
+     * @return dest;
      */
     public Node link(Node dest) throws LinkException {
         if (!getClass().equals(dest.getClass())) {
@@ -423,16 +423,16 @@ public abstract class Node {
     }
 
     /**
-     * Creates this link, pointing to the specified path. Throws an exception if this already exists or if the 
+     * Creates this link, pointing to the specified path. Throws an exception if this already exists or if the
      * parent does not exist; the target is not checked, it may be absolute or relative
      */
     public abstract void mklink(String path) throws LinkException;
-    
-    /** 
+
+    /**
      * Returns the link target of this file or throws an exception.
      */
     public abstract String readLink() throws ReadLinkException;
-    
+
     public void copy(Node dest) throws CopyException {
         try {
             if (isDirectory()) {
@@ -448,9 +448,9 @@ public abstract class Node {
         }
     }
 
-    /** 
+    /**
      * Overwrites existing files.
-     * @return dest 
+     * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
         InputStream in;
@@ -481,18 +481,18 @@ public abstract class Node {
     //-- diff
 
     public String diffDirectory(Node rightdir) throws IOException {
-        return diffDirectory(rightdir, false);        
+        return diffDirectory(rightdir, false);
     }
 
     public String diffDirectory(Node rightdir, boolean brief) throws IOException {
-        return new Diff(brief).directory(this, rightdir, getIO().filter().includeAll());        
+        return new Diff(brief).directory(this, rightdir, getIO().filter().includeAll());
     }
 
     /** cheap diff if you only need a yes/no answer */
     public boolean diff(Node right) throws IOException {
         return diff(right, new Buffer(getIO().getBuffer()));
     }
-    
+
     /** cheap diff if you only need a yes/no answer */
     public boolean diff(Node right, Buffer rightBuffer) throws IOException {
         InputStream leftSrc;
@@ -503,7 +503,7 @@ public abstract class Node {
         boolean[] leftEof;
         boolean[] rightEof;
         boolean result;
-        
+
         leftBuffer = getIO().getBuffer();
         leftSrc = createInputStream();
         leftEof = new boolean[] { false };
@@ -524,15 +524,15 @@ public abstract class Node {
     }
 
     //-- search for child nodes
-    
+
     /** uses default excludes */
     public List<Node> find(String... includes) throws IOException {
         return find(getIO().filter().include(includes));
     }
-    
+
     public Node findOne(String include) throws IOException {
         Node found;
-        
+
         found = findOpt(include);
         if (found == null) {
             throw new FileNotFoundException(toString() + ": not found: " + include);
@@ -542,31 +542,31 @@ public abstract class Node {
 
     public Node findOpt(String include) throws IOException {
         List<Node> found;
-        
+
         found = find(include);
         switch (found.size()) {
-        case 0: 
+        case 0:
             return null;
         case 1:
             return found.get(0);
-        default: 
-            throw new IOException(toString() + ": ambiguous: " + include); 
+        default:
+            throw new IOException(toString() + ": ambiguous: " + include);
         }
     }
 
     public List<Node> find(Filter filter) throws IOException {
         return filter.collect(this);
     }
-    
+
     //--
-    
+
     public Node deleteOpt() throws IOException {
         if (exists()) {
             delete();
         }
         return this;
     }
-    
+
     public Node mkdirOpt() throws MkdirException {
         try {
 			if (!isDirectory()) {
@@ -580,7 +580,7 @@ public abstract class Node {
 
     public Node mkdirsOpt() throws MkdirException {
         Node parent;
-        
+
         try {
 			if (!isDirectory()) {
 			    parent = getParent();
@@ -607,7 +607,7 @@ public abstract class Node {
     }
 
     //-- output create functionality
-    
+
     public NodeWriter createWriter() throws IOException {
         return createWriter(false);
     }
@@ -634,52 +634,52 @@ public abstract class Node {
 
     public Node writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
         OutputStream out;
-        
+
         out = createOutputStream(append);
         out.write(bytes, ofs, len);
         out.close();
         return this;
     }
-    
+
     public Node writeChars(char ... chars) throws IOException {
         return writeChars(chars, 0, chars.length, false);
     }
-    
+
     public Node appendChars(char ... chars) throws IOException {
         return writeChars(chars, 0, chars.length, true);
     }
-    
+
     public Node writeChars(char[] chars, int ofs, int len, boolean append) throws IOException {
         Writer out;
-        
+
         out = createWriter(append);
         out.write(chars, ofs, len);
         out.close();
         return this;
     }
-    
+
     public Node writeString(String txt) throws IOException {
         Writer w;
-        
+
         w = createWriter();
         w.write(txt);
         w.close();
         return this;
     }
-    
+
     public Node appendString(String txt) throws IOException {
         Writer w;
-        
+
         w = createAppender();
         w.write(txt);
         w.close();
         return this;
     }
-    
+
     public Node writeLines(String ... line) throws IOException {
         return writeLines(Arrays.asList(line));
     }
-    
+
     public Node writeLines(List<String> lines) throws IOException {
         return lines(createWriter(), lines);
     }
@@ -687,14 +687,14 @@ public abstract class Node {
     public Node appendLines(String ... line) throws IOException {
         return appendLines(Arrays.asList(line));
     }
-    
+
     public Node appendLines(List<String> lines) throws IOException {
         return lines(createAppender(), lines);
     }
 
     private Node lines(Writer dest, List<String> lines) throws IOException {
         String separator;
-        
+
         separator = getIO().getSettings().lineSeparator;
         for (String line : lines) {
             dest.write(line);
@@ -703,7 +703,7 @@ public abstract class Node {
         dest.close();
         return this;
     }
-    
+
     public Node writeObject(Serializable obj) throws IOException {
         ObjectOutputStream out;
 
@@ -723,7 +723,7 @@ public abstract class Node {
     public void gzip(Node dest) throws IOException {
         InputStream in;
         OutputStream out;
-        
+
         in = createInputStream();
         out = new GZIPOutputStream(dest.createOutputStream());
         getIO().getBuffer().copy(in, out);
@@ -734,7 +734,7 @@ public abstract class Node {
     public void gunzip(Node dest) throws IOException {
         InputStream in;
         OutputStream out;
-        
+
         in = new GZIPInputStream(createInputStream());
         out = dest.createOutputStream();
         getIO().getBuffer().copy(in, out);
@@ -757,28 +757,28 @@ public abstract class Node {
             throw new RuntimeException(e);
         }
     }
-    
+
     public byte[] digestBytes(String name) throws IOException, NoSuchAlgorithmException {
         InputStream src;
         MessageDigest complete;
-        
+
         src =  createInputStream();
         complete = MessageDigest.getInstance(name);
         getIO().getBuffer().digest(src, complete);
         src.close();
         return complete.digest();
     }
-    
+
     public String digest(String name) throws IOException, NoSuchAlgorithmException {
         return Strings.toHex(digestBytes(name));
     }
-    
+
     //-- Object functionality
-    
+
     @Override
     public boolean equals(Object obj) {
         Node node;
-        
+
         if (obj == null || !getClass().equals(obj.getClass())) {
             return false;
         }
@@ -796,14 +796,14 @@ public abstract class Node {
 
     /**
      * Returns a String representation suitable for messages.
-     * 
-     * CAUTION: don't use to convert to a string, use getRelative and getAbsolute() instead. 
-     * Also call the respective getter if the difference matters for your representation. 
+     *
+     * CAUTION: don't use to convert to a string, use getRelative and getAbsolute() instead.
+     * Also call the respective getter if the difference matters for your representation.
      */
     @Override
     public final String toString() {
         Node base;
-        
+
         base = getBase();
         if (base == null) {
             return getAbsolute();

@@ -46,11 +46,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public NodeTest(boolean canmove) {
         this.canmove = canmove;
     }
-    
+
     @Test
     public void work() throws IOException {
         List<?> children;
-        
+
         assertNull(work.getBase());
         assertTrue(work.exists());
         assertFalse(work.isFile());
@@ -59,7 +59,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertNotNull(children);
         assertEquals(0, children.size());
     }
-    
+
     @Test
     public void root() {
         assertEquals(work.join("a").getRoot(), work.join("a").getRoot());
@@ -68,10 +68,10 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     //--
 
-    @Test 
+    @Test
     public void listAndBase() throws Exception {
         List<? extends Node> lst;
-        
+
         work.setBase(work);
         work.join("foo").mkdir();
         lst = work.list();
@@ -81,7 +81,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //--
-    
+
     @Test
     public void joinWithSlash() {
         try {
@@ -91,7 +91,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             // ok
         }
     }
-    
+
     @Test
     public void parent() {
         assertEquals(work, work.join("a").getParent());
@@ -101,7 +101,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void anchestor() {
         Node file;
-        
+
         file = work.join("foo/bar");
         assertFalse(file.hasAnchestor(file));
         assertTrue(file.hasAnchestor(file.getParent()));
@@ -112,7 +112,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void relative() {
         Node parent;
         Node file;
-        
+
         parent = work.join("foo");
         file = parent.join("bar");
         assertEquals(".", file.getRelative(file));
@@ -125,7 +125,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void nameAndPath() throws IOException {
         Node node;
-        
+
         node = work.join("foo");
         assertFalse(node.exists());
         assertTrue(node.getPath().endsWith("foo"));
@@ -139,11 +139,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertTrue(node.getPath().endsWith("x" + sep + "y" + sep + "z"));
         assertEquals("z", node.getName());
     }
-    
+
     @Test
     public void hidden() throws IOException {
         List<? extends Node> files;
-        
+
         work.join(".dotfile").writeString("foo");
         files = work.list();
         assertEquals(1, files.size());
@@ -151,11 +151,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //-- status methods: exists, isFile, isDirectory
-    
+
     @Test
     public void statusFile() throws IOException {
         Node file;
-        
+
         file = work.join("foo");
         assertFalse(file.exists());
         assertFalse(file.isFile());
@@ -173,7 +173,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void statusDirectory() throws IOException {
         Node dir;
-        
+
         dir = work.join("foo");
         assertFalse(dir.exists());
         assertFalse(dir.isFile());
@@ -189,23 +189,23 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //--
-    
+
     @Test
     public void childrenOfFile() throws IOException {
         Node file;
-        
+
         file = work.join("foo").writeBytes();
         assertTrue(file.isFile());
         assertNull(file.list());
     }
 
     //
-    
+
     @Test
     public void modifiedFile() throws Exception {
         Node file;
         long modified;
-        
+
         file = work.join("file");
         assertFalse(file.exists());
         try {
@@ -235,7 +235,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void modifiedDirectory() throws Exception {
         Node dir;
         long modified;
-        
+
         dir = work.join("dir");
         dir.mkdir();
         sameTime(dir.getLastModified(), System.currentTimeMillis());
@@ -248,7 +248,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         }
         sameTime(modified, dir.getLastModified());
     }
-    
+
     private static void sameTime(long left, long right) {
         if (Math.abs(left - right) > 2000) {
             fail("expected: " + time(left) + ", got " + time(right));
@@ -259,11 +259,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //-- read/write
-    
+
     @Test
     public void readNonexisting() throws IOException {
         Node file;
-        
+
         file = work.join("doesnotexist");
         assertFalse(file.exists());
         try {
@@ -277,7 +277,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void readDirectory() throws IOException {
         Node dir;
-        
+
         dir = work.join("dir");
         dir.mkdir();
         assertTrue(dir.isDirectory());
@@ -320,7 +320,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Node file;
         byte[] data;
         byte[] data1 = {};
-        
+
         file = work.join("foo").writeBytes(data1);
         data = file.readBytes();
         assertEquals(0L, file.length());
@@ -331,7 +331,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void readNormal() throws IOException {
         Node file;
-        
+
         file = work.join("foo").writeString("some data");
         assertEquals("some data", file.readString());
         assertEquals(9L, file.length());
@@ -344,13 +344,13 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Node file;
         NodeWriter writer;
         NodeReader reader;
-        
+
         file = work.join("foo");
         writer = file.createWriter();
         assertSame(file, writer.getNode());
         writer.write("hi");
         writer.close();
-        
+
         reader = file.createReader();
         assertSame(file, reader.getNode());
         assertEquals('h', reader.read());
@@ -361,7 +361,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     @Test
     public void specialFilename() throws IOException {
-        final String str = SPECIAL_CONTENT + " .:{}"; 
+        final String str = SPECIAL_CONTENT + " .:{}";
 
         for (int i = 0; i < str.length(); i++) {
             checkFilename("before" + str.charAt(i) + "after");
@@ -371,7 +371,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     private void checkFilename(String name) throws IOException {
         Node file;
-        
+
         file = work.join(name);
         file.writeString("abc");
         assertEquals("abc", file.readString());
@@ -381,7 +381,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     private void checkDirectory(String name) throws IOException {
         Node file;
-        
+
         file = work.join(name);
         file.mkdir();
         assertTrue(file.isDirectory());
@@ -397,7 +397,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Reader src;
         int c;
         StringBuilder str;
-        
+
         file = work.join("foo");
         file.writeBytes(SPECIAL_CONTENT.getBytes(file.getIO().getSettings().encoding));
         src = file.createReader();
@@ -416,7 +416,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void writerEncoding() throws IOException {
         Node file;
         Writer dest;
-        
+
         file = work.join("foo");
         dest = file.createWriter();
         dest.write(SPECIAL_CONTENT);
@@ -427,7 +427,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void readWriteString() throws IOException {
         Node file;
-        
+
         file = work.join("foo");
         file.writeString("");
         assertTrue(file.exists());
@@ -440,7 +440,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void append() throws IOException {
         Node file;
-        
+
         file = work.join("foo");
         try {
             file.appendBytes((byte) 97, (byte) 98);
@@ -481,7 +481,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Document doc;
         Node file;
 
-        doc = IO.getXml().builder.literal("<a><b/></a>");        
+        doc = IO.getXml().builder.literal("<a><b/></a>");
         file = work.join("foo");
         file.writeXml(doc);
         assertEquals(IO.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>", ""), file.readString());
@@ -498,11 +498,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             // ok
         }
     }
-    
+
     @Test
     public void writeOverExistingFile() throws IOException {
         Node file;
-        
+
         file = work.join("existing");
         file.writeString("foo");
         file.createOutputStream().close();
@@ -513,7 +513,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void inputAlreadyClosed() throws IOException {
         Node file;
         InputStream in;
-        
+
         file = work.join("file");
         file.writeString("foo");
         in = file.createInputStream();
@@ -533,7 +533,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void inputClosedTwice() throws IOException {
         Node file;
         InputStream in;
-        
+
         file = work.join("file");
         file.writeString("foo");
         in = file.createInputStream();
@@ -541,11 +541,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         in.close();
         in.close();
     }
-    
+
     @Test
     public void outputAlreadyClosed() throws IOException {
         OutputStream out;
-        
+
         out = work.join("file").createOutputStream();
         out.write(1);
         out.close();
@@ -558,17 +558,17 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             // ok
         }
     }
-    
+
     @Test
     public void outputClosedTwice() throws IOException {
         OutputStream out;
-        
+
         out = work.join("file").createOutputStream();
         out.write(1);
         out.close();
         out.close();
     }
-    
+
     @Test
     public void multipleInputOutputs() throws Exception {
         Node node1;
@@ -577,7 +577,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         OutputStream out2;
         InputStream in1;
         InputStream in2;
-        
+
         node1 = work.join("1");
         node2 = work.join("2");
         out1 = node1.createOutputStream();
@@ -588,7 +588,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         out1.write('b');
         out1.close();
         out2.close();
-        
+
         in2 = node2.createInputStream();
         assertEquals('1', in2.read());
         in1 = node1.createInputStream();
@@ -598,13 +598,13 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         in1.close();
         in2.close();
     }
-    
+
     //-- mkfile
-    
+
     @Test
     public void mkfileNormal() throws IOException {
         Node file;
-        
+
         file = work.join("file");
         assertSame(file, file.mkfile());
         assertTrue(file.exists());
@@ -620,7 +620,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test(expected=MkfileException.class)
     public void mkfileOnFile() throws IOException {
         Node file;
-        
+
         file = work.join("file");
         file.mkfile();
         file.mkfile();
@@ -630,13 +630,13 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void mkfileOnDir() throws IOException {
         work.mkfile();
     }
-    
+
     //-- mkdir
-    
+
     @Test
     public void mkdir() throws IOException {
         Node dir;
-        
+
         dir = work.join("dir");
         assertSame(dir, dir.mkdir());
         assertTrue(dir.exists());
@@ -645,35 +645,24 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test(expected=MkdirException.class)
-    public void mkdirOptOverFile() throws IOException {
-        Node file;
-        
-        file = work.join("file").writeBytes();
-        file.mkdirOpt();
-    }
-
-    @Test(expected=MkdirException.class)
-    public void mkdirsOptOverFile() throws IOException {
-        Node file;
-        
-        file = work.join("file").writeBytes();
-        file.mkdirsOpt();
-    }
-
-    @Test(expected=MkdirException.class)
     public void mkdirToNonexistingDirectory() throws IOException {
         work.join("nosuchdir/file").mkdir();
+    }
+
+    @Test(expected=MkdirException.class)
+    public void mkdirOnExisting() throws IOException {
+        work.mkdir();
     }
 
     @Test(expected=MkdirException.class)
     public void mkdirsOnExisting() throws IOException {
         work.mkdirs();
     }
-    
+
     @Test
     public void mkdirs() throws IOException {
         Node dir;
-        
+
         dir = work.join("dir/sub");
         dir.mkdirs();
         assertTrue(dir.isDirectory());
@@ -689,7 +678,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void mkdirsOpt() throws IOException {
         Node dir;
-        
+
         dir = work.join("dir/sub");
         dir.mkdirsOpt();
         assertTrue(dir.isDirectory());
@@ -697,13 +686,29 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertTrue(dir.isDirectory());
     }
 
+    @Test(expected=MkdirException.class)
+    public void mkdirOptOverFile() throws IOException {
+        Node file;
+
+        file = work.join("file").writeBytes();
+        file.mkdirOpt();
+    }
+
+    @Test(expected=MkdirException.class)
+    public void mkdirsOptOverFile() throws IOException {
+        Node file;
+
+        file = work.join("file").writeBytes();
+        file.mkdirsOpt();
+    }
+
     //-- delete method
-    
+
     @Test
     public void deleteFile() throws IOException {
         Node node;
         byte[] data = {};
-        
+
         node = work.join("myfile");
         try {
             node.delete();
@@ -726,7 +731,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void deleteDirectory() throws IOException {
         Node dir;
         Node child;
-        
+
         dir = work.join("mydir");
         try {
             dir.delete();
@@ -747,9 +752,9 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             assertTrue(e.getCause() instanceof FileNotFoundException);
         }
     }
-    
+
     //-- move
-    
+
     @Test
     public void moveDirectory() throws IOException {
         if (!canmove) {
@@ -769,7 +774,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void moveToExistingDir() throws IOException {
         Node destdir;
-        
+
         if (!canmove) {
             return;
         }
@@ -788,7 +793,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test(expected=IOException.class)
     public void moveOverExisting() throws IOException {
         Node dest;
-        
+
         if (!canmove) {
             throw new IOException();
         }
@@ -802,7 +807,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     		throw new IOException();
     	}
         Node node;
-        
+
         node = work.join("old").mkdir();
         doMove(node, node);
     }
@@ -812,11 +817,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         src.checkNotExists();
         dest.checkExists();
     }
-    
+
 
     //-- other ops
 
-    @Test 
+    @Test
     public void gzip() throws IOException {
         final String str = "1234567890abc";
         Node normal;
@@ -834,16 +839,16 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertFalse(normal.diff(gunzip));
         assertEquals(str, gunzip.readString());
     }
-    
+
     @Test
     public void md5() throws IOException {
         Node a;
         String digest;
-        
+
         a = work.join("a");
         a.writeBytes();
         digest = a.md5();
-        // string was computed my md5sum: 
+        // string was computed my md5sum:
         assertEquals("d41d8cd98f00b204e9800998ecf8427e", digest);
         a.writeBytes((byte) 0);
         assertFalse(a.equals(a.md5()));
@@ -861,12 +866,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //-- copy
-    
+
     @Test
     public void copyFile() throws IOException {
         Node a;
         Node b;
-        
+
         a = work.join("a");
         b = work.join("b");
         a.writeString("xy");
@@ -883,7 +888,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void copyDirectory() throws IOException {
         Node src;
         Node dest;
-        
+
         src = work.join("src").mkdir();
         src.join("a").writeString("A");
         src.join("b").writeString("B");
@@ -895,11 +900,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals("B", dest.join("b").readString());
         dest.join("dir").checkDirectory();
     }
-    
+
     @Test
     public void mode() throws Exception {
         Node file;
-        
+
         file = work.join("file");
         file.writeBytes();
         try {
@@ -941,7 +946,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         }
         assertEquals(id, node.getUid());
     }
-    
+
     @Test
     public void gidDir() throws Exception {
         doGid(work.join("dir").mkdir());
@@ -973,9 +978,9 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         }
         assertEquals(id, node.getGid());
     }
-    
+
     //-- Object methods
-    
+
     @Test
     public void equal() throws IOException {
         assertEquals(work, work.join());
@@ -988,14 +993,14 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     @Test
     public void toStr() throws IOException {
         Node file;
-        
+
         file = work.join("foo");
         assertEquals(file.getRoot().getId() + file.getPath(), file.toString());
     }
-    
+
     //-- links
     //--
-    
+
     @Test
     public void linkNormal() throws IOException {
         Node orig;
@@ -1013,7 +1018,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         //assertFalse(orig.isLink());
         assertFalse(link.exists());
         //assertFalse(link.isLink());
-        
+
         orig.link(link);
         assertTrue(link.exists());
         assertTrue(link.isLink());
@@ -1024,7 +1029,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals("second", link.readString());
         link.writeString("third");
         assertEquals("third", orig.readString());
-        
+
         link.delete();
         assertTrue(orig.exists());
         assertFalse(link.exists());

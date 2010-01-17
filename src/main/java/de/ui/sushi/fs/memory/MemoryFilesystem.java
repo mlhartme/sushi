@@ -19,18 +19,19 @@ package de.ui.sushi.fs.memory;
 
 import java.util.WeakHashMap;
 
+import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.RootPathException;
 
 public class MemoryFilesystem extends Filesystem {
     private final WeakHashMap<Integer, MemoryRoot> roots;
-    
+
     public int maxInMemorySize;
-    
+
     public MemoryFilesystem(IO io, String name) {
-        super(io, '/', name);
-        
+        super(io, '/', new Features(false, false), name);
+
         this.roots = new WeakHashMap<Integer, MemoryRoot>();
         this.maxInMemorySize = 32 * 1024;
     }
@@ -46,7 +47,7 @@ public class MemoryFilesystem extends Filesystem {
 
     public MemoryRoot root(int id) {
         MemoryRoot root;
-        
+
         root = roots.get(id);
         if (root == null) {
             root = new MemoryRoot(this, id);
@@ -57,7 +58,7 @@ public class MemoryFilesystem extends Filesystem {
 
     public MemoryRoot root() {
         MemoryRoot root;
-        
+
         for (int id = 0; true; id++) {
             if (!roots.containsKey(id)) {
                 root = new MemoryRoot(this, id);

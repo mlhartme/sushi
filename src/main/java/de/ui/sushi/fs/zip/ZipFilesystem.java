@@ -27,7 +27,7 @@ public class ZipFilesystem extends Filesystem {
     private static final String ZIP_SEPARATOR = "!/";
 
     public ZipFilesystem(IO io, String name) {
-        super(io, '/', name);
+        super(io, '/', new Features(false, false), name);
     }
 
     @Override

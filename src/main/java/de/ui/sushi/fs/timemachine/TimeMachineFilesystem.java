@@ -19,27 +19,24 @@ package de.ui.sushi.fs.timemachine;
 
 import java.io.IOException;
 
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.*;
 import de.ui.sushi.fs.file.FileNode;
 
-/** 
+/**
  * See http://www.macosxhints.com/article.php?story=20080623213342356
- * 
+ *
  * Mount with fstab
  *    dev/sdb2       /media/timemachine hfsplus user,ro,nosuid,nodev,uid=mhm,gid=mhm 0 0
  * does not work, see http://falsepositive.eu/archives/20080307-hfsplus-UIDGID-remapping/21  :(
  */
 public class TimeMachineFilesystem extends Filesystem {
     public TimeMachineFilesystem(IO io, String name) {
-        super(io, '/', name);
+        super(io, '/', new Features(false, false), name);
     }
 
     @Override
     public String opaquePath(String schemeSpecific) throws RootPathException {
-        return after(schemeSpecific, "!");        
+        return after(schemeSpecific, "!");
     }
 
     @Override

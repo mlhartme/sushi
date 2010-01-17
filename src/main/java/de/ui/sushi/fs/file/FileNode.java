@@ -39,7 +39,7 @@ import de.ui.sushi.util.Program;
  */
 public class FileNode extends Node {
     private final FileRoot root;
-    
+
     /** never null and always absolute. */
     private final File file;
 
@@ -53,7 +53,7 @@ public class FileNode extends Node {
         this.root = root;
         this.file = file;
     }
-    
+
     @Override
     public FileRoot getRoot() {
         return root;
@@ -67,14 +67,14 @@ public class FileNode extends Node {
     public File getFile() {
         return file;
     }
-    
+
     @Override
     public String getPath() {
         return file.getPath().substring(getRoot().getId().length());
     }
-    
+
     //--
-    
+
     @Override
     public boolean exists() {
         return file.exists() ? true : isNoneExistingBrokenLink(file);
@@ -84,7 +84,7 @@ public class FileNode extends Node {
     public boolean isFile() {
         return file.isFile();
     }
-    
+
     @Override
     public boolean isDirectory() {
         return file.isDirectory();
@@ -97,7 +97,7 @@ public class FileNode extends Node {
     public boolean canRead() {
         return file.canRead();
     }
-    
+
     public ZipNode openZip() throws IOException {
     	// TODO
         return new ZipFilesystem(getIO(), "zip").node(this, "");
@@ -114,14 +114,14 @@ public class FileNode extends Node {
     @Override
     public long getLastModified() throws GetLastModifiedException {
         long result;
-        
+
         result = file.lastModified();
         if (result == 0 && !exists()) {
             throw new GetLastModifiedException(this, new ExistsException(this, null));
         }
         return result;
     }
-    
+
     @Override
     public void setLastModified(long time) throws SetLastModifiedException {
         if (!file.setLastModified(time)) {
@@ -130,15 +130,15 @@ public class FileNode extends Node {
     }
 
     //-- locating
-    
-    
+
+
     /** @return null when called for a file; non-null otherwise */
     @Override
     public List<FileNode> list() throws ListException {
         File[] children;
         List<FileNode> result;
         FileNode child;
-        
+
         children = file.listFiles();
         if (children == null) {
             if (!file.canRead()) {
@@ -165,7 +165,7 @@ public class FileNode extends Node {
     }
 
     //-- read and writeBytes
-    
+
     @Override
     public FileInputStream createInputStream() throws IOException {
         return new FileInputStream(file);
@@ -177,8 +177,8 @@ public class FileNode extends Node {
     }
 
     //-- create
-    
-    /** this is not a touch because it fails if the file exists */
+
+    /** calls createNewFile */
     @Override
     public FileNode mkfile() throws MkfileException {
     	try {
@@ -190,9 +190,9 @@ public class FileNode extends Node {
 		}
         return this;
     }
-    
+
     @Override
-    public Node mkdir() throws MkdirException {
+    public FileNode mkdir() throws MkdirException {
         if (!file.mkdir()) {
             throw new MkdirException(this);
         }
@@ -230,12 +230,12 @@ public class FileNode extends Node {
     		throw new ExistsException(this, e);
     	}
     }
-    
+
     private static boolean isLink(File file) throws IOException {
         String name;
         File parent;
         File canonical;
-        
+
         name = file.getName();
         parent = file.getAbsoluteFile().getParentFile();
         if (parent == null) {
@@ -249,7 +249,7 @@ public class FileNode extends Node {
         	return isBrokenLink(file);
         }
     }
-    
+
     private static boolean isBrokenLink(File link) {
     	return link.exists() ? false : isNoneExistingBrokenLink(link);
     }
@@ -258,7 +258,7 @@ public class FileNode extends Node {
         FilenameFilter filter;
         final String expected;
         File parent;
-        
+
         parent = link.getParentFile();
         if (!parent.isDirectory()) {
             return false;
@@ -281,7 +281,7 @@ public class FileNode extends Node {
     	FileNode dest;
         Program p;
         String output;
-        
+
         if (!(destNode instanceof FileNode)) {
         	throw new MoveException(this, destNode, "cannot move to none-file-node");
         }
@@ -308,15 +308,15 @@ public class FileNode extends Node {
         return dest;
     }
 
-    //-- rename 
-    
+    //-- rename
+
     public void rename(FileNode target) throws IOException {
         if (target.exists()) {
             throw new IOException("target exists: " + target);
         }
         rename(file, target.file);
     }
-    
+
     private static void rename(File src, File target) throws IOException {
         if (!src.exists()) {
             throw new FileNotFoundException("" + src);
@@ -332,7 +332,7 @@ public class FileNode extends Node {
     }
 
     //-- delete
-    
+
     /**
      * Deletes a file or directory. Directories are deleted recursively. Handles Links.
      *
@@ -347,14 +347,14 @@ public class FileNode extends Node {
         }
         return this;
     }
-    
+
     protected static void delete(IO io, File file) throws IOException {
         File[] files;
-        
+
         if (isLink(file)) {
             deleteLink(io, file);
             return;
-        } 
+        }
         files = file.listFiles();
         if (files != null) {
             for (File child : files) {
@@ -367,13 +367,13 @@ public class FileNode extends Node {
             throw new FileNotFoundException("cannot delete file " + file);
         }
     }
-    
+
     private static void deleteLink(IO io, File link) throws IOException {
         File target; // where the link point to
         File dir;
         File renamed;
         boolean wasDeleted;
-        
+
         if (!link.exists()) {
         	// broken link
         	new Program(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
@@ -385,7 +385,7 @@ public class FileNode extends Node {
         	try {
         		rename(target, renamed);
         	} catch (IOException e) {
-        		throw new IOException("Cannot delete link " + link + ": rename target " + target + " -> " + renamed 
+        		throw new IOException("Cannot delete link " + link + ": rename target " + target + " -> " + renamed
                     + " failed: " + e.getMessage());
         	}
         	wasDeleted = link.delete();
@@ -402,7 +402,7 @@ public class FileNode extends Node {
     }
 
     //--
-    
+
     @Override
     public boolean diff(Node right, Buffer rightBuffer) throws IOException {
         if (right instanceof FileNode) {
@@ -414,7 +414,7 @@ public class FileNode extends Node {
     }
 
     //--
-    
+
     @Override
     public int getMode() throws IOException {
         return stat(OS.CURRENT.mode, 8) & 0777;
@@ -424,12 +424,12 @@ public class FileNode extends Node {
     public void setMode(int mode) throws IOException {
         ch("chmod", Integer.toOctalString(mode));
     }
-    
+
     @Override
     public int getUid() throws IOException {
         return stat(OS.CURRENT.uid, 10);
     }
-    
+
     @Override
     public void setUid(int uid) throws IOException {
         ch("chown", Integer.toString(uid));
@@ -448,10 +448,10 @@ public class FileNode extends Node {
     private void ch(String cmd, String n) throws IOException {
         new Program(dir(), cmd, n, getAbsolute()).execNoOutput();
     }
-    
+
     private int stat(String[] args, int radix) throws IOException {
         Program stat;
-        
+
         stat = new Program(dir(), "stat");
         stat.add(args);
         stat.add(getAbsolute());
@@ -461,13 +461,13 @@ public class FileNode extends Node {
     private FileNode dir() {
         return (FileNode) getParent();
     }
-    
+
     //--
-    
+
     public FileNode createTempFile() throws IOException {
         return OnShutdown.get().createFile(this);
     }
-    
+
     public FileNode createTempDirectory() throws IOException {
         return OnShutdown.get().createDirectory(this);
     }

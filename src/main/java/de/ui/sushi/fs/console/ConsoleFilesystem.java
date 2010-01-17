@@ -17,14 +17,11 @@
 
 package de.ui.sushi.fs.console;
 
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.*;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
     public ConsoleFilesystem(IO io, String name) {
-        super(io, '/', name);
+        super(io, '/', new Features(false, false), name);
     }
 
     @Override
@@ -36,7 +33,7 @@ public class ConsoleFilesystem extends Filesystem implements Root {
     }
 
     //-- root methods
-    
+
     public Filesystem getFilesystem() {
         return this;
     }
@@ -53,7 +50,7 @@ public class ConsoleFilesystem extends Filesystem implements Root {
     }
 
     //-- capabilities
-    
+
     public boolean canLink() {
         return false;
     }

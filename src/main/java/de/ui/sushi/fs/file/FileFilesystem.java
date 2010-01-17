@@ -28,7 +28,7 @@ public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
     public FileFilesystem(IO io, String name) {
-        super(io, File.separatorChar, new Features(true, false), name);
+        super(io, File.separatorChar, new Features(true, true, false), name);
 
         File[] rootFiles;
 

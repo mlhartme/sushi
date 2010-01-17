@@ -27,14 +27,10 @@ import org.junit.Test;
 import de.ui.sushi.fs.NodeTest;
 
 public abstract class WebdavNodeFullBase extends NodeTest {
-    public WebdavNodeFullBase() {
-		super(true);
-	}
-
 	@Test
 	public void attributeFile() throws IOException {
 		WebdavNode node;
-		
+
 		node = (WebdavNode) work.join("file");
 		try {
 			node.getAttribute("foo");
@@ -49,7 +45,7 @@ public abstract class WebdavNodeFullBase extends NodeTest {
 	@Test
 	public void attributeDir() throws IOException {
 		WebdavNode node;
-		
+
 		node = (WebdavNode) work.join("dir");
 		node.mkdir();
 		attrib(node, "foo");
@@ -57,7 +53,7 @@ public abstract class WebdavNodeFullBase extends NodeTest {
 
 	private void attrib(WebdavNode node, String name) throws IOException {
 		WebdavNode second;
-		
+
 		assertNull(node.getAttribute(name));
 		node.setAttribute(name, "bar");
 		assertEquals("bar", node.getAttribute(name));

@@ -37,7 +37,7 @@ public class SshFilesystem extends Filesystem {
     private JSch jsch;
 
     public SshFilesystem(IO io, String name) {
-        super(io, '/', new Features(false, false), name);
+        super(io, '/', new Features(true, false, false), name);
 
         privateKey = null;
         passphrase = null;

@@ -33,20 +33,16 @@ import de.ui.sushi.io.OS;
 
 /** TODO: move more tests into NodeTest */
 public class FileNodeTest extends NodeTest {
-    public FileNodeTest() {
-        super(true);
-    }
-
     @Override
     protected Node createWork() throws IOException {
         return IO.getTemp().createTempDirectory();
     }
-    
+
     @Test
     public void renameFile() throws IOException {
         FileNode src;
         FileNode dest;
-        
+
         src = (FileNode) work.join("src");
         dest = (FileNode) work.join("dest");
         try {
@@ -71,7 +67,7 @@ public class FileNodeTest extends NodeTest {
     @Test
     public void mkfile() throws IOException {
         FileNode file;
-        
+
         file = (FileNode) work.join("mkfile");
         assertFalse(file.exists());
         file.mkfile();
@@ -91,7 +87,7 @@ public class FileNodeTest extends NodeTest {
         }
         file.delete();
     }
-    
+
     @Test
     public void modeFile() throws IOException {
         checkMode(IO.getTemp().createTempFile());
@@ -117,14 +113,14 @@ public class FileNodeTest extends NodeTest {
         assertTrue(node.getFile().canRead());
         assertTrue(node.getFile().canWrite());
     }
-    
+
     private void checkMode(FileNode node, int mode) throws IOException {
         node.setMode(mode);
         assertEquals(mode, node.getMode());
     }
-    
+
     //--
-    
+
     @Test
     public void filesystem() {
         assertEquals(File.separator, work.getRoot().getFilesystem().getSeparator());
@@ -134,7 +130,7 @@ public class FileNodeTest extends NodeTest {
     @Test
     public void temp() throws IOException {
         FileNode tmp;
-        
+
         tmp = ((FileNode) work).createTempFile();
         assertEquals("", tmp.readString());
         tmp = ((FileNode) work).createTempDirectory();

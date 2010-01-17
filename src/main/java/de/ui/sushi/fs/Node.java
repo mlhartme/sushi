@@ -154,7 +154,10 @@ public abstract class Node {
      */
     public abstract Node delete() throws DeleteException;
 
-    /** @return dest */
+    /**
+     * Throws an unsuppertation exception if move features is not true.
+     * @return dest
+     */
     public abstract Node move(Node dest) throws MoveException;
 
     //-- status methods

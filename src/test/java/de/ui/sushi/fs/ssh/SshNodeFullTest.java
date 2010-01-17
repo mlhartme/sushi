@@ -34,11 +34,7 @@ import com.jcraft.jsch.JSchException;
 
 public class SshNodeFullTest extends NodeTest {
     private static SshRoot root;
-    
-    public SshNodeFullTest() {
-        super(true);
-    }
-    
+
     @BeforeClass
     public static void beforeClass() throws Exception {
         root = ConnectionFullTest.open();
@@ -48,18 +44,18 @@ public class SshNodeFullTest extends NodeTest {
     public void setUp() throws Exception {
         super.setUp();
     }
-    
+
     @After
     public void after() throws Exception {
     }
-    
+
     @AfterClass
     public static void afterClass() throws Exception {
         if (root != null) {
             root.close();
         }
     }
-    
+
     private SshNode create(String path) throws IOException, JSchException {
         return new SshNode(root, path);
     }
@@ -67,7 +63,7 @@ public class SshNodeFullTest extends NodeTest {
     @Override
     protected SshNode createWork() throws IOException {
         SshNode node;
-        
+
         try {
             node = create("tmp/sushisshworkdir");
             node.deleteOpt();
@@ -81,7 +77,7 @@ public class SshNodeFullTest extends NodeTest {
     @Test
     public void rootPath() throws Exception {
         SshNode root;
-        
+
         root = create("");
         assertEquals("", root.getPath());
         assertEquals("", root.getName());
@@ -93,7 +89,7 @@ public class SshNodeFullTest extends NodeTest {
         SshNode root;
         List<SshNode> lst;
         SshNode broken;
-        
+
         root = createWork();
         root.getRoot().exec("ln", "-s", "nosuchfile", "/" + root.getPath() + "/foo");
         lst = root.list();

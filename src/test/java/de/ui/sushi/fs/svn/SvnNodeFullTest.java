@@ -39,14 +39,10 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 public class SvnNodeFullTest extends NodeTest {
     private static SVNURL URL;
 
-    public SvnNodeFullTest() {
-        super(false);
-    }
-    
     public static void main(String[] args) throws Exception {
         IO io;
         Node node;
-        
+
         io = new IO();
         io.getFilesystem(SvnFilesystem.class).setCredentials("pfixpublisher", "pfixpublisher");
         node = (SvnNode) io.node("svn:https://svn.schlund.de/svn/PFXUI/branches/before-0.13");
@@ -64,7 +60,7 @@ public class SvnNodeFullTest extends NodeTest {
         repo.deleteOpt();
         URL = SVNRepositoryFactory.createLocalRepository(new File(repo.getAbsolute()), null, true, true, true);
     }
-    
+
     @Override
     public Node createWork() throws IOException {
         SvnNode node;
@@ -85,14 +81,14 @@ public class SvnNodeFullTest extends NodeTest {
     public void rootWithUrl() throws SVNException {
         assertEquals(URL.toString() + "/", work.getRoot().getId());
     }
- 
+
     @Test
     public void path() throws IOException {
         assertEquals("", create(URL.toString()).getPath());
         // assertEquals("test", SvnNode.create(IO, TEST).getPath());
         assertEquals("work", work.getPath());
     }
- 
+
     @Test(expected=LocatorException.class)
     public void connectionRefused() throws IOException {
         create("https://heise.de/svn");
@@ -103,7 +99,7 @@ public class SvnNodeFullTest extends NodeTest {
         SvnNode root;
         long rootRevision;
         long fileRevision;
-        
+
         root = create(URL.toString());
         rootRevision = root.getLatestRevision();
         fileRevision = ((SvnNode) root.join("work")).getLatestRevision();
@@ -114,28 +110,28 @@ public class SvnNodeFullTest extends NodeTest {
     public void find() throws SVNException, IOException {
         SvnNode root;
         List<Node> lst;
-        
+
         root = create(URL.toString());
         lst = IO.filter().include("*").collect(root);
         assertEquals(1, lst.size());
     }
-    
+
     @Test
     public void log() throws Exception {
         final String comment = "my comment";
         SvnNode root;
         long revision;
-        
+
         root = (SvnNode) work;
         revision = ((SvnNode) root.join("file")).save("welcome".getBytes(), comment);
         assertTrue(root.changelog(revision, "viewsvn").contains(comment));
     }
-    
+
     @Test
     public void export() throws IOException, SVNException {
         SvnNode root;
         FileNode dir;
-        
+
         root = (SvnNode) work;
         root.join("file").writeString("foo");
         root.join("dir").mkdir().join("sub").writeString("bar");
@@ -163,7 +159,7 @@ public class SvnNodeFullTest extends NodeTest {
     }
 
     //--
-    
+
     private SvnNode create(String path) throws RootPathException {
         return (SvnNode) IO.node("svn:" + path);
     }

@@ -20,10 +20,6 @@ package de.ui.sushi.fs.memory;
 import de.ui.sushi.fs.NodeTest;
 
 public class MemoryNodeTest extends NodeTest {
-    public MemoryNodeTest() {
-        super(false);
-    }
-    
     @Override
     protected MemoryNode createWork() {
         return IO.getMemoryFilesystem().root().node("");

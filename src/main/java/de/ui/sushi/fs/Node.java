@@ -119,7 +119,7 @@ public abstract class Node {
 
     /**
      * Lists child nodes or null if this is not a directory.
-     * Throws an exception if permission is denied.
+     * Throws an exception if this does not exist or permission is denied.
      */
     public abstract List<? extends Node> list() throws ListException;
 

@@ -74,6 +74,24 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(work, lst.get(0).getBase());
     }
 
+    @Test
+    public void listFile() throws IOException {
+        Node file;
+
+        file = work.join("foo").writeBytes();
+        assertTrue(file.isFile());
+        assertNull(file.list());
+    }
+
+    @Test(expected=ListException.class)
+    public void listNonExisting() throws IOException {
+        Node nosuchfile;
+
+        nosuchfile = work.join("nosuchfile");
+        assertFalse(nosuchfile.exists());
+        assertNull(nosuchfile.list());
+    }
+
     //--
 
     @Test
@@ -183,15 +201,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //--
-
-    @Test
-    public void childrenOfFile() throws IOException {
-        Node file;
-
-        file = work.join("foo").writeBytes();
-        assertTrue(file.isFile());
-        assertNull(file.list());
-    }
 
     //
 

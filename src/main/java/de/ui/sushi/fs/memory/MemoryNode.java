@@ -165,8 +165,12 @@ public class MemoryNode extends Node {
             throw new DeleteException(this, new FileNotFoundException());
         }
         if (type == Type.DIRECTORY) {
-            for (MemoryNode obj : list()) {
-                ((MemoryNode) obj).delete();
+            try {
+                for (MemoryNode obj : list()) {
+                    ((MemoryNode) obj).delete();
+                }
+            } catch (ListException e) {
+                throw new DeleteException(this, e);
             }
         }
         type = Type.NONE;
@@ -174,14 +178,20 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public List<MemoryNode> list() {
-        if (type != Type.DIRECTORY) {
-            return null;
-        }
-        try {
-            return root.list(path);
-        } catch (IOException e) {
-            throw new RuntimeException("TODO", e);
+    public List<MemoryNode> list() throws ListException {
+        switch (type) {
+            case NONE:
+                throw new ListException(this, new IOException("directory expected"));
+            case FILE:
+                return null;
+            case DIRECTORY:
+                try {
+                    return root.list(path);
+                } catch (IOException e) {
+                    throw new ListException(this, e);
+                }
+            default:
+                throw new IllegalStateException();
         }
     }
 

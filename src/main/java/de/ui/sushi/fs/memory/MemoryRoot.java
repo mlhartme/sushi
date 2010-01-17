@@ -127,10 +127,4 @@ public class MemoryRoot implements Root {
             store.put(path, copy);
         }
     }
-    
-    //-- capabilities
-    
-    public boolean canLink() {
-        return false;
-    }
 }

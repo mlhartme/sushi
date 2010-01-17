@@ -92,10 +92,4 @@ public class SvnRoot implements Root {
     public int hashCode() {
         return repository.getLocation().hashCode();
     }
-    
-    //-- capabilities
-    
-    public boolean canLink() {
-        return false;
-    }
 }

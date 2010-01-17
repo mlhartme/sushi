@@ -80,10 +80,4 @@ public class ZipRoot implements Root {
         src.close();
         return result;
     }
-
-    //-- capabilities
-    
-    public boolean canLink() {
-        return false;
-    }
 }

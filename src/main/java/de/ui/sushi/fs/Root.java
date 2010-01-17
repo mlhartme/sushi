@@ -33,8 +33,4 @@ public interface Root {
      * TODO: expect splitted path? 
      */
     Node node(String path);
-    
-    //-- capabilities
-    
-    boolean canLink();
 }

@@ -977,12 +977,16 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     //-- links
     //--
 
+    private boolean canLink() {
+        return work.getRoot().getFilesystem().getFeatures().links;
+    }
+
     @Test
     public void linkNormal() throws IOException {
         Node orig;
         Node link;
 
-        if (!work.getRoot().canLink()) {
+        if (!canLink()) {
             return;
         }
 
@@ -1016,7 +1020,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void mklinkBroken() throws IOException {
         Node link;
 
-        if (!work.getRoot().canLink()) {
+        if (!canLink()) {
             return;
         }
 
@@ -1037,7 +1041,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void mklinkDoNotOverwrite() throws IOException {
         Node link;
 
-        if (!work.getRoot().canLink()) {
+        if (!canLink()) {
             throw new LinkException(work, null);
         }
 

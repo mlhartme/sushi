@@ -92,10 +92,4 @@ public class TimeMachineRoot implements Root {
         }
         return new TimeMachineNode(this, node, path);
     }
-
-    //-- capabilities
-    
-    public boolean canLink() {
-        return false;
-    }
 }

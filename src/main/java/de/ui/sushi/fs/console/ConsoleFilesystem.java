@@ -21,7 +21,7 @@ import de.ui.sushi.fs.*;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
     public ConsoleFilesystem(IO io, String name) {
-        super(io, '/', new Features(false, false, false), name);
+        super(io, '/', new Features(false, false, false, false), name);
     }
 
     @Override
@@ -47,11 +47,5 @@ public class ConsoleFilesystem extends Filesystem implements Root {
             throw new UnsupportedOperationException();
         }
         return new ConsoleNode(this);
-    }
-
-    //-- capabilities
-
-    public boolean canLink() {
-        return false;
     }
 }

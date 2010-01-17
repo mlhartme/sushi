@@ -195,10 +195,4 @@ public class SshRoot implements Root, UserInfo, Runnable {
     public void run() {
         close();
     }
-
-    //-- capabilities
-    
-    public boolean canLink() {
-        return true;
-    }
 }

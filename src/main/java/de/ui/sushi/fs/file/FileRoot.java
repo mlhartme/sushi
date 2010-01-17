@@ -46,10 +46,4 @@ public class FileRoot implements Root {
     public FileNode node(String path) {
         return new FileNode(this, new File(id + path));
     }
-    
-    //-- capabilities
-    
-    public boolean canLink() {
-        return filesystem.getIO().os != OS.WINDOWS;
-    }
 }

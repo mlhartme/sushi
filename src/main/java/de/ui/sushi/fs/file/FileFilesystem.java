@@ -23,12 +23,13 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.io.OS;
 
 public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
     public FileFilesystem(IO io, String name) {
-        super(io, File.separatorChar, new Features(true, true, false), name);
+        super(io, File.separatorChar, new Features(true, io.os != OS.WINDOWS, true, false), name);
 
         File[] rootFiles;
 

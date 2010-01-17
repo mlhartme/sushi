@@ -275,10 +275,4 @@ public class WebdavRoot implements Root {
             && status != HttpStatus.SC_NOT_MODIFIED
             && status != HttpStatus.SC_RESET_CONTENT; 
     }
-
-    //-- capabilities
-    
-    public boolean canLink() {
-        return false;
-    }
 }

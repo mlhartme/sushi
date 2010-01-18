@@ -31,7 +31,7 @@ import de.ui.sushi.fs.file.FileNode;
  */
 public class TimeMachineFilesystem extends Filesystem {
     public TimeMachineFilesystem(IO io, String name) {
-        super(io, '/', new Features(false, false, false, false, false, false), name);
+        super(io, '/', new Features(false, false, false, false, false, false, false), name);
     }
 
     @Override

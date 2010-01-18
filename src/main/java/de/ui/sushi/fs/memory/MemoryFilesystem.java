@@ -30,7 +30,7 @@ public class MemoryFilesystem extends Filesystem {
     public int maxInMemorySize;
 
     public MemoryFilesystem(IO io, String name) {
-        super(io, '/', new Features(true, false, false, false, false, false), name);
+        super(io, '/', new Features(true, true, false, false, false, false, false), name);
 
         this.roots = new WeakHashMap<Integer, MemoryRoot>();
         this.maxInMemorySize = 32 * 1024;

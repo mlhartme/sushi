@@ -90,22 +90,27 @@ public class SvnNode extends Node {
         SVNDirEntry entry;
         SVNRepository repository;
         SvnNode child;
-        
+        SVNNodeKind kind;
+
         repository = root.getRepository();
         try {
-            if (repository.checkPath(path, -1) != SVNNodeKind.DIR) {
+            kind = repository.checkPath(path, -1);
+            if (kind == SVNNodeKind.DIR) {
+                lst = new ArrayList<SVNDirEntry>();
+                repository.getDir(path, -1, false, lst);
+                result = new ArrayList<SvnNode>(lst.size());
+                for (int i = 0; i < lst.size(); i++) {
+                    entry = lst.get(i);
+                    child = new SvnNode(root, entry.getKind() == SVNNodeKind.DIR, doJoin(path, entry.getRelativePath()));
+                    child.setBase(getBase());
+                    result.add(child);
+                }
+                return result;
+            } else if (kind == SVNNodeKind.FILE) {
                 return null;
+            } else {
+                throw new ListException(this, new IOException("not a directory"));
             }
-            lst = new ArrayList<SVNDirEntry>();
-            repository.getDir(path, -1, false, lst);
-            result = new ArrayList<SvnNode>(lst.size());
-            for (int i = 0; i < lst.size(); i++) {
-                entry = lst.get(i);
-                child = new SvnNode(root, entry.getKind() == SVNNodeKind.DIR, doJoin(path, entry.getRelativePath()));
-                child.setBase(getBase());
-                result.add(child);
-            }
-            return result;
         } catch (SVNException e) {
             throw new ListException(this, e);
         }

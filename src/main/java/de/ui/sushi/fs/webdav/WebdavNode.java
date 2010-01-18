@@ -52,7 +52,6 @@ import de.ui.sushi.fs.webdav.methods.PropPatchMethod;
 import de.ui.sushi.fs.webdav.methods.PutMethod;
 import de.ui.sushi.fs.webdav.methods.WebdavMethod;
 
-
 public class WebdavNode extends Node {
 	private final WebdavRoot root;
 
@@ -294,11 +293,7 @@ public class WebdavNode extends Node {
         List<Node> result;
         String href;
         
-        method = null;
         try {
-            if (!isDirectory()) {
-                return null;
-            }
             method = new PropFindMethod(root, path + "/", Name.DISPLAYNAME, 1);
             result = new ArrayList<Node>();
             for (MultiStatus response : method.invoke()) {
@@ -310,6 +305,8 @@ public class WebdavNode extends Node {
                 }
             }
             return result;
+        } catch (MovedException e) {
+            return null; // this is a file
         } catch (IOException e) {
             throw new ListException(this, e);
         }

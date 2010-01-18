@@ -28,10 +28,7 @@ public class WebdavNodeHttpFullTest extends WebdavNodeFullBase {
 
     @Override
     protected Node createWork() throws IOException {
-    	// see 
-    	//  http://manas.tungare.name/blog/howto-setup-webdav-on-mac-os-x-leopard-for-syncing-omnifocus-to-iphone/
-        // for setup macos instructions (omit auth settings)
-	return IO.node("http://webdav.walter.ue.schlund.de/sushitests").deleteOpt().mkdir();
+        return IO.node("http://localhost/webdav/sushitests").deleteOpt().mkdir();
     }
 }
 

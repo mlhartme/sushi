@@ -234,11 +234,6 @@ public class SvnNode extends Node {
     }
     
     @Override
-    public Node move(Node dest) throws MoveException {
-    	throw new MoveException(this, dest, "SvnNode cannot be moved");
-    }
-
-    @Override
     public Node mkdir() throws MkdirException {
         SVNCommitClient client;
 

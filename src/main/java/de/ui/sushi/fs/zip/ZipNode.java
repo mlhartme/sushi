@@ -178,8 +178,8 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
-        throw new IOException(this + ": cannot write");
+    public OutputStream createOutputStream(boolean append) {
+        throw unsupported("createOutputStream(" + append + ")");
     }
 
     @Override

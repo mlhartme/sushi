@@ -71,7 +71,7 @@ public class WebdavFilesystem extends Filesystem {
     private int defaultSoTimeout;
 
     public WebdavFilesystem(IO io, String name) {
-        super(io, '/', new Features(true, false, false, false), name);
+        super(io, '/', new Features(false, true, false, true, false, false), name);
 
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;

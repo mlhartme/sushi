@@ -29,7 +29,7 @@ public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
     public FileFilesystem(IO io, String name) {
-        super(io, File.separatorChar, new Features(true, io.os != OS.WINDOWS, true, false), name);
+        super(io, File.separatorChar, new Features(true, true, io.os != OS.WINDOWS, io.os != OS.WINDOWS, true, false), name);
 
         File[] rootFiles;
 

@@ -444,13 +444,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void append() throws IOException {
         Node file;
 
-        file = work.join("foo");
-        try {
-            file.appendBytes((byte) 97, (byte) 98);
-        } catch (UnsupportedOperationException e) {
-            // ok, don't test:
+        if (!work.getRoot().getFilesystem().getFeatures().append) {
             return;
         }
+        file = work.join("foo");
+        file.appendBytes((byte) 97, (byte) 98);
         file.appendLines("", "xyz");
         file.appendString("1");
         file.appendChars('A', 'B');
@@ -890,14 +888,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void mode() throws Exception {
         Node file;
 
-        file = work.join("file");
-        file.writeBytes();
-        try {
-            file.setMode(0644);
-        } catch (UnsupportedOperationException e) {
-            // ok - quit
+        if (!work.getRoot().getFilesystem().getFeatures().modes) {
             return;
         }
+        file = work.join("file");
+        file.writeBytes();
+        file.setMode(0644);
         assertEquals(0644, file.getMode());
         file.setMode(0755);
         assertEquals(0755, file.getMode());
@@ -915,12 +911,10 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     private void doUid(Node node) throws IOException {
         int id;
 
-        try {
-            id = node.getUid();
-        } catch (UnsupportedOperationException e) {
-            // ok - quit
+        if (!work.getRoot().getFilesystem().getFeatures().modes) {
             return;
         }
+        id = node.getUid();
         node.setUid(id);
         assertEquals(id, node.getUid());
         try {
@@ -944,12 +938,10 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     private void doGid(Node node) throws IOException {
         int id;
 
-        try {
-            id = node.getGid();
-        } catch (UnsupportedOperationException e) {
-            // ok - quit
+        if (!work.getRoot().getFilesystem().getFeatures().modes) {
             return;
         }
+        id = node.getGid();
         node.setGid(id);
         assertEquals(id, node.getGid());
         if (id == 0) {

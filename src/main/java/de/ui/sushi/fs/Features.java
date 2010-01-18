@@ -8,17 +8,24 @@ package de.ui.sushi.fs;
  * to ensure that values won't change.
  */
 public class Features {
+    public final boolean append;
+
     /** if not, move is emulated by copy and delete */
     public final boolean nativeMove;
     
     /** if not, link methods throw an UnsupportedOperationException */
     public final boolean links;
+
+    public final boolean modes;
+
     public final boolean atomicMkfile;
     public final boolean atomicMkdir;
 
-    public Features(boolean nativeMove, boolean links, boolean atomicMkfile, boolean atomicMkdir) {
+    public Features(boolean append, boolean nativeMove, boolean links, boolean modes, boolean atomicMkfile, boolean atomicMkdir) {
+        this.append = append;
         this.nativeMove = nativeMove;
         this.links = links;
+        this.modes = modes;
         this.atomicMkfile = atomicMkfile;
         this.atomicMkdir = atomicMkdir;
     }

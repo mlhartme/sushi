@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import de.ui.sushi.fs.GetLastModifiedException;
@@ -93,6 +94,7 @@ public class DiffTest {
         Node right;
         String expected;
         String actual;
+        List<String> lines;
 
         io = new IO();
         dir = io.guessProjectHome(getClass()).join("src/test/resources/diff");
@@ -103,18 +105,13 @@ public class DiffTest {
             } catch (ExitCode e) {
                 expected = e.output;
             }
+            lines = Strings.split("\n", expected);
+            lines.remove(0);
+            lines.remove(0);
+            expected = Strings.join("\n", lines);
             actual = Diff.diff(left.readString(), right.readString(), true, 3);
-            actual = "--- " + file(left) + "+++ " + file(right) + actual;
             assertEquals(left.getPath(), expected, actual);
-            // System.out.println(expected);
         }
-    }
-
-    private static final SimpleDateFormat FMT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.000000000 Z\n");
-    
-    private static String file(Node file) throws GetLastModifiedException {
-        // TODO: ms, timezone
-        return file.getAbsolute() + "\t" + FMT.format(new Date(file.getLastModified()));
     }
 
     //--

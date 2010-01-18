@@ -91,7 +91,9 @@ public class WebdavNode extends Node {
     private static final SimpleDateFormat FMT;        
     
     static {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar;
+
+        calendar = Calendar.getInstance();
         calendar.set(2000, Calendar.JANUARY, 1, 0, 0);
         FMT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         FMT.setTimeZone(TimeZone.getTimeZone("GMT"));

@@ -17,12 +17,7 @@
 
 package de.ui.sushi.fs.ssh;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -353,26 +348,30 @@ public class SshNode extends Node {
             throw new IOException(e);
         }
     }
-    
+
+    @Override
+    public byte[] readBytes() throws IOException {
+        ByteArrayOutputStream out;
+
+        out = new ByteArrayOutputStream();
+        get(out);
+        return out.toByteArray();
+    }
     
     @Override
     public InputStream createInputStream() throws IOException {
         final FileNode tmp;
-        
+        OutputStream out;
+
         tmp = getIO().getTemp().createTempFile();
-        try {
-            get(tmp);
-        } catch (SftpException e) {
-            if (e.id == 2 || e.id == 4) {
-                throw new FileNotFoundException(slashPath);
-            }
-            throw new IOException(e);
-        }
+        out = tmp.createOutputStream();
+        get(out);
+        out.close();
         return new FilterInputStream(tmp.createInputStream()) {
             @Override
             public void close() throws IOException {
                 super.close();
-                // because it might be called twice
+                // opt because it may be closed twice:
                 tmp.deleteOpt();
             }
         };
@@ -406,12 +405,20 @@ public class SshNode extends Node {
         };
     }
 
-    public void get(Node dest) throws IOException, SftpException {
-        OutputStream out;
-                
-        out = dest.createOutputStream();
-        channel.get(slashPath, out);
-        out.close();
+    /**
+     * This is the core funktion to get a file.
+     *
+     * @throws FileNotFoundException if this is not a file
+     */
+    public void get(OutputStream out) throws IOException {
+        try {
+            channel.get(slashPath, out);
+        } catch (SftpException e) {
+            if (e.id == 2 || e.id == 4) {
+                throw new FileNotFoundException(slashPath);
+            }
+            throw new IOException(e);
+        }
     }
 
     public void put(final byte[] data) throws JSchException, IOException, SftpException {

@@ -19,10 +19,7 @@ package de.ui.sushi.fs.memory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import de.ui.sushi.fs.LengthException;
 import de.ui.sushi.fs.Root;
@@ -110,9 +107,15 @@ public class MemoryRoot implements Root {
 
     byte[] readBytes(String path) throws IOException {
         Object obj;
+        byte[] bytes;
 
         obj = store.get(path);
-        if (obj instanceof )
+        if (obj instanceof FileNode) {
+            return ((FileNode) obj).readBytes();
+        } else {
+            bytes = (byte[]) obj;
+            return Arrays.copyOf(bytes, bytes.length);
+        }
     }
     
     void store(String path, byte[] data, int used) throws IOException {

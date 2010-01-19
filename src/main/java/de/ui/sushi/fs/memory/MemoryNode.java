@@ -195,6 +195,13 @@ public class MemoryNode extends Node {
         }
     }
 
+    public byte[] readBytes() throws IOException {
+        if (type != Type.FILE) {
+            throw new FileNotFoundException(path);
+        }
+        return root.readBytes(path);
+    }
+    
     @Override
     public InputStream createInputStream() throws IOException {
         if (type != Type.FILE) {

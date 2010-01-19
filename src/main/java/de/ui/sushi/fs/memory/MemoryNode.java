@@ -205,11 +205,19 @@ public class MemoryNode extends Node {
 
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
-        if (type == Type.DIRECTORY) {
-            throw new IOException("cannot write file over directory: " + path);
+        byte[] add;
+
+        switch (type) {
+            case DIRECTORY:
+                throw new IOException("cannot write file over directory: " + path);
+            case FILE:
+                add = append ? readBytes() : null;
+                break;
+            default:
+                add = null;
         }
         getParent().checkDirectory();
-        return new CheckedByteArrayOutputStream(append ? readBytes() : null) {
+        return new CheckedByteArrayOutputStream(add) {
             @Override
             public void close() throws IOException {
                 type = Type.FILE;

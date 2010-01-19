@@ -444,9 +444,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void append() throws IOException {
         Node file;
 
-        if (!work.getRoot().getFilesystem().getFeatures().append) {
-            return;
-        }
         file = work.join("foo");
         file.appendBytes((byte) 97, (byte) 98);
         file.appendLines("", "xyz");

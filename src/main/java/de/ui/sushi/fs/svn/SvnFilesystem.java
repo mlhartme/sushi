@@ -40,7 +40,7 @@ public class SvnFilesystem extends Filesystem {
     private String password;
 
     public SvnFilesystem(IO io, String name) {
-        super(io, '/', new Features(true, false, false, false, false, false, false), name);
+        super(io, '/', new Features(true, false, false, false, false, false), name);
 
         this.username = null;
         this.password = null;

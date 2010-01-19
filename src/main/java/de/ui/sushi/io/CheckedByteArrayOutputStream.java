@@ -21,8 +21,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class CheckedByteArrayOutputStream extends ByteArrayOutputStream {
-    private boolean closed = false;
-    
+    private boolean closed;
+
+    public CheckedByteArrayOutputStream() {
+        closed = false;
+    }
+
+    /** @add may be null */
+    public CheckedByteArrayOutputStream(byte[] add) throws IOException {
+        this();
+        if (add != null) {
+            write(add);
+        }
+    }
+
     @Override
     public void write(int c) {
         ensureOpen();

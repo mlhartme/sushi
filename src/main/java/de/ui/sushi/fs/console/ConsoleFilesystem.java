@@ -21,7 +21,7 @@ import de.ui.sushi.fs.*;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
     public ConsoleFilesystem(IO io, String name) {
-        super(io, '/', new Features(true, true /* but has no effect */, false, false, false, false, false), name);
+        super(io, '/', new Features(true, false, false, false, false, false), name);
     }
 
     @Override

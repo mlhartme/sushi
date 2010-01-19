@@ -267,15 +267,19 @@ public class WebdavNode extends Node {
 
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
+        byte[] add;
         final PutMethod method;
         final WebdavConnection connection;
-        
+        OutputStream result;
+
         if (append) {
-            throw unsupported("createOutputStream(true)");
+            add = readBytes();
+        } else {
+            add = null;
         }
         method = new PutMethod(root, path);
         connection = method.request();
-        return new ChunkedOutputStream(connection.getOutputBuffer()) {
+        result = new ChunkedOutputStream(connection.getOutputBuffer()) {
             private boolean closed = false;
             @Override
             public void close() throws IOException {
@@ -287,6 +291,10 @@ public class WebdavNode extends Node {
                 method.response(connection);
             }
         };
+        if (append) {
+            result.write(add);
+        }
+        return result;
     }
 
     @Override

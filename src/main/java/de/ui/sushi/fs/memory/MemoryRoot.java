@@ -107,6 +107,13 @@ public class MemoryRoot implements Root {
             return new CheckedByteArrayInputStream((byte[]) obj);
         }
     }
+
+    byte[] readBytes(String path) throws IOException {
+        Object obj;
+
+        obj = store.get(path);
+        if (obj instanceof )
+    }
     
     void store(String path, byte[] data, int used) throws IOException {
         Object old;

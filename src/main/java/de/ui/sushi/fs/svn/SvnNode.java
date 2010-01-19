@@ -197,10 +197,18 @@ public class SvnNode extends Node {
     
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
-    	if (append) {
-    		throw unsupported("createOutputStream(true)");
-    	}
-        return new CheckedByteArrayOutputStream() {
+        byte[] add;
+
+        if (append) {
+            try {
+                add = readBytes();
+            } catch (FileNotFoundException e) {
+                add = null;
+            }
+        } else {
+            add = null;
+        }
+        return new CheckedByteArrayOutputStream(add) {
             @Override
             public void close() throws IOException {
                 super.close();

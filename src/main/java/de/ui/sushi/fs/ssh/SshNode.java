@@ -380,7 +380,18 @@ public class SshNode extends Node {
     
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
-        return new CheckedByteArrayOutputStream(append ? readBytes() : null) {
+        byte[] add;
+
+        if (append) {
+            try {
+                add = readBytes();
+            } catch (FileNotFoundException e) {
+                add = null;
+            }
+        } else {
+            add = null;
+        }
+        return new CheckedByteArrayOutputStream(add) {
             @Override
             public void close() throws IOException {
                 super.close();

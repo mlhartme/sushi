@@ -273,7 +273,11 @@ public class WebdavNode extends Node {
         OutputStream result;
 
         if (append) {
-            add = readBytes();
+            try {
+                add = readBytes();
+            } catch (FileNotFoundException e) {
+                add = null;
+            }
         } else {
             add = null;
         }
@@ -291,7 +295,7 @@ public class WebdavNode extends Node {
                 method.response(connection);
             }
         };
-        if (append) {
+        if (add != null) {
             result.write(add);
         }
         return result;

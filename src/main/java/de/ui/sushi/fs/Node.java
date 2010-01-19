@@ -323,6 +323,16 @@ public abstract class Node {
         return new ObjectInputStream(createInputStream());
     }
 
+    /**
+     * Reads all bytes of the node.
+     * 
+     * Default implementation that works for all nodes: reads the file in chunks and builds the result in memory. 
+     * Derived classes should override it if they can provide a more efficient implementation, e.g. by determining
+     * the length first if getting the length is cheap.
+     *
+     * @return
+     * @throws IOException
+     */
     public byte[] readBytes() throws IOException {
         InputStream src;
         byte[] result;
@@ -333,7 +343,9 @@ public abstract class Node {
         return result;
     }
 
-    // TODO: expensive - both string and byte in memory
+    /**
+     * Reads all chars of the node.  Do not use the method on large files because it's memory consuming.
+     */
     public String readString() throws IOException {
         return getIO().getSettings().string(readBytes());
     }

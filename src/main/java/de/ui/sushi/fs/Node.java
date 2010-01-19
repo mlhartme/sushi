@@ -344,7 +344,8 @@ public abstract class Node {
     }
 
     /**
-     * Reads all chars of the node.  Do not use the method on large files because it's memory consuming.
+     * Reads all chars of the node.  Do not use this method on large files because it's memory consuming: the string
+     * is created from the byte array returned by readBytes.
      */
     public String readString() throws IOException {
         return getIO().getSettings().string(readBytes());

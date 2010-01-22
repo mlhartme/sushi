@@ -24,7 +24,7 @@ public class StringsTest {
     @Test
     public void remove() {
         final String STARTX = "startx";
-        
+
         assertEquals("start", Strings.removeEnd(STARTX, "x"));
         assertEquals("start", Strings.removeEndOpt(STARTX, "x"));
         assertEquals(STARTX, Strings.removeEndOpt(STARTX, "y"));
@@ -39,15 +39,15 @@ public class StringsTest {
         String f2 = ".xml";
         String f3 = "abc";
         String f4 = "abc.def.xml";
-        
+
         assertTrue("abc".equals(Strings.stripExtension(f1)));
         assertTrue(".xml".equals(Strings.stripExtension(f2)));
         assertTrue("abc".equals(Strings.stripExtension(f3)));
         assertTrue("abc.def".equals(Strings.stripExtension(f4)));
     }
-    
+
     //--
-    
+
     @Test
     public void capitalize() {
         assertEquals("", Strings.capitalize(""));
@@ -67,7 +67,7 @@ public class StringsTest {
     }
 
     //---
-    
+
     @Test
     public void blockSimple() {
         assertEquals("", Strings.block("", "", 0, ""));
@@ -98,13 +98,13 @@ public class StringsTest {
         assertEquals("foo", Strings.block("", "foo", 0, ""));
         assertEquals("foo-bar-", Strings.block("", "foo bar", 0, "-"));
     }
-    
+
     //--
-    
+
     @Test
     public void next1() {
         int[] idx = { 0 };
-        
+
         assertEquals("", Strings.next("abc", idx, "a", "b"));
         assertEquals("", Strings.next("abc", idx, "a", "b"));
         assertEquals("c", Strings.next("abc", idx, "a", "b"));
@@ -114,10 +114,18 @@ public class StringsTest {
     @Test
     public void next2() {
         int[] idx = { 0 };
-        
+
         assertEquals("", Strings.next("abc", idx, "ab", "c"));
         assertEquals("", Strings.next("abc", idx, "ab", "c"));
         assertEquals(null, Strings.next("abc", idx, "ab", "c"));
+    }
+
+    @Test
+    public void excape() {
+        assertEquals("", Strings.escape(""));
+        assertEquals("Hello, world", Strings.escape("Hello, world"));
+        assertEquals("a\\nb", Strings.escape("a\nb"));
+        assertEquals("\\\\\\n\\r\\t", Strings.escape("\\\n\r\t"));
     }
 }
 

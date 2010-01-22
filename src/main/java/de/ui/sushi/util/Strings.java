@@ -25,28 +25,28 @@ import java.util.StringTokenizer;
 
 public class Strings {
     //
-    //-- one string 
+    //-- one string
     //
 
     public static String toHex(byte ... bytes) {
         StringBuilder result;
-        
+
         result = new StringBuilder();
         toHex(result, bytes);
         return result.toString();
     }
-    
+
     public static void toHex(StringBuilder result, byte ... bytes) {
         for (byte b : bytes) {
             result.append(Integer.toString(b >> 4 & 0xf, 16));
             result.append(Integer.toString(b & 0xf, 16));
         }
     }
-    
+
     public static String join(String separator, String ... strings) {
         return join(separator, Arrays.asList(strings));
     }
-    
+
     /**
      * Concatenate the specified strings, separated by the specified space.
      *
@@ -59,7 +59,7 @@ public class Strings {
         int i;
         int max;
         StringBuilder buffer;
-        
+
         buffer = new StringBuilder();
         max = strings.size();
         for (i = 0; i < max; i++) {
@@ -73,12 +73,12 @@ public class Strings {
 
     // TODO
     private static final char SEPARATOR = '\n';
-    
+
     public static List<String> lines(String all) {
         int ofs;
         int prev;
         List<String> result;
-        
+
         ofs = all.indexOf(SEPARATOR);
         prev = 0;
         result = new ArrayList<String>();
@@ -93,10 +93,10 @@ public class Strings {
         }
         return result;
     }
-    
+
     public static String removeStart(String str, String start) {
         String result;
-        
+
         result = removeStartOpt(str, start);
         if (result != str) {
             return result;
@@ -115,7 +115,7 @@ public class Strings {
 
     public static String removeEnd(String str, String end) {
         String result;
-        
+
         result = removeEndOpt(str, end);
         if (result != str) {
             return result;
@@ -131,30 +131,30 @@ public class Strings {
             return str;
         }
     }
-    
+
     public static String stripExtension(String f) {
         int dotP;
-        
+
         dotP = f.lastIndexOf('.');
         if (dotP <= 0) {
             return f;
         }
         return f.substring(0, dotP);
     }
-    
+
     public static String getFileExtension(String f) {
         int idx;
-        
+
         idx = f.lastIndexOf('.');
         if (idx <= 0 || idx == f.length() - 1) {
             return "";
         }
         return f.substring(idx + 1);
     }
-    
+
     public static String indent(String str, String space) {
         StringBuilder builder;
-        
+
         builder = new StringBuilder();
         for (String line : lines(str)) {
             builder.append(space);
@@ -187,7 +187,7 @@ public class Strings {
 
     public static String times(char ch, int count) {
         StringBuilder buffer;
-        
+
         buffer = new StringBuilder();
         while (count-- > 0) {
             buffer.append(ch);
@@ -197,22 +197,22 @@ public class Strings {
 
     public static String[] trim(String ... args) {
         int i;
-        
+
         for (i = 0; i < args.length; i++) {
             args[i] = args[i].trim();
         }
         return args;
     }
-    
+
     public static List<String> trim(List<String> args) {
         int i;
-        
+
         for (i = 0; i < args.size(); i++) {
             args.set(i, args.get(i).trim());
         }
         return args;
     }
-    
+
     public static List<String> split(String separator, String str) {
         List<String> lst;
 
@@ -220,7 +220,7 @@ public class Strings {
         split(separator, str, lst);
         return lst;
     }
-    
+
     public static void split(String separator, String str, List<String> result) {
         int skip;
         int idx;
@@ -238,13 +238,13 @@ public class Strings {
             result.add(str.substring(prev));
         }
     }
-    
+
     public static String replace(String str, String in, String out) {
         StringBuilder buffer;
         int inLen;
         int idx;
         int prev;
-        
+
         inLen = in.length();
         if (inLen == 0) {
             throw new IllegalArgumentException();
@@ -261,11 +261,11 @@ public class Strings {
         buffer.append(str.substring(prev));
         return buffer.toString();
     }
-    
+
     public static String getCommon(String left, String right) {
         int i;
         int max;
-        
+
         max = Math.min(left.length(), right.length());
         for (i = 0; i < max; i++) {
             if (left.charAt(i) != right.charAt(i)) {
@@ -274,12 +274,12 @@ public class Strings {
         }
         return left.substring(0, i);
     }
-    
+
     public static int count(String str, String part) {
         int count;
         int idx;
         int len;
-        
+
         len = part.length();
         idx = 0;
         for (count = 0; true; count++) {
@@ -290,7 +290,7 @@ public class Strings {
             idx += len;
         }
     }
-    
+
     public static final String block(String prefix, String body, int width, String suffix) {
         return block(prefix, prefix, body, width, suffix, suffix);
     }
@@ -302,7 +302,7 @@ public class Strings {
         int word;
         int line;
         boolean empty;  // false if at least one word was added to the line
-        
+
         buffer = new StringBuilder();
         word = skip(body, 0, true);
         currentPrefix = first;
@@ -333,11 +333,11 @@ public class Strings {
             currentPrefix = prefix;
         }
     }
-    
+
     public static final int skip(String str, int start, boolean ws) {
         int i;
         int max;
-        
+
         max = str.length();
         for (i = start; i < max; i++) {
             if (Character.isWhitespace(str.charAt(i)) != ws) {
@@ -346,14 +346,14 @@ public class Strings {
         }
         return i;
     }
-    
+
     public static String capitalize(String str) {
         if (str.length() == 0) {
             return str;
         }
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
-    
+
     public static String decapitalize(String str) {
         if (str.length() == 0) {
             return str;
@@ -367,7 +367,7 @@ public class Strings {
         StringTokenizer tokenizer;
         int max;
         String[] result;
-        
+
         tokenizer = new StringTokenizer(str, "" + delim);
         max = tokenizer.countTokens();
         result = new String[max];
@@ -376,14 +376,14 @@ public class Strings {
         }
         return result;
     }
-    
+
     // TODO: dump?
     public static String next(String all, int[] idxResult, String ... delimiters) {
         int start;
         int tmp;
         int end;
         int next;
-        
+
         start = idxResult[0];
         end = all.length();
         next = end; // dummy
@@ -408,11 +408,11 @@ public class Strings {
         }
     }
 
-    
+
     //-- string collections or arrays
 
     public static final String[] NONE = new String[] {};
-    
+
     /**
      * Turns a list of Strings into an array.
      *
@@ -422,23 +422,23 @@ public class Strings {
      */
     public static String[] toArray(Collection<String> coll) {
         String[] ar;
-        
+
         ar = new String[coll.size()];
         coll.toArray(ar);
         return ar;
     }
-    
+
     public static ArrayList<String> toList(String ... elements) {
         ArrayList<String> result;
-        
+
         result = new ArrayList<String>();
         for (String e : elements) {
             result.add(e);
         }
         return result;
     }
-    
-    
+
+
     public static String[] cons(String car, String[] cdr) {
         String[] result;
 
@@ -450,7 +450,7 @@ public class Strings {
 
     public static String[] cdr(String[] args) {
         String[] result;
-        
+
         if (args.length == 0) {
             throw new RuntimeException();
         }
@@ -458,12 +458,12 @@ public class Strings {
         System.arraycopy(args, 1, result, 0, result.length);
         return result;
     }
-    
+
     public static String[] append(String[] ...args) {
         String[] result;
         int length;
         int ofs;
-        
+
         length = 0;
         for (String[] current : args) {
             length += current.length;
@@ -476,5 +476,48 @@ public class Strings {
         }
         return result;
     }
+
+    /** escape Strings as in Java String literals */
+    public static String escape(String str) {
+        int i, max;
+        StringBuilder result;
+        char c;
+
+        max = str.length();
+        for (i = 0; i < max; i++) {
+            if (str.charAt(i) < 32) {
+                break;
+            }
+        }
+        if (i == max) {
+            return str;
+        }
+        result = new StringBuilder(max + 10);
+        for (i = 0; i < max; i++) {
+            c = str.charAt(i);
+            switch (c) {
+                case '\n':
+                    result.append("\\n");
+                    break;
+                case '\r':
+                    result.append("\\r");
+                    break;
+                case '\t':
+                    result.append("\\t");
+                    break;
+                case '\\':
+                    result.append("\\\\");
+                    break;
+                default:
+                    if (c < 32) {
+                        result.append("\\u").append(Strings.lfill('0', Integer.toHexString(c)));
+                    } else {
+                        result.append(c);
+                    }
+            }
+        }
+        return result.toString();
+    }
+
 }
 

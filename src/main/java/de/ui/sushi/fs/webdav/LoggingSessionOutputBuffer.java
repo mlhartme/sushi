@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import de.ui.sushi.util.Strings;
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
@@ -32,7 +33,7 @@ public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
     	super(socket, buffersize, params);
         this.logger = logger;
     }
-    
+
     @Override
     public void write(byte[] bytes, int ofs, int len) throws IOException {
         super.write(bytes,  ofs,  len);
@@ -55,16 +56,18 @@ public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
     public void writeLine(CharArrayBuffer buffer) throws IOException {
         super.writeLine(buffer);
         log(buffer.toString());
+        log("\r\n");
     }
 
     @Override
     public void writeLine(String str) throws IOException {
         super.writeLine(str);
-        log(str + "[EOL]");
+        log(str);
+        log("\r\n");
     }
 
     //--
-    
+
     private void log(byte ... bytes) {
     	log(bytes, 0, bytes.length);
     }
@@ -72,6 +75,6 @@ public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
     	log(new String(bytes, ofs, length));
     }
     private void log(String str) {
-    	logger.fine(">>> " + str);
+    	logger.fine(">>> " + Strings.escape(str));
     }
 }

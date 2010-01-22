@@ -21,13 +21,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import de.ui.sushi.util.Strings;
 import org.apache.http.impl.io.SocketInputBuffer;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
 
 public class LoggingSessionInputBuffer extends SocketInputBuffer {
     private final Logger logger;
-    
+
     public LoggingSessionInputBuffer(Socket socket, int buffersize, HttpParams params, Logger logger) throws IOException {
     	super(socket, buffersize, params);
         this.logger = logger;
@@ -36,7 +37,7 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     @Override
     public int read(byte[] bytes, int ofs, int len) throws IOException {
         int result;
-        
+
         result = super.read(bytes,  ofs,  len);
       	log(bytes, ofs, result);
         return result;
@@ -45,7 +46,7 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     @Override
     public int read(byte[] bytes) throws IOException {
         int result;
-        
+
         result = super.read(bytes);
         log(bytes, 0, result);
         return result;
@@ -54,9 +55,9 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     @Override
     public int read() throws IOException {
         int b;
-        
+
         b = super.read();
-        if (b != -1) { 
+        if (b != -1) {
         	log((byte) b);
         }
         return b;
@@ -65,10 +66,11 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     @Override
     public String readLine() throws IOException {
         String result;
-        
+
         result = super.readLine();
         if (result != null) {
             log(result);
+            log("\r\n");
         }
         return result;
     }
@@ -77,11 +79,12 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     public int readLine(CharArrayBuffer buffer) throws IOException {
         int result;
         int pos;
-        
+
         result = super.readLine(buffer);
         if (result >= 0) {
             pos = buffer.length() - result;
             log(new String(buffer.buffer(), pos, result));
+            log("\r\n");
         }
         return result;
     }
@@ -95,6 +98,6 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
     	log(new String(bytes, ofs, length));
     }
     private void log(String str) {
-    	logger.fine("<<< " + str);
+    	logger.fine("<<< " + Strings.escape(str));
     }
 }

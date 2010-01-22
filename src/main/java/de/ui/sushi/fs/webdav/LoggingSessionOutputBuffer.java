@@ -27,54 +27,42 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
 
 public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
-    private final Logger logger;
+    private final LineLogger logger;
 
     public LoggingSessionOutputBuffer(Socket socket, int buffersize, HttpParams params, Logger logger) throws IOException {
     	super(socket, buffersize, params);
-        this.logger = logger;
+        this.logger = new LineLogger(logger, ">>> ");
     }
 
     @Override
     public void write(byte[] bytes, int ofs, int len) throws IOException {
         super.write(bytes,  ofs,  len);
-        log(bytes, ofs, len);
+        logger.log(bytes, ofs, len);
     }
 
     @Override
     public void write(byte[] bytes) throws IOException {
         super.write(bytes);
-        log(bytes);
+        logger.log(bytes);
     }
 
     @Override
     public void write(int bytes) throws IOException {
         super.write(bytes);
-        log((byte) bytes);
+        logger.log((byte) bytes);
     }
 
     @Override
     public void writeLine(CharArrayBuffer buffer) throws IOException {
         super.writeLine(buffer);
-        log(buffer.toString());
-        log("\r\n");
+        logger.log(buffer.toString());
+        logger.log("\r\n");
     }
 
     @Override
     public void writeLine(String str) throws IOException {
         super.writeLine(str);
-        log(str);
-        log("\r\n");
-    }
-
-    //--
-
-    private void log(byte ... bytes) {
-    	log(bytes, 0, bytes.length);
-    }
-    private void log(byte[] bytes, int ofs, int length) {
-    	log(new String(bytes, ofs, length));
-    }
-    private void log(String str) {
-    	logger.fine(">>> " + Strings.escape(str));
+        logger.log(str);
+        logger.log("\r\n");
     }
 }

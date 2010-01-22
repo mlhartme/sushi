@@ -27,11 +27,11 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
 
 public class LoggingSessionInputBuffer extends SocketInputBuffer {
-    private final Logger logger;
+    private final LineLogger logger;
 
     public LoggingSessionInputBuffer(Socket socket, int buffersize, HttpParams params, Logger logger) throws IOException {
     	super(socket, buffersize, params);
-        this.logger = logger;
+        this.logger = new LineLogger(logger, "<<< ");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
         int result;
 
         result = super.read(bytes,  ofs,  len);
-      	log(bytes, ofs, result);
+      	logger.log(bytes, ofs, result);
         return result;
     }
 
@@ -48,7 +48,7 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
         int result;
 
         result = super.read(bytes);
-        log(bytes, 0, result);
+        logger.log(bytes, 0, result);
         return result;
     }
 
@@ -58,7 +58,7 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
 
         b = super.read();
         if (b != -1) {
-        	log((byte) b);
+        	logger.log((byte) b);
         }
         return b;
     }
@@ -69,8 +69,8 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
 
         result = super.readLine();
         if (result != null) {
-            log(result);
-            log("\r\n");
+            logger.log(result);
+            logger.log("\r\n");
         }
         return result;
     }
@@ -83,21 +83,9 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
         result = super.readLine(buffer);
         if (result >= 0) {
             pos = buffer.length() - result;
-            log(new String(buffer.buffer(), pos, result));
-            log("\r\n");
+            logger.log(new String(buffer.buffer(), pos, result));
+            logger.log("\r\n");
         }
         return result;
-    }
-
-    //--
-
-    private void log(byte ... bytes) {
-    	log(bytes, 0, bytes.length);
-    }
-    private void log(byte[] bytes, int ofs, int length) {
-    	log(new String(bytes, ofs, length));
-    }
-    private void log(String str) {
-    	logger.fine("<<< " + Strings.escape(str));
     }
 }

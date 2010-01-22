@@ -19,16 +19,20 @@ package de.ui.sushi.fs.webdav;
 
 import java.io.IOException;
 
+import de.ui.sushi.TestProperties;
 import de.ui.sushi.fs.Node;
 
 public class WebdavNodeHttpFullTest extends WebdavNodeFullBase {
+    private static final String uri;
+
 	static {
 		WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/http.log");
+        uri = TestProperties.get("http.uri");
 	}
 
     @Override
     protected Node createWork() throws IOException {
-        return IO.node("http://localhost/webdav/sushitests").deleteOpt().mkdir();
+        return IO.node(uri).deleteOpt().mkdir();
     }
 }
 

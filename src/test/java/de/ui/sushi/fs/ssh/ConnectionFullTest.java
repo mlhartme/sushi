@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import de.ui.sushi.TestProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ import com.jcraft.jsch.JSchException;
 
 public class ConnectionFullTest {
     private static final IO IO_OBJ = new IO();
-    
+
     public static void main(String[] args) throws Exception {
         Node node = IO_OBJ.node("ssh://pfxui@corelog.dlan.cinetic.de/export/corelog/lv1/pfxui");
         System.out.println("ls: " + node.list());
@@ -45,45 +46,37 @@ public class ConnectionFullTest {
     public static SshRoot open() throws JSchException, IOException {
         String host;
         String user;
-        
-        host = prop("sushi.ssh.test.host");
+
+        host = TestProperties.get("ssh.host");
         if (host == null) {
             try {
                 InetAddress addr = InetAddress.getLocalHost();
                 host = addr.getHostName();
             } catch (UnknownHostException e) {
                 host = "localhost";
-            }        
+            }
         }
-        user = prop("sushi.ssh.test.user");
+        user = TestProperties.get("ssh.user");
+        if (user.isEmpty()) {
+            user = System.getProperty("user.name");
+        }
         return IO_OBJ.getFilesystem(SshFilesystem.class).root(host, user);
     }
-    
-    private static String prop(String key) {
-        String value;
-        
-        value = System.getProperty(key);
-        if (value != null && value.startsWith("$")) {
-            return null;
-        } else {
-            return value;
-        }
-    }
-    
+
     private SshRoot root;
 
     @Before
     public void setUp() throws Exception {
         root = open();
     }
-    
+
     @After
     public void tearDown() throws Exception {
         if (root != null) {
             root.close();
         }
     }
-    
+
     @Test
     public void normal() throws Exception {
         assertEquals("\r\n", root.exec("echo"));
@@ -102,8 +95,8 @@ public class ConnectionFullTest {
     @Test
     public void script() throws Exception {
         assertEquals("6", root.exec(
-                "RESULT=0;\n" +  
-                "for N in 1 2 3; do\n" + 
+                "RESULT=0;\n" +
+                "for N in 1 2 3; do\n" +
                 "  let RESULT=$RESULT+$N;\n" +
                 "done;\n" +
                 "echo $RESULT;").trim());
@@ -119,7 +112,7 @@ public class ConnectionFullTest {
     @Test
     public void directoryLost() throws Exception {
         String start;
-        
+
         start = root.exec("pwd");
         assertEquals("/usr\r\n", root.exec("cd", "/usr", "&&", "pwd"));
         assertEquals(start, root.exec("pwd"));
@@ -133,11 +126,11 @@ public class ConnectionFullTest {
         assertEquals("a\r\nb\r\n", root.exec("echo", "a", "&&", "echo", "b"));
         assertEquals("a\r\n", root.exec("echo", "a", "||", "echo", "b"));
         assertEquals("file\r\n", root.exec(
-                "if", "test", "-a", "/etc/profile;", 
+                "if", "test", "-a", "/etc/profile;",
                 "then", "echo", "file;",
                 "else", "echo", "nofile;", "fi"));
         assertEquals("nofile\r\n", root.exec(
-                "if", "test", "-a", "nosuchfile;", 
+                "if", "test", "-a", "nosuchfile;",
                 "then", "echo", "file;",
                 "else", "echo", "nofile;", "fi"));
     }
@@ -145,7 +138,7 @@ public class ConnectionFullTest {
     @Test
     public void timeout() throws Exception {
         Process process;
-        
+
         process = root.start(true, "sleep", "5");
         try {
             process.waitFor(1000);
@@ -180,7 +173,7 @@ public class ConnectionFullTest {
         tearDown();
         Thread.sleep(3000);
         setUp();
-        try {            
+        try {
             root.exec("ls", tmp);
             fail();
         } catch (ExitCode e) {
@@ -202,7 +195,7 @@ public class ConnectionFullTest {
     @Test
     public void duration() throws Exception {
         Process process;
-        
+
         process = root.start(true, "sleep", "2");
         process.waitFor();
         assertTrue(process.duration() >= 2000);

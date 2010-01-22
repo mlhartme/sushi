@@ -19,6 +19,7 @@ package de.ui.sushi.fs.webdav;
 
 import java.io.IOException;
 
+import de.ui.sushi.TestProperties;
 import de.ui.sushi.fs.Node;
 
 public class WebdavNodeHttpsFullTest extends WebdavNodeFullBase {
@@ -26,8 +27,9 @@ public class WebdavNodeHttpsFullTest extends WebdavNodeFullBase {
 
 	static {
         WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/https.log");
-        uri = System.getProperty("sushi.https.test.uri");
+        uri = TestProperties.get("https.uri");
 	}
+
     @Override
     protected Node createWork() throws IOException {
    	    return IO.node(uri).deleteOpt().mkdir();

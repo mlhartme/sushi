@@ -18,17 +18,32 @@
 package de.ui.sushi.fs.webdav;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import de.ui.sushi.TestProperties;
 import de.ui.sushi.fs.Node;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+@RunWith(Parameterized.class)
 public class WebdavNodeHttpFullTest extends WebdavNodeFullBase {
-    private static final String uri;
+    static {
+        WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/http.log");
+    }
 
-	static {
-		WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/http.log");
-        uri = TestProperties.get("http.uri");
-	}
+    @Parameterized.Parameters
+    public static List<Object[]> data() {
+            //        uri = TestProperties.get("http.uri");
+            return Arrays.asList(new Object[][] {
+                    { "http://localhost/webdav/sushitest" }, { "https://localhost/webdav/sushitests"} });
+    }
+
+    private final String uri;
+
+    public WebdavNodeHttpFullTest(String uri) {
+        this.uri = uri;
+    }
 
     @Override
     protected Node createWork() throws IOException {

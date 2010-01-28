@@ -5,14 +5,14 @@ import de.ui.sushi.fs.Node;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class TestProperties {
     private static Properties singleton;
 
-    public static String get(String key) {
-        String result;
-
+    public static String getOpt(String key) {
         if (singleton == null) {
             try {
                 singleton = load();
@@ -20,12 +20,43 @@ public class TestProperties {
                 throw new IllegalStateException(e);
             }
         }
-        result = singleton.getProperty(key);
+        return singleton.getProperty(key);
+    }
+
+    public static String get(String key) {
+        String result;
+
+        result = getOpt(key);
         if (result == null) {
             throw new IllegalArgumentException(key);
         }
         return result;
     }
+
+    public static List<String> getList(String key) {
+        List<String> result;
+        String value;
+
+        result = new ArrayList<String>();
+        for (int i = 1; true; i++) {
+            value = getOpt(key + "." + i);
+            if (value == null) {
+                return result;
+            }
+            result.add(value);
+        }
+    }
+
+    public static List<Object[]> getParameterList(String key) {
+        List<Object[]> data;
+
+        data = new ArrayList<Object[]>();
+        for (String uri : getList(key)) {
+            data.add(new Object[] { uri });
+        }
+        return data;
+    }
+
 
     public static Properties load() throws IOException {
         Properties result;
@@ -40,7 +71,7 @@ public class TestProperties {
         src = home.join("test.properties").createReader();
         result.load(src);
         src.close();
-        p = home.join("test.properties.private");
+        p = home.join("test.private.properties");
         if (p.exists()) {
             src = p.createReader();
             result.load(src);

@@ -21,14 +21,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
+import de.ui.sushi.TestProperties;
 import org.junit.Test;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeReadOnlyTest;
 import de.ui.sushi.fs.webdav.WebdavNode;
+import org.junit.runners.Parameterized;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
-public class WebdavHttpOnlyFullTest extends NodeReadOnlyTest {
+public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     @Test
     public void normal() throws IOException {
         WebdavNode node;

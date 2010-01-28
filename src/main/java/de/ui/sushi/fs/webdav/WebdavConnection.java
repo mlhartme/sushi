@@ -57,16 +57,12 @@ public class WebdavConnection implements HttpClientConnection {
             socket.setSoLinger(linger > 0, linger);
         }
         buffersize = HttpConnectionParams.getSocketBufferSize(params);
-
 		if (WebdavFilesystem.WIRE.isLoggable(Level.FINE)) {
 			input = new LoggingSessionInputBuffer(socket, buffersize, params, WebdavFilesystem.WIRE);
+            output = new LoggingSessionOutputBuffer(socket, buffersize, params, WebdavFilesystem.WIRE);
 		} else {
 	        input = new SocketInputBuffer(socket, buffersize, params);
-		}
-		if (WebdavFilesystem.WIRE.isLoggable(Level.FINE)) {
-			output = new LoggingSessionOutputBuffer(socket, buffersize, params, WebdavFilesystem.WIRE);
-		} else {
-	        output = new SocketOutputBuffer(socket, buffersize, params);
+            output = new SocketOutputBuffer(socket, buffersize, params);
 		}
         return new WebdavConnection(socket, input, output, params);
     }

@@ -279,12 +279,12 @@ public class IOTest {
     }
 
     @Test
-    public void projectHome() {
+    public void projectHome() throws IOException {
         check(IO.class);
         check(IOTest.class);
     }
 
-    private void check(Class<?> clazz) {
+    private void check(Class<?> clazz) throws IOException {
         IO io;
         FileNode home;
         String name;
@@ -292,14 +292,6 @@ public class IOTest {
         io = new IO();
         home = io.guessProjectHome(clazz);
         assertNotNull(home);
-        name = home.getName();
-        try {
-            Integer.parseInt(name);
-            // when checked-out by continuum ...
-            assertTrue(true);
-        } catch (NumberFormatException e) {
-            // allow pre and suffixes
-            assertTrue(name.contains("core") || name.contains("sushi"));
-        }
+        assertTrue(home.join("pom.xml").isFile());
     }
 }

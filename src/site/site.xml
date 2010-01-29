@@ -13,15 +13,9 @@
     </links>
     
     <menu name="Documentation">
-      <item name="Homepage" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
-      <item name="Generated" href="index.html"/>
-      <item name="Core Javadoc" href="core/apidocs/index.html"/>
-    </menu>
-
-    <menu name="Modules">
-      <item name="core" href="core"/>
-      <item name="compiler" href="compiler"/>
-      <item name="application" href="application"/>
+        <item name="Generated" href="index.html"/>
+        <item name="Core Javadoc" href="apidocs/index.html"/>
+        <item name="Homepage" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
     </menu>
 
     ${reports}

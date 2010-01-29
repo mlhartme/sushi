@@ -6,12 +6,12 @@
     <section name="Sushi">
       <p>Examples:</p>
       <p>
-        <a href="core/xref-test/de/ui/sushi/IOSample.html">IO</a>,
-        <a href="core/xref-test/de/ui/sushi/XmlSample.html">Xml</a>,
-        <a href="core/xref-test/de/ui/sushi/CliSample.html">Cli</a>,
-        <a href="core/xref-test/de/ui/sushi/MetadataSample.html">Metadata</a>,
-        <a href="core/xref-test/de/ui/sushi/PropertiesSample.html">Properties</a>,
-        <a href="core/xref-test/de/ui/sushi/CsvSample.html">Csv</a>
+        <a href="xref-test/de/ui/sushi/IOSample.html">IO</a>,
+        <a href="xref-test/de/ui/sushi/XmlSample.html">Xml</a>,
+        <a href="xref-test/de/ui/sushi/CliSample.html">Cli</a>,
+        <a href="xref-test/de/ui/sushi/MetadataSample.html">Metadata</a>,
+        <a href="xref-test/de/ui/sushi/PropertiesSample.html">Properties</a>,
+        <a href="xref-test/de/ui/sushi/CsvSample.html">Csv</a>
       </p>
     </section>
   </body>

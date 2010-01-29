@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Sushi">
+  <bannerLeft>
+    <name>Sushi</name>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://1und1.de/img/header/logo.gif</src>
+  </bannerRight>
+
+  <body>
+    <links>
+      <item name="Changelog" href="changelog.html"/>
+    </links>
+    
+    <menu name="Documentation">
+      <item name="Homepage" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
+      <item name="Generated" href="index.html"/>
+      <item name="Core Javadoc" href="core/apidocs/index.html"/>
+    </menu>
+
+    <menu name="Modules">
+      <item name="core" href="core"/>
+      <item name="compiler" href="compiler"/>
+      <item name="application" href="application"/>
+    </menu>
+
+    ${reports}
+
+  </body>
+</project>

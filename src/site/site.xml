@@ -15,7 +15,7 @@
     <menu name="Documentation">
         <item name="Generated" href="index.html"/>
         <item name="Core Javadoc" href="apidocs/index.html"/>
-        <item name="Homepage" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
+        <item name="Sourceforge" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
     </menu>
 
     ${reports}

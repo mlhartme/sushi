@@ -424,15 +424,26 @@ public class WebdavNode extends Node {
     private Boolean doGetType(String path) throws IOException {
         Property property;
         org.w3c.dom.Node node;
-        
+        int code;
+
         try {
             property = getProperty(path, Name.RESOURCETYPE);
         } catch (StatusException e) {
-            if (e.getStatusLine().getStatusCode() != HttpStatus.SC_METHOD_NOT_ALLOWED) {
-                throw e;
+            code = e.getStatusLine().getStatusCode();
+            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED || code == HttpStatus.SC_INTERNAL_SERVER_ERROR /* returned by Nexus 1.4.1 ... */) {
+                try {
+                    new HeadMethod(getRoot(), path).invoke();
+                    // without webdav, everything is a file
+                    return false;
+                } catch (StatusException e2) {
+                    if (e2.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+                        return null;
+                    } else {
+                        throw e2;
+                    }
+                }
             } else {
-                new HeadMethod(getRoot(), path).invoke();
-                return false;
+                throw e;
             }
         }
         node = (org.w3c.dom.Node) property.getValue();

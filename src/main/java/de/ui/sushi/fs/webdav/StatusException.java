@@ -25,7 +25,7 @@ public class StatusException extends IOException {
     private final StatusLine statusline;
 
     public StatusException(StatusLine statusline) {
-        super(statusline.getReasonPhrase());
+        super(statusline.getStatusCode() + ":" + statusline.getReasonPhrase());
         this.statusline = statusline;
     }
 

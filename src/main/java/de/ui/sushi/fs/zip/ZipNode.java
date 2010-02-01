@@ -124,7 +124,7 @@ public class ZipNode extends Node {
     
     @Override
     public boolean exists() {
-        return root.getZip().getEntry(path)  != null;
+        return root.getZip().getEntry(path)  != null || isDirectory();
     }
 
     @Override
@@ -148,7 +148,10 @@ public class ZipNode extends Node {
         String name;
         String separator;
         String prefix;
-        
+
+        if (path.isEmpty()) {
+            return true;
+        }
         zip = root.getZip();
         e = zip.entries();
         separator = root.getFilesystem().getSeparator();

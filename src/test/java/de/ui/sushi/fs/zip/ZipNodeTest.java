@@ -45,9 +45,10 @@ public class ZipNodeTest {
         String locator;
         ZipNode assrt;
         ZipNode junit;
+        Node root;
         List<? extends Node> list;
         List<? extends Node> tree;
-        
+
         jar = ioObj.locateClasspathItem(Assert.class);
         rootPath = jar.getLocator() + "!/org/junit/Assert.class";
         locator = "jar:" + rootPath;
@@ -65,6 +66,10 @@ public class ZipNodeTest {
         assertTrue(list.contains(assrt));
         assertFalse(list.contains(list));
         assertEquals(2, junit.getParent().list().size());
+        root = junit.getParent().getParent();
+        assertEquals("", root.getPath());
+        assertTrue(root.isDirectory());
+        assertTrue(root.exists());
         tree = junit.find("**/*");
         assertTrue(tree.size() > list.size());
         assertTrue(tree.contains(assrt));

@@ -293,11 +293,8 @@ public class Filter {
             } else {
                 return Collections.emptyList();
             }
-    	} else if (node.exists()) {
+    	} else {
         	return node.list();    	
-        } else {
-        	// broken symlink
-        	return null;
         }
     }
 

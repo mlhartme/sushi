@@ -241,6 +241,7 @@ public class IO {
         return fileFilesystem;
     }
 
+    /** @param name must not start with a slash */
     public Node resource(String name) throws IOException {
         List<Node> result;
         

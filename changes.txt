@@ -47,7 +47,7 @@ Since 1.3.19
       * added isLink argument to all Action methods
   * Filesystem
     * node creation cleanup
-      * Filesystem.rootNode replaced by TODO
+      * Filesystem.rootNode changed
       * IO.TOOD changes
     * moved META-INF/sushi/filesystems to META-INF/de/ui/sushi/filesystem
       to avoid collisions with sushi 1.x.

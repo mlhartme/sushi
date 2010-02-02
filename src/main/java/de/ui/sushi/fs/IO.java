@@ -132,7 +132,6 @@ public class IO {
         return temp;
     }
 
-    // TODO: node
     public IO setTemp(FileNode temp) {
         this.temp = temp;
         return this;
@@ -279,7 +278,9 @@ public class IO {
     }
 
     /**
-     * Returns a File from a given location. TODO: replace by java.net.Uri.
+     * TODO
+     *
+     * Returns a File from a given location.
      *
      * @param url the given location of the file
      *

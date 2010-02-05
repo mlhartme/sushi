@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>Sushi</name>
-    <url>https://sourceforge.net/apps/trac/beezle/wiki/SushiHome</url>
+    <url>https://sourceforge.net/apps/trac/beezle/wiki/Sushi</url>
 
     <groupId>de.ui.sushi</groupId>
     <artifactId>sushi</artifactId>

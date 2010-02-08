@@ -944,12 +944,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         if (id == 0) {
         	return;
         }
-        try {
-            node.setGid(0);
-            fail();
-        } catch (IOException e) {
-            // ok
-        }
         assertEquals(id, node.getGid());
     }
 

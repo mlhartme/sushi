@@ -55,6 +55,19 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
+    public void setWorking() {
+        final String FILE = "file";
+        IO io;
+        Node file;
+
+        io = work.getIO();
+        file = work.join(FILE);
+        assertFalse(file.equals(io.node(FILE)));
+        io.setWorking(work);
+        assertTrue(file.equals(io.node(FILE)));
+    }
+
+    @Test
     public void root() {
         assertEquals(work.join("a").getRoot(), work.join("a").getRoot());
         assertEquals(work.join("a").getRoot(), work.join("ab").getRoot());

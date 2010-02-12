@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Sushi">
+  <version position="left"/>
   <bannerLeft>
     <name>Sushi</name>
   </bannerLeft>
@@ -10,12 +11,12 @@
   <body>
     <links>
       <item name="Changelog" href="changelog.html"/>
+      <item name="Sourceforge" href="http://sourceforge.net/apps/trac/beezle/wiki/Sushi"/>
     </links>
     
     <menu name="Documentation">
-        <item name="Generated" href="index.html"/>
-        <item name="Core Javadoc" href="apidocs/index.html"/>
-        <item name="Sourceforge" href="https://sourceforge.net/apps/trac/beezle/wiki/SushiHome"/>
+      <item name="Index" href="index.html"/>
+      <item name="Core Javadoc" href="apidocs/index.html"/>
     </menu>
 
     <menu ref="reports"/>

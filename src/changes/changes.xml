@@ -126,10 +126,10 @@
             <action dev="mlhartme" type="remove">
                 HttpNode dumped. Use WebdavNode instead.
             </action>
-            <action dev="mlhartme" type="update">
+            <action dev="mlhartme" type="remove">
                 ResourceNode dumped. Use IO.resource() instead.
             </action>
-            <action dev="mlhartme" type="update">
+            <action dev="mlhartme" type="fix">
                 SshNode.isFile() and isDirectory() properly propagate exceptions now.
             </action>
         </release>

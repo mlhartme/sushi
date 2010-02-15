@@ -10,7 +10,7 @@
 
   <body>
     <links>
-      <item name="Changelog" href="changelog.html"/>
+      <item name="Changes" href="changes-report.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/apps/trac/beezle/wiki/Sushi"/>
     </links>
     

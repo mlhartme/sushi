@@ -16,7 +16,7 @@
     
     <menu name="Documentation">
       <item name="Index" href="index.html"/>
-      <item name="Core Javadoc" href="apidocs/index.html"/>
+      <item name="Javadoc" href="apidocs/index.html"/>
     </menu>
 
     <menu ref="reports"/>

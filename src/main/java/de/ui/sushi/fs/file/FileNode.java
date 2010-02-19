@@ -415,7 +415,7 @@ public class FileNode extends Node {
 
     //--
 
-    /** Executes the specified programm in this directory. Convenience Method. Don't forget to check the output. */
+    /** Executes the specified program in this directory. Convenience Method. Don't forget to check the output. */
     public String exec(String ... args) throws IOException {
         return new Program(this, args).exec();
     }

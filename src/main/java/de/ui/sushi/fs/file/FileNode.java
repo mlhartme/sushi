@@ -415,6 +415,13 @@ public class FileNode extends Node {
 
     //--
 
+    /** Executes the specified programm in this directory. Convenience Method. Don't forget to check the output. */
+    public String exec(String ... args) throws IOException {
+        return new Program(this, args).exec();
+    }
+
+    //--
+
     @Override
     public int getMode() throws IOException {
         return stat(OS.CURRENT.mode, 8) & 0777;

@@ -187,7 +187,11 @@ public class IO {
     }
 
     public Node node(String locatorOrDot) throws LocatorException {
-        return node(URI.create(locatorOrDot));
+        try {
+            return node(new URI(locatorOrDot));
+        } catch (URISyntaxException e) {
+            throw new LocatorException(locatorOrDot, e.getMessage(), e);
+        }
     }
 
     public Node node(URI uri) {

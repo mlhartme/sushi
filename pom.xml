@@ -38,6 +38,16 @@
             </roles>
             <timezone>+1</timezone>
         </developer>
+        <developer>
+            <name>Andreas Kurth</name>
+            <id>akurth</id>
+            <email>akurth@sourceforge.net</email>
+            <organization>1&amp;1</organization>
+            <roles>
+                <role>Java Development</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
     </developers>
 
     <scm>
@@ -126,7 +136,7 @@
                     <archive>
                         <!-- TODO: I didn't find predefind maven variables to add a machine name and the build date in mvn 2.0.8 -->
                         <addMavenDescriptor>false</addMavenDescriptor>
-                        <manifest>
+                        <manifest>sv
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>

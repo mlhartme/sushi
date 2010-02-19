@@ -338,7 +338,7 @@ public class IO {
     
     //-- 
     
-    public List<Node> path(String path) throws LocatorException {
+    public List<Node> path(String path) {
         List<Node> result;
         
         result = new ArrayList<Node>();

@@ -36,7 +36,6 @@ import de.ui.sushi.fs.LengthException;
 import de.ui.sushi.fs.ListException;
 import de.ui.sushi.fs.LocatorException;
 import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MoveException;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.SetLastModifiedException;
 import de.ui.sushi.fs.file.FileNode;

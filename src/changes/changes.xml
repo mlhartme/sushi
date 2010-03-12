@@ -4,7 +4,7 @@
   <body>
     <release version="2.0.2" date="?">
       <action dev="mlhartme" type="add">
-        LineProcessor: changed boolean trim Parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).
+        LineProcessor: changed boolean trim parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).
       </action>
       <action dev="mlhartme" type="add">
         FileNode.exec() and execNoOutput() added.

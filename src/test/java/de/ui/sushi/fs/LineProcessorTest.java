@@ -65,6 +65,14 @@ public class LineProcessorTest {
         assertEquals(Arrays.asList("first", "last"), result);
     }
 
+    @Test
+    public void trimNothing() throws IOException {
+        LineCollector collector;
+
+        collector = new LineCollector(10, LineProcessor.Trim.NOTHING, true, null);
+        assertEquals(Arrays.asList("hello\n", "world"), collector.collect(io.stringNode("hello\nworld")));
+    }
+
     //--
     
     private void check(String str, String ... expected) throws IOException {

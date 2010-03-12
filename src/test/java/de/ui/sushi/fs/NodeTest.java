@@ -479,12 +479,22 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     @Test
     public void readWriteLines() throws IOException {
-        final String[] data = { "\n", " \n", "a\n", "\t a\r\n", "hello, world\n", "line without newline" };
+        final String[] data = { "", " ", "a", "\t a\r", "hello, world" };
         Node file;
 
         file = work.join("foo");
         file.writeLines(data);
         assertEquals(Arrays.asList(data), file.readLines());
+    }
+
+    @Test
+    public void readWriteLinesRaw() throws IOException {
+        final String[] data = { "\n", " \n", "a\n", "\t a\r\n", "hello, world\n", "line without newline" };
+        Node file;
+
+        file = work.join("foo");
+        file.writeLinesRaw(data);
+        assertEquals(Arrays.asList(data), file.readLinesRaw());
     }
 
     @Test

@@ -84,7 +84,7 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         assertEquals("", diff(destdir));
 
-        copy.getSourceDir().join("file").writeLines("home: ${home}\n", "machine: ${machine}\n");
+        copy.getSourceDir().join("file").writeLines("home: ${home}", "machine: ${machine}");
         assertEquals("A file\n", brief(destdir));
         assertEquals("### file\n" +
         		"+ home: mhm\n" +

@@ -3,9 +3,8 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.0.2" date="?">
-      <action dev="mlhartme" type="update">
-        Node.readLines returns lines with tailing line separator now. Correspondingly, Node.writeLines expectes line
-        with tailing line separator now.
+      <action dev="mlhartme" type="add">
+        Node.readLinesRaw() and Node.writeLinesRaw() that take lines with tailing line separator.
       </action>
       <action dev="mlhartme" type="add">
         LineProcessor: changed boolean trim parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).

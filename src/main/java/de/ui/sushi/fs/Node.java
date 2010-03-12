@@ -351,8 +351,9 @@ public abstract class Node {
         return getIO().getSettings().string(readBytes());
     }
 
+    /** @return lines with tailing line separator */
     public List<String> readLines() throws IOException {
-        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, LineCollector.Trim.SEPARATOR, true, null).collect(this);
+        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, LineCollector.Trim.NOTHING, true, null).collect(this);
     }
 
     public Object readObject() throws IOException {
@@ -710,29 +711,30 @@ public abstract class Node {
         return this;
     }
 
+    /** @param line with tailing line separator */
     public Node writeLines(String ... line) throws IOException {
         return writeLines(Arrays.asList(line));
     }
 
+    /** @param lines with tailing line separator */
     public Node writeLines(List<String> lines) throws IOException {
         return lines(createWriter(), lines);
     }
 
+    /** @param line with tailing line separator */
     public Node appendLines(String ... line) throws IOException {
         return appendLines(Arrays.asList(line));
     }
 
+    /** @param lines with tailing line separator */
     public Node appendLines(List<String> lines) throws IOException {
         return lines(createAppender(), lines);
     }
 
+    /** @param lines with tailing line separator */
     private Node lines(Writer dest, List<String> lines) throws IOException {
-        String separator;
-
-        separator = getIO().getSettings().lineSeparator;
         for (String line : lines) {
             dest.write(line);
-            dest.write(separator);
         }
         dest.close();
         return this;

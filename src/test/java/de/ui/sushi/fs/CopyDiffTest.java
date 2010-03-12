@@ -49,7 +49,7 @@ public class CopyDiffTest {
         destdir = copy.getSourceDir().getIO().getTemp().createTempDirectory();
 
         file = copy.getSourceDir().join("file");
-        file.writeLines("foo");
+        file.writeString("foo");
         file.setMode(0700);
         copy.directory(destdir);
         assertEquals(0700, destdir.join("file").getMode());
@@ -84,7 +84,7 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         assertEquals("", diff(destdir));
 
-        copy.getSourceDir().join("file").writeLines("home: ${home}", "machine: ${machine}");
+        copy.getSourceDir().join("file").writeLines("home: ${home}\n", "machine: ${machine}\n");
         assertEquals("A file\n", brief(destdir));
         assertEquals("### file\n" +
         		"+ home: mhm\n" +
@@ -102,7 +102,7 @@ public class CopyDiffTest {
         copy.directory(destdir);
         assertEquals("", brief(destdir));
 
-        copy.getSourceDir().join("folder/file").writeLines("home: ${home}", "machine: ${machine}");
+        copy.getSourceDir().join("folder/file").writeLines("home: ${home}\n", "machine: ${machine}\n");
         assertEquals("A folder/file\n", brief(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));

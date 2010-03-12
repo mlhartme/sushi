@@ -31,6 +31,7 @@ public class LineCollector extends LineProcessor {
     public LineCollector(int size, Trim trim, boolean empty, String comment) {
         this(size, trim, empty, comment, new ArrayList<String>());
     }
+
     public LineCollector(int size, Trim trim, boolean empty, String comment, List<String> lines) {
         super(size, trim, empty, comment);
         

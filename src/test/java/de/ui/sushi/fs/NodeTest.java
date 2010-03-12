@@ -488,16 +488,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void readWriteLinesRaw() throws IOException {
-        final String[] data = { "\n", " \n", "a\n", "\t a\r\n", "hello, world\n", "line without newline" };
-        Node file;
-
-        file = work.join("foo");
-        file.writeLinesRaw(data);
-        assertEquals(Arrays.asList(data), file.readLinesRaw());
-    }
-
-    @Test
     public void readWriteXml() throws IOException, SAXException {
         Document doc;
         Node file;

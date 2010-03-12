@@ -353,12 +353,7 @@ public abstract class Node {
 
     /** @return lines without tailing line separator */
     public List<String> readLines() throws IOException {
-        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, LineCollector.Trim.SEPARATOR, true, null).collect(this);
-    }
-
-    /** @return lines with tailing line separator */
-    public List<String> readLinesRaw() throws IOException {
-        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, LineCollector.Trim.NOTHING, true, null).collect(this);
+        return LineReader.create(this).collect();
     }
 
     public Object readObject() throws IOException {

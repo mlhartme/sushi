@@ -24,11 +24,11 @@ import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class LineProcessorTest {
+public class LineReaderTest {
     IO io = new IO();
     
     @Test
-    public void empty() throws IOException {
+    public void zero() throws IOException {
         check("");
     }
 
@@ -56,38 +56,48 @@ public class LineProcessorTest {
     }
 
     @Test
-    public void comment() throws IOException {
-        LineCollector collector;
-        List<String> result;
-        
-        collector = new LineCollector(100, LineProcessor.Trim.ALL, false, "//");
-        result = collector.collect(io.stringNode("first\n // \n\n//comment\nlast"));
-        assertEquals(Arrays.asList("first", "last"), result);
+    public void comment() {
+        check("first\n // \n\n//comment\nlast", LineReader.Trim.ALL, false, "//", 5,
+              "first", "last");
     }
 
     @Test
-    public void trimNothing() throws IOException {
-        LineCollector collector;
+    public void empty() {
+        check("first\n\nthird\n  \nfifth", LineReader.Trim.ALL, false, null, 5,
+              "first", "third", "fifth");
+    }
 
-        collector = new LineCollector(10, LineProcessor.Trim.NOTHING, true, null);
-        assertEquals(Arrays.asList("hello\n", "world"), collector.collect(io.stringNode("hello\nworld")));
+    @Test
+    public void trimNothing() {
+        check("hello\nworld", LineReader.Trim.NOTHING, false, null, 2,
+              "hello\n", "world");
     }
 
     //--
     
-    private void check(String str, String ... expected) throws IOException {
-        check(1024, str, expected);
-        check(10, str, expected);
-        check(1, str, expected);
+    private void check(String str, String ... expected) {
+        check(str, LineReader.Trim.SEPARATOR, true, null, expected.length, expected);
     }
 
-    private void check(int initialSize, String str, String ... expected) throws IOException {
-        LineCollector collector;
+    private void check(String str, LineReader.Trim trim, boolean empty, String comment, int lastLine, String ... expected) {
+        check(str, trim, empty, comment, lastLine, 1024, expected);
+        check(str, trim, empty, comment, lastLine, 10, expected);
+        check(str, trim, empty, comment, lastLine, 7, expected);
+        check(str, trim, empty, comment, lastLine, 3, expected);
+        check(str, trim, empty, comment, lastLine, 1, expected);
+    }
+
+    private void check(String str, LineReader.Trim trim, boolean empty, String comment, int lastLine, int initialSize, String ... expected) {
+        LineReader reader;
         List<String> result;
-        
-        collector = new LineCollector(initialSize, LineProcessor.Trim.SEPARATOR, true, null);
-        result = collector.collect(io.stringNode(str));
+
+        try {
+            reader = LineReader.create(io.stringNode(str), trim, empty, comment, initialSize);
+            result = reader.collect();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
         assertEquals(Arrays.asList(expected), result);
-        assertEquals(expected.length + 1, collector.getLine());
+        assertEquals(lastLine, reader.getLine());
     }
 }

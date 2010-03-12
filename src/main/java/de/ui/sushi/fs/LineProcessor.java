@@ -22,11 +22,15 @@ import java.io.Reader;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public abstract class LineProcessor {
+    public static enum Trim {
+        NOTHING, SEPARATOR, ALL
+    }
+
     public static final int INITIAL_BUFFER_SIZE = 2;
     
     private char[] buffer;
-    
-    private boolean trim;
+
+    private Trim trim;
     private boolean empty;
     
     private int start;
@@ -34,17 +38,19 @@ public abstract class LineProcessor {
     
     private Node node;
     private int line;
+
+    /** line comment prefix to be skipped; null to disable */
     private String comment;
     
     public LineProcessor() {
-        this(false, true, null);
+        this(Trim.SEPARATOR, true, null);
     }
 
-    public LineProcessor(boolean trim, boolean empty, String comment) {
+    public LineProcessor(Trim trim, boolean empty, String comment) {
         this(INITIAL_BUFFER_SIZE, trim, empty, comment);
     }
 
-    public LineProcessor(int bufferSize, boolean trim, boolean empty, String comment) {
+    public LineProcessor(int bufferSize, Trim trim, boolean empty, String comment) {
         this.buffer = new char[bufferSize];
         this.trim = trim;
         this.empty = empty;
@@ -66,11 +72,13 @@ public abstract class LineProcessor {
 
     public void run(Node node, int startLine, Reader src, String separator) throws IOException {
         int sepLen;
+        int sepLenToLine;
         int len;
         int idx;
         char[] newBuffer;
-        
+
         sepLen = separator.length();
+        sepLenToLine = trim == Trim.NOTHING ? sepLen : 0;
         this.node = node;
         this.line = startLine;
         
@@ -91,7 +99,7 @@ public abstract class LineProcessor {
                 if (idx == -1) {
                     break;
                 }
-                doLine(new String(buffer, start, idx - start));
+                doLine(new String(buffer, start, idx - start + sepLenToLine));
                 start = idx + sepLen;
             }
             if (end == buffer.length) {
@@ -127,7 +135,7 @@ public abstract class LineProcessor {
     }
 
     private void doLine(String str) throws IOException {
-        if (trim) {
+        if (trim == Trim.ALL) {
             str = str.trim();
         }
         if (empty || str.length() > 0) {

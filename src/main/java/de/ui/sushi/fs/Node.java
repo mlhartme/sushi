@@ -352,7 +352,7 @@ public abstract class Node {
     }
 
     public List<String> readLines() throws IOException {
-        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, false, true, null).collect(this);
+        return new LineCollector(LineProcessor.INITIAL_BUFFER_SIZE, LineCollector.Trim.SEPARATOR, true, null).collect(this);
     }
 
     public Object readObject() throws IOException {

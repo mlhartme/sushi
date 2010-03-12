@@ -26,21 +26,28 @@ import java.util.List;
  * because it's more efficient.
  */
 public class LineCollector extends LineProcessor {
-    private final List<String> result;
+    private final List<String> lines;
     
-    public LineCollector(int size, boolean trim, boolean empty, String comment) {
+    public LineCollector(int size, Trim trim, boolean empty, String comment) {
+        this(size, trim, empty, comment, new ArrayList<String>());
+    }
+    public LineCollector(int size, Trim trim, boolean empty, String comment, List<String> lines) {
         super(size, trim, empty, comment);
         
-        result = new ArrayList<String>();
+        this.lines = lines;
     }
 
     public List<String> collect(Node node) throws IOException {
         run(node);
-        return result;
+        return lines;
+    }
+
+    public List<String> getLines() {
+        return lines;
     }
 
     @Override
     public void line(String line) {
-        result.add(line);
+        lines.add(line);
     }
 }

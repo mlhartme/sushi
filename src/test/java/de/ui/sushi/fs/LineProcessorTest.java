@@ -60,7 +60,7 @@ public class LineProcessorTest {
         LineCollector collector;
         List<String> result;
         
-        collector = new LineCollector(100, true, false, "//");
+        collector = new LineCollector(100, LineProcessor.Trim.ALL, false, "//");
         result = collector.collect(io.stringNode("first\n // \n\n//comment\nlast"));
         assertEquals(Arrays.asList("first", "last"), result);
     }
@@ -77,7 +77,7 @@ public class LineProcessorTest {
         LineCollector collector;
         List<String> result;
         
-        collector = new LineCollector(initialSize, false, true, null);
+        collector = new LineCollector(initialSize, LineProcessor.Trim.SEPARATOR, true, null);
         result = collector.collect(io.stringNode(str));
         assertEquals(Arrays.asList(expected), result);
         assertEquals(expected.length + 1, collector.getLine());

@@ -7,7 +7,7 @@
         Node.readLines returns lines with tailing line separator now. Correspondingly, Node.writeLines expectes line
         with tailing line separator now.
       </action>
-q      <action dev="mlhartme" type="add">
+      <action dev="mlhartme" type="add">
         LineProcessor: changed boolean trim parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).
       </action>
       <action dev="mlhartme" type="add">

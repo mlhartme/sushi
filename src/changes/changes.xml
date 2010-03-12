@@ -8,7 +8,7 @@
         Dumped LineCollector.
       </action>
       <action dev="mlhartme" type="add">
-        Node.writeLinesRaw() that take lines with tailing line separator.
+        Node.writeStrings() and appendStrings that take multiple string arguments.
       </action>
       <action dev="mlhartme" type="add">
         LineProcessor: changed boolean trim parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).

@@ -711,6 +711,29 @@ public abstract class Node {
         return this;
     }
 
+    public Node writeStrings(String ... str) throws IOException {
+        return writeStrings(Arrays.asList(str));
+    }
+
+    public Node writeStrings(List<String> strings) throws IOException {
+        return strings(createWriter(), strings);
+    }
+
+    public Node appendStrings(String ... str) throws IOException {
+        return appendStrings(Arrays.asList(str));
+    }
+
+    public Node appendStrings(List<String> strings) throws IOException {
+        return strings(createAppender(), strings);
+    }
+
+    private Node strings(Writer dest, List<String> strings) throws IOException {
+        for (String str : strings) {
+            dest.write(str);
+        }
+        dest.close();
+        return this;
+    }
 
     /** @param line without tailing line separator */
     public Node writeLines(String ... line) throws IOException {
@@ -740,36 +763,6 @@ public abstract class Node {
         for (String line : lines) {
             dest.write(line);
             dest.write(separator);
-        }
-        dest.close();
-        return this;
-    }
-
-
-    /** @param line with tailing line separator */
-    public Node writeLinesRaw(String ... line) throws IOException {
-        return writeLinesRaw(Arrays.asList(line));
-    }
-
-    /** @param lines with tailing line separator */
-    public Node writeLinesRaw(List<String> lines) throws IOException {
-        return linesRaw(createWriter(), lines);
-    }
-
-    /** @param line with tailing line separator */
-    public Node appendLinesRaw(String ... line) throws IOException {
-        return appendLinesRaw(Arrays.asList(line));
-    }
-
-    /** @param lines with tailing line separator */
-    public Node appendLinesRaw(List<String> lines) throws IOException {
-        return linesRaw(createAppender(), lines);
-    }
-
-    /** @param lines with tailing line separator */
-    private Node linesRaw(Writer dest, List<String> lines) throws IOException {
-        for (String line : lines) {
-            dest.write(line);
         }
         dest.close();
         return this;

@@ -420,6 +420,10 @@ public class FileNode extends Node {
         return new Program(this, args).exec();
     }
 
+    public void execNoOutput(String ... args) throws IOException {
+        new Program(this, args).execNoOutput();
+    }
+
     //--
 
     @Override

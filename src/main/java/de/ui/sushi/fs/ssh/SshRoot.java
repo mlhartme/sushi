@@ -41,11 +41,11 @@ public class SshRoot implements Root, UserInfo, Runnable {
     private final String passphrase;
     private final String host;
     private final Session session;
-    
-    // created on demand because it's only needed for nodes, for "exec" stuff
+
+    // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp channelFtp;
-    
-    public SshRoot(SshFilesystem filesystem, String host, String user, FileNode privateKey, String passphrase, int timeout) 
+
+    public SshRoot(SshFilesystem filesystem, String host, String user, FileNode privateKey, String passphrase, int timeout)
     throws JSchException {
         this.filesystem = filesystem;
         this.user = user;
@@ -59,7 +59,7 @@ public class SshRoot implements Root, UserInfo, Runnable {
     }
 
     //-- Root interface
-    
+
     public SshFilesystem getFilesystem() {
         return filesystem;
     }
@@ -75,18 +75,18 @@ public class SshRoot implements Root, UserInfo, Runnable {
             throw new InstantiateException(toString(), e);
         }
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         SshRoot root;
-        
+
         if (obj instanceof SshRoot) {
             root = (SshRoot) obj;
             return getId().equals(root.getId());
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return getId().hashCode();
@@ -94,11 +94,11 @@ public class SshRoot implements Root, UserInfo, Runnable {
 
     @Override
     public String toString() {
-        return "SshNode host=" + host + ", user=" + user + ", privateKey=" + privateKey + ", passphrase=" + passphrase;  
+        return "SshNode host=" + host + ", user=" + user + ", privateKey=" + privateKey + ", passphrase=" + passphrase;
     }
-    
+
     //--
-    
+
     public ChannelSftp getChannelFtp() throws JSchException {
         if (channelFtp == null) {
             channelFtp = (ChannelSftp) session.openChannel("sftp");
@@ -106,11 +106,11 @@ public class SshRoot implements Root, UserInfo, Runnable {
         }
         return channelFtp;
     }
-    
+
     public ChannelExec createChannelExec() throws JSchException {
         return (ChannelExec) session.openChannel("exec");
     }
-    
+
     public void close() {
         session.disconnect();
     }
@@ -118,15 +118,15 @@ public class SshRoot implements Root, UserInfo, Runnable {
     public Process start(boolean tty, String ... command) throws JSchException {
         return start(tty, MultiOutputStream.createNullStream(), command);
     }
-    
+
     public Process start(boolean tty, OutputStream out, String ... command) throws JSchException {
         return Process.start(this, tty, out, command);
     }
-    
+
     public String exec(String ... command) throws JSchException, ExitCode {
         return exec(true, command);
     }
-    
+
     public String exec(boolean tty, String ... command) throws JSchException, ExitCode {
         ByteArrayOutputStream out;
 
@@ -138,27 +138,27 @@ public class SshRoot implements Root, UserInfo, Runnable {
         }
         return filesystem.getIO().getSettings().string(out);
     }
-    
+
     public String getUser() {
         return user;
     }
 
     public Session login(JSch jsch, String host) throws JSchException {
         Session session;
-        
+
         jsch.addIdentity(privateKey.getAbsolute());
         session = jsch.getSession(user, host, 22);
         session.setUserInfo(this);
         return session;
     }
 
-    
+
     public String getHost() {
         return host;
     }
-    
-    //-- interface implementation 
-    
+
+    //-- interface implementation
+
     public String getPassphrase(String message) {
         throw new IllegalStateException(message);
     }

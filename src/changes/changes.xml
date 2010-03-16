@@ -3,6 +3,9 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.0.2" date="?">
+      <action dev="mlhartme" type="remove">
+        Dump instantiate exception, it's no longer needed because Node construction can no longer fail.
+      </action>
       <action dev="mlhartme" type="update">
         Replaced LineProcessor by LineReader which is easier to use and allows to easily read lines without trimmed separators.
         Dumped LineCollector.

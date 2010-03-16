@@ -17,11 +17,9 @@
 
 package de.ui.sushi.fs.svn;
 
-import de.ui.sushi.fs.InstantiateException;
 import de.ui.sushi.fs.Root;
 import de.ui.sushi.fs.file.FileNode;
 import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNInfo;
@@ -33,22 +31,22 @@ public class SvnRoot implements Root {
     private final SVNRepository repository;
     private final SVNClientManager clientManager;
     private String comment;
-    
+
     public SvnRoot(SvnFilesystem filesystem, SVNRepository repository) {
         this.filesystem = filesystem;
         this.repository = repository;
         this.clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), repository.getAuthenticationManager());
         this.comment = "sushi commit";
     }
-    
+
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
     public String getComment() {
         return comment;
     }
-    
+
     public SvnFilesystem getFilesystem() {
         return filesystem;
     }
@@ -64,30 +62,26 @@ public class SvnRoot implements Root {
     public SVNRepository getRepository() {
         return repository;
     }
-    
+
     public SVNInfo getInfo(FileNode node) throws SVNException {
         return clientManager.getWCClient().doInfo(node.getFile(), SVNRevision.WORKING);
     }
 
-    public SvnNode node(String path) throws InstantiateException {
-        try {
-            return new SvnNode(this, repository.checkPath(path, -1) == SVNNodeKind.DIR, path);
-        } catch (SVNException e) {
-            throw new InstantiateException(e);
-        }
+    public SvnNode node(String path) {
+        return new SvnNode(this, path);
     }
 
     @Override
     public boolean equals(Object obj) {
         SvnRoot root;
-        
+
         if (obj instanceof SvnRoot) {
             root = (SvnRoot) obj;
             return repository.getLocation().equals(root.repository.getLocation());
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return repository.getLocation().hashCode();

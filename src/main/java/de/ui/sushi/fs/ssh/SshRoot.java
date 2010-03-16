@@ -20,7 +20,6 @@ package de.ui.sushi.fs.ssh;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
-import de.ui.sushi.fs.InstantiateException;
 import de.ui.sushi.fs.Root;
 import de.ui.sushi.fs.OnShutdown;
 import de.ui.sushi.fs.file.FileNode;
@@ -68,12 +67,8 @@ public class SshRoot implements Root, UserInfo, Runnable {
         return "//" + session.getUserName() + "@" + session.getHost() + "/";
     }
 
-    public SshNode node(String path) throws InstantiateException {
-        try {
-            return new SshNode(this, path);
-        } catch (JSchException e) {
-            throw new InstantiateException(toString(), e);
-        }
+    public SshNode node(String path) {
+        return new SshNode(this, path);
     }
 
     @Override

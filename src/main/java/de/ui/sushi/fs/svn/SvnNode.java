@@ -61,13 +61,11 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 public class SvnNode extends Node {
     private final SvnRoot root;
-    private final boolean directory;
     private final String path;
 
-    public SvnNode(SvnRoot root, boolean directory, String path) {
+    public SvnNode(SvnRoot root, String path) {
         super();
         this.root = root;
-        this.directory = directory;
         this.path = path;
     }
 
@@ -99,7 +97,7 @@ public class SvnNode extends Node {
                 result = new ArrayList<SvnNode>(lst.size());
                 for (int i = 0; i < lst.size(); i++) {
                     entry = lst.get(i);
-                    child = new SvnNode(root, entry.getKind() == SVNNodeKind.DIR, doJoin(path, entry.getRelativePath()));
+                    child = new SvnNode(root, doJoin(path, entry.getRelativePath()));
                     child.setBase(getBase());
                     result.add(child);
                 }
@@ -118,7 +116,7 @@ public class SvnNode extends Node {
         List<Long> revs;
         SVNDirEntry dir;
 
-        if (directory) {
+        if (root.getRepository().checkPath(path, -1) == SVNNodeKind.DIR) {
             dir = root.getRepository().getDir(path, -1, false, new ArrayList<Object>());
             return dir.getRevision();
         } else {

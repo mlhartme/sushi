@@ -46,47 +46,47 @@ import de.ui.sushi.util.Strings;
 import de.ui.sushi.xml.Xml;
 
 /**
- * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and 
- * afterwards use it through-out your application to create nodes via IO.node or 
+ * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and
+ * afterwards use it through-out your application to create nodes via IO.node or
  * IO.file. </p>
- * 
- * <p>Sushi's FS subsystem forms a tree: An IO object is the root, having filesystems as it's children, roots as 
- * grand-children and nodes as leafes. This tree is traversable from nodes up to the IO object via Node.getRoot(), 
- * Root.getFilesystem() and Filesystem.getIO(), which is used internally e.g. to pick default encoding settings 
+ *
+ * <p>Sushi's FS subsystem forms a tree: An IO object is the root, having filesystems as it's children, roots as
+ * grand-children and nodes as leafes. This tree is traversable from nodes up to the IO object via Node.getRoot(),
+ * Root.getFilesystem() and Filesystem.getIO(), which is used internally e.g. to pick default encoding settings
  * from IO. (Traversing in reverse order is not implemented - to resource consuming)</p>
- * 
+ *
  * <p>You can creates as many IO objects as you which, but using nodes from different IO objectes cannot interact
- * so you'll usually stick with a single IO instance.</p>  
- * 
+ * so you'll usually stick with a single IO instance.</p>
+ *
  * <p>TODO: Multi-Threading. Currently, you need to know fs system internals to propertly synchronized
  * multi-threaded applications.</p>
  */
 public class IO {
     public final OS os;
-    
+
     /** never null */
     private final Buffer buffer;
-    
+
     private final Settings settings;
-    
+
     /** never null */
     private final Xml xml;
 
     private Node home;
-    
+
     /** Intentionally not a file -- see Tempfiles for a rationale */
     private FileNode temp;
     private Node working;
-    
+
     private final List<String> defaultExcludes;
-    
+
     private final Map<String, Filesystem> filesystems;
     private final FileFilesystem fileFilesystem;
-    
+
     public IO() {
         this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
     }
-    
+
     public IO(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
         this.os = os;
         this.settings = settings;
@@ -101,13 +101,13 @@ public class IO {
         this.temp = init("java.io.tmpdir");
         this.home = init("user.home");
         this.working = init("user.dir");
-        
+
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<String>(Arrays.asList(defaultExcludes));
     }
 
     //-- configuration
-    
+
     public Node getHome() {
         return home;
     }
@@ -116,7 +116,7 @@ public class IO {
         this.home = home;
         return this;
     }
-    
+
     /** current working directory */
     public Node getWorking() {
         return working;
@@ -127,7 +127,7 @@ public class IO {
         this.working = working;
         return this;
     }
-    
+
     public FileNode getTemp() {
         return temp;
     }
@@ -136,7 +136,7 @@ public class IO {
         this.temp = temp;
         return this;
     }
-    
+
     public Buffer getBuffer() {
         return buffer;
     }
@@ -153,7 +153,7 @@ public class IO {
 
     public Filter filter() {
         Filter filter;
-        
+
         filter = new Filter();
         filter.exclude(defaultExcludes);
         return filter;
@@ -162,13 +162,13 @@ public class IO {
     public List<String> defaultExcludes() {
         return defaultExcludes;
     }
-    
+
     //-- Node creation
 
     public FileNode file(File file) {
         return file(file.getAbsolutePath());
     }
-    
+
     public FileNode file(String rootPath) {
         URI uri;
         String path;
@@ -199,7 +199,7 @@ public class IO {
         Filesystem fs;
         Node base;
         Node result;
-        
+
         if (uri.isAbsolute()) {
             base = null;
         } else {
@@ -224,11 +224,11 @@ public class IO {
         }
         return result;
     }
-    
+
     // TODO: re-use root?
     public MemoryNode stringNode(String content) {
         MemoryFilesystem memFs;
-        
+
         memFs = getMemoryFilesystem();
         try {
             return (MemoryNode) memFs.root().node("tmp").writeString(content);
@@ -236,7 +236,7 @@ public class IO {
             throw new RuntimeException("unexpected", e);
         }
     }
-    
+
     public MemoryFilesystem getMemoryFilesystem() {
         return getFilesystem(MemoryFilesystem.class);
     }
@@ -248,7 +248,7 @@ public class IO {
     /** @param name must not start with a slash */
     public Node resource(String name) throws IOException {
         List<Node> result;
-        
+
         result = resources(name);
         switch (result.size()) {
         case 0:
@@ -265,7 +265,7 @@ public class IO {
         Enumeration<URL> e;
         List<Node> result;
         Node add;
-        
+
         if (name.startsWith("/")) {
             throw new IllegalArgumentException();
         }
@@ -297,7 +297,7 @@ public class IO {
         String filename;
         int idx;
         ZipNode zip;
-        
+
         protocol = url.getProtocol();
         if ("http".equals(protocol)) {
             fs = (WebdavFilesystem) filesystems.get("http");
@@ -324,7 +324,7 @@ public class IO {
             try {
                 zip = file(filename.substring(0, idx)).openZip();
             } catch (IOException e) {
-                throw new InstantiateException(url.toString() + ": " + e.getMessage(), e);
+                throw new RuntimeException("TODO: " + url.toString() + ": " + e.getMessage(), e);
             }
             filename = filename.substring(idx + 1);
             if (!filename.startsWith("/")) {
@@ -335,12 +335,12 @@ public class IO {
             throw new UnsupportedOperationException(url.toString());
         }
     }
-    
-    //-- 
-    
+
+    //--
+
     public List<Node> path(String path) {
         List<Node> result;
-        
+
         result = new ArrayList<Node>();
         for (String str: Strings.split(os.listSeparator, path)) {
             result.add(node(str));
@@ -350,7 +350,7 @@ public class IO {
 
     public List<Node> classpath(String path) throws IOException {
         List<Node> result;
-        
+
         result = path(path);
         for (Node node : result) {
             node.checkExists();
@@ -358,8 +358,8 @@ public class IO {
         return result;
     }
 
-    //-- 
-    
+    //--
+
     /**
      * Returns the file or directory containing the specified resource.
      */
@@ -382,7 +382,7 @@ public class IO {
     public FileNode locateClasspathItem(Class<?> base, String resourcename) {
         URL url;
         FileNode file;
-        
+
         url = base.getResource(resourcename);
         if (url == null) {
             throw new RuntimeException("no such resource: " + resourcename);
@@ -400,7 +400,7 @@ public class IO {
 
     public FileNode guessProjectHome(Class<?> c) {
         FileNode node;
-        
+
         node = locateClasspathItem(c);
         if (node.isDirectory()) {
             if (node.getName().endsWith("classes")) {
@@ -430,7 +430,7 @@ public class IO {
         FileNode file;
         String protocol;
         int idx;
-        
+
         if (!resourcename.startsWith("/")) {
             throw new IllegalArgumentException("absolute resourcename expected: " + resourcename);
         }
@@ -443,7 +443,7 @@ public class IO {
             }
             file = file(filename.substring(0, filename.length() - resourcename.length()));
         } else if ("jar".equals(protocol)) {
-            // obtaining the jar file follows the code in java.net.JarURLConnection 
+            // obtaining the jar file follows the code in java.net.JarURLConnection
             filename = url.getFile();
             if (!filename.startsWith("file:")) {
                 throw new IllegalArgumentException(filename);
@@ -462,9 +462,9 @@ public class IO {
         }
         return file;
     }
-    
+
     //--
-    
+
     // cannot use Nodes/IO because they're not yet initialized
     public void initFilesystems() throws IOException {
         String descriptor;
@@ -473,7 +473,7 @@ public class IO {
         InputStream src;
         Buffer buffer;
         String content;
-        
+
         descriptor = "META-INF/de/ui/sushi/filesystems";
         buffer = new Buffer();
         enm = getClass().getClassLoader().getResources(descriptor);
@@ -490,11 +490,11 @@ public class IO {
             src.close();
         }
     }
-    
+
     private void initFilesystem(List<String> declaration)  {
         String filesystemClass;
         Class<?> clazz;
-        
+
         filesystemClass = Strings.removeEndOpt(declaration.get(0), "*");
         try {
             clazz = Class.forName(filesystemClass);
@@ -513,17 +513,17 @@ public class IO {
 
     public void addFilesystem(Filesystem filesystem) {
     	String name;
-    	
+
     	name = filesystem.getScheme();
         if (filesystems.containsKey(name)) {
             throw new IllegalArgumentException("duplicate filesystem name: " + name);
         }
         filesystems.put(name, filesystem);
     }
-    
+
     public <T extends Filesystem> T getFilesystem(Class<T> c) {
         T result;
-        
+
         result = lookupFilesystem(c);
         if (result == null) {
             throw new IllegalArgumentException("no such filesystem: " + c.getName());
@@ -539,9 +539,9 @@ public class IO {
         }
         return null;
     }
-    
+
     //--
-    
+
     private FileNode init(String name) {
         String value;
         File file;

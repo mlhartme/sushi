@@ -44,7 +44,7 @@ public class SshNode extends Node {
     private final SshRoot root;
     private final String slashPath;
 
-    public SshNode(SshRoot root, String path) throws JSchException {
+    public SshNode(SshRoot root, String path) {
         if (root == null) {
             throw new IllegalArgumentException();
         }

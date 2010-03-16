@@ -25,35 +25,35 @@ import de.ui.sushi.util.Program;
 
 public class TimeMachineRoot implements Root {
     public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws IOException {
-        return new TimeMachineRoot(fs, 
-                (FileNode) root.join("Backups.backupdb"), 
+        return new TimeMachineRoot(fs,
+                (FileNode) root.join("Backups.backupdb"),
                 (FileNode) root.join(".HFS+ Private Directory Data\r"));
     }
 
     private final TimeMachineFilesystem filesystem;
     private final FileNode root;
     private final FileNode shared;
-    
+
     public TimeMachineRoot(TimeMachineFilesystem filesystem, FileNode root, FileNode shared) throws IOException {
         root.checkDirectory();
         shared.checkDirectory();
-        
+
         this.filesystem = filesystem;
         this.root = root;
         this.shared = shared;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         TimeMachineRoot tm;
-        
+
         if (obj instanceof TimeMachineRoot) {
             tm = (TimeMachineRoot) obj;
             return filesystem == tm.filesystem && root.equals(tm.root) && shared.equals(tm.shared);
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return root.hashCode();
@@ -69,16 +69,16 @@ public class TimeMachineRoot implements Root {
 
     public FileNode resolve(FileNode node) throws IOException {
         String str;
-            
+
         if (node.isFile() && node.length() == 0) {
-            str = new Program(root, "stat", "-c", "%h", node.getFile().getAbsolutePath()).exec().trim();
+            str = root.exec("stat", "-c", "%h", node.getFile().getAbsolutePath()).trim();
             if (str.length() > 1) {
                 return (FileNode) shared.join("dir_" + str);
             }
         }
         return node;
     }
-    
+
     public TimeMachineNode node(String path) {
         FileNode node;
 

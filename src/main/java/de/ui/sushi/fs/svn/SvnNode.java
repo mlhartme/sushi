@@ -40,7 +40,6 @@ import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.SetLastModifiedException;
 import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.io.CheckedByteArrayOutputStream;
-import de.ui.sushi.util.Program;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
@@ -64,7 +63,7 @@ public class SvnNode extends Node {
     private final SvnRoot root;
     private final boolean directory;
     private final String path;
-    
+
     public SvnNode(SvnRoot root, boolean directory, String path) {
         super();
         this.root = root;
@@ -76,12 +75,12 @@ public class SvnNode extends Node {
     public SvnRoot getRoot() {
         return root;
     }
-    
+
     @Override
     public String getPath() {
         return path;
     }
-    
+
     @Override
     public List<SvnNode> list() throws ListException {
         List<SVNDirEntry> lst;
@@ -114,11 +113,11 @@ public class SvnNode extends Node {
             throw new ListException(this, e);
         }
     }
-    
+
     public long getLatestRevision() throws SVNException {
         List<Long> revs;
         SVNDirEntry dir;
-        
+
         if (directory) {
             dir = root.getRepository().getDir(path, -1, false, new ArrayList<Object>());
             return dir.getRevision();
@@ -131,7 +130,7 @@ public class SvnNode extends Node {
     public List<Long> getRevisions() throws SVNException {
         return getRevisions(0);
     }
-    
+
     public List<Long> getRevisions(long start) throws SVNException {
         return getRevisions(start, root.getRepository().getLatestRevision());
     }
@@ -139,7 +138,7 @@ public class SvnNode extends Node {
     public List<Long> getRevisions(long start, long end) throws SVNException {
         Collection<SVNFileRevision> revisions;
         List<Long> result;
-        
+
         revisions = (Collection<SVNFileRevision>) root.getRepository().getFileRevisions(path, null, start, end);
         result = new ArrayList<Long>();
         for (SVNFileRevision rev : revisions) {
@@ -148,7 +147,7 @@ public class SvnNode extends Node {
         return result;
     }
 
-    @Override 
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -157,8 +156,8 @@ public class SvnNode extends Node {
     public void setMode(int mode) {
         throw unsupported("setMode()");
     }
-    
-    @Override 
+
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -168,7 +167,7 @@ public class SvnNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }
@@ -182,7 +181,7 @@ public class SvnNode extends Node {
     public InputStream createInputStream() throws IOException {
         FileNode tmp;
         OutputStream dest;
-        
+
         tmp = getIO().getTemp().createTempFile();
         dest = tmp.createOutputStream();
         try {
@@ -193,7 +192,7 @@ public class SvnNode extends Node {
         dest.close();
         return tmp.createInputStream();
     }
-    
+
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
         byte[] add;
@@ -234,17 +233,17 @@ public class SvnNode extends Node {
         }
         return this;
     }
-    
-    /** @return revision */ 
+
+    /** @return revision */
     public long delete(String comment) throws SVNException {
         SVNCommitClient client;
         SVNCommitInfo info;
-        
+
         client = root.getClientMananger().getCommitClient();
         info = client.doDelete(new SVNURL[] { getSvnurl() }, comment);
         return info.getNewRevision();
     }
-    
+
     @Override
     public Node mkdir() throws MkdirException {
         SVNCommitClient client;
@@ -267,14 +266,14 @@ public class SvnNode extends Node {
     public String readLink() {
         throw unsupported("readLink()");
     }
-    
+
     public long load(OutputStream dest) throws SVNException, FileNotFoundException {
         return load(root.getRepository().getLatestRevision(), dest);
     }
 
     public long load(long revision, OutputStream dest) throws FileNotFoundException, SVNException {
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         if (repository.checkPath(path, revision) != SVNNodeKind.FILE) {
             throw new FileNotFoundException("no such file: " + path + ", revision " + revision);
@@ -290,10 +289,10 @@ public class SvnNode extends Node {
             throw new ExistsException(this, e);
         }
     }
-    
+
     public boolean exists(long revision) throws SVNException {
         SVNNodeKind kind;
-        
+
         kind = root.getRepository().checkPath(path, revision);
         return kind == SVNNodeKind.FILE || kind == SVNNodeKind.DIR;
     }
@@ -311,7 +310,7 @@ public class SvnNode extends Node {
             throw new LengthException(this, e);
         }
     }
-    
+
     @Override
     public boolean isFile() throws ExistsException {
         return kind() == SVNNodeKind.FILE;
@@ -326,10 +325,10 @@ public class SvnNode extends Node {
     public boolean isLink() {
     	return false;
     }
-    
+
     private SVNNodeKind kind() throws ExistsException {
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         try {
             return repository.checkPath(path, repository.getLatestRevision());
@@ -362,14 +361,14 @@ public class SvnNode extends Node {
     public void setLastModified(long millis) throws SetLastModifiedException {
         throw new SetLastModifiedException(this);
     }
-    
+
 
     /** @return revision */
     public long save(byte[] content, String comment) throws SVNException {
         return save(new ByteArrayInputStream(content), comment);
     }
-    
-    /** @return revision */ 
+
+    /** @return revision */
     public long save(InputStream content, String comment) throws SVNException {
     	// does NOT use the CommitClient, because the commit client needs a physical file
         boolean exists;
@@ -378,7 +377,7 @@ public class SvnNode extends Node {
         SVNDeltaGenerator deltaGenerator;
         String checksum;
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         try {
             exists = exists();
@@ -401,9 +400,9 @@ public class SvnNode extends Node {
         info = editor.closeEdit();
         return info.getNewRevision();
     }
-    
+
     //--
-    
+
     // TODO
     private String doJoin(String left, String right) {
         if (left.length() == 0) {
@@ -414,7 +413,7 @@ public class SvnNode extends Node {
 
     public long export(Node dest) throws IOException, SVNException {
         long latest;
-        
+
         latest = getLatestRevision();
         export(dest, latest);
         return latest;
@@ -424,7 +423,7 @@ public class SvnNode extends Node {
         Exporter exporter;
         SVNRepository sub;
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         this.checkDirectory();
         dest.checkDirectory();
@@ -438,21 +437,21 @@ public class SvnNode extends Node {
         }
         sub.update(revision, "", true, exporter, exporter);
     }
-    
+
     // --
 
     /** @param viewvc may be null */
     public String changelog(long startRevision, String viewvc) throws SVNException {
         StringBuilder result;
-        
+
         result = new StringBuilder();
         changelog(startRevision, viewvc, result);
         return result.toString();
     }
-    
+
     /**
      *  @param viewvc may be null
-     *  @return revision 
+     *  @return revision
      */
     public long changelog(long startRevision, String viewvc, StringBuilder result) throws SVNException {
         return changelog(startRevision, root.getRepository().getLatestRevision(), false, viewvc, result);
@@ -460,11 +459,11 @@ public class SvnNode extends Node {
 
     /**
      * @param viewvc may be null
-     * @return revision of last change 
+     * @return revision of last change
      */
     public long changelog(long startRevision, long endRevision, boolean strictNodes, String viewvc, StringBuilder result) throws SVNException {
         Collection<SVNLogEntry> changeset;
-        
+
         changeset = queryChanges(startRevision, endRevision, strictNodes);
         report(viewvc, changeset, result);
         return getRevision(changeset);
@@ -472,17 +471,17 @@ public class SvnNode extends Node {
 
     private long getRevision(Collection<SVNLogEntry> entries) {
         long revision;
-        
+
         revision = 0;
         for (SVNLogEntry logEntry : entries) {
             revision = Math.max(revision, logEntry.getRevision());
         }
         return revision;
     }
-    
+
     private Collection<SVNLogEntry> queryChanges(long startRevision, long endRevision, boolean strictNodes) throws SVNException {
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         if (startRevision > endRevision) {
             // empty log - might happen if "last deployed revision + 1" is passed to this function
@@ -496,7 +495,7 @@ public class SvnNode extends Node {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SVNLogEntryPath entryPath;
         String path;
-        
+
         if (viewvc != null && viewvc.endsWith("/")) {
             throw new IllegalArgumentException(viewvc);
         }
@@ -507,7 +506,7 @@ public class SvnNode extends Node {
                 entryPath = (SVNLogEntryPath) entry.getChangedPaths().get(key);
                 path = getPath(entryPath);
                 if (path == null) {
-                    // file outside this directory that was modified in this change 
+                    // file outside this directory that was modified in this change
                 } else {
                     dest.append("  " + entryPath.getType() + " " + toDiff(viewvc, path, entry.getRevision()));
                     dest.append('\n');
@@ -518,12 +517,12 @@ public class SvnNode extends Node {
             dest.append("\n\n");
         }
     }
-    
+
     private String getPath(SVNLogEntryPath entryPath) {
         String result;
         String path;
         int idx;
-        
+
         result = entryPath.getPath();
         if (!result.startsWith("/")) {
             throw new IllegalArgumentException(result);
@@ -543,7 +542,7 @@ public class SvnNode extends Node {
         }
         return result;
     }
-    
+
     /** @param viewvc may be null */
     private String toDiff(String viewvc, String path, long revision) {
         if (path.startsWith("/")) {
@@ -557,19 +556,19 @@ public class SvnNode extends Node {
     }
 
     //--
-    
+
     public String checkWorkspace(FileNode basedir, boolean checkRemote) throws SVNException {
         final List<String> local;
         final List<String> remote;
         StringBuilder message;
         SVNClientManager manager;
         SVNRepository repository;
-        
+
         repository = root.getRepository();
         local = new ArrayList<String>();
         remote = new ArrayList<String>();
         manager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), repository.getAuthenticationManager());
-        manager.getStatusClient().doStatus(basedir.getFile(), true /* recursive */, checkRemote, 
+        manager.getStatusClient().doStatus(basedir.getFile(), true /* recursive */, checkRemote,
                     true /* report all */, false /* includeIgnored */, false /* collect parent externals */, new ISVNStatusHandler() {
                         public void handleStatus(SVNStatus status) throws SVNException {
                             SVNStatusType s;
@@ -606,29 +605,26 @@ public class SvnNode extends Node {
         }
         return null;
     }
-    
+
     //--
 
     public SVNURL getSvnurl() throws SVNException {
         return root.getRepository().getLocation().appendPath(path, true);
     }
-    
+
     public static SvnNode fromWorkspace(FileNode workspace) throws LocatorException, IOException {
         return (SvnNode) workspace.getIO().node("svn:" + urlFromWorkspace(workspace));
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {
-        String url;
-
         workspace.join(".svn").checkExists();
-        url = new Program(workspace, "svn", "info").exec();
-        return extract(url, "URL:");
+        return extract(workspace.exec("svn", "info"), "URL:");
     }
 
     private static String extract(String str, String key) throws IOException {
         int start;
         int end;
- 
+
         start = str.indexOf(key);
         if (start == - 1) {
             throw new IOException("missing " + key + " in " + str);

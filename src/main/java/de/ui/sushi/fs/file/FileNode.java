@@ -216,7 +216,7 @@ public class FileNode extends Node {
     @Override
     public String readLink() throws ReadLinkException {
     	try {
-			return new Program(getIO().getTemp(), "readlink", file.getAbsolutePath()).exec().trim();
+		    return getIO().getTemp().exec("readlink", file.getAbsolutePath()).trim();
 		} catch (IOException e) {
 			throw new ReadLinkException(this, e);
 		}

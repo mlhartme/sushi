@@ -3,6 +3,12 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.0.2" date="?">
+      <action dev="mlhartme" type="update">
+        IO.resources() now throws an IllegalStateException for duplicate classpath items.
+      </action>
+      <action dev="mlhartme" type="remove">
+        Dump IO.node(URL), use URI method instead.
+      </action>
       <action dev="mlhartme" type="remove">
         Dump instantiate exception, it's no longer needed because Node construction can no longer fail.
       </action>

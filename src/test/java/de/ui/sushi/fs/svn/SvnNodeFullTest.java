@@ -39,19 +39,6 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 public class SvnNodeFullTest extends NodeTest {
     private static SVNURL URL;
 
-    public static void main(String[] args) throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        io.getFilesystem(SvnFilesystem.class).setCredentials("pfixpublisher", "pfixpublisher");
-        node = (SvnNode) io.node("svn:https://svn.schlund.de/svn/PFXUI/branches/before-0.13");
-        node = node.getParent();
-        System.out.println("node: " + node + " " + node.getName());
-        node = node.getParent();
-        System.out.println("node: " + node + " " + node.getName());
-    }
-
     @BeforeClass
     public static void setUpClass() throws Exception {
         Node repo;

@@ -260,8 +260,21 @@ public class IO {
         }
     }
 
-    /** @param name must not start with a slash */
+    /**
+     * Throws an IllegalStateException is the classpath contains duplicate items
+     * @param name must not start with a slash
+     */
     public List<Node> resources(String name) throws IOException {
+        return resources(name, true);
+    }
+
+    /** @param name must not start with a slash */
+    public List<Node> resourcesUnchecked(String name) throws IOException {
+        return resources(name, false);
+    }
+
+    /** @param name must not start with a slash */
+    private List<Node> resources(String name, boolean rejectDuplicates) throws IOException {
         Enumeration<URL> e;
         List<Node> result;
         Node add;
@@ -272,68 +285,20 @@ public class IO {
         e = getClass().getClassLoader().getResources(name);
         result = new ArrayList<Node>();
         while (e.hasMoreElements()) {
-            add = node(e.nextElement());
+            try {
+                add = node(e.nextElement().toURI());
+            } catch (URISyntaxException ex) {
+                throw new IllegalStateException(ex);
+            }
             if (result.contains(add)) {
-                System.out.println("duplicate classpath item: " + add);
+                if (rejectDuplicates) {
+                    throw new IllegalStateException("duplicate classpath item: " + add);
+                }
             } else {
                 result.add(add);
             }
         }
         return result;
-    }
-
-    /**
-     * TODO
-     *
-     * Returns a File from a given location.
-     *
-     * @param url the given location of the file
-     *
-     * @return the file
-     */
-    public Node node(URL url) {
-        String protocol;
-        WebdavFilesystem fs;
-        String filename;
-        int idx;
-        ZipNode zip;
-
-        protocol = url.getProtocol();
-        if ("http".equals(protocol)) {
-            fs = (WebdavFilesystem) filesystems.get("http");
-            return fs.root(url).node(url.getPath().substring(1));
-        } else if ("https".equals(protocol)) {
-            fs = (WebdavFilesystem) filesystems.get("https");
-            return fs.root(url).node(url.getPath().substring(1));
-        } else if ("file".equals(protocol)) {
-            try {
-                return file(new File(url.toURI()));
-            } catch (URISyntaxException e1) {
-                throw new RuntimeException(e1);
-            }
-        } else if (url.getProtocol().equals("jar")) {
-            filename = url.getFile();
-            if (!filename.startsWith("file:")) {
-                throw new IllegalArgumentException(filename);
-            }
-            filename = filename.substring(5);
-            idx = filename.indexOf("!/");
-            if (idx == -1) {
-                throw new RuntimeException("'!/' not found: " + filename);
-            }
-            try {
-                zip = file(filename.substring(0, idx)).openZip();
-            } catch (IOException e) {
-                throw new RuntimeException("TODO: " + url.toString() + ": " + e.getMessage(), e);
-            }
-            filename = filename.substring(idx + 1);
-            if (!filename.startsWith("/")) {
-                throw new IllegalArgumentException(filename);
-            }
-            return zip.join(filename.substring(1));
-        } else {
-            throw new UnsupportedOperationException(url.toString());
-        }
     }
 
     //--
@@ -436,7 +401,11 @@ public class IO {
         }
         protocol = url.getProtocol();
         if ("file".equals(protocol)) {
-            file = (FileNode) node(url);
+            try {
+                file = (FileNode) node(url.toURI());
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException(e);
+            }
             filename = file.getAbsolute();
             if (!filename.endsWith(resourcename.replace('/', File.separatorChar))) {
                 throw new RuntimeException("classname not found in file url: " + filename + " " + resourcename);
@@ -445,18 +414,12 @@ public class IO {
         } else if ("jar".equals(protocol)) {
             // obtaining the jar file follows the code in java.net.JarURLConnection
             filename = url.getFile();
-            if (!filename.startsWith("file:")) {
-                throw new IllegalArgumentException(filename);
-            }
+            filename = Strings.removeStart(filename, "file:");
             idx = filename.indexOf("!/");
             if (idx == -1) {
                 throw new RuntimeException("!/ not found: " + filename);
             }
-            try {
-                file = (FileNode) node(new URL(filename.substring(0, idx)));
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(filename, e);
-            }
+            file = file(filename.substring(0, idx));
         } else {
             throw new RuntimeException("protocol not supported: " + protocol);
         }

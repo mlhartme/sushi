@@ -92,7 +92,7 @@ public class IOTest {
         IO io;
 
         io = new IO();
-        uri = new URI("http://foo.bar:1234/foo");
+        uri = new URI("http://foo.bar/foo");
         node = io.node(uri);
         assertTrue(node instanceof WebdavNode);
         assertEquals("foo", node.getPath());

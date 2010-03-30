@@ -19,6 +19,8 @@ package de.ui.sushi.fs.webdav;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -78,38 +80,33 @@ public class WebdavFilesystem extends Filesystem {
     }
 
     @Override
-    public WebdavRoot root(String root) throws RootPathException {  // TODO
-        URL url;
-
+    public WebdavRoot root(String root) {
         try {
-            url = new URL(getScheme() + "://" + root + "/");
-        } catch (MalformedURLException e) {
-            throw new RootPathException(e);
+            return root(new URI(getScheme(), root, "/", null));
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(root, e);
         }
-        return root(url);
     }
 
-    public WebdavRoot root(URL url) {
+    public WebdavRoot root(URI uri) {
         WebdavRoot result;
         String info;
         int port;
 
-        if (url.getRef() != null) {
-            throw new IllegalArgumentException(url.toString());
+        if (uri.getFragment() != null) {
+            throw new IllegalArgumentException(uri.toString());
         }
-        if (url.getQuery() != null) {
-            throw new IllegalArgumentException(url.toString());
+        if (uri.getQuery() != null) {
+            throw new IllegalArgumentException(uri.toString());
         }
         // ignores url.getPath()
-        port = url.getPort();
+        port = uri.getPort();
         if (port == -1) {
-        	port = "https".equals(url.getProtocol()) ? 443 : 80;
+        	port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
-        result = new WebdavRoot(this, url.getProtocol(), url.getHost(), port);
-        info = url.getUserInfo();
+        result = new WebdavRoot(this, uri.getScheme(), uri.getHost(), port);
+        info = uri.getUserInfo();
         if (info != null) {
-        	// TODO
-        	info = info.replace('$', '@');
             result.setUserInfo(info);
         }
         return result;

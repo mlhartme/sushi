@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import de.ui.sushi.TestProperties;
@@ -35,7 +36,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     @Test
     public void normal() throws IOException {
         WebdavNode node;
-    
+
         node = (WebdavNode) IO.node("http://englishediting.de/index.html");
         assertTrue(node.isFile());
         assertTrue(node.exists());
@@ -49,7 +50,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     public void node() throws IOException {
         String url;
         WebdavNode node;
-    
+
         url = "http://englishediting.de/index.html";
         node = (WebdavNode) IO.node(url);
         assertEquals("index.html", node.getPath());

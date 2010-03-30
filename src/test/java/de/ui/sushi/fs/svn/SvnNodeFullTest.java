@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.LocatorException;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeTest;

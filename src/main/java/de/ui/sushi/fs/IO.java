@@ -402,7 +402,7 @@ public class IO {
         protocol = url.getProtocol();
         if ("file".equals(protocol)) {
             try {
-                file = (FileNode) node(url.toURI());
+                file = file(new File(url.toURI()));
             } catch (URISyntaxException e) {
                 throw new IllegalStateException(e);
             }

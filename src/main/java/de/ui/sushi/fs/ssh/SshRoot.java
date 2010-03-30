@@ -33,9 +33,12 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
+// TODO: dump UserInfo interface?
 public class SshRoot implements Root, UserInfo, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
+
+    /** TODO: replace by my own Identity implementation  (IdentityFile is not public ...) */
     private final FileNode privateKey;
     private final String passphrase;
     private final String host;

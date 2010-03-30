@@ -17,6 +17,7 @@
 
 package de.ui.sushi.metadata.simpletypes;
 
+import de.ui.sushi.cli.ArgumentException;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.RootPathException;
@@ -47,7 +48,7 @@ public class NodeType extends SimpleType {
         try {
             return io.node(str);
         } catch (RootPathException e) {
-            throw new IllegalArgumentException(str, e);
+            throw new ArgumentException(str, e);
         }
     }
 }

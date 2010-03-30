@@ -17,6 +17,7 @@
 
 package de.ui.sushi.fs.timemachine;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import de.ui.sushi.fs.*;
@@ -49,7 +50,9 @@ public class TimeMachineFilesystem extends Filesystem {
         }
         try {
             return TimeMachineRoot.create(this, (FileNode) dir);
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new RootPathException(e);
+        } catch (ExistsException e) {
             throw new RootPathException(e);
         }
     }

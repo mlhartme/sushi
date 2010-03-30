@@ -43,7 +43,7 @@ public class FileFilesystem extends Filesystem {
     @Override
     public FileRoot root(String authority) throws RootPathException {
         if (authority != null) {
-            throw new RootPathException("invalid root: " + authority);
+            throw new RootPathException("invalid root: unexpected authority " + authority);
         }
         if (roots.length != 1) {
             throw new UnsupportedOperationException("TODO");

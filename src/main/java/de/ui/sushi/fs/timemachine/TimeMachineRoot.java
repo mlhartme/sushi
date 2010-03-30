@@ -17,14 +17,16 @@
 
 package de.ui.sushi.fs.timemachine;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import de.ui.sushi.fs.ExistsException;
 import de.ui.sushi.fs.Root;
 import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.util.Program;
 
 public class TimeMachineRoot implements Root {
-    public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws IOException {
+    public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {
         return new TimeMachineRoot(fs,
                 (FileNode) root.join("Backups.backupdb"),
                 (FileNode) root.join(".HFS+ Private Directory Data\r"));
@@ -34,7 +36,7 @@ public class TimeMachineRoot implements Root {
     private final FileNode root;
     private final FileNode shared;
 
-    public TimeMachineRoot(TimeMachineFilesystem filesystem, FileNode root, FileNode shared) throws IOException {
+    public TimeMachineRoot(TimeMachineFilesystem filesystem, FileNode root, FileNode shared) throws ExistsException, FileNotFoundException {
         root.checkDirectory();
         shared.checkDirectory();
 

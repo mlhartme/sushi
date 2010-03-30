@@ -325,8 +325,8 @@ public abstract class Node {
 
     /**
      * Reads all bytes of the node.
-     * 
-     * Default implementation that works for all nodes: reads the file in chunks and builds the result in memory. 
+     *
+     * Default implementation that works for all nodes: reads the file in chunks and builds the result in memory.
      * Derived classes should override it if they can provide a more efficient implementation, e.g. by determining
      * the length first if getting the length is cheap.
      *
@@ -411,7 +411,7 @@ public abstract class Node {
         return this;
     }
 
-    public Node checkDirectory() throws IOException {
+    public Node checkDirectory() throws ExistsException, FileNotFoundException {
         if (isDirectory()) {
             return this;
         }
@@ -422,7 +422,7 @@ public abstract class Node {
         }
     }
 
-    public Node checkFile() throws IOException {
+    public Node checkFile() throws ExistsException, FileNotFoundException {
         if (isFile()) {
             return this;
         }

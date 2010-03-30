@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import de.ui.sushi.fs.LocatorException;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeTest;
 import de.ui.sushi.fs.RootPathException;
@@ -75,7 +74,7 @@ public class SvnNodeFullTest extends NodeTest {
         assertEquals("work", work.getPath());
     }
 
-    @Test(expected=LocatorException.class)
+    @Test(expected=RootPathException.class)
     public void connectionRefused() throws IOException {
         create("https://heise.de/svn");
     }

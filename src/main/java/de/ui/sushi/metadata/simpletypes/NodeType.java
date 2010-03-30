@@ -19,18 +19,19 @@ package de.ui.sushi.metadata.simpletypes;
 
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.metadata.Schema;
 import de.ui.sushi.metadata.SimpleType;
 
 public class NodeType extends SimpleType {
     private final IO io;
-    
+
     public NodeType(Schema schema, IO io) {
         super(schema, Node.class, "node");
-        
+
         this.io = io;
     }
-    
+
     @Override
     public Object newInstance() {
         return io.getWorking();
@@ -40,9 +41,13 @@ public class NodeType extends SimpleType {
     public String valueToString(Object obj) {
         return obj.toString();
     }
-    
+
     @Override
     public Object stringToValue(String str) {
-        return io.node(str);
+        try {
+            return io.node(str);
+        } catch (RootPathException e) {
+            throw new IllegalArgumentException(str, e);
+        }
     }
 }

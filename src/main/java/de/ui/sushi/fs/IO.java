@@ -182,19 +182,21 @@ public class IO {
             }
             return (FileNode) node(new URI(uri.getScheme(), uri.getAuthority(), path, uri.getFragment()));
         } catch (URISyntaxException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
+        } catch (RootPathException e) {
+            throw new IllegalStateException(e);
         }
     }
 
-    public Node node(String locatorOrDot) throws LocatorException {
+    public Node node(String locatorOrDot) throws RootPathException {
         try {
             return node(new URI(locatorOrDot));
         } catch (URISyntaxException e) {
-            throw new LocatorException(locatorOrDot, e.getMessage(), e);
+            throw new RootPathException(locatorOrDot + ":" + e.getMessage());
         }
     }
 
-    public Node node(URI uri) {
+    public Node node(URI uri) throws RootPathException {
         String scheme;
         Filesystem fs;
         Node base;
@@ -212,13 +214,9 @@ public class IO {
         }
         fs = filesystems.get(scheme);
         if (fs == null) {
-            throw new LocatorException(uri.toString(), "unkown scheme: " + scheme);
+            throw new RootPathException(uri.toString() + ": unkown scheme: " + scheme);
         }
-        try {
-            result = fs.node(uri);
-        } catch (RootPathException e) {
-            throw new LocatorException(uri.toString(), e.getMessage(), e);
-        }
+        result = fs.node(uri);
         if (base != null) {
             result.setBase(base);
         }
@@ -303,7 +301,7 @@ public class IO {
 
     //--
 
-    public List<Node> path(String path) {
+    public List<Node> path(String path) throws RootPathException {
         List<Node> result;
 
         result = new ArrayList<Node>();

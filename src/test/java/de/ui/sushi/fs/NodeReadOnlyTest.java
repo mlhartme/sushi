@@ -30,13 +30,13 @@ import de.ui.sushi.io.OS;
 
 public abstract class NodeReadOnlyTest {
     protected static final IO IO = new IO(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*");
-    
+
     /** creates a new empty directory */
     protected abstract Node createWork() throws IOException;
 
     protected Node work;
     protected String sep;
-    
+
     @Before
     public void setUp() throws Exception {
         work = createWork();
@@ -48,7 +48,7 @@ public abstract class NodeReadOnlyTest {
         String locator;
         Node again;
         Filesystem fs;
-        
+
         fs = work.getRoot().getFilesystem();
         locator = work.getLocator();
         assertEquals(locator, work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getLocator());
@@ -61,7 +61,7 @@ public abstract class NodeReadOnlyTest {
     public void rootCreatesNodeWithoutBase() throws Exception {
         assertNull(work.getRoot().node("foo").getBase());
     }
-    
+
     @Test
     public void base() throws Exception {
         Node node;
@@ -72,7 +72,7 @@ public abstract class NodeReadOnlyTest {
         assertEquals(work, node.getBase());
     }
 
-    //@Test(expected=LocatorException.class)
+    //@Test(expected=RootPathException.class)
     @Ignore
     public void headingSlash() throws Exception {
         Filesystem fs;
@@ -83,10 +83,10 @@ public abstract class NodeReadOnlyTest {
         fs.getIO().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
     }
 
-    @Test(expected=LocatorException.class)
+    @Test(expected=RootPathException.class)
     public void tailingSlash() throws Exception {
         Filesystem fs;
-        
+
         fs = work.getRoot().getFilesystem();
         work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath() + fs.getSeparator());
     }
@@ -94,7 +94,7 @@ public abstract class NodeReadOnlyTest {
     @Test
     public void rootCreatedNodeWithoutBase() throws Exception {
         Node node;
-        
+
         node = work.getRoot().node("foo");
         assertNull(node.getBase());
     }

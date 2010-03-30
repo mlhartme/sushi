@@ -55,7 +55,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void setWorking() {
+    public void setWorking() throws Exception {
         final String FILE = "file";
         IO io;
         Node file;

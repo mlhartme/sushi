@@ -46,14 +46,14 @@ public class IOTest {
     private static Root fs(IO io) {
         return io.getWorking().getRoot();
     }
-    
+
     //-- filesystems
 
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void filesystemDuplicate() throws IOException {
         IO io = new IO();
-        
+
         io.addFilesystem(new FileFilesystem(io, "file"));
         io.addFilesystem(new FileFilesystem(io, "file"));
     }
@@ -62,7 +62,7 @@ public class IOTest {
     public void filesystemParse() throws IOException {
         Node node;
         IO io;
-        
+
         io = new IO();
         node = io.node("file:/usr");
         assertEquals("usr", node.getPath());
@@ -74,23 +74,23 @@ public class IOTest {
         node = io.node("mem://1/foo");
         assertTrue(node instanceof MemoryNode);
     }
-    
+
     @Test
     public void file() throws IOException {
         IO io;
-        
+
         io = new IO();
         assertEquals("/foo", io.file("/foo").getFile().getPath());
         assertEquals("/foo", io.file("/foo/").getFile().getPath());
         assertEquals("/", io.file("/").getFile().getPath());
     }
-    
+
     @Test
     public void nodeForUri() throws IOException, URISyntaxException {
         URI uri;
         Node node;
         IO io;
-        
+
         io = new IO();
         uri = new URI("http://foo.bar:1234/foo");
         node = io.node(uri);
@@ -110,12 +110,12 @@ public class IOTest {
     }
 
     //--
-    
+
     @Test
     public void nodeRoot() throws IOException {
         IO io;
         Node node;
-        
+
         io = new IO();
         node = io.node(fs(io).getId());
         assertEquals("", node.getName());
@@ -125,7 +125,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeAbsolute() {
+    public void nodeAbsolute() throws Exception {
         IO io;
         Node node;
 
@@ -139,7 +139,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeAbsoluteSubdir() {
+    public void nodeAbsoluteSubdir() throws Exception {
         IO io;
         Node node;
 
@@ -152,12 +152,12 @@ public class IOTest {
         assertEquals(fs(io).getId() + "x" + fs(io).getFilesystem().getSeparator() + "y", node.toString());
     }
 
-    
+
     @Ignore
-    public void nodeRelative() {
+    public void nodeRelative() throws RootPathException {
         IO io;
         Node node;
-        
+
         io = new IO();
         node = io.node("a");
         assertNotNull(node.getBase());
@@ -167,7 +167,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeDot() {
+    public void nodeDot() throws RootPathException {
         IO io;
         Node dot;
 
@@ -179,7 +179,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeEmpty() {
+    public void nodeEmpty() throws RootPathException {
         IO io;
 
         io = new IO();
@@ -189,10 +189,10 @@ public class IOTest {
     //
 
     @Ignore
-    public void path() {
+    public void path() throws RootPathException {
         IO io;
         List<Node> path;
-        
+
         io = new IO();
         assertEquals(0, io.path("").size());
         path = io.path("foo" + io.os.listSeparator + fs(io).getId() + "bar");
@@ -212,7 +212,7 @@ public class IOTest {
     @Test
     public void locate() throws IOException {
         IO io;
-        
+
         io = new IO();
         io.locateClasspathItem(IO.class).checkDirectory();
         io.locateClasspathItem(Reflect.resourceName(IOTest.class)).checkDirectory();
@@ -230,17 +230,17 @@ public class IOTest {
     }
 
     //--
-    
+
     @Test
     public void fileResource() throws Exception {
         Node node;
-        
+
         node = new IO().resource("testresource");
         assertTrue(node instanceof FileNode);
         assertTrue(node.isFile());
         assertEquals("hello", node.readString());
     }
-    
+
     @Test
     public void zipResource() throws Exception {
         Node node;
@@ -250,7 +250,7 @@ public class IOTest {
         assertTrue(node.isFile());
         assertEquals(node.length(), node.readBytes().length);
     }
-    
+
     @Test(expected=FileNotFoundException.class)
     public void noneExisting() throws Exception {
         new IO().resource("nosuchresource");
@@ -261,13 +261,13 @@ public class IOTest {
         new IO().resource("/absolute");
     }
 
-    
+
     //--
-    
+
     @Test
     public void locateRuntime() throws IOException {
         IO io;
-        
+
         io = new IO();
         io.locateClasspathItem("/java/lang/Object.class").checkExists();
     }
@@ -275,7 +275,7 @@ public class IOTest {
     @Test
     public void locateFromJar() throws IOException {
         IO io;
-        
+
         io = new IO();
         io.locateClasspathItem("/org/junit/Test.class").checkExists();
     }
@@ -290,7 +290,7 @@ public class IOTest {
         IO io;
         FileNode home;
         String name;
-        
+
         io = new IO();
         home = io.guessProjectHome(clazz);
         assertNotNull(home);

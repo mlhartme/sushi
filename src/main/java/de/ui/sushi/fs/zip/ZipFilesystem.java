@@ -40,11 +40,7 @@ public class ZipFilesystem extends Filesystem {
         Node jar;
 
         fileUri = fileUri.substring(0, fileUri.length() - ZIP_SEPARATOR.length());
-        try {
-            jar = getIO().node(fileUri);
-        } catch (LocatorException e) {
-            throw new RootPathException(e);
-        }
+        jar = getIO().node(fileUri);
         if (!(jar instanceof FileNode)) {
             throw new RootPathException("file node expected: " + fileUri);
         }

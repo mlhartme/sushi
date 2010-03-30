@@ -42,7 +42,7 @@ public class ParserTest {
     public void empty() {
         Parser parser;
         Empty empty;
-        
+
         parser = Parser.create(METADATA, Empty.class);
         empty = new Empty();
         parser.run(empty);
@@ -61,12 +61,12 @@ public class ParserTest {
     }
 
     @Test
-    public void values() {
+    public void values() throws Exception {
         Parser parser;
         Values values;
-        
+
         parser = Parser.create(METADATA, Values.class);
-        
+
         values = new Values();
         try {
             parser.run(values);
@@ -97,19 +97,19 @@ public class ParserTest {
         assertEquals(IO_OBJ.node("third"), values.remaining.get(0));
         assertEquals(IO_OBJ.node("forth"), values.remaining.get(1));
     }
-    
+
     @Test
     public void options() {
         Parser parser;
         Options options;
-        
+
         parser = Parser.create(METADATA, Options.class);
         options = new Options();
         parser.run(options);
         assertEquals(0, options.first);
         assertNull(options.second);
         assertFalse(options.third);
-        
+
         options = new Options();
         assertSame(options, parser.run(options, "-first", "1"));
         assertEquals(1, options.first);
@@ -158,13 +158,13 @@ public class ParserTest {
             assertTrue(e.getMessage(), e.getMessage().contains("expected integer"));
         }
     }
-    
+
     @Test
     public void children() {
         Parser parser;
         Children children;
         ChildObject child;
-        
+
         children = new Children();
         parser = Parser.create(METADATA, Children.class);
         child = (ChildObject) parser.run(children, "a");
@@ -177,13 +177,13 @@ public class ParserTest {
         assertEquals("b", child.name);
         assertEquals(Arrays.asList("1", "2"), child.remaining);
     }
-    
+
     @Test
     public void childAndValue() {
         Parser parser;
         ChildAndValue instance;
         ChildObject child;
-        
+
         parser = Parser.create(METADATA, ChildAndValue.class);
         instance = new ChildAndValue();
         child = (ChildObject) parser.run(instance, "a");
@@ -194,18 +194,18 @@ public class ParserTest {
         assertSame(instance, parser.run(instance, "b"));
         assertEquals("b", instance.b);
    }
-    
+
     //-- various defining classes
-    
+
     public static class Empty {
     }
 
     public static class Options {
         @Option("first")
         private int first;
-        
+
         public String second;
-        
+
         @Option("second")
         public void node(String second) {
             this.second = second;
@@ -220,7 +220,7 @@ public class ParserTest {
         @Value(name = "second", position = 2)
         public String second;
         public List<Node> remaining = new ArrayList<Node>();
-        
+
         @Value(name = "first", position = 1)
         public void first(Node first) {
             this.first = first;
@@ -253,21 +253,21 @@ public class ParserTest {
         @Value(name = "b", position = 1)
         public String b;
     }
-    
+
     public static class ChildObject {
         public final String name;
         public final List<String> remaining;
-        
+
         public ChildObject(String name) {
             this.name = name;
             this.remaining = new ArrayList<String>();
         }
-        
+
         @Remaining(name = "remaining")
         public void remaining(String str) {
             remaining.add(str);
         }
-        
+
         public void invoke() {
         }
     }

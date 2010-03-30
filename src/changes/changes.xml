@@ -10,14 +10,17 @@
         Dump IO.node(URL), use URI method instead.
       </action>
       <action dev="mlhartme" type="remove">
-        Dump instantiate exception, it's no longer needed because Node construction can no longer fail.
+        Dump InstantiateException, it's no longer needed because Node construction can no longer fail.
+      </action>
+      <action dev="mlhartme" type="update">
+        Dump LocatorException, RootPathException is thrown instead. As a consequence, IO.node throws a RootPathException now.
       </action>
       <action dev="mlhartme" type="update">
         Replaced LineProcessor by LineReader which is easier to use and allows to easily read lines without trimmed separators.
         Dumped LineCollector.
       </action>
       <action dev="mlhartme" type="add">
-        Node.writeStrings() and appendStrings that take multiple string arguments.
+        Node.writeStrings() and appendStrings added that take multiple string arguments.
       </action>
       <action dev="mlhartme" type="add">
         LineProcessor: changed boolean trim parameter to enum with values NOTHING, SEPARATOR (was false) and ALL (was true).

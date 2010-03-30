@@ -34,7 +34,6 @@ import de.ui.sushi.fs.ExistsException;
 import de.ui.sushi.fs.GetLastModifiedException;
 import de.ui.sushi.fs.LengthException;
 import de.ui.sushi.fs.ListException;
-import de.ui.sushi.fs.LocatorException;
 import de.ui.sushi.fs.MkdirException;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.SetLastModifiedException;
@@ -610,7 +609,7 @@ public class SvnNode extends Node {
         return root.getRepository().getLocation().appendPath(path, true);
     }
 
-    public static SvnNode fromWorkspace(FileNode workspace) throws LocatorException, IOException {
+    public static SvnNode fromWorkspace(FileNode workspace) throws IOException {
         return (SvnNode) workspace.getIO().node("svn:" + urlFromWorkspace(workspace));
     }
 

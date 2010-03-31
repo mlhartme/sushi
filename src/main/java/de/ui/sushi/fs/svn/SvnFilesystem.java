@@ -49,7 +49,7 @@ public class SvnFilesystem extends Filesystem {
         this.password = null;
     }
 
-    public Node node(URI uri) throws RootPathException {
+    public SvnNode node(URI uri) throws RootPathException {
         String schemeSpecific;
         String path;
 

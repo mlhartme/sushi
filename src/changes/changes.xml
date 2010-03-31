@@ -4,6 +4,9 @@
   <body>
     <release version="2.0.2" date="?">
         <action dev="mlhartme" type="update">
+          Node instantiation cleanup.
+        </action>
+        <action dev="mlhartme" type="update">
           Dump special handling of $ characters in webdav nodes.
         </action>
         <action dev="mlhartme" type="update">

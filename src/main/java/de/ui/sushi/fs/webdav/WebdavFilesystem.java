@@ -78,7 +78,7 @@ public class WebdavFilesystem extends Filesystem {
     }
 
     @Override
-    public Node node(URI uri) throws RootPathException {
+    public WebdavNode node(URI uri) throws RootPathException {
         checkHierarchical(uri);
         return root(uri).node(getCheckedPath(uri));
     }

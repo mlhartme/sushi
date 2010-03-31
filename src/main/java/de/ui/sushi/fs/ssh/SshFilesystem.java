@@ -151,7 +151,7 @@ public class SshFilesystem extends Filesystem {
         return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
     }
 
-    public Node node(URI uri) throws RootPathException {
+    public SshNode node(URI uri) throws RootPathException {
         checkHierarchical(uri);
         return root(uri.getAuthority()).node(getCheckedPath(uri));
     }

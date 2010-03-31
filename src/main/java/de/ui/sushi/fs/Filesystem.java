@@ -57,59 +57,7 @@ public abstract class Filesystem {
     	return scheme;
     }
 
-    public Node node(URI uri) throws RootPathException {
-        String path;
-
-        if (uri.getFragment() != null) {
-            throw new IllegalArgumentException(uri.toString());
-        }
-        if (uri.getQuery() != null) {
-            throw new IllegalArgumentException(uri.toString());
-        }
-        if (uri.isOpaque()) {
-            return opaqueNode(uri.getSchemeSpecificPart());
-        } else {
-            path = uri.getPath();
-            if (!path.startsWith(separator)) {
-                throw new RootPathException(uri.toString());
-            }
-            path = path.substring(separator.length());
-            if (path.endsWith(separator)) {
-                throw new RootPathException("invalid tailing " + separator);
-            }
-            return root(uri.getAuthority()).node(path);
-        }
-    }
-
-    /**
-     * Returns the specified root. The root is not necessarily new. You'll normally not use this method directly.
-     *
-     * @param authority as specified in the uri. For opaque uris the authority is the schemeSpecific part without
-     * schemePath (and thus never null)
-     */
-    public abstract Root root(String authority) throws RootPathException;
-
-    public Node opaqueNode(String schemeSpecific) throws RootPathException {
-        String path;
-
-        path = opaquePath(schemeSpecific);
-        if (path == null) {
-            throw new RootPathException("unexpected opaque uri: " + schemeSpecific);
-        }
-        if (path.endsWith(getSeparator())) {
-            throw new RootPathException("invalid tailing " + getSeparator());
-        }
-        if (path.startsWith(getSeparator())) {
-            throw new RootPathException("invalid heading " + getSeparator());
-        }
-        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
-    }
-
-    /** override this to use opaque uris
-     * @param schemeSpecific*/
-    public String opaquePath(String schemeSpecific) throws RootPathException {
-        return null;
-    }
+    public abstract Node node(URI uri) throws RootPathException;
 
     /** Helper Method for opaquePath implementations */
     public String after(String schemeSpecific, String separator) throws RootPathException {
@@ -120,6 +68,44 @@ public abstract class Filesystem {
             throw new RootPathException("missing '" + separator + "': " + schemeSpecific);
         }
         return schemeSpecific.substring(idx + separator.length());
+    }
+
+    public void checkHierarchical(URI uri) throws RootPathException {
+        if (uri.getFragment() != null) {
+            throw new RootPathException(uri + ": unexpected path fragment");
+        }
+        if (uri.getQuery() != null) {
+            throw new RootPathException(uri + ": unexpected query");
+        }
+        if (uri.isOpaque()) {
+            throw new RootPathException(uri + ": uri is not hierarchical");
+        }
+    }
+
+    public void checkOpaque(URI uri) throws RootPathException {
+        if (uri.getFragment() != null) {
+            throw new RootPathException(uri + ": unexpected path fragment");
+        }
+        if (uri.getQuery() != null) {
+            throw new RootPathException(uri + ": unexpected query");
+        }
+        if (!uri.isOpaque()) {
+            throw new RootPathException(uri + ": uri is not opqaue");
+        }
+    }
+
+    public String getCheckedPath(URI uri) throws RootPathException {
+        String path;
+
+        path = uri.getPath();
+        if (!path.startsWith(separator)) {
+            throw new RootPathException(uri + ": missing initial separator " + separator);
+        }
+        path = path.substring(separator.length());
+        if (path.endsWith(separator)) {
+            throw new RootPathException("invalid tailing " + separator);
+        }
+        return path;
     }
 
     //--

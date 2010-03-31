@@ -17,13 +17,17 @@
 
 package de.ui.sushi.fs.ssh;
 
-import java.io.IOException;
-
-import de.ui.sushi.fs.*;
-import de.ui.sushi.fs.file.FileNode;
-
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import de.ui.sushi.fs.Features;
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.file.FileNode;
+
+import java.io.IOException;
+import java.net.URI;
 
 /**
  * Nodes accessible via sftp.
@@ -75,7 +79,6 @@ public class SshFilesystem extends Filesystem {
         return jsch;
     }
 
-    @Override
     public SshRoot root(String root) throws RootPathException {
         int idx;
         String host;
@@ -146,5 +149,10 @@ public class SshFilesystem extends Filesystem {
             key = key.copyFile(io.getTemp().createTempFile());
         }
         return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
+    }
+
+    public Node node(URI uri) throws RootPathException {
+        checkHierarchical(uri);
+        return root(uri.getAuthority()).node(getCheckedPath(uri));
     }
 }

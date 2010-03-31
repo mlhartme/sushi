@@ -20,6 +20,7 @@ package de.ui.sushi.fs.svn;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.RootPathException;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -28,6 +29,8 @@ import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
+
+import java.net.URI;
 
 public class SvnFilesystem extends Filesystem {
     static {
@@ -46,13 +49,32 @@ public class SvnFilesystem extends Filesystem {
         this.password = null;
     }
 
+    public Node node(URI uri) throws RootPathException {
+        String schemeSpecific;
+        String path;
+
+        checkOpaque(uri);
+        schemeSpecific = uri.getSchemeSpecificPart();
+        try {
+            path = doOpaquePath(schemeSpecific);
+        } catch (SVNException e) {
+            throw new RootPathException(e);
+        }
+        if (path.endsWith(getSeparator())) {
+            throw new RootPathException("invalid tailing " + getSeparator());
+        }
+        if (path.startsWith(getSeparator())) {
+            throw new RootPathException("invalid heading " + getSeparator());
+        }
+        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
+    }
+
     public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
 
-    @Override
     public SvnRoot root(String url) throws RootPathException {
         try {
             return doRoot(url);
@@ -77,15 +99,6 @@ public class SvnFilesystem extends Filesystem {
             repository.setLocation(SVNURL.parseURIEncoded(root), true);
         }
         return root(repository);
-    }
-
-    @Override
-    public String opaquePath(String url) throws RootPathException {
-        try {
-            return doOpaquePath(url);
-        } catch (SVNException e) {
-            throw new RootPathException(e);
-        }
     }
 
     public String doOpaquePath(String url) throws SVNException {

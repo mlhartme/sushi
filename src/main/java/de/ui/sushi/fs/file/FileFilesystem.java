@@ -17,13 +17,15 @@
 
 package de.ui.sushi.fs.file;
 
-import java.io.File;
-
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.io.OS;
+
+import java.io.File;
+import java.net.URI;
 
 public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
@@ -40,7 +42,11 @@ public class FileFilesystem extends Filesystem {
         }
     }
 
-    @Override
+    public Node node(URI uri) throws RootPathException {
+        checkHierarchical(uri);
+        return root(uri.getAuthority()).node(getCheckedPath(uri));
+    }
+
     public FileRoot root(String authority) throws RootPathException {
         if (authority != null) {
             throw new RootPathException("invalid root: unexpected authority " + authority);

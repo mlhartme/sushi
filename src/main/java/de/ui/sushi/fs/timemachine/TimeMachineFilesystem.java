@@ -17,11 +17,16 @@
 
 package de.ui.sushi.fs.timemachine;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import de.ui.sushi.fs.*;
+import de.ui.sushi.fs.ExistsException;
+import de.ui.sushi.fs.Features;
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.fs.file.FileNode;
+
+import java.io.FileNotFoundException;
+import java.net.URI;
 
 /**
  * See http://www.macosxhints.com/article.php?story=20080623213342356
@@ -35,12 +40,6 @@ public class TimeMachineFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    @Override
-    public String opaquePath(String schemeSpecific) throws RootPathException {
-        return after(schemeSpecific, "!");
-    }
-
-    @Override
     public TimeMachineRoot root(String root) throws RootPathException {
         Node dir;
 
@@ -55,5 +54,24 @@ public class TimeMachineFilesystem extends Filesystem {
         } catch (ExistsException e) {
             throw new RootPathException(e);
         }
+    }
+
+    public TimeMachineNode node(URI uri) throws RootPathException {
+        String path;
+        String schemeSpecific;
+
+        checkOpaque(uri);
+        schemeSpecific = uri.getSchemeSpecificPart();
+        path = after(schemeSpecific, "!");
+        if (path == null) {
+            throw new RootPathException("unexpected opaque uri: " + schemeSpecific);
+        }
+        if (path.endsWith(getSeparator())) {
+            throw new RootPathException("invalid tailing " + getSeparator());
+        }
+        if (path.startsWith(getSeparator())) {
+            throw new RootPathException("invalid heading " + getSeparator());
+        }
+        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
     }
 }

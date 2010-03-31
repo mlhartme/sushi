@@ -17,12 +17,14 @@
 
 package de.ui.sushi.fs.memory;
 
-import java.util.WeakHashMap;
-
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.RootPathException;
+
+import java.net.URI;
+import java.util.WeakHashMap;
 
 public class MemoryFilesystem extends Filesystem {
     private final WeakHashMap<Integer, MemoryRoot> roots;
@@ -36,7 +38,11 @@ public class MemoryFilesystem extends Filesystem {
         this.maxInMemorySize = 32 * 1024;
     }
 
-    @Override
+    public Node node(URI uri) throws RootPathException {
+        checkHierarchical(uri);
+        return root(uri.getAuthority()).node(getCheckedPath(uri));
+    }
+
     public MemoryRoot root(String number) throws RootPathException {
         try {
             return root(Integer.parseInt(number));

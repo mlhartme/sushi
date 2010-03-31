@@ -17,22 +17,19 @@
 
 package de.ui.sushi.fs.console;
 
-import de.ui.sushi.fs.*;
+import de.ui.sushi.fs.Features;
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.Root;
+import de.ui.sushi.fs.RootPathException;
+
+import java.net.URI;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
     public ConsoleFilesystem(IO io, String name) {
         super(io, '/', new Features(true, false, false, false, false, false), name);
     }
-
-    @Override
-    public ConsoleFilesystem root(String authority) throws RootPathException {
-        if (authority != null) {
-            throw new RootPathException("unexpected authority: " + authority);
-        }
-        return this;
-    }
-
-    //-- root methods
 
     public Filesystem getFilesystem() {
         return this;
@@ -42,9 +39,16 @@ public class ConsoleFilesystem extends Filesystem implements Root {
         return "/";
     }
 
-    public ConsoleNode node(String path) {
-        if (path.length() > 0) {
-            throw new UnsupportedOperationException();
+    // TODO
+    @Override
+    public Node node(String path) {
+        return new ConsoleNode(this);
+    }
+
+    public Node node(URI uri) throws RootPathException {
+        checkHierarchical(uri);
+        if (!getSeparator().equals(uri.getPath())) {
+            throw new RootPathException(uri + ": unexpected path");
         }
         return new ConsoleNode(this);
     }

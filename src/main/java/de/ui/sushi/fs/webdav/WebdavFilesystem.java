@@ -17,19 +17,20 @@
 
 package de.ui.sushi.fs.webdav;
 
+import de.ui.sushi.fs.Features;
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.RootPathException;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import de.ui.sushi.fs.*;
 
 public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = "UTF-8";
@@ -76,38 +77,10 @@ public class WebdavFilesystem extends Filesystem {
         this.defaultSoTimeout = 0;
     }
 
-    // TODO
     @Override
     public Node node(URI uri) throws RootPathException {
-        String path;
-
-        if (uri.getFragment() != null) {
-            throw new IllegalArgumentException(uri.toString());
-        }
-        if (uri.getQuery() != null) {
-            throw new IllegalArgumentException(uri.toString());
-        }
-        if (uri.isOpaque()) {
-            throw new IllegalArgumentException();
-        }
-        path = uri.getPath();
-        if (!path.startsWith(getSeparator())) {
-            throw new RootPathException(uri.toString());
-        }
-        path = path.substring(getSeparator().length());
-        if (path.endsWith(getSeparator())) {
-            throw new RootPathException("invalid tailing " + getSeparator());
-        }
-        return root(uri).node(path);
-    }
-
-    @Override
-    public WebdavRoot root(String root) {
-        try {
-            return root(new URI(getScheme(), root, "/", null));
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(root, e);
-        }
+        checkHierarchical(uri);
+        return root(uri).node(getCheckedPath(uri));
     }
 
     public WebdavRoot root(URI uri) {

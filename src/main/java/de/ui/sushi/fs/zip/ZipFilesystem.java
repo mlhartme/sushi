@@ -17,11 +17,16 @@
 
 package de.ui.sushi.fs.zip;
 
-import java.io.IOException;
-import java.util.zip.ZipFile;
-
-import de.ui.sushi.fs.*;
+import de.ui.sushi.fs.Features;
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.fs.file.FileNode;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.zip.ZipFile;
 
 public class ZipFilesystem extends Filesystem {
     private static final String ZIP_SEPARATOR = "!/";
@@ -30,12 +35,6 @@ public class ZipFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    @Override
-    public String opaquePath(String schemeSpecific) throws RootPathException {
-        return after(schemeSpecific, ZIP_SEPARATOR);
-    }
-
-    @Override
     public ZipRoot root(String fileUri) throws RootPathException {
         Node jar;
 
@@ -57,5 +56,24 @@ public class ZipFilesystem extends Filesystem {
 
     public ZipRoot root(FileNode jar) throws IOException {
         return new ZipRoot(this, new ZipFile(jar.getAbsolute()));
+    }
+
+    public ZipNode node(URI uri) throws RootPathException {
+        String schemeSpecific;
+        String path;
+
+        checkOpaque(uri);
+        schemeSpecific = uri.getSchemeSpecificPart();
+        path = after(schemeSpecific, ZIP_SEPARATOR);
+        if (path == null) {
+            throw new RootPathException("unexpected opaque uri: " + schemeSpecific);
+        }
+        if (path.endsWith(getSeparator())) {
+            throw new RootPathException("invalid tailing " + getSeparator());
+        }
+        if (path.startsWith(getSeparator())) {
+            throw new RootPathException("invalid heading " + getSeparator());
+        }
+        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
     }
 }

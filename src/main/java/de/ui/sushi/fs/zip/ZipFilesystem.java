@@ -66,13 +66,13 @@ public class ZipFilesystem extends Filesystem {
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, ZIP_SEPARATOR);
         if (path == null) {
-            throw new RootPathException("unexpected opaque uri: " + schemeSpecific);
+            throw new RootPathException(uri, "unexpected opaque uri: " + schemeSpecific);
         }
         if (path.endsWith(getSeparator())) {
-            throw new RootPathException("invalid tailing " + getSeparator());
+            throw new RootPathException(uri, "invalid tailing " + getSeparator());
         }
         if (path.startsWith(getSeparator())) {
-            throw new RootPathException("invalid heading " + getSeparator());
+            throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
         return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
     }

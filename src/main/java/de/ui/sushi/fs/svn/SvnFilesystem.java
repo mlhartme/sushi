@@ -58,13 +58,13 @@ public class SvnFilesystem extends Filesystem {
         try {
             path = doOpaquePath(schemeSpecific);
         } catch (SVNException e) {
-            throw new RootPathException(e);
+            throw new RootPathException(uri, e.getMessage(), e);
         }
         if (path.endsWith(getSeparator())) {
-            throw new RootPathException("invalid tailing " + getSeparator());
+            throw new RootPathException(uri, "invalid tailing " + getSeparator());
         }
         if (path.startsWith(getSeparator())) {
-            throw new RootPathException("invalid heading " + getSeparator());
+            throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
         return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
     }

@@ -72,25 +72,25 @@ public abstract class Filesystem {
 
     public void checkHierarchical(URI uri) throws RootPathException {
         if (uri.getFragment() != null) {
-            throw new RootPathException(uri + ": unexpected path fragment");
+            throw new RootPathException(uri, "unexpected path fragment");
         }
         if (uri.getQuery() != null) {
-            throw new RootPathException(uri + ": unexpected query");
+            throw new RootPathException(uri, "unexpected query");
         }
         if (uri.isOpaque()) {
-            throw new RootPathException(uri + ": uri is not hierarchical");
+            throw new RootPathException(uri, "uri is not hierarchical");
         }
     }
 
     public void checkOpaque(URI uri) throws RootPathException {
         if (uri.getFragment() != null) {
-            throw new RootPathException(uri + ": unexpected path fragment");
+            throw new RootPathException(uri, "unexpected path fragment");
         }
         if (uri.getQuery() != null) {
-            throw new RootPathException(uri + ": unexpected query");
+            throw new RootPathException(uri, "unexpected query");
         }
         if (!uri.isOpaque()) {
-            throw new RootPathException(uri + ": uri is not opqaue");
+            throw new RootPathException(uri, "uri is not opqaue");
         }
     }
 
@@ -99,11 +99,11 @@ public abstract class Filesystem {
 
         path = uri.getPath();
         if (!path.startsWith(separator)) {
-            throw new RootPathException(uri + ": missing initial separator " + separator);
+            throw new RootPathException(uri, "missing initial separator " + separator);
         }
         path = path.substring(separator.length());
         if (path.endsWith(separator)) {
-            throw new RootPathException("invalid tailing " + separator);
+            throw new RootPathException(uri, "invalid tailing " + separator);
         }
         return path;
     }

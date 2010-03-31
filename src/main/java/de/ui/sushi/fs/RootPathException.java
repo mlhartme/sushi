@@ -18,13 +18,27 @@
 package de.ui.sushi.fs;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class RootPathException extends IOException {
+    public final URI uri;
+
     public RootPathException(String msg) {
-        super(msg);
+        this(null, msg);
     }
-    
+
     public RootPathException(Throwable cause) {
+        this(null, cause.getMessage(), cause);
+    }
+
+    public RootPathException(URI uri, String msg) {
+        super(uri + ": " + msg);
+
+        this.uri = uri;
+    }
+
+    public RootPathException(URI uri, String message, Throwable cause) {
+        this(uri, message);
         initCause(cause);
     }
 }

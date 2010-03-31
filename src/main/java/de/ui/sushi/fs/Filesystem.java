@@ -82,22 +82,12 @@ public abstract class Filesystem {
     }
 
     /**
-     * Returns the specified root. The root is not necessarily new. You'll normally not use this method directly,
+     * Returns the specified root. The root is not necessarily new. You'll normally not use this method directly.
      *
      * @param authority as specified in the uri. For opaque uris the authority is the schemeSpecific part without
      * schemePath (and thus never null)
      */
     public abstract Root root(String authority) throws RootPathException;
-
-    public String after(String schemeSpecific, String separator) throws RootPathException {
-        int idx;
-
-        idx = schemeSpecific.indexOf(separator);
-        if (idx == -1) {
-            throw new RootPathException("missing '" + separator + "': " + schemeSpecific);
-        }
-        return schemeSpecific.substring(idx + separator.length());
-    }
 
     public Node opaqueNode(String schemeSpecific) throws RootPathException {
         String path;
@@ -119,6 +109,17 @@ public abstract class Filesystem {
      * @param schemeSpecific*/
     public String opaquePath(String schemeSpecific) throws RootPathException {
         return null;
+    }
+
+    /** Helper Method for opaquePath implementations */
+    public String after(String schemeSpecific, String separator) throws RootPathException {
+        int idx;
+
+        idx = schemeSpecific.indexOf(separator);
+        if (idx == -1) {
+            throw new RootPathException("missing '" + separator + "': " + schemeSpecific);
+        }
+        return schemeSpecific.substring(idx + separator.length());
     }
 
     //--

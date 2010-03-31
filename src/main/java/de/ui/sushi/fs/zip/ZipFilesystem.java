@@ -50,12 +50,12 @@ public class ZipFilesystem extends Filesystem {
         }
     }
 
-    public ZipNode node(FileNode jar, String path) throws IOException {
-        return root(jar).node(path);
-    }
-
     public ZipRoot root(FileNode jar) throws IOException {
         return new ZipRoot(this, new ZipFile(jar.getAbsolute()));
+    }
+
+    public ZipNode node(FileNode jar, String path) throws IOException {
+        return root(jar).node(path);
     }
 
     public ZipNode node(URI uri) throws RootPathException {

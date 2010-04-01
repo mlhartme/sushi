@@ -3,15 +3,18 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.0.2" date="?">
-        <action dev="mlhartme" type="update">
-          Node instantiation cleanup.
-        </action>
-        <action dev="mlhartme" type="update">
-          Dump special handling of $ characters in webdav nodes.
-        </action>
-        <action dev="mlhartme" type="update">
-          More accurate throws clause for Node.checkFile() and checkDirectory(): ExistsException and FileNotFoundException instead of IOException.
-        </action>
+      <action dev="mlhartme" type="add">
+        SvnFilesystem: you can now pass credentials as part of the url.
+      </action>
+      <action dev="mlhartme" type="update">
+        Node instantiation cleanup.
+      </action>
+      <action dev="mlhartme" type="update">
+        Dump special handling of $ characters in webdav nodes.
+      </action>
+      <action dev="mlhartme" type="update">
+        More accurate throws clause for Node.checkFile() and checkDirectory(): ExistsException and FileNotFoundException instead of IOException.
+      </action>
       <action dev="mlhartme" type="update">
         IO.resources() now throws an IllegalStateException for duplicate classpath items.
       </action>

@@ -64,7 +64,8 @@ public class SvnFilesystem extends Filesystem {
         separator = getSeparator();
         schemeSpecific = uri.getSchemeSpecificPart();
         try {
-            root = repository(SVNURL.parseURIEncoded(schemeSpecific), username, password).getRepositoryRoot(true).toString();
+            repository = repository(schemeSpecific);
+            root = repository.getRepositoryRoot(true).toString();
             if (!schemeSpecific.startsWith(root)) {
                 throw new IllegalStateException(schemeSpecific + " vs " + root);
             }
@@ -81,7 +82,7 @@ public class SvnFilesystem extends Filesystem {
             if (path.startsWith(separator)) {
                 throw new RootPathException(uri, "invalid heading " + getSeparator());
             }
-            repository = repository(SVNURL.parseURIEncoded(schemeSpecific.substring(0, schemeSpecific.length() - path.length())), username, password);
+            repository = repository(schemeSpecific.substring(0, schemeSpecific.length() - path.length()));
             return root(repository).node(path);
         } catch (SVNException e) {
             throw new RootPathException(uri, e.getMessage(), e);
@@ -94,9 +95,28 @@ public class SvnFilesystem extends Filesystem {
 
     //--
 
-    public static SVNRepository repository(SVNURL url, String username, String password) throws SVNException {
-        SVNRepository repository;
+    public SVNRepository repository(String url) throws SVNException {
+        return repository(url, username, password);
+    }
 
+    public static SVNRepository repository(String urlstr, String username, String password) throws SVNException {
+        SVNRepository repository;
+        String userinfo;
+        SVNURL url;
+        int idx;
+
+        url = SVNURL.parseURIEncoded(urlstr);
+        userinfo = url.getUserInfo();
+        if (userinfo != null) {
+            idx = userinfo.indexOf(':');
+            if (idx == -1) {
+                username = userinfo;
+                password = null;
+            } else {
+                username = userinfo.substring(0, idx);
+                password = userinfo.substring(idx + 1);
+            }
+        }
         repository = SVNRepositoryFactory.create(url);
         repository.setAuthenticationManager(SVNWCUtil.createDefaultAuthenticationManager(
                 SVNWCUtil.getDefaultConfigurationDirectory(),

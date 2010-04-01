@@ -20,7 +20,6 @@ package de.ui.sushi.fs.svn;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.RootPathException;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -49,78 +48,44 @@ public class SvnFilesystem extends Filesystem {
         this.password = null;
     }
 
-    public SvnNode node(URI uri) throws RootPathException {
-        String schemeSpecific;
-        String path;
-
-        checkOpaque(uri);
-        schemeSpecific = uri.getSchemeSpecificPart();
-        try {
-            path = doOpaquePath(schemeSpecific);
-        } catch (SVNException e) {
-            throw new RootPathException(uri, e.getMessage(), e);
-        }
-        if (path.endsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid tailing " + getSeparator());
-        }
-        if (path.startsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid heading " + getSeparator());
-        }
-        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
-    }
-
     public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
+    public SvnNode node(URI uri) throws RootPathException {
+        String schemeSpecific;
+        String path;
+        String separator;
+        String root;
+        SVNRepository repository;
 
-    public SvnRoot root(String url) throws RootPathException {
+        checkOpaque(uri);
+        separator = getSeparator();
+        schemeSpecific = uri.getSchemeSpecificPart();
         try {
-            return doRoot(url);
-        } catch (SVNException e) {
-            throw new RootPathException(e);
-        }
-    }
-
-    public SvnRoot doRoot(String url) throws SVNException {
-        String separator;
-        SVNRepository repository;
-        String root;
-
-        separator = getSeparator();
-        repository = repository(SVNURL.parseURIEncoded(url), username, password);
-        root = repository.getRepositoryRoot(true).toString();
-        if (!url.startsWith(root)) {
-            throw new IllegalStateException(url + " vs " + root);
-        }
-        if (!root.endsWith(separator)) {
-            root = root + separator;
-            repository.setLocation(SVNURL.parseURIEncoded(root), true);
-        }
-        return root(repository);
-    }
-
-    public String doOpaquePath(String url) throws SVNException {
-        String separator;
-        SVNRepository repository;
-        String root;
-        String result;
-
-        separator = getSeparator();
-        repository = repository(SVNURL.parseURIEncoded(url), username, password);
-        root = repository.getRepositoryRoot(true).toString();
-        if (!url.startsWith(root)) {
-            throw new IllegalStateException(url + " vs " + root);
-        }
-        result = url.substring(root.length());
-        if (result.length() > 0) {
-            if (!result.startsWith(separator)) {
-                throw new IllegalStateException(url + " vs " + root);
+            root = repository(SVNURL.parseURIEncoded(schemeSpecific), username, password).getRepositoryRoot(true).toString();
+            if (!schemeSpecific.startsWith(root)) {
+                throw new IllegalStateException(schemeSpecific + " vs " + root);
             }
-            result = result.substring(separator.length());
+            path = schemeSpecific.substring(root.length());
+            if (path.length() > 0) {
+                if (!path.startsWith(separator)) {
+                    throw new IllegalStateException(schemeSpecific + " vs " + root);
+                }
+                path = path.substring(separator.length());
+            }
+            if (path.endsWith(separator)) {
+                throw new RootPathException(uri, "invalid tailing " + getSeparator());
+            }
+            if (path.startsWith(separator)) {
+                throw new RootPathException(uri, "invalid heading " + getSeparator());
+            }
+            repository = repository(SVNURL.parseURIEncoded(schemeSpecific.substring(0, schemeSpecific.length() - path.length())), username, password);
+            return root(repository).node(path);
+        } catch (SVNException e) {
+            throw new RootPathException(uri, e.getMessage(), e);
         }
-        return result;
     }
 
     public SvnRoot root(SVNRepository repository) throws SVNException {

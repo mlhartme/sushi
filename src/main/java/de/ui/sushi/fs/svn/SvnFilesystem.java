@@ -53,13 +53,17 @@ public class SvnFilesystem extends Filesystem {
         this.password = password;
     }
 
-    public SvnNode node(URI uri) throws RootPathException {
+    @Override
+    public SvnNode node(URI uri, Object extra) throws RootPathException {
         String schemeSpecific;
         String path;
         String separator;
         String root;
         SVNRepository repository;
 
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkOpaque(uri);
         separator = getSeparator();
         schemeSpecific = uri.getSchemeSpecificPart();

@@ -42,7 +42,10 @@ public class FileFilesystem extends Filesystem {
         }
     }
 
-    public Node node(URI uri) throws RootPathException {
+    public Node node(URI uri, Object extra) throws RootPathException {
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkHierarchical(uri);
         return root(uri.getAuthority()).node(getCheckedPath(uri));
     }

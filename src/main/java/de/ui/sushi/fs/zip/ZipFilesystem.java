@@ -58,10 +58,13 @@ public class ZipFilesystem extends Filesystem {
         return root(jar).node(path);
     }
 
-    public ZipNode node(URI uri) throws RootPathException {
+    public ZipNode node(URI uri, Object extra) throws RootPathException {
         String schemeSpecific;
         String path;
 
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkOpaque(uri);
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, ZIP_SEPARATOR);

@@ -57,7 +57,7 @@ public abstract class Filesystem {
     	return scheme;
     }
 
-    public abstract Node node(URI uri) throws RootPathException;
+    public abstract Node node(URI uri, Object extra) throws RootPathException;
 
     /** Helper Method for opaquePath implementations */
     public String after(String schemeSpecific, String separator) throws RootPathException {

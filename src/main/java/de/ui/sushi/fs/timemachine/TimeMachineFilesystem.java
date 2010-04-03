@@ -56,10 +56,13 @@ public class TimeMachineFilesystem extends Filesystem {
         }
     }
 
-    public TimeMachineNode node(URI uri) throws RootPathException {
+    public TimeMachineNode node(URI uri, Object extra) throws RootPathException {
         String path;
         String schemeSpecific;
 
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkOpaque(uri);
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, "!");

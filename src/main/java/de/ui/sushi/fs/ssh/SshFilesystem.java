@@ -35,34 +35,24 @@ import java.net.URI;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    private Node privateKey;
-    private String passphrase;
+    private Credentials credentials;
     private int timeout;
     private JSch jsch;
 
     public SshFilesystem(IO io, String name) {
         super(io, '/', new Features(true, true, true, true, false, false), name);
 
-        privateKey = null;
-        passphrase = null;
+        credentials = null;
         timeout = 0;
         jsch = new JSch();
     }
 
-    public void setPrivateKey(Node privateKey) {
-        this.privateKey = privateKey;
+    public void setCredentials(Credentials credentails) {
+        this.credentials = credentials;
     }
 
-    public Node getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPassphrase(String passphrase) {
-        this.passphrase = passphrase;
-    }
-
-    public String getPassphrase() {
-        return passphrase;
+    public Credentials getCredentials() {
+        return credentials;
     }
 
     /** millis */
@@ -79,7 +69,7 @@ public class SshFilesystem extends Filesystem {
         return jsch;
     }
 
-    public SshRoot root(String root) throws RootPathException {
+    public SshRoot root(String root, Credentials activeCredentials) throws RootPathException {
         int idx;
         String host;
         String user;
@@ -94,7 +84,7 @@ public class SshFilesystem extends Filesystem {
                 host = host.substring(idx + 1);
             }
             try {
-                return root(host, user);
+                return root(host, user, activeCredentials);
             } catch (JSchException e) {
                 throw new RootPathException(e);
             }
@@ -104,11 +94,11 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName());
+        return root("localhost", getIO().getWorking().getName(), credentials);
     }
 
     /** @user null to use current user */
-    public SshRoot root(String host, String user) throws JSchException, IOException {
+    public SshRoot root(String host, String user, Credentials activeCredentials) throws JSchException, IOException {
         IO io;
         Node dir;
         Node file;
@@ -120,8 +110,8 @@ public class SshFilesystem extends Filesystem {
             user = io.getHome().getName();
         }
         dir = io.getHome().join(".ssh");
-        if (passphrase != null) {
-            pp = passphrase;
+        if (activeCredentials != null && activeCredentials.passphrase != null) {
+            pp = activeCredentials.passphrase;
         } else {
             file = dir.join("passphrase");
             if (file.exists()) {
@@ -130,8 +120,8 @@ public class SshFilesystem extends Filesystem {
                 pp = "";
             }
         }
-        if (privateKey != null) {
-            key = privateKey;
+        if (activeCredentials != null && activeCredentials.privateKey != null) {
+            key = activeCredentials.privateKey;
         } else {
             key = dir.join("id_dsa");
             if (!key.exists()) {
@@ -151,8 +141,20 @@ public class SshFilesystem extends Filesystem {
         return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
     }
 
-    public SshNode node(URI uri) throws RootPathException {
+    @Override
+    public SshNode node(URI uri, Object extra) throws RootPathException {
+        Credentials activeCredentials;
+
+        if (extra != null) {
+            if (extra instanceof Credentials) {
+                activeCredentials = (Credentials) extra;
+            } else {
+                throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            }
+        } else {
+            activeCredentials = credentials;
+        }
         checkHierarchical(uri);
-        return root(uri.getAuthority()).node(getCheckedPath(uri));
+        return root(uri.getAuthority(), activeCredentials).node(getCheckedPath(uri));
     }
 }

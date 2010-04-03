@@ -38,7 +38,11 @@ public class MemoryFilesystem extends Filesystem {
         this.maxInMemorySize = 32 * 1024;
     }
 
-    public MemoryNode node(URI uri) throws RootPathException {
+    @Override
+    public MemoryNode node(URI uri, Object extra) throws RootPathException {
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkHierarchical(uri);
         return root(uri.getAuthority()).node(getCheckedPath(uri));
     }

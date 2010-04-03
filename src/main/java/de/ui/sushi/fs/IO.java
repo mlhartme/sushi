@@ -197,6 +197,10 @@ public class IO {
     }
 
     public Node node(URI uri) throws RootPathException {
+        return node(uri, null);
+    }
+
+    public Node node(URI uri, Object extra) throws RootPathException {
         String scheme;
         Filesystem fs;
         Node base;
@@ -216,7 +220,7 @@ public class IO {
         if (fs == null) {
             throw new RootPathException(uri.toString() + ": unkown scheme: " + scheme);
         }
-        result = fs.node(uri);
+        result = fs.node(uri, extra);
         if (base != null) {
             result.setBase(base);
         }

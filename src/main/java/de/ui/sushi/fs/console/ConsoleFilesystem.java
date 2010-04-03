@@ -45,7 +45,11 @@ public class ConsoleFilesystem extends Filesystem implements Root {
         return new ConsoleNode(this);
     }
 
-    public ConsoleNode node(URI uri) throws RootPathException {
+    @Override
+    public ConsoleNode node(URI uri, Object extra) throws RootPathException {
+        if (extra != null) {
+            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+        }
         checkHierarchical(uri);
         if (!getSeparator().equals(uri.getPath())) {
             throw new RootPathException(uri, "unexpected path");

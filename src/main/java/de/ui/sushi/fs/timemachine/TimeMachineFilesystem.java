@@ -22,7 +22,7 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.fs.file.FileNode;
 
 import java.io.FileNotFoundException;
@@ -41,42 +41,42 @@ public class TimeMachineFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    public TimeMachineNode node(URI uri, Object extra) throws RootPathException {
+    public TimeMachineNode node(URI uri, Object extra) throws NodeInstantiationException {
         String path;
         String schemeSpecific;
         String root;
         Node dir;
 
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, "!");
         if (path == null) {
-            throw new RootPathException(uri, "missing '!': " + schemeSpecific);
+            throw new NodeInstantiationException(uri, "missing '!': " + schemeSpecific);
         }
         if (path.endsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid tailing " + getSeparator());
+            throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
         }
         if (path.startsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid heading " + getSeparator());
+            throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
         }
         root = schemeSpecific.substring(0, schemeSpecific.length() - path.length());
         try {
             dir = getIO().node(root);
         } catch (URISyntaxException e) {
-            throw new RootPathException(uri, "invalid root '" + root + "'", e);
+            throw new NodeInstantiationException(uri, "invalid root '" + root + "'", e);
         }
         if (!(dir instanceof FileNode)) {
-            throw new RootPathException(uri, "file node expected:" + root);
+            throw new NodeInstantiationException(uri, "file node expected:" + root);
         }
         try {
             return TimeMachineRoot.create(this, (FileNode) dir).node(path);
         } catch (FileNotFoundException e) {
-            throw new RootPathException(uri, e.getMessage(), e);
+            throw new NodeInstantiationException(uri, e.getMessage(), e);
         } catch (ExistsException e) {
-            throw new RootPathException(uri, e.getMessage(), e);
+            throw new NodeInstantiationException(uri, e.getMessage(), e);
         }
     }
 }

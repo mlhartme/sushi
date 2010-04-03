@@ -23,7 +23,7 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
@@ -70,14 +70,14 @@ public class SshFilesystem extends Filesystem {
     }
 
     @Override
-    public SshNode node(URI uri, Object extra) throws RootPathException {
+    public SshNode node(URI uri, Object extra) throws NodeInstantiationException {
         Credentials activeCredentials;
 
         if (extra != null) {
             if (extra instanceof Credentials) {
                 activeCredentials = (Credentials) extra;
             } else {
-                throw new RootPathException(uri, "unexpected extra argument: " + extra);
+                throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
             }
         } else {
             activeCredentials = credentials;
@@ -86,9 +86,9 @@ public class SshFilesystem extends Filesystem {
         try {
             return root(uri.getAuthority(), activeCredentials).node(getCheckedPath(uri));
         } catch (JSchException e) {
-            throw new RootPathException(uri, "cannot create root", e);
+            throw new NodeInstantiationException(uri, "cannot create root", e);
         } catch (IOException e) {
-            throw new RootPathException(uri, "cannot create root", e);
+            throw new NodeInstantiationException(uri, "cannot create root", e);
         }
     }
 

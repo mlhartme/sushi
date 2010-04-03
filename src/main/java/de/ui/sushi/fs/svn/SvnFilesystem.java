@@ -20,7 +20,7 @@ package de.ui.sushi.fs.svn;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
@@ -54,7 +54,7 @@ public class SvnFilesystem extends Filesystem {
     }
 
     @Override
-    public SvnNode node(URI uri, Object extra) throws RootPathException {
+    public SvnNode node(URI uri, Object extra) throws NodeInstantiationException {
         String schemeSpecific;
         String path;
         String separator;
@@ -62,7 +62,7 @@ public class SvnFilesystem extends Filesystem {
         SVNRepository repository;
 
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
         separator = getSeparator();
@@ -81,15 +81,15 @@ public class SvnFilesystem extends Filesystem {
                 path = path.substring(separator.length());
             }
             if (path.endsWith(separator)) {
-                throw new RootPathException(uri, "invalid tailing " + getSeparator());
+                throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
             }
             if (path.startsWith(separator)) {
-                throw new RootPathException(uri, "invalid heading " + getSeparator());
+                throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
             }
             repository = repository(schemeSpecific.substring(0, schemeSpecific.length() - path.length()));
             return new SvnRoot(this, repository).node(path);
         } catch (SVNException e) {
-            throw new RootPathException(uri, e.getMessage(), e);
+            throw new NodeInstantiationException(uri, e.getMessage(), e);
         }
     }
 

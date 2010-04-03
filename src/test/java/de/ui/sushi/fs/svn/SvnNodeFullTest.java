@@ -22,14 +22,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
+import de.ui.sushi.fs.NodeInstantiationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeTest;
-import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.fs.file.FileNode;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -75,7 +74,7 @@ public class SvnNodeFullTest extends NodeTest {
         assertEquals("work", work.getPath());
     }
 
-    @Test(expected=RootPathException.class)
+    @Test(expected= NodeInstantiationException.class)
     public void connectionRefused() throws IOException {
         create("https://heise.de/svn");
     }
@@ -146,7 +145,7 @@ public class SvnNodeFullTest extends NodeTest {
 
     //--
 
-    private SvnNode create(String path) throws RootPathException {
+    private SvnNode create(String path) throws NodeInstantiationException {
         return (SvnNode) IO.validNode("svn:" + path);
     }
 }

@@ -20,9 +20,8 @@ package de.ui.sushi.fs.console;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.fs.Root;
-import de.ui.sushi.fs.RootPathException;
 
 import java.net.URI;
 
@@ -46,13 +45,13 @@ public class ConsoleFilesystem extends Filesystem implements Root {
     }
 
     @Override
-    public ConsoleNode node(URI uri, Object extra) throws RootPathException {
+    public ConsoleNode node(URI uri, Object extra) throws NodeInstantiationException {
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
         if (!getSeparator().equals(uri.getPath())) {
-            throw new RootPathException(uri, "unexpected path");
+            throw new NodeInstantiationException(uri, "unexpected path");
         }
         return new ConsoleNode(this);
     }

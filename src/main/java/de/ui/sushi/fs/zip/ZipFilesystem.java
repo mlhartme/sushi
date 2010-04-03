@@ -21,7 +21,7 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
@@ -36,38 +36,38 @@ public class ZipFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    public ZipNode node(URI uri, Object extra) throws RootPathException {
+    public ZipNode node(URI uri, Object extra) throws NodeInstantiationException {
         String schemeSpecific;
         String path;
         Node jar;
 
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, ZIP_SEPARATOR);
         if (path == null) {
-            throw new RootPathException(uri, "missing '" + ZIP_SEPARATOR +"'");
+            throw new NodeInstantiationException(uri, "missing '" + ZIP_SEPARATOR +"'");
         }
         if (path.endsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid tailing " + getSeparator());
+            throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
         }
         if (path.startsWith(getSeparator())) {
-            throw new RootPathException(uri, "invalid heading " + getSeparator());
+            throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
         }
         try {
             jar = getIO().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
         } catch (URISyntaxException e) {
-            throw new RootPathException(uri, "invalid jar file in jar url", e);
+            throw new NodeInstantiationException(uri, "invalid jar file in jar url", e);
         }
         if (!(jar instanceof FileNode)) {
-            throw new RootPathException(uri, "file node expected, got: " + jar.getLocator());
+            throw new NodeInstantiationException(uri, "file node expected, got: " + jar.getLocator());
         }
         try {
             return root((FileNode) jar).node(path);
         } catch (IOException e) {
-            throw new RootPathException(uri, "io exception", e);
+            throw new NodeInstantiationException(uri, "io exception", e);
         }
     }
 

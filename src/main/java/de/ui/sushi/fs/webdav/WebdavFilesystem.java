@@ -20,8 +20,7 @@ package de.ui.sushi.fs.webdav;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -78,9 +77,9 @@ public class WebdavFilesystem extends Filesystem {
     }
 
     @Override
-    public WebdavNode node(URI uri, Object extra) throws RootPathException {
+    public WebdavNode node(URI uri, Object extra) throws NodeInstantiationException {
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
         return root(uri).node(getCheckedPath(uri));

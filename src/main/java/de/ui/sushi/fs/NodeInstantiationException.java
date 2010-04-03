@@ -20,10 +20,11 @@ package de.ui.sushi.fs;
 import java.io.IOException;
 import java.net.URI;
 
-public class RootPathException extends IOException {
+/** Indicates a problem creating a node, either because the URI is incorrect or the underlying services reported an error. */
+public class NodeInstantiationException extends IOException {
     public final URI uri;
 
-    public RootPathException(URI uri, String msg) {
+    public NodeInstantiationException(URI uri, String msg) {
         super(uri + ": " + msg);
 
         if (uri == null) {
@@ -32,7 +33,7 @@ public class RootPathException extends IOException {
         this.uri = uri;
     }
 
-    public RootPathException(URI uri, String message, Throwable cause) {
+    public NodeInstantiationException(URI uri, String message, Throwable cause) {
         this(uri, message);
         initCause(cause);
     }

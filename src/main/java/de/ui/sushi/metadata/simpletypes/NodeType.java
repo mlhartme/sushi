@@ -20,7 +20,7 @@ package de.ui.sushi.metadata.simpletypes;
 import de.ui.sushi.cli.ArgumentException;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.metadata.Schema;
 import de.ui.sushi.metadata.SimpleType;
 
@@ -49,7 +49,7 @@ public class NodeType extends SimpleType {
     public Object stringToValue(String str) {
         try {
             return io.node(str);
-        } catch (RootPathException e) {
+        } catch (NodeInstantiationException e) {
             throw new ArgumentException(str, e);
         } catch (URISyntaxException e) {
             throw new ArgumentException(str, e);

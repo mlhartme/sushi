@@ -20,7 +20,7 @@ package de.ui.sushi.fs.memory;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 
 import java.net.URI;
 import java.util.WeakHashMap;
@@ -38,17 +38,17 @@ public class MemoryFilesystem extends Filesystem {
     }
 
     @Override
-    public MemoryNode node(URI uri, Object extra) throws RootPathException {
+    public MemoryNode node(URI uri, Object extra) throws NodeInstantiationException {
         MemoryRoot result;
 
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
         try {
             result = root(Integer.parseInt(uri.getAuthority()));
         } catch (NumberFormatException e) {
-            throw new RootPathException(uri, "invalid root: " + uri.getAuthority(), e);
+            throw new NodeInstantiationException(uri, "invalid root: " + uri.getAuthority(), e);
         }
         return result.node(getCheckedPath(uri));
     }

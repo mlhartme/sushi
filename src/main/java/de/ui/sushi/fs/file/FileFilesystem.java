@@ -21,7 +21,7 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
+import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.io.OS;
 
 import java.io.File;
@@ -42,16 +42,16 @@ public class FileFilesystem extends Filesystem {
         }
     }
 
-    public Node node(URI uri, Object extra) throws RootPathException {
+    public Node node(URI uri, Object extra) throws NodeInstantiationException {
         String authority;
 
         if (extra != null) {
-            throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
         authority = uri.getAuthority();
         if (authority != null) {
-            throw new RootPathException(uri, "invalid root: unexpected authority " + authority);
+            throw new NodeInstantiationException(uri, "invalid root: unexpected authority " + authority);
         }
         if (roots.length != 1) {
             throw new UnsupportedOperationException("TODO");

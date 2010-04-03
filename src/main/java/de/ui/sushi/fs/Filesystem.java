@@ -57,7 +57,7 @@ public abstract class Filesystem {
     	return scheme;
     }
 
-    public abstract Node node(URI uri, Object extra) throws RootPathException;
+    public abstract Node node(URI uri, Object extra) throws NodeInstantiationException;
 
     /** Helper Method for opaquePath implementations */
     public String after(String schemeSpecific, String separator) {
@@ -70,40 +70,40 @@ public abstract class Filesystem {
         return schemeSpecific.substring(idx + separator.length());
     }
 
-    public void checkHierarchical(URI uri) throws RootPathException {
+    public void checkHierarchical(URI uri) throws NodeInstantiationException {
         if (uri.getFragment() != null) {
-            throw new RootPathException(uri, "unexpected path fragment");
+            throw new NodeInstantiationException(uri, "unexpected path fragment");
         }
         if (uri.getQuery() != null) {
-            throw new RootPathException(uri, "unexpected query");
+            throw new NodeInstantiationException(uri, "unexpected query");
         }
         if (uri.isOpaque()) {
-            throw new RootPathException(uri, "uri is not hierarchical");
+            throw new NodeInstantiationException(uri, "uri is not hierarchical");
         }
     }
 
-    public void checkOpaque(URI uri) throws RootPathException {
+    public void checkOpaque(URI uri) throws NodeInstantiationException {
         if (uri.getFragment() != null) {
-            throw new RootPathException(uri, "unexpected path fragment");
+            throw new NodeInstantiationException(uri, "unexpected path fragment");
         }
         if (uri.getQuery() != null) {
-            throw new RootPathException(uri, "unexpected query");
+            throw new NodeInstantiationException(uri, "unexpected query");
         }
         if (!uri.isOpaque()) {
-            throw new RootPathException(uri, "uri is not opqaue");
+            throw new NodeInstantiationException(uri, "uri is not opqaue");
         }
     }
 
-    public String getCheckedPath(URI uri) throws RootPathException {
+    public String getCheckedPath(URI uri) throws NodeInstantiationException {
         String path;
 
         path = uri.getPath();
         if (!path.startsWith(separator)) {
-            throw new RootPathException(uri, "missing initial separator " + separator);
+            throw new NodeInstantiationException(uri, "missing initial separator " + separator);
         }
         path = path.substring(separator.length());
         if (path.endsWith(separator)) {
-            throw new RootPathException(uri, "invalid tailing " + separator);
+            throw new NodeInstantiationException(uri, "invalid tailing " + separator);
         }
         return path;
     }

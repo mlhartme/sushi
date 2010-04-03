@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -37,8 +36,6 @@ import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.fs.filter.Filter;
 import de.ui.sushi.fs.memory.MemoryFilesystem;
 import de.ui.sushi.fs.memory.MemoryNode;
-import de.ui.sushi.fs.webdav.WebdavFilesystem;
-import de.ui.sushi.fs.zip.ZipNode;
 import de.ui.sushi.io.Buffer;
 import de.ui.sushi.io.OS;
 import de.ui.sushi.util.Reflect;
@@ -183,12 +180,12 @@ public class IO {
             return (FileNode) node(new URI(uri.getScheme(), uri.getAuthority(), path, uri.getFragment()));
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
-        } catch (RootPathException e) {
+        } catch (NodeInstantiationException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public Node validNode(String uri) throws RootPathException {
+    public Node validNode(String uri) throws NodeInstantiationException {
         try {
             return node(uri);
         } catch (URISyntaxException e) {
@@ -196,14 +193,14 @@ public class IO {
         }
     }
 
-    public Node node(String uri) throws URISyntaxException, RootPathException {
+    public Node node(String uri) throws URISyntaxException, NodeInstantiationException {
         return node(new URI(uri));
     }
-    public Node node(URI uri) throws RootPathException {
+    public Node node(URI uri) throws NodeInstantiationException {
         return node(uri, null);
     }
 
-    public Node node(URI uri, Object extra) throws RootPathException {
+    public Node node(URI uri, Object extra) throws NodeInstantiationException {
         String scheme;
         Filesystem fs;
         Node base;
@@ -221,7 +218,7 @@ public class IO {
         }
         fs = filesystems.get(scheme);
         if (fs == null) {
-            throw new RootPathException(uri, "unkown scheme: " + scheme);
+            throw new NodeInstantiationException(uri, "unkown scheme: " + scheme);
         }
         result = fs.node(uri, extra);
         if (base != null) {
@@ -308,7 +305,7 @@ public class IO {
 
     //--
 
-    public List<Node> path(String path) throws URISyntaxException, RootPathException {
+    public List<Node> path(String path) throws URISyntaxException, NodeInstantiationException {
         List<Node> result;
 
         result = new ArrayList<Node>();

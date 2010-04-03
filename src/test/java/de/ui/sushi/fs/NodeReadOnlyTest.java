@@ -72,7 +72,7 @@ public abstract class NodeReadOnlyTest {
         assertEquals(work, node.getBase());
     }
 
-    //@Test(expected=RootPathException.class)
+    //@Test(expected=NodeInstantiationException.class)
     @Ignore
     public void headingSlash() throws Exception {
         Filesystem fs;
@@ -83,7 +83,7 @@ public abstract class NodeReadOnlyTest {
         fs.getIO().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
     }
 
-    @Test(expected=RootPathException.class)
+    @Test(expected= NodeInstantiationException.class)
     public void tailingSlash() throws Exception {
         Filesystem fs;
 

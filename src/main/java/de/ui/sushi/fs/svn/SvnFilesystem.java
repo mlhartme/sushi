@@ -87,14 +87,10 @@ public class SvnFilesystem extends Filesystem {
                 throw new RootPathException(uri, "invalid heading " + getSeparator());
             }
             repository = repository(schemeSpecific.substring(0, schemeSpecific.length() - path.length()));
-            return root(repository).node(path);
+            return new SvnRoot(this, repository).node(path);
         } catch (SVNException e) {
             throw new RootPathException(uri, e.getMessage(), e);
         }
-    }
-
-    public SvnRoot root(SVNRepository repository) throws SVNException {
-        return new SvnRoot(this, repository);
     }
 
     //--

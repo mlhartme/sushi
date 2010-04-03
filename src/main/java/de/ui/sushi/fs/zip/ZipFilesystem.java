@@ -35,32 +35,10 @@ public class ZipFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    public ZipRoot root(String fileUri) throws RootPathException {
-        Node jar;
-
-        fileUri = fileUri.substring(0, fileUri.length() - ZIP_SEPARATOR.length());
-        jar = getIO().node(fileUri);
-        if (!(jar instanceof FileNode)) {
-            throw new RootPathException("file node expected: " + fileUri);
-        }
-        try {
-            return root((FileNode) jar);
-        } catch (IOException e) {
-            throw new RootPathException(e);
-        }
-    }
-
-    public ZipRoot root(FileNode jar) throws IOException {
-        return new ZipRoot(this, new ZipFile(jar.getAbsolute()));
-    }
-
-    public ZipNode node(FileNode jar, String path) throws IOException {
-        return root(jar).node(path);
-    }
-
     public ZipNode node(URI uri, Object extra) throws RootPathException {
         String schemeSpecific;
         String path;
+        Node jar;
 
         if (extra != null) {
             throw new RootPathException(uri, "unexpected extra argument: " + extra);
@@ -77,6 +55,22 @@ public class ZipFilesystem extends Filesystem {
         if (path.startsWith(getSeparator())) {
             throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
-        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
+        jar = getIO().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
+        if (!(jar instanceof FileNode)) {
+            throw new RootPathException(uri, "file node expected, got: " + jar.getLocator());
+        }
+        try {
+            return root((FileNode) jar).node(path);
+        } catch (IOException e) {
+            throw new RootPathException(uri, "io exception", e);
+        }
+    }
+
+    public ZipRoot root(FileNode jar) throws IOException {
+        return new ZipRoot(this, new ZipFile(jar.getAbsolute()));
+    }
+
+    public ZipNode node(FileNode jar, String path) throws IOException {
+        return root(jar).node(path);
     }
 }

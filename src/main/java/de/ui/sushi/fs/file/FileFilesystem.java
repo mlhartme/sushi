@@ -43,20 +43,20 @@ public class FileFilesystem extends Filesystem {
     }
 
     public Node node(URI uri, Object extra) throws RootPathException {
+        String authority;
+
         if (extra != null) {
             throw new RootPathException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
-        return root(uri.getAuthority()).node(getCheckedPath(uri));
-    }
-
-    public FileRoot root(String authority) throws RootPathException {
+        authority = uri.getAuthority();
         if (authority != null) {
-            throw new RootPathException("invalid root: unexpected authority " + authority);
+            throw new RootPathException(uri, "invalid root: unexpected authority " + authority);
         }
         if (roots.length != 1) {
             throw new UnsupportedOperationException("TODO");
         }
-        return roots[0];
+        return roots[0].node(getCheckedPath(uri));
     }
+
 }

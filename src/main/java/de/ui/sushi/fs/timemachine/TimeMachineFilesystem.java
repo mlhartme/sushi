@@ -40,25 +40,11 @@ public class TimeMachineFilesystem extends Filesystem {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 
-    public TimeMachineRoot root(String root) throws RootPathException {
-        Node dir;
-
-        dir = getIO().node(root);
-        if (!(dir instanceof FileNode)) {
-            throw new RootPathException("file node expected:" + root);
-        }
-        try {
-            return TimeMachineRoot.create(this, (FileNode) dir);
-        } catch (FileNotFoundException e) {
-            throw new RootPathException(e);
-        } catch (ExistsException e) {
-            throw new RootPathException(e);
-        }
-    }
-
     public TimeMachineNode node(URI uri, Object extra) throws RootPathException {
         String path;
         String schemeSpecific;
+        String root;
+        Node dir;
 
         if (extra != null) {
             throw new RootPathException(uri, "unexpected extra argument: " + extra);
@@ -75,6 +61,17 @@ public class TimeMachineFilesystem extends Filesystem {
         if (path.startsWith(getSeparator())) {
             throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
-        return root(schemeSpecific.substring(0, schemeSpecific.length() - path.length())).node(path);
+        root = schemeSpecific.substring(0, schemeSpecific.length() - path.length());
+        dir = getIO().node(root);
+        if (!(dir instanceof FileNode)) {
+            throw new RootPathException(uri, "file node expected:" + root);
+        }
+        try {
+            return TimeMachineRoot.create(this, (FileNode) dir).node(path);
+        } catch (FileNotFoundException e) {
+            throw new RootPathException(e);
+        } catch (ExistsException e) {
+            throw new RootPathException(e);
+        }
     }
 }

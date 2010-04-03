@@ -69,32 +69,47 @@ public class SshFilesystem extends Filesystem {
         return jsch;
     }
 
-    public SshRoot root(String root, Credentials activeCredentials) throws RootPathException {
+    @Override
+    public SshNode node(URI uri, Object extra) throws RootPathException {
+        Credentials activeCredentials;
+
+        if (extra != null) {
+            if (extra instanceof Credentials) {
+                activeCredentials = (Credentials) extra;
+            } else {
+                throw new RootPathException(uri, "unexpected extra argument: " + extra);
+            }
+        } else {
+            activeCredentials = credentials;
+        }
+        checkHierarchical(uri);
+        try {
+            return root(uri.getAuthority(), activeCredentials).node(getCheckedPath(uri));
+        } catch (JSchException e) {
+            throw new RootPathException(uri, "cannot create root", e);
+        } catch (IOException e) {
+            throw new RootPathException(uri, "cannot create root", e);
+        }
+    }
+
+    public SshRoot localhostRoot() throws JSchException, IOException {
+        return root("localhost", getIO().getWorking().getName(), credentials);
+    }
+
+    public SshRoot root(String root, Credentials activeCredentials) throws JSchException, IOException {
         int idx;
         String host;
         String user;
 
         host = root;
         idx = host.indexOf('@');
-        try {
-            if (idx == -1) {
-                user = null;
-            } else {
-                user = host.substring(0, idx);
-                host = host.substring(idx + 1);
-            }
-            try {
-                return root(host, user, activeCredentials);
-            } catch (JSchException e) {
-                throw new RootPathException(e);
-            }
-        } catch (IOException e) {
-            throw new RootPathException(e);
+        if (idx == -1) {
+            user = null;
+        } else {
+            user = host.substring(0, idx);
+            host = host.substring(idx + 1);
         }
-    }
-
-    public SshRoot localRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName(), credentials);
+        return root(host, user, activeCredentials);
     }
 
     /** @user null to use current user */
@@ -139,22 +154,5 @@ public class SshFilesystem extends Filesystem {
             key = key.copyFile(io.getTemp().createTempFile());
         }
         return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
-    }
-
-    @Override
-    public SshNode node(URI uri, Object extra) throws RootPathException {
-        Credentials activeCredentials;
-
-        if (extra != null) {
-            if (extra instanceof Credentials) {
-                activeCredentials = (Credentials) extra;
-            } else {
-                throw new RootPathException(uri, "unexpected extra argument: " + extra);
-            }
-        } else {
-            activeCredentials = credentials;
-        }
-        checkHierarchical(uri);
-        return root(uri.getAuthority(), activeCredentials).node(getCheckedPath(uri));
     }
 }

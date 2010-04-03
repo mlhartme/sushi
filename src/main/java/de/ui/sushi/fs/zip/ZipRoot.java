@@ -29,7 +29,7 @@ import de.ui.sushi.fs.Root;
 public class ZipRoot implements Root {
     private final ZipFilesystem filesystem;
     private final ZipFile zip;
-    
+
     public ZipRoot(ZipFilesystem filesystem, ZipFile zip) {
         this.filesystem = filesystem;
         this.zip = zip;
@@ -38,14 +38,14 @@ public class ZipRoot implements Root {
     @Override
     public boolean equals(Object obj) {
         ZipRoot root;
-        
+
         if (obj instanceof ZipRoot) {
             root = (ZipRoot) obj;
             return filesystem == root.filesystem && zip.equals(root.zip);
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return zip.hashCode();
@@ -54,7 +54,7 @@ public class ZipRoot implements Root {
     public ZipFile getZip() {
         return zip;
     }
-    
+
     public ZipFilesystem getFilesystem() {
         return filesystem;
     }
@@ -62,7 +62,7 @@ public class ZipRoot implements Root {
     public long getLastModified() {
         return new File(zip.getName()).lastModified();
     }
-    
+
     public String getId() {
         return new File(zip.getName()).toURI() + "!/";
     }
@@ -70,11 +70,11 @@ public class ZipRoot implements Root {
     public ZipNode node(String path) {
         return new ZipNode(this, path);
     }
-    
+
     public Manifest readManifest() throws IOException {
         InputStream src;
         Manifest result;
-        
+
         src = node(Archive.MANIFEST).createInputStream();
         result = new Manifest(src);
         src.close();

@@ -27,10 +27,6 @@ public class RootPathException extends IOException {
         this(null, msg);
     }
 
-    public RootPathException(Throwable cause) {
-        this(null, cause.getMessage(), cause);
-    }
-
     public RootPathException(URI uri, String msg) {
         super(uri + ": " + msg);
 

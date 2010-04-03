@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -610,7 +611,7 @@ public class SvnNode extends Node {
     }
 
     public static SvnNode fromWorkspace(FileNode workspace) throws IOException {
-        return (SvnNode) workspace.getIO().node("svn:" + urlFromWorkspace(workspace));
+        return (SvnNode) workspace.getIO().validNode("svn:" + urlFromWorkspace(workspace));
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {

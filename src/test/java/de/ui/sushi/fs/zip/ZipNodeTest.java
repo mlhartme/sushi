@@ -31,15 +31,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.fs.file.FileNode;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {
     private IO ioObj = new IO();
-    
+
     @Test
-    public void junit() throws RootPathException, IOException {
+    public void junit() throws Exception {
         FileNode jar;
         String rootPath;
         String locator;
@@ -78,13 +77,13 @@ public class ZipNodeTest {
         assrt = (ZipNode) junit.join("Assert.class");
         assertTrue(assrt.exists());
         assertTrue(assrt.isFile());
-    }    
-    
+    }
+
     @Test
     public void readNonexisting() throws IOException {
         FileNode jar;
         Node node;
-        
+
         jar = ioObj.locateClasspathItem(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile");
         assertFalse(node.exists());
@@ -96,11 +95,11 @@ public class ZipNodeTest {
         }
     }
 
- 
+
     @Test
     public void manifest() throws IOException {
         FileNode jar;
-            
+
         jar = ioObj.locateClasspathItem(Object.class);
         assertNotNull(jar.openZip().getRoot().readManifest());
     }

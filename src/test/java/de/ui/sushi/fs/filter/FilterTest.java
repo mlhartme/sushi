@@ -32,12 +32,12 @@ import de.ui.sushi.io.OS;
 
 public class FilterTest {
     private Node root;
-    
+
     @Before
     public void setup() throws IOException {
     	root = new IO().getTemp().createTempDirectory();
     }
-    
+
     @Test
     public void emptyIncludes() throws IOException {
         create();
@@ -61,7 +61,7 @@ public class FilterTest {
         create("foo+bar");
         checkSet(root.find("foo+bar"), "foo+bar");
     }
-    
+
     @Test
     public void children() throws IOException {
         create("a", "b");
@@ -71,7 +71,7 @@ public class FilterTest {
     @Test
     public void grandChildren() throws IOException {
         List<Node> nodes;
-        
+
         create("a", "b/c", "b/d");
         nodes = root.find("*/*");
         checkSet(nodes, "b/c", "b/d");
@@ -80,7 +80,7 @@ public class FilterTest {
     @Test
     public void star() throws IOException {
         create("1", "2", "3");
-        check("*", "1", "2", "3"); 
+        check("*", "1", "2", "3");
     }
 
     @Test
@@ -98,26 +98,26 @@ public class FilterTest {
     public void rejectDoubleStarOnly() throws IOException {
         root.getIO().filter().include("**");
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void rejectDoubleDoubleStar() throws IOException {
         root.getIO().filter().include("**/**");
     }
-    
+
     @Test
     public void predicate() throws IOException {
         List<Node> nodes;
-        
+
         create("a", "b/c", "b/d");
         nodes = root.find(root.getIO().filter().include("**/*").predicate(Predicate.DIRECTORY));
         assertEquals(1, nodes.size());
         assertEquals(root.join("b"), nodes.get(0));
     }
-    
+
     @Test
     public void depth() throws IOException {
         create("a", "b/c", "b/d/e");
-        
+
         check(filter().include("**/*").maxDepth(0) );
         check(filter().include("**/*").maxDepth(1), "a", "b");
         check(filter().include("**/*").minDepth(2).maxDepth(2), "b/c", "b/d");
@@ -126,7 +126,7 @@ public class FilterTest {
     }
 
     @Test(expected=IOException.class)
-    public void permissionDenied() throws IOException {
+    public void permissionDenied() throws Exception {
     	if (OS.CURRENT != OS.LINUX) {
     		throw new IOException();
     	}
@@ -140,14 +140,14 @@ public class FilterTest {
         Tree tree;
         Tree a;
         Tree b;
-        
+
         create("a/a", "a/b", "b/a", "b/b");
         filter = filter().include("**/b");
         action = new TreeAction();
         filter.invoke(root, action);
         tree = action.getResult();
         assertEquals(2, tree.children.size());
-        
+
         a = tree.children.get(0);
         if (a.node.getName().equals("a")) {
         	b = tree.children.get(1);
@@ -158,7 +158,7 @@ public class FilterTest {
         assertEquals("a", a.node.getName());
         assertEquals(1, a.children.size());
         assertEquals("b", a.children.get(0).node.getName());
-        
+
         assertEquals("b", b.node.getName());
         assertEquals(1, b.children.size());
         assertEquals("b", b.children.get(0).node.getName());
@@ -168,16 +168,16 @@ public class FilterTest {
         filter.invoke(root, action);
         assertNull(action.getResult());
     }
-    
+
     //--
-    
+
     private Filter filter() {
     	return root.getIO().filter();
     }
-    
+
     private void create(String... paths) {
         Node file;
-        
+
         try {
             for (String path : paths) {
                 path = path.replace('/', root.getRoot().getFilesystem().getSeparatorChar());
@@ -189,7 +189,7 @@ public class FilterTest {
             throw new RuntimeException(e);
         }
     }
-    
+
     private void check(String pattern, String ... paths) throws IOException {
     	checkSet(root.find(pattern), paths);
     }
@@ -197,7 +197,7 @@ public class FilterTest {
     private void check(Filter filter, String ... paths) throws IOException {
     	checkSet(root.find(filter), paths);
     }
-    
+
     private void checkSet(List<Node> nodes, String ... names) {
         assertEquals(names.length, nodes.size());
         for (String name : names) {

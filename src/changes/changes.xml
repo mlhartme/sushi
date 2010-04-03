@@ -4,6 +4,10 @@
   <body>
     <release version="2.0.2" date="?">
       <action dev="mlhartme" type="add">
+        IO.node(String) no longer wraps URISyntaxException in RootPathException. If you know your syntax is valid, you
+        can invoke validNode(String) instead.
+      </action>
+      <action dev="mlhartme" type="add">
         Add extra argument to IO.node and Filesystem.node to pass configuration options.
       </action>
       <action dev="mlhartme" type="add">

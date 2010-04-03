@@ -23,13 +23,12 @@ import java.net.URI;
 public class RootPathException extends IOException {
     public final URI uri;
 
-    public RootPathException(String msg) {
-        this(null, msg);
-    }
-
     public RootPathException(URI uri, String msg) {
         super(uri + ": " + msg);
 
+        if (uri == null) {
+            throw new IllegalArgumentException();
+        }
         this.uri = uri;
     }
 

@@ -26,6 +26,7 @@ import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.zip.ZipFile;
 
 public class ZipFilesystem extends Filesystem {
@@ -55,7 +56,11 @@ public class ZipFilesystem extends Filesystem {
         if (path.startsWith(getSeparator())) {
             throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
-        jar = getIO().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
+        try {
+            jar = getIO().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
+        } catch (URISyntaxException e) {
+            throw new RootPathException(uri, "invalid jar file in jar url", e);
+        }
         if (!(jar instanceof FileNode)) {
             throw new RootPathException(uri, "file node expected, got: " + jar.getLocator());
         }

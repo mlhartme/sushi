@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -146,6 +147,6 @@ public class SvnNodeFullTest extends NodeTest {
     //--
 
     private SvnNode create(String path) throws RootPathException {
-        return (SvnNode) IO.node("svn:" + path);
+        return (SvnNode) IO.validNode("svn:" + path);
     }
 }

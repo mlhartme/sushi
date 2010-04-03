@@ -24,6 +24,8 @@ import de.ui.sushi.fs.RootPathException;
 import de.ui.sushi.metadata.Schema;
 import de.ui.sushi.metadata.SimpleType;
 
+import java.net.URISyntaxException;
+
 public class NodeType extends SimpleType {
     private final IO io;
 
@@ -48,6 +50,8 @@ public class NodeType extends SimpleType {
         try {
             return io.node(str);
         } catch (RootPathException e) {
+            throw new ArgumentException(str, e);
+        } catch (URISyntaxException e) {
             throw new ArgumentException(str, e);
         }
     }

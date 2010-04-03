@@ -59,7 +59,7 @@ public class IOTest {
     }
 
     @Test
-    public void filesystemParse() throws IOException {
+    public void filesystemParse() throws Exception {
         Node node;
         IO io;
 
@@ -112,7 +112,7 @@ public class IOTest {
     //--
 
     @Test
-    public void nodeRoot() throws IOException {
+    public void nodeRoot() throws Exception {
         IO io;
         Node node;
 
@@ -154,7 +154,7 @@ public class IOTest {
 
 
     @Ignore
-    public void nodeRelative() throws RootPathException {
+    public void nodeRelative() throws Exception {
         IO io;
         Node node;
 
@@ -167,7 +167,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeDot() throws RootPathException {
+    public void nodeDot() throws Exception {
         IO io;
         Node dot;
 
@@ -179,7 +179,7 @@ public class IOTest {
     }
 
     @Ignore
-    public void nodeEmpty() throws RootPathException {
+    public void nodeEmpty() throws Exception {
         IO io;
 
         io = new IO();
@@ -189,7 +189,7 @@ public class IOTest {
     //
 
     @Ignore
-    public void path() throws RootPathException {
+    public void path() throws Exception {
         IO io;
         List<Node> path;
 

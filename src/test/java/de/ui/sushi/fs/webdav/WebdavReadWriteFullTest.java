@@ -50,7 +50,7 @@ public class WebdavReadWriteFullTest extends NodeTest {
 
     @Override
     protected Node createWork() throws IOException {
-        return IO.node(uri).deleteOpt().mkdir();
+        return IO.validNode(uri).deleteOpt().mkdir();
     }
 
     @Test

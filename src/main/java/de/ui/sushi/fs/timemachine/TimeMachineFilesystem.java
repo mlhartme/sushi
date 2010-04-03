@@ -27,6 +27,7 @@ import de.ui.sushi.fs.file.FileNode;
 
 import java.io.FileNotFoundException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * See http://www.macosxhints.com/article.php?story=20080623213342356
@@ -62,7 +63,11 @@ public class TimeMachineFilesystem extends Filesystem {
             throw new RootPathException(uri, "invalid heading " + getSeparator());
         }
         root = schemeSpecific.substring(0, schemeSpecific.length() - path.length());
-        dir = getIO().node(root);
+        try {
+            dir = getIO().node(root);
+        } catch (URISyntaxException e) {
+            throw new RootPathException(uri, "invalid root '" + root + "'", e);
+        }
         if (!(dir instanceof FileNode)) {
             throw new RootPathException(uri, "file node expected:" + root);
         }

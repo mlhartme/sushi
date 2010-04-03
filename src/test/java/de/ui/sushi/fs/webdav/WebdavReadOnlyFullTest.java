@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import de.ui.sushi.TestProperties;
@@ -34,7 +35,7 @@ import org.junit.runners.Parameterized;
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     @Test
-    public void normal() throws IOException {
+    public void normal() throws Exception {
         WebdavNode node;
 
         node = (WebdavNode) IO.node("http://englishediting.de/index.html");
@@ -47,7 +48,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void node() throws IOException {
+    public void node() throws Exception {
         String url;
         WebdavNode node;
 
@@ -59,7 +60,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
 
     @Override
     protected Node createWork() throws IOException {
-        return IO.node("http://englishediting.de/foo");
+        return IO.validNode("http://englishediting.de/foo");
     }
 }
 

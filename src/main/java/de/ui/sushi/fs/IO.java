@@ -482,6 +482,16 @@ public class IO {
         filesystems.put(name, filesystem);
     }
 
+    public Filesystem getFilesystem(String scheme) {
+        Filesystem result;
+
+        result = filesystems.get(scheme);
+        if (result == null) {
+            throw new IllegalArgumentException("unkown scheme: " + scheme);
+        }
+        return result;
+    }
+
     public <T extends Filesystem> T getFilesystem(Class<T> c) {
         T result;
 

@@ -53,7 +53,7 @@ public class TimeMachineFilesystem extends Filesystem {
         schemeSpecific = uri.getSchemeSpecificPart();
         path = after(schemeSpecific, "!");
         if (path == null) {
-            throw new RootPathException(uri, "unexpected opaque uri: " + schemeSpecific);
+            throw new RootPathException(uri, "missing '!': " + schemeSpecific);
         }
         if (path.endsWith(getSeparator())) {
             throw new RootPathException(uri, "invalid tailing " + getSeparator());

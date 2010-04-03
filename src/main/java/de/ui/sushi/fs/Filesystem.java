@@ -60,12 +60,12 @@ public abstract class Filesystem {
     public abstract Node node(URI uri, Object extra) throws RootPathException;
 
     /** Helper Method for opaquePath implementations */
-    public String after(String schemeSpecific, String separator) throws RootPathException {
+    public String after(String schemeSpecific, String separator) {
         int idx;
 
         idx = schemeSpecific.indexOf(separator);
         if (idx == -1) {
-            throw new RootPathException("missing '" + separator + "': " + schemeSpecific);
+            return null;
         }
         return schemeSpecific.substring(idx + separator.length());
     }

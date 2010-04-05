@@ -99,8 +99,7 @@ public class FileNode extends Node {
     }
 
     public ZipNode openZip() throws IOException {
-    	// TODO
-        return new ZipFilesystem(getIO(), "zip").node(this, "");
+        return ((ZipFilesystem) getIO().getFilesystem("zip")).node(this, "");
     }
 
     @Override

@@ -44,6 +44,8 @@ public class FileFilesystem extends Filesystem {
 
     public Node node(URI uri, Object extra) throws NodeInstantiationException {
         String authority;
+        File file;
+        String path;
 
         if (extra != null) {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
@@ -56,7 +58,20 @@ public class FileFilesystem extends Filesystem {
         if (roots.length != 1) {
             throw new UnsupportedOperationException("TODO");
         }
-        return roots[0].node(getCheckedPath(uri));
+        getCheckedPath(uri);
+        file = new File(uri);
+        return new FileNode(getRoot(file), file);
     }
 
+    public FileRoot getRoot(File file) {
+        String path;
+
+        path = file.getPath();
+        for (FileRoot root : roots) {
+            if (path.startsWith(root.getId())) {
+                return root;
+            }
+        }
+        throw new IllegalArgumentException(path);
+    }
 }

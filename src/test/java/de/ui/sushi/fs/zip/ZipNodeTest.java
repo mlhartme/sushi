@@ -80,6 +80,22 @@ public class ZipNodeTest {
     }
 
     @Test
+    public void jarWithBlank() throws Exception {
+        FileNode jar;
+        Node temp;
+        Node copy;
+        ZipNode zip;
+
+        jar = ioObj.locateClasspathItem(Assert.class);
+        temp = ioObj.getTemp().createTempDirectory();
+        copy = temp.join("a b").mkdir().join("jar file.jar");
+        jar.copyFile(copy);
+        zip = ((FileNode) copy).openZip();
+        assertEquals(1, zip.find("org/junit/Assert.class").size());
+        temp.delete();
+    }
+
+    @Test
     public void readNonexisting() throws IOException {
         FileNode jar;
         Node node;

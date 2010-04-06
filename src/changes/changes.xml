@@ -3,6 +3,9 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.0.2" date="?">
+      <action dev="mlhartme" type="remove">
+        Dump svn status and changelog generation, they're to specific.
+      </action>
       <action dev="mlhartme" type="fix">
         Fix URI to file conversion problems with blanks.
       </action>

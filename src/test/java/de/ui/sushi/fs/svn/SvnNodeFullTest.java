@@ -102,17 +102,6 @@ public class SvnNodeFullTest extends NodeTest {
     }
 
     @Test
-    public void log() throws Exception {
-        final String comment = "my comment";
-        SvnNode root;
-        long revision;
-
-        root = (SvnNode) work;
-        revision = ((SvnNode) root.join("file")).save("welcome".getBytes(), comment);
-        assertTrue(root.changelog(revision, "viewsvn").contains(comment));
-    }
-
-    @Test
     public void export() throws IOException, SVNException {
         SvnNode root;
         FileNode dir;

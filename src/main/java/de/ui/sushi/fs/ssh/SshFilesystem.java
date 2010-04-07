@@ -84,7 +84,7 @@ public class SshFilesystem extends Filesystem {
         }
         checkHierarchical(uri);
         try {
-            return root(uri.getAuthority(), activeCredentials).node(getCheckedPath(uri));
+            return root(uri.getAuthority(), activeCredentials, timeout).node(getCheckedPath(uri));
         } catch (JSchException e) {
             throw new NodeInstantiationException(uri, "cannot create root", e);
         } catch (IOException e) {
@@ -93,10 +93,14 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName(), credentials);
+        return root("localhost", getIO().getWorking().getName(), credentials, timeout);
     }
 
     public SshRoot root(String root, Credentials activeCredentials) throws JSchException, IOException {
+        return root(root, activeCredentials, timeout);
+    }
+
+    public SshRoot root(String root, Credentials activeCredentials, int activeTimeout) throws JSchException, IOException {
         int idx;
         String host;
         String user;
@@ -109,11 +113,15 @@ public class SshFilesystem extends Filesystem {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
         }
-        return root(host, user, activeCredentials);
+        return root(host, user, activeCredentials, activeTimeout);
+    }
+
+    public SshRoot root(String host, String user, Credentials activeCredentials) throws JSchException, IOException {
+        return root(host, user, activeCredentials, timeout);
     }
 
     /** @user null to use current user */
-    public SshRoot root(String host, String user, Credentials activeCredentials) throws JSchException, IOException {
+    public SshRoot root(String host, String user, Credentials activeCredentials, int activeTimeout) throws JSchException, IOException {
         IO io;
         Node dir;
         Node file;
@@ -153,6 +161,6 @@ public class SshFilesystem extends Filesystem {
             // TODO: what about security?
             key = key.copyFile(io.getTemp().createTempFile());
         }
-        return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
+        return new SshRoot(this, host, user, (FileNode) key, pp, activeTimeout);
     }
 }

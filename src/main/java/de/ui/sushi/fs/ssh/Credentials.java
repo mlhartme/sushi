@@ -6,6 +6,10 @@ public class Credentials {
     public final Node privateKey;
     public final String passphrase;
 
+    public Credentials(Node privateKey) {
+        this(privateKey, null);
+    }
+
     public Credentials(Node privateKey, String passphrase) {
         this.privateKey = privateKey;
         this.passphrase = passphrase;

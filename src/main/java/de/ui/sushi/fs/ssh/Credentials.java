@@ -1,10 +1,16 @@
 package de.ui.sushi.fs.ssh;
 
+import com.jcraft.jsch.Identity;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /** Private key with passphrase */
 public class Credentials {
@@ -31,25 +37,49 @@ public class Credentials {
         if (!key.isFile()) {
             throw new IOException("private key not found: " + key);
         }
-        if (!(key instanceof FileNode)) {
-            // TODO: what about security?
-            key = key.copyFile(io.getTemp().createTempFile());
-        }
-        return new Credentials((FileNode) key, passphrase);
+        return load(key, passphrase);
     }
 
-    public final FileNode privateKey;
+    public static Credentials load(Node node, String passphrase) throws IOException {
+        return new Credentials(node.getAbsolute(), node.readBytes(), passphrase);
+    }
+
+    public final String name;
+    public final byte[] privateKey;
     public final String passphrase;
 
-    public Credentials(FileNode privateKey) {
-        this(privateKey, "");
+    public Credentials(String name, byte[] privateKey) {
+        this(name, privateKey, "");
     }
 
-    public Credentials(FileNode privateKey, String passphrase) {
+    public Credentials(String name, byte[] privateKey, String passphrase) {
         if (passphrase == null) {
             throw new IllegalArgumentException();
         }
+        this.name = name;
         this.privateKey = privateKey;
         this.passphrase = passphrase;
+    }
+
+    public Identity loadIdentity(JSch jsch) throws JSchException {
+        Throwable te;
+        Class<?> clz;
+        Method m;
+
+        try {
+            clz = Class.forName("com.jcraft.jsch.IdentityFile");
+            m = clz.getDeclaredMethod("newInstance", new Class<?>[] { String.class, byte[].class, byte[].class, JSch.class });
+            m.setAccessible(true);
+            return (Identity) m.invoke(null, new Object[] { name, Arrays.copyOf(privateKey, privateKey.length), null, jsch });
+        } catch (InvocationTargetException e) {
+            te = e.getTargetException();
+            if (te instanceof JSchException) {
+                throw (JSchException) te;
+            } else {
+                throw new IllegalStateException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("TODO", e);
+        }
     }
 }

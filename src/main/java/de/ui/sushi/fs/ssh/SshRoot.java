@@ -143,8 +143,8 @@ public class SshRoot implements Root, UserInfo, Runnable {
     public Session login(JSch jsch, String host) throws JSchException {
         Session session;
 
-        jsch.addIdentity(credentials.privateKey.getAbsolute());
-        session = jsch.getSession(user, host, 22);
+        jsch.addIdentity(credentials.loadIdentity(jsch), null);
+        session = jsch.getSession(user, host);
         session.setUserInfo(this);
         return session;
     }

@@ -22,7 +22,6 @@ import java.io.OutputStream;
 
 import de.ui.sushi.fs.Root;
 import de.ui.sushi.fs.OnShutdown;
-import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.io.MultiOutputStream;
 import de.ui.sushi.util.ExitCode;
 
@@ -38,22 +37,22 @@ public class SshRoot implements Root, UserInfo, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 
-    /** TODO: replace by my own Identity implementation  (IdentityFile is not public ...) */
-    private final FileNode privateKey;
-    private final String passphrase;
+    private final Credentials credentials;
     private final String host;
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp channelFtp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, FileNode privateKey, String passphrase, int timeout)
+    public SshRoot(SshFilesystem filesystem, String host, String user, Credentials credentials, int timeout)
     throws JSchException {
+        if (credentials == null) {
+            throw new IllegalArgumentException();
+        }
         this.filesystem = filesystem;
         this.user = user;
-        this.privateKey = privateKey;
-        this.passphrase = passphrase;
         this.host = host;
+        this.credentials = credentials;
         this.session = login(filesystem.getJSch(), host);
         this.session.connect(timeout);
         this.channelFtp = null;
@@ -92,7 +91,7 @@ public class SshRoot implements Root, UserInfo, Runnable {
 
     @Override
     public String toString() {
-        return "SshNode host=" + host + ", user=" + user + ", privateKey=" + privateKey + ", passphrase=" + passphrase;
+        return "SshNode host=" + host + ", user=" + user;
     }
 
     //--
@@ -144,7 +143,7 @@ public class SshRoot implements Root, UserInfo, Runnable {
     public Session login(JSch jsch, String host) throws JSchException {
         Session session;
 
-        jsch.addIdentity(privateKey.getAbsolute());
+        jsch.addIdentity(credentials.privateKey.getAbsolute());
         session = jsch.getSession(user, host, 22);
         session.setUserInfo(this);
         return session;
@@ -170,7 +169,7 @@ public class SshRoot implements Root, UserInfo, Runnable {
     }
 
     public String getPassphrase() {
-        return passphrase;
+        return credentials.passphrase;
     }
 
     public boolean promptPassphrase(String prompt) {

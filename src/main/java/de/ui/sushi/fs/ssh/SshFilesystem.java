@@ -22,9 +22,7 @@ import com.jcraft.jsch.JSchException;
 import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeInstantiationException;
-import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
 import java.net.URI;
@@ -42,6 +40,7 @@ public class SshFilesystem extends Filesystem {
     public SshFilesystem(IO io, String name) {
         super(io, '/', new Features(true, true, true, true, false, false), name);
 
+        // initialized lazily
         defaultCredentials = null;
         defaultTimeout = 0;
         jsch = new JSch();
@@ -51,7 +50,11 @@ public class SshFilesystem extends Filesystem {
         this.defaultCredentials = defaultCredentials;
     }
 
-    public Credentials getDefaultCredentials() {
+    /** @return never null */
+    public Credentials getDefaultCredentials() throws IOException {
+        if (defaultCredentials == null) {
+            defaultCredentials = Credentials.loadDefault(getIO());
+        }
         return defaultCredentials;
     }
 
@@ -80,7 +83,11 @@ public class SshFilesystem extends Filesystem {
                 throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
             }
         } else {
-            credentials = defaultCredentials;
+            try {
+                credentials = getDefaultCredentials();
+            } catch (IOException e) {
+                throw new NodeInstantiationException(uri, "cannot load credentials", e);
+            }
         }
         checkHierarchical(uri);
         try {
@@ -93,7 +100,7 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName(), defaultCredentials);
+        return root("localhost", getIO().getWorking().getName(), getDefaultCredentials());
     }
 
     public SshRoot root(String root, Credentials credentials) throws JSchException, IOException {
@@ -116,51 +123,22 @@ public class SshFilesystem extends Filesystem {
         return root(host, user, credentials, timeout);
     }
 
+    public SshRoot root(String host, String user) throws JSchException, IOException {
+        return root(host, user, getDefaultCredentials());
+    }
+
     public SshRoot root(String host, String user, Credentials credentials) throws JSchException, IOException {
         return root(host, user, credentials, defaultTimeout);
     }
 
     /** @user null to use current user */
     public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException, IOException {
-        IO io;
-        Node dir;
-        Node file;
-        Node key;
-        String pp;
-
-        io = getIO();
+        if (credentials == null) {
+            throw new IllegalArgumentException();
+        }
         if (user == null) {
-            user = io.getHome().getName();
+            user = getIO().getHome().getName();
         }
-        dir = io.getHome().join(".ssh");
-        if (credentials != null && credentials.passphrase != null) {
-            pp = credentials.passphrase;
-        } else {
-            file = dir.join("passphrase");
-            if (file.exists()) {
-                pp = file.readString().trim();
-            } else {
-                pp = "";
-            }
-        }
-        if (credentials != null && credentials.privateKey != null) {
-            key = credentials.privateKey;
-        } else {
-            key = dir.join("id_dsa");
-            if (!key.exists()) {
-                key = dir.join("id_rsa");
-                if (!key.exists()) {
-                    key = dir.join("identity");
-                }
-            }
-        }
-        if (!key.isFile()) {
-            throw new IOException("private key not found: " + key);
-        }
-        if (!(key instanceof FileNode)) {
-            // TODO: what about security?
-            key = key.copyFile(io.getTemp().createTempFile());
-        }
-        return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
+        return new SshRoot(this, host, user, credentials, timeout);
     }
 }

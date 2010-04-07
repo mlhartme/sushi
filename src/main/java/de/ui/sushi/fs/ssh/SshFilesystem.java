@@ -47,7 +47,7 @@ public class SshFilesystem extends Filesystem {
         jsch = new JSch();
     }
 
-    public void setCredentials(Credentials credentails) {
+    public void setCredentials(Credentials credentials) {
         this.credentials = credentials;
     }
 

@@ -35,34 +35,34 @@ import java.net.URI;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    private Credentials credentials;
-    private int timeout;
+    private Credentials defaultCredentials;
+    private int defaultTimeout;
     private JSch jsch;
 
     public SshFilesystem(IO io, String name) {
         super(io, '/', new Features(true, true, true, true, false, false), name);
 
-        credentials = null;
-        timeout = 0;
+        defaultCredentials = null;
+        defaultTimeout = 0;
         jsch = new JSch();
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
+    public void setDefaultCredentials(Credentials defaultCredentials) {
+        this.defaultCredentials = defaultCredentials;
     }
 
-    public Credentials getCredentials() {
-        return credentials;
-    }
-
-    /** millis */
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
+    public Credentials getDefaultCredentials() {
+        return defaultCredentials;
     }
 
     /** millis */
-    public int getTimeout() {
-        return timeout;
+    public void setDefaultTimeout(int defaultTimeout) {
+        this.defaultTimeout = defaultTimeout;
+    }
+
+    /** millis */
+    public int getDefaultTimeout() {
+        return defaultTimeout;
     }
 
     public JSch getJSch() {
@@ -71,20 +71,20 @@ public class SshFilesystem extends Filesystem {
 
     @Override
     public SshNode node(URI uri, Object extra) throws NodeInstantiationException {
-        Credentials activeCredentials;
+        Credentials credentials;
 
         if (extra != null) {
             if (extra instanceof Credentials) {
-                activeCredentials = (Credentials) extra;
+                credentials = (Credentials) extra;
             } else {
                 throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
             }
         } else {
-            activeCredentials = credentials;
+            credentials = defaultCredentials;
         }
         checkHierarchical(uri);
         try {
-            return root(uri.getAuthority(), activeCredentials, timeout).node(getCheckedPath(uri));
+            return root(uri.getAuthority(), credentials).node(getCheckedPath(uri));
         } catch (JSchException e) {
             throw new NodeInstantiationException(uri, "cannot create root", e);
         } catch (IOException e) {
@@ -93,14 +93,14 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName(), credentials, timeout);
+        return root("localhost", getIO().getWorking().getName(), defaultCredentials);
     }
 
-    public SshRoot root(String root, Credentials activeCredentials) throws JSchException, IOException {
-        return root(root, activeCredentials, timeout);
+    public SshRoot root(String root, Credentials credentials) throws JSchException, IOException {
+        return root(root, credentials, defaultTimeout);
     }
 
-    public SshRoot root(String root, Credentials activeCredentials, int activeTimeout) throws JSchException, IOException {
+    public SshRoot root(String root, Credentials credentials, int timeout) throws JSchException, IOException {
         int idx;
         String host;
         String user;
@@ -113,15 +113,15 @@ public class SshFilesystem extends Filesystem {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
         }
-        return root(host, user, activeCredentials, activeTimeout);
+        return root(host, user, credentials, timeout);
     }
 
-    public SshRoot root(String host, String user, Credentials activeCredentials) throws JSchException, IOException {
-        return root(host, user, activeCredentials, timeout);
+    public SshRoot root(String host, String user, Credentials credentials) throws JSchException, IOException {
+        return root(host, user, credentials, defaultTimeout);
     }
 
     /** @user null to use current user */
-    public SshRoot root(String host, String user, Credentials activeCredentials, int activeTimeout) throws JSchException, IOException {
+    public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException, IOException {
         IO io;
         Node dir;
         Node file;
@@ -133,8 +133,8 @@ public class SshFilesystem extends Filesystem {
             user = io.getHome().getName();
         }
         dir = io.getHome().join(".ssh");
-        if (activeCredentials != null && activeCredentials.passphrase != null) {
-            pp = activeCredentials.passphrase;
+        if (credentials != null && credentials.passphrase != null) {
+            pp = credentials.passphrase;
         } else {
             file = dir.join("passphrase");
             if (file.exists()) {
@@ -143,8 +143,8 @@ public class SshFilesystem extends Filesystem {
                 pp = "";
             }
         }
-        if (activeCredentials != null && activeCredentials.privateKey != null) {
-            key = activeCredentials.privateKey;
+        if (credentials != null && credentials.privateKey != null) {
+            key = credentials.privateKey;
         } else {
             key = dir.join("id_dsa");
             if (!key.exists()) {
@@ -161,6 +161,6 @@ public class SshFilesystem extends Filesystem {
             // TODO: what about security?
             key = key.copyFile(io.getTemp().createTempFile());
         }
-        return new SshRoot(this, host, user, (FileNode) key, pp, activeTimeout);
+        return new SshRoot(this, host, user, (FileNode) key, pp, timeout);
     }
 }

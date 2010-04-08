@@ -57,9 +57,6 @@ public class FileFilesystem extends Filesystem {
         if (authority != null) {
             throw new NodeInstantiationException(uri, "invalid root: unexpected authority " + authority);
         }
-        if (roots.length != 1) {
-            throw new UnsupportedOperationException("TODO");
-        }
         path = uri.getPath();
         separator = getSeparator();
         if (!path.startsWith(separator)) {

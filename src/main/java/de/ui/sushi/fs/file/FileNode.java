@@ -59,7 +59,8 @@ public class FileNode extends Node {
         return root;
     }
 
-    public URI toURI() {
+    @Override
+    public URI getURI() {
         return file.toURI();
     }
 

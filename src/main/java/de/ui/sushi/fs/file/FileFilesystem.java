@@ -23,6 +23,7 @@ import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeInstantiationException;
 import de.ui.sushi.io.OS;
+import de.ui.sushi.util.Strings;
 
 import java.io.File;
 import java.net.URI;
@@ -46,6 +47,7 @@ public class FileFilesystem extends Filesystem {
         String authority;
         File file;
         String path;
+        String separator;
 
         if (extra != null) {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
@@ -58,7 +60,12 @@ public class FileFilesystem extends Filesystem {
         if (roots.length != 1) {
             throw new UnsupportedOperationException("TODO");
         }
-        getCheckedPath(uri);
+        path = uri.getPath();
+        separator = getSeparator();
+        if (!path.startsWith(separator)) {
+            throw new NodeInstantiationException(uri, "missing initial separator " + separator);
+        }
+        // note that the URI may contain a tailing slash, but turning it into a file will remove the slash
         file = new File(uri);
         return new FileNode(getRoot(file), file);
     }

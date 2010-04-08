@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import de.ui.sushi.fs.Filesystem;
+import de.ui.sushi.fs.NodeInstantiationException;
 import org.junit.Test;
 import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.NodeTest;
@@ -37,6 +39,18 @@ public class FileNodeTest extends NodeTest {
     protected Node createWork() throws IOException {
         return IO.getTemp().createTempDirectory();
     }
+
+    @Test
+    public void tailingSlash() throws Exception {
+        Filesystem fs;
+        Node node;
+
+        fs = work.getRoot().getFilesystem();
+        assertTrue(work.getURI().toString().endsWith(fs.getSeparator()));
+        node = work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath() + fs.getSeparator());
+        assertFalse(node.getPath().endsWith(fs.getSeparator()));
+    }
+
 
     @Test
     public void renameFile() throws IOException {

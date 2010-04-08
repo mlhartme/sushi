@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -89,7 +90,7 @@ public abstract class Node {
     }
 
     protected UnsupportedOperationException unsupported(String op) {
-        return new UnsupportedOperationException(getLocator() + ":" + op);
+        return new UnsupportedOperationException(getURI() + ":" + op);
     }
 
     public abstract Root getRoot();
@@ -221,8 +222,8 @@ public abstract class Node {
 
     public abstract String getPath();
 
-    public String getLocator() {
-        return getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath();
+    public URI getURI() {
+        return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath());
     }
 
     /** @return the last path segment (or an empty string for the root node */

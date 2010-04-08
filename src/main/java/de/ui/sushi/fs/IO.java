@@ -209,7 +209,7 @@ public class IO {
         if (uri.isAbsolute()) {
             base = null;
         } else {
-            uri = URI.create(working.getLocator() + "/").resolve(uri);
+            uri = working.getURI().resolve(uri);
             base = working;
         }
         scheme = uri.getScheme();

@@ -4,6 +4,9 @@
   <body>
     <release version="2.0.2" date="?">
       <action dev="mlhartme" type="update">
+        String Node.getLocator() changed to URI Node.getURI(). FileNode.toURI() dumped.
+      </action>
+      <action dev="mlhartme" type="update">
         Optimized Ssh Credentials Handling.
       </action>
       <action dev="mlhartme" type="remove">

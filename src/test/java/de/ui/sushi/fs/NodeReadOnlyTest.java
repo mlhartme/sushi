@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -45,16 +46,16 @@ public abstract class NodeReadOnlyTest {
 
     @Test
     public void locator() throws Exception {
-        String locator;
+        URI locator;
         Node again;
         Filesystem fs;
 
         fs = work.getRoot().getFilesystem();
-        locator = work.getLocator();
-        assertEquals(locator, work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getLocator());
+        locator = work.getURI();
+        assertEquals(locator, work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
         again = IO.node(locator);
         assertEquals(work, again);
-        assertEquals(locator, again.getLocator());
+        assertEquals(locator, again.getURI());
     }
 
     @Test
@@ -81,14 +82,6 @@ public abstract class NodeReadOnlyTest {
         root = work.getRoot();
         fs = root.getFilesystem();
         fs.getIO().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
-    }
-
-    @Test(expected= NodeInstantiationException.class)
-    public void tailingSlash() throws Exception {
-        Filesystem fs;
-
-        fs = work.getRoot().getFilesystem();
-        work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath() + fs.getSeparator());
     }
 
     @Test

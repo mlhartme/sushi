@@ -62,7 +62,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "invalid jar file in jar url", e);
         }
         if (!(jar instanceof FileNode)) {
-            throw new NodeInstantiationException(uri, "file node expected, got: " + jar.getLocator());
+            throw new NodeInstantiationException(uri, "file node expected, got: " + jar.getURI());
         }
         try {
             return root((FileNode) jar).node(path);

@@ -58,7 +58,7 @@ public class SvnNodeFullTest extends NodeTest {
 
     @Test
     public void rootLocator() throws SVNException {
-        assertEquals("svn:" + URL.toString() + "/work", work.getLocator());
+        assertEquals("svn:" + URL.toString() + "/work", work.getURI().toString());
     }
 
 

@@ -49,10 +49,10 @@ public class ZipNodeTest {
         List<? extends Node> tree;
 
         jar = ioObj.locateClasspathItem(Assert.class);
-        rootPath = jar.getLocator() + "!/org/junit/Assert.class";
+        rootPath = jar.getURI().toString() + "!/org/junit/Assert.class";
         locator = "jar:" + rootPath;
         assrt = (ZipNode) ioObj.node(locator);
-        assertEquals(locator, assrt.getLocator());
+        assertEquals(locator, assrt.getURI().toString());
         assertEquals("org/junit/Assert.class", assrt.getPath());
         assertTrue(assrt.exists());
         assertTrue(assrt.isFile());

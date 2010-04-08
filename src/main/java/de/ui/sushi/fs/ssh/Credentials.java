@@ -5,7 +5,6 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.file.FileNode;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -38,6 +37,10 @@ public class Credentials {
             throw new IOException("private key not found: " + key);
         }
         return load(key, passphrase);
+    }
+
+    public static Credentials load(Node node) throws IOException {
+        return load(node, "");
     }
 
     public static Credentials load(Node node, String passphrase) throws IOException {

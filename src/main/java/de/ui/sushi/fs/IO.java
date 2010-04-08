@@ -163,26 +163,24 @@ public class IO {
     //-- Node creation
 
     public FileNode file(File file) {
-        return file(file.getAbsolutePath());
+        return file(file.getPath());
     }
 
-    public FileNode file(String rootPath) {
-        URI uri;
-        String path;
+    public FileNode file(String path) {
+        File file;
 
-        uri = new File(rootPath).toURI();
-        try {
-            // TODO
-            path = uri.getPath();
-            if (path.length() > 1) {
-                path = Strings.removeEndOpt(path, File.separator);
-            }
-            return (FileNode) node(new URI(uri.getScheme(), uri.getAuthority(), path, uri.getFragment()));
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        } catch (NodeInstantiationException e) {
-            throw new IllegalStateException(e);
+        if (path.length() > 1) {
+            path = Strings.removeEndOpt(path, File.separator);
         }
+        file = new File(path);
+        if (!file.isAbsolute()) {
+            if (working instanceof FileNode) {
+                file = new File(((FileNode) working).getFile(), path);
+            } else {
+                throw new IllegalStateException("working directory is not a file: " + working.getURI());
+            }
+        }
+        return new FileNode(fileFilesystem.getRoot(file), file);
     }
 
     public Node validNode(String uri) throws NodeInstantiationException {

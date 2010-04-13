@@ -41,6 +41,14 @@ public class FileNodeTest extends NodeTest {
     }
 
     @Test
+    public void fileConstructor() {
+        assertEquals(IO.getHome(), IO.file(System.getProperty("user.home")));
+        assertEquals(work.getPath(), IO.file(work.getAbsolute() + "/").getPath());
+        assertEquals(work.getPath(), IO.file(new File(work.getAbsolute() + "/")).getPath());
+        assertEquals("", IO.file("/").getPath());
+    }
+
+    @Test
     public void tailingSlash() throws Exception {
         Filesystem fs;
         Node node;

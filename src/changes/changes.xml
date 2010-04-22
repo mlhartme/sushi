@@ -2,7 +2,12 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.0.2" date="?">
+    <release version="2.0.3" date="?">
+      <action dev="mlhartme" type="update">
+        SvnFilesystem.setCredentials() renamed to setDefaultCredentials().
+      </action>
+    </release>
+    <release version="2.0.2" date="2010-04-13">
       <action dev="mlhartme" type="update">
         String Node.getLocator() changed to URI Node.getURI(). FileNode.toURI() dumped.
       </action>
@@ -10,13 +15,13 @@
         Optimized Ssh Credentials Handling.
       </action>
       <action dev="mlhartme" type="remove">
-        Dump svn status and changelog generation, they're to specific.
+        SvnNode: dump svn status and changelog generation, they're to specific.
       </action>
       <action dev="mlhartme" type="fix">
-        Fix URI to file conversion problems with blanks.
+        FileNode: Fix URI to file conversion problems with blanks.
       </action>
       <action dev="mlhartme" type="update">
-        Renamed RootPathException to NodeInstantiationException. The new exception always has an URI argument.
+        Node: Renamed RootPathException to NodeInstantiationException. The new exception always has an URI argument.
       </action>
       <action dev="mlhartme" type="add">
         IO.node(String) no longer wraps URISyntaxException in RootPathException. If you know your syntax is valid, you
@@ -27,9 +32,6 @@
       </action>
       <action dev="mlhartme" type="add">
         SvnFilesystem: you can now pass credentials as part of the url.
-      </action>
-      <action dev="mlhartme" type="update">
-        Node instantiation cleanup.
       </action>
       <action dev="mlhartme" type="update">
         Dump special handling of $ characters in webdav nodes.

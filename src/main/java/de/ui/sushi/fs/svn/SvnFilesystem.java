@@ -38,19 +38,19 @@ public class SvnFilesystem extends Filesystem {
         System.setProperty("svnkit.upgradeWC", "false"); // see https://wiki.svnkit.com/SVNKit_specific_system_properties
     }
 
-    private String username;
-    private String password;
+    private String defaultUsername;
+    private String defaultPassword;
 
     public SvnFilesystem(IO io, String name) {
         super(io, '/', new Features(true, false, false, false, false, false), name);
 
-        this.username = null;
-        this.password = null;
+        this.defaultUsername = null;
+        this.defaultPassword = null;
     }
 
-    public void setCredentials(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public void setDefaultCredentials(String username, String password) {
+        this.defaultUsername = username;
+        this.defaultPassword = password;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class SvnFilesystem extends Filesystem {
     //--
 
     public SVNRepository repository(String url) throws SVNException {
-        return repository(url, username, password);
+        return repository(url, defaultUsername, defaultPassword);
     }
 
     public static SVNRepository repository(String urlstr, String username, String password) throws SVNException {

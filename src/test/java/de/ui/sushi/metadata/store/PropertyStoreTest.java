@@ -21,6 +21,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.file.FileNode;
 import org.junit.Test;
 
 import de.ui.sushi.metadata.Instance;

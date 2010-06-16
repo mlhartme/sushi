@@ -157,7 +157,7 @@ public class Parser {
         max = args.size();
         for (i = start; i < max; i++) {
             arg = args.get(i);
-            if (arg.startsWith("-")) {
+            if (arg.length() > 1 && arg.startsWith("-")) {
                 argument = options.get(arg.substring(1));
                 if (argument == null) {
                     throw new ArgumentException("unkown option " + arg);

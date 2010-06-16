@@ -58,6 +58,12 @@ public class ParserTest {
         } catch (ArgumentException e) {
             assertTrue(e.getMessage(), e.getMessage().contains("unknown value"));
         }
+        try {
+            parser.run(empty, "-");
+            fail();
+        } catch (ArgumentException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("unknown value"));
+        }
     }
 
     @Test
@@ -96,6 +102,13 @@ public class ParserTest {
         assertEquals(2, values.remaining.size());
         assertEquals(IO_OBJ.node("third"), values.remaining.get(0));
         assertEquals(IO_OBJ.node("forth"), values.remaining.get(1));
+
+        values = new Values();
+        parser.run(values, "first", "second", "-");
+        assertEquals("first", values.first.getName());
+        assertEquals("second", values.second);
+        assertEquals(1, values.remaining.size());
+        assertEquals(IO_OBJ.node("-"), values.remaining.get(0));
     }
 
     @Test

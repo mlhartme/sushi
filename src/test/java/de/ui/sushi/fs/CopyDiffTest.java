@@ -108,11 +108,11 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         
         variables.put("machine", "fritz");
-        assertEquals("M file\nM folder/file\n", brief(destdir));
-        assertEquals("### file\n" +
+        assertEquals("M folder/file\nM file\n", brief(destdir));
+        assertEquals("### folder/file\n" +
                 "-machine: walter\n" +
                 "+machine: fritz\n" +
-                "### folder/file\n" + 
+                "### file\n" +
                 "-machine: walter\n" +
                 "+machine: fritz\n", diff(destdir));
         copy.directory(destdir);

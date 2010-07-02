@@ -242,7 +242,22 @@ public class WebdavNode extends Node {
 
     @Override
     public boolean exists() throws ExistsException {
-        return getType() != null;
+        try {
+            new HeadMethod(getRoot(), path(path, tryDir)).invoke();
+            return true;
+        } catch (StatusException e) {
+            switch (e.getStatusLine().getStatusCode()) {
+                case HttpStatus.SC_MOVED_PERMANENTLY:
+                    tryDir = !tryDir;
+                    return true;
+                case HttpStatus.SC_NOT_FOUND:
+                    return false;
+                default:
+                    throw new ExistsException(this, e);
+            }
+        } catch (IOException e) {
+            throw new ExistsException(this, e);
+        }
     }
 
     @Override
@@ -407,12 +422,12 @@ public class WebdavNode extends Node {
     	
         try {
             try {
-                return doGetType(path(tryDir));
+                return doGetType(path(tryDir), tryDir);
             } catch (FileNotFoundException fse) {
                 return null;
             } catch (MovedException e) {
             	// TODO: omit this call?
-            	result = doGetType(path(!tryDir));
+            	result = doGetType(path(!tryDir), !tryDir);
             	tryDir = !tryDir;
             	return result;
             }
@@ -421,7 +436,7 @@ public class WebdavNode extends Node {
         }
     }
 
-    private Boolean doGetType(String path) throws IOException {
+    private Boolean doGetType(String path, boolean dirPath) throws IOException {
         Property property;
         org.w3c.dom.Node node;
         int code;
@@ -430,16 +445,18 @@ public class WebdavNode extends Node {
             property = getProperty(path, Name.RESOURCETYPE);
         } catch (StatusException e) {
             code = e.getStatusLine().getStatusCode();
-            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED || code == HttpStatus.SC_INTERNAL_SERVER_ERROR /* returned by Nexus 1.4.1 ... */) {
+            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED || code == HttpStatus.SC_UNAUTHORIZED /* returned by Nexus 1.7.0 */) {
                 try {
                     new HeadMethod(getRoot(), path).invoke();
-                    // without webdav, everything is a file
-                    return false;
+                    return dirPath;
                 } catch (StatusException e2) {
-                    if (e2.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                        return null;
-                    } else {
-                        throw e2;
+                    switch (e2.getStatusLine().getStatusCode()) {
+                        case HttpStatus.SC_MOVED_PERMANENTLY:
+                            throw new MovedException();
+                        case HttpStatus.SC_NOT_FOUND:
+                            return null;
+                        default:
+                            throw e2;
                     }
                 }
             } else {

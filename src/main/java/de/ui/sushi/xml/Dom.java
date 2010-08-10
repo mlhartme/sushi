@@ -73,7 +73,7 @@ public class Dom {
         }
     }
 
-    public static Element getOneChildElement(Element ele, String name) {
+    public static Element getChildElement(Element ele, String name) {
         List<Element> result;
 
         result = Dom.getChildElements(ele, name);

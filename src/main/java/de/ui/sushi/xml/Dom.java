@@ -59,6 +59,34 @@ public class Dom {
         return result;
     }
 
+    public static Element getChildElement(Element ele, String name) {
+        List<Element> result;
+
+        result = Dom.getChildElements(ele, name);
+        switch (result.size()) {
+        case 0:
+            return null;
+        case 1:
+            return result.get(0);
+        default:
+            throw new DomException("too many elements: " + name);
+        }
+    }
+
+    public static Element getOneChildelement(Element ele, String name) {
+        List<Element> result;
+
+        result = Dom.getChildElements(ele, name);
+        switch (result.size()) {
+        case 0:
+            throw new DomException("missing element: " + name);
+        case 1:
+            return result.get(0);
+        default:
+            throw new DomException("too many elements: " + name);
+        }
+    }
+
     public static Element getFirstChildElement(Node parent, String local, Namespace namespace) {
         NodeList children = parent.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -155,6 +183,13 @@ public class Dom {
             throw new DomException("missing attribute '" + name + "' in element '" + element.getTagName() + "'");
         }
         return attr;
+    }
+
+    public static String getAttribute(Element element, String name, String deflt) {
+        String attr;
+
+        attr = Dom.getAttributeOpt(element, name);
+        return attr == null ? deflt : attr;
     }
 
     public static String getAttributeOpt(Element element, String name) {

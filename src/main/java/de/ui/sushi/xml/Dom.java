@@ -59,7 +59,7 @@ public class Dom {
         return result;
     }
 
-    public static Element getChildElement(Element ele, String name) {
+    public static Element getChildElementOpt(Element ele, String name) {
         List<Element> result;
 
         result = Dom.getChildElements(ele, name);
@@ -73,7 +73,7 @@ public class Dom {
         }
     }
 
-    public static Element getOneChildelement(Element ele, String name) {
+    public static Element getOneChildElement(Element ele, String name) {
         List<Element> result;
 
         result = Dom.getChildElements(ele, name);

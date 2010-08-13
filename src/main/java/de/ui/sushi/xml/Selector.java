@@ -62,7 +62,7 @@ public class Selector {
         if (result.size() == 0) {
             return null;
         } else {
-            return (Node) result.get(0);
+            return result.get(0);
         }
     }
 

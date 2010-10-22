@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLClassLoader;
 import java.util.List;
 
 import org.junit.Assert;
@@ -89,6 +90,22 @@ public class ZipNodeTest {
         jar = ioObj.locateClasspathItem(Assert.class);
         temp = ioObj.getTemp().createTempDirectory();
         copy = temp.join("a b").mkdir().join("jar file.jar");
+        jar.copyFile(copy);
+        zip = ((FileNode) copy).openZip();
+        assertEquals(1, zip.find("org/junit/Assert.class").size());
+        temp.delete();
+    }
+
+    @Test
+    public void jarWithHash() throws Exception {
+        FileNode jar;
+        Node temp;
+        Node copy;
+        ZipNode zip;
+
+        jar = ioObj.locateClasspathItem(Assert.class);
+        temp = ioObj.getTemp().createTempDirectory();
+        copy = temp.join("ab#").mkdir().join("jar#file.jar");
         jar.copyFile(copy);
         zip = ((FileNode) copy).openZip();
         assertEquals(1, zip.find("org/junit/Assert.class").size());

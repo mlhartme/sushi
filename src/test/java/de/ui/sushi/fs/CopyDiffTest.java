@@ -18,6 +18,7 @@
 package de.ui.sushi.fs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class CopyDiffTest {
 	@Test
     public void template() throws Exception {
         Node destdir;
+        String brief;
         
         destdir = copy.getSourceDir().getIO().getTemp().createTempDirectory();
         variables.put("home", "mhm");
@@ -108,7 +110,8 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         
         variables.put("machine", "fritz");
-        assertEquals("M folder/file\nM file\n", brief(destdir));
+        brief = brief(destdir);
+        assertTrue(brief, brief.equals("M folder/file\nM file\n") || brief.equals("M file\nM folder/file\n"));
         assertEquals("### folder/file\n" +
                 "-machine: walter\n" +
                 "+machine: fritz\n" +

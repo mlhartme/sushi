@@ -78,6 +78,7 @@ public class CopyDiffTest {
     public void template() throws Exception {
         Node destdir;
         String brief;
+        String normal;
         
         destdir = copy.getSourceDir().getIO().getTemp().createTempDirectory();
         variables.put("home", "mhm");
@@ -112,12 +113,21 @@ public class CopyDiffTest {
         variables.put("machine", "fritz");
         brief = brief(destdir);
         assertTrue(brief, brief.equals("M folder/file\nM file\n") || brief.equals("M file\nM folder/file\n"));
-        assertEquals("### folder/file\n" +
+        normal = diff(destdir);
+        assertTrue(normal,
+                ("### folder/file\n" +
                 "-machine: walter\n" +
                 "+machine: fritz\n" +
                 "### file\n" +
                 "-machine: walter\n" +
-                "+machine: fritz\n", diff(destdir));
+                "+machine: fritz\n").equals(normal) ||
+                ("### file\n" +
+                "-machine: walter\n" +
+                "+machine: fritz\n" +
+                "### folder/file\n" +
+                "-machine: walter\n" +
+                "+machine: fritz\n").equals(normal)
+                );
         copy.directory(destdir);
         assertEquals("", brief(destdir));
         assertEquals("", diff(destdir));

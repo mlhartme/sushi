@@ -226,6 +226,9 @@ public class Strings {
         int idx;
         int prev;
 
+        if (separator.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         if (str.length() > 0) {
             skip = separator.length();
             idx = str.indexOf(separator);

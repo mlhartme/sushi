@@ -105,6 +105,16 @@
 
     <build>
         <defaultGoal>package</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.0-beta-3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,7 +147,7 @@
                 <version>2.3.1</version>
                 <configuration>
                     <archive>
-                        <!-- TODO: I didn't find predefind maven variables to add a machine name and the build date in mvn 2.0.8 -->
+                        <!-- TODO: I didn't find predefined maven variables to add a machine name and the build date in mvn 2.0.8 -->
                         <addMavenDescriptor>false</addMavenDescriptor>
                         <manifest>sv
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -209,13 +219,11 @@
             <id>pustefix</id>
             <name>Pustefix Maven Repository</name>
             <url>scpexe://pustefix@pustefixhp.schlund.de/home/pustefix/repository/maven</url>
-            <uniqueVersion>false</uniqueVersion>
         </repository>
         <snapshotRepository>
             <id>pustefix-snapshots</id>
             <name>TODO</name>
             <url>http://todo/setup-pustefix-snapshot-depository</url>
-            <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
         <site>
             <id>sourceforce</id>

@@ -840,6 +840,7 @@ public abstract class Node {
     }
 
     //-- archives
+    // TODO: archive loaded completely into memory ...
 
     public void unzip(Node dest) throws IOException {
         Archive.loadZip(this).data.copyDirectory(dest);

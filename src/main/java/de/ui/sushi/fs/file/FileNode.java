@@ -27,6 +27,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ui.sushi.archive.Archive;
 import de.ui.sushi.fs.*;
 import de.ui.sushi.fs.zip.ZipFilesystem;
 import de.ui.sushi.fs.zip.ZipNode;
@@ -481,6 +482,15 @@ public class FileNode extends Node {
 
     public FileNode createTempDirectory() throws IOException {
         return OnShutdown.get().createDirectory(this);
+    }
+
+    //--
+
+    public void unzip(Node dest) throws IOException {
+        Archive.loadZip(this).data.copyDirectory(dest);
+    }
+    public void unjar(Node dest) throws IOException {
+        Archive.loadJar(this).data.copyDirectory(dest);
     }
 }
 

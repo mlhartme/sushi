@@ -64,13 +64,6 @@ public class Archive {
         return path;
     }
     
-    public static void unzip(FileNode src, Node dest) throws IOException {
-        Archive.loadZip(src).data.copyDirectory(dest);
-    }
-    public static void unjar(FileNode src, Node dest) throws IOException {
-        Archive.loadJar(src).data.copyDirectory(dest);
-    }
-
     //--
     
     public final Node data;

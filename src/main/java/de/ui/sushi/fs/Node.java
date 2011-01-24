@@ -41,6 +41,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import de.ui.sushi.archive.Archive;
 import de.ui.sushi.fs.filter.Filter;
 import de.ui.sushi.io.Buffer;
 import de.ui.sushi.util.Strings;
@@ -836,6 +837,15 @@ public abstract class Node {
 
     public String digest(String name) throws IOException, NoSuchAlgorithmException {
         return Strings.toHex(digestBytes(name));
+    }
+
+    //-- archives
+
+    public void unzip(Node dest) throws IOException {
+        Archive.loadZip(this).data.copyDirectory(dest);
+    }
+    public void unjar(Node dest) throws IOException {
+        Archive.loadJar(this).data.copyDirectory(dest);
     }
 
     //-- Object functionality

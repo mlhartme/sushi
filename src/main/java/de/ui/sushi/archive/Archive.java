@@ -34,6 +34,7 @@ import de.ui.sushi.fs.Node;
 import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.io.Buffer;
 
+/** Represents a Zip or Jar file. For Zip files, the manifest is null. */
 public class Archive {
     public static final String META_INF = "META-INF";
     public static final String MANIFEST = META_INF + "/MANIFEST.MF";

@@ -42,6 +42,13 @@ import de.ui.sushi.fs.zip.ZipNode;
 import de.ui.sushi.util.Reflect;
 
 public class IOTest {
+    public static void main(String[] args) throws Exception {
+        IO io;
+
+        io = new IO();
+        io.node("jar:file:/home/mhm/Projects/foo%20bar/lib/build/billyboy-1.7.0-jar-with-dependencies.jar!/eclipse.template");
+    }
+
     // TODO
     private static Root fs(IO io) {
         return io.getWorking().getRoot();

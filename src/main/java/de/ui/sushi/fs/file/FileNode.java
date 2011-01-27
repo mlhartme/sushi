@@ -36,7 +36,7 @@ import de.ui.sushi.io.OS;
 import de.ui.sushi.util.Program;
 
 /**
- * <p>File, directory, symlink or something not yet created. Relacement java.io.File.</p>
+ * <p>File, directory, symlink or something not yet created. Replacement for java.io.File.</p>
  */
 public class FileNode extends Node {
     private final FileRoot root;

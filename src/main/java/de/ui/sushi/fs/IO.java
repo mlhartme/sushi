@@ -489,7 +489,7 @@ public class IO {
 
         result = filesystems.get(scheme);
         if (result == null) {
-            throw new IllegalArgumentException("unkown scheme: " + scheme);
+            throw new IllegalArgumentException("unknown scheme: " + scheme);
         }
         return result;
     }

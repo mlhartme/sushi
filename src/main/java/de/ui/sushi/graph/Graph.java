@@ -230,7 +230,7 @@ public class Graph<T> {
             data = result.get(i);
             node = nodes.get(data);
             if (node == null) {
-                throw new IllegalArgumentException("unkown data: " + data);
+                throw new IllegalArgumentException("unknown data: " + data);
             }
             for (Node<T> to : node.starting) {
                 if (!result.contains(to.data)) {

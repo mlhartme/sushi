@@ -215,7 +215,7 @@ import de.ui.sushi.metadata.xml.LoaderException;
             name = line.getOne(i);
             field = lookup(name);
             if (field == null) {
-                throw new ViewException("unkown field in header: '" + name + "'");
+                throw new ViewException("unknown field in header: '" + name + "'");
             }
             result.add(field);
         }

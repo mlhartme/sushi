@@ -244,7 +244,7 @@ public class LoaderTest extends ModelBase {
     }
     
     @Test
-    public void unkownField() {
+    public void unknownField() {
         try {
             engine("<engine><turbo>true</turbo><ps>1</ps><unknown/></engine>");
             fail();

@@ -160,7 +160,7 @@ public class Parser {
             if (arg.length() > 1 && arg.startsWith("-")) {
                 argument = options.get(arg.substring(1));
                 if (argument == null) {
-                    throw new ArgumentException("unkown option " + arg);
+                    throw new ArgumentException("unknown option " + arg);
                 }
                 if (isBoolean(argument)) {
                     value = "true";
@@ -199,7 +199,7 @@ public class Parser {
         }
         if (i != max) {
             if (children.size() > 0 && values.size() == 1 && values.get(0) == null) {
-                throw new ArgumentException("unkown command, expected on of " + children.keySet());
+                throw new ArgumentException("unknown command, expected on of " + children.keySet());
             } else {
                 StringBuilder builder;
                 

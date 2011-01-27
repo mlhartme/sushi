@@ -50,7 +50,7 @@ public class ParserTest {
             parser.run(empty, "-a", "10");
             fail();
         } catch (ArgumentException e) {
-            assertTrue(e.getMessage().contains("unkown option"));
+            assertTrue(e.getMessage().contains("unknown option"));
         }
         try {
             parser.run(empty, "a");

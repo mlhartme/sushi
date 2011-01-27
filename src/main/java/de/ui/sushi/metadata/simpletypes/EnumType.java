@@ -65,7 +65,7 @@ public class EnumType extends SimpleType {
             msg.append(name);
             msg.append('\'');
         }
-        throw new SimpleTypeException("unkown value '" + str + "', expected one of" + msg);
+        throw new SimpleTypeException("unknown value '" + str + "', expected one of" + msg);
     }
 
     @Override

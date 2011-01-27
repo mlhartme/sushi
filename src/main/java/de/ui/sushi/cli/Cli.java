@@ -106,7 +106,7 @@ public abstract class Cli {
                 
                 pkg = getClass().getPackage();
                 if (pkg == null) {
-                    console.info.println("unkown version");
+                    console.info.println("unknown version");
                 } else {
                     console.info.println(pkg.getName());
                     console.info.println("  specification title: " + pkg.getSpecificationTitle());

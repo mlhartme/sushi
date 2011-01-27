@@ -40,7 +40,7 @@ public enum OS {
                 return os;
             }
         }
-        throw new IllegalArgumentException("unkown os:" + name);
+        throw new IllegalArgumentException("unknown os:" + name);
     }
 
     public static final OS CURRENT = detect();

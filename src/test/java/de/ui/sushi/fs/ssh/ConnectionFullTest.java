@@ -38,11 +38,6 @@ import com.jcraft.jsch.JSchException;
 public class ConnectionFullTest {
     private static final IO IO_OBJ = new IO();
 
-    public static void main(String[] args) throws Exception {
-        Node node = IO_OBJ.node("ssh://pfxui@corelog.dlan.cinetic.de/export/corelog/lv1/pfxui");
-        System.out.println("ls: " + node.list());
-    }
-
     public static SshRoot open() throws JSchException, IOException {
         String host;
         String user;
@@ -166,6 +161,7 @@ public class ConnectionFullTest {
     @Test
     public void cancel() throws Exception {
         String tmp = "/tmp/cancel-sushi";
+        String msg;
 
         root.exec("rm", "-f", tmp);
         root.start(true, "sleep", "2", "&&", "echo", "hi", ">" + tmp);
@@ -174,10 +170,11 @@ public class ConnectionFullTest {
         Thread.sleep(3000);
         setUp();
         try {
-            root.exec("ls", tmp);
+            root.exec("LANG=us", "ls", tmp);
             fail();
         } catch (ExitCode e) {
-            assertTrue(e.getMessage().contains("No such file"));
+            msg = e.getMessage();
+            assertTrue(msg, msg.contains("No such file"));
         }
     }
 

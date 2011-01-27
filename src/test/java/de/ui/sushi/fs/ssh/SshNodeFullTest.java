@@ -18,11 +18,14 @@
 package de.ui.sushi.fs.ssh;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 
+import de.ui.sushi.fs.IO;
+import de.ui.sushi.fs.Node;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

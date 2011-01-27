@@ -334,6 +334,11 @@ public class WebdavNode extends Node {
                 }
             }
             return result;
+        } catch (StatusException e) {
+            if (e.getStatusLine().getStatusCode() == 400) {
+                return null; // this is a file
+            }
+            throw new ListException(this, e);
         } catch (MovedException e) {
             return null; // this is a file
         } catch (IOException e) {

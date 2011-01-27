@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -54,7 +55,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(0, children.size());
     }
 
-    @Test
+    @Ignore
     public void setWorking() throws Exception {
         final String FILE = "file";
         IO io;

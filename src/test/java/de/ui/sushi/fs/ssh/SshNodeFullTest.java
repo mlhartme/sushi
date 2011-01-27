@@ -26,6 +26,7 @@ import java.util.List;
 
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.file.FileNode;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -56,6 +57,19 @@ public class SshNodeFullTest extends NodeTest {
     public static void afterClass() throws Exception {
         if (root != null) {
             root.close();
+        }
+    }
+
+    @Test
+    public void bug() throws Exception {
+        FileNode file;
+
+        file = root.getFilesystem().getIO().file("/tmp/sushisshworkdir/before\\*after\\*");
+        file.mkdir();
+        try {
+            super.setUp();
+        } finally {
+            file.delete();
         }
     }
 

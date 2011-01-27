@@ -14,6 +14,9 @@
         URIs like "jar:file:/home/mhm/Projects/foo%20bar/lib/build/billyboy-1.7.0-jar-with-dependencies.jar!/eclipse.template"
       </action>
       <action dev="mlhartme" type="fix">
+        Fix globbing characters in SshNode file names.
+      </action>
+      <action dev="mlhartme" type="fix">
         Fix typo unkown -> unknown in various string constants.
       </action>
     </release>

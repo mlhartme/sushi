@@ -17,10 +17,10 @@
 
 package de.ui.sushi.fs.ssh;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpATTRS;
+import com.jcraft.jsch.SftpException;
 import de.ui.sushi.fs.DeleteException;
 import de.ui.sushi.fs.ExistsException;
 import de.ui.sushi.fs.GetLastModifiedException;
@@ -35,10 +35,17 @@ import de.ui.sushi.fs.SetLastModifiedException;
 import de.ui.sushi.fs.file.FileNode;
 import de.ui.sushi.io.CheckedByteArrayOutputStream;
 
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.SftpATTRS;
-import com.jcraft.jsch.SftpException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SshNode extends Node {
     private final SshRoot root;
@@ -52,6 +59,15 @@ public class SshNode extends Node {
         this.slashPath = "/" + path;
     }
 
+    @Override
+    public URI getURI() {
+        try {
+            return new URI(root.getFilesystem().getScheme(), root.getUser(), root.getHost(), -1, slashPath, null, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException();
+        }
+    }
+    
     @Override
     public SshRoot getRoot() {
         return root;

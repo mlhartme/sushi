@@ -10,8 +10,8 @@
         Move Archive.unzip/unjar to Node.unzip/unjar.
       </action>
       <action dev="mlhartme" type="fix">
-        You can now instantiate jar URIs with URL Encoded characters, e.g.
-        "jar:file:/home/mhm/Projects/foo%20bar/lib/build/billyboy-1.7.0-jar-with-dependencies.jar!/eclipse.template"
+        Fix URI encoding/decoding problems in MemoryNode, ZipNode and SshNode. In particular, you can now properly instantiate
+        URIs like "jar:file:/home/mhm/Projects/foo%20bar/lib/build/billyboy-1.7.0-jar-with-dependencies.jar!/eclipse.template"
       </action>
       <action dev="mlhartme" type="fix">
         Fix typo unkown -> unknown in various string constants.

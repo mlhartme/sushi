@@ -17,14 +17,22 @@
 
 package de.ui.sushi.fs.memory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import de.ui.sushi.fs.*;
+import de.ui.sushi.fs.DeleteException;
+import de.ui.sushi.fs.ExistsException;
+import de.ui.sushi.fs.GetLastModifiedException;
+import de.ui.sushi.fs.LengthException;
+import de.ui.sushi.fs.ListException;
+import de.ui.sushi.fs.MkdirException;
+import de.ui.sushi.fs.Node;
+import de.ui.sushi.fs.SetLastModifiedException;
 import de.ui.sushi.io.CheckedByteArrayOutputStream;
 
 /** You'll normally use IO.stringNode() to create instances */
@@ -46,6 +54,15 @@ public class MemoryNode extends Node {
         this.path = path;
         this.type = type;
         this.lastModified = 0;
+    }
+
+    @Override
+    public URI getURI() {
+        try {
+            return new URI(root.getFilesystem().getScheme(), null, Integer.toString(root.id), -1, "/" + path, null, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override

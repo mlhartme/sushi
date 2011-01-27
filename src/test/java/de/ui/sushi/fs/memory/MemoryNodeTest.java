@@ -25,4 +25,3 @@ public class MemoryNodeTest extends NodeTest {
         return IO.getMemoryFilesystem().root().node("");
     }
 }
-

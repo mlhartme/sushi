@@ -377,22 +377,45 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void specialFilename() throws IOException {
-        final String str = SPECIAL_CONTENT + " .:{}";
-
-        for (int i = 0; i < str.length(); i++) {
-            checkFilename("before" + str.charAt(i) + "after");
-            checkDirectory("before" + str.charAt(i) + "after");
+    public void specialNames() throws IOException {
+        for (char c = 32; c < 128; c++) {
+            try {
+                if (c >= '0' && c <='9') {
+                    // skip
+                } else if (c >= 'a' && c <='z') {
+                    // skip
+                } else if (c >= 'A' && c <='Z') {
+                    // skip
+                } else if (c == '/') {
+                    // skip
+                } else if (c == '*') {
+                    // skip
+                } else if (c == '?') {
+                    // skip
+                } else if (c == '\\') {
+                    // skip
+                } else {
+                    checkFilename("before" + c + "after" + c);
+                    checkDirectory("before" + c + "after" + c);
+                }
+            } catch (Throwable e) {
+                throw new IOException("specialName failed: " + c + "=" + ((int) c) + ": "+ e.getMessage(), e);
+            }
         }
     }
 
     private void checkFilename(String name) throws IOException {
+        final String content = "abc";
         Node file;
+        Node alias;
 
         file = work.join(name);
-        file.writeString("abc");
-        assertEquals("abc", file.readString());
+        file.writeString(content);
+        assertEquals(content, file.readString());
         assertEquals(Collections.singletonList(file), file.getParent().list());
+        alias = file.getIO().node(file.getURI());
+        assertEquals(file, alias);
+        assertEquals(content, alias.readString());
         file.delete();
     }
 
@@ -406,7 +429,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         file.delete();
     }
 
-    private static final String SPECIAL_CONTENT = "äöüÄÖÜß";
+    private static final String UMLAUTE = "äöüÄÖÜß";
 
     @Test
     public void readerEncoding() throws IOException {
@@ -416,7 +439,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         StringBuilder str;
 
         file = work.join("foo");
-        file.writeBytes(SPECIAL_CONTENT.getBytes(file.getIO().getSettings().encoding));
+        file.writeBytes(UMLAUTE.getBytes(file.getIO().getSettings().encoding));
         src = file.createReader();
         str = new StringBuilder();
         while (true) {
@@ -426,7 +449,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             }
             str.append((char) c);
         }
-        assertEquals(SPECIAL_CONTENT, str.toString());
+        assertEquals(UMLAUTE, str.toString());
     }
 
     @Test
@@ -436,9 +459,9 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
         file = work.join("foo");
         dest = file.createWriter();
-        dest.write(SPECIAL_CONTENT);
+        dest.write(UMLAUTE);
         dest.close();
-        assertTrue(Arrays.equals(SPECIAL_CONTENT.getBytes(file.getIO().getSettings().encoding), file.readBytes()));
+        assertTrue(Arrays.equals(UMLAUTE.getBytes(file.getIO().getSettings().encoding), file.readBytes()));
     }
 
     @Test

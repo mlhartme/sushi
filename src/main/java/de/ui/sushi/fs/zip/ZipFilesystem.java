@@ -45,7 +45,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
-        schemeSpecific = uri.getSchemeSpecificPart();
+        schemeSpecific = uri.getRawSchemeSpecificPart();
         path = after(schemeSpecific, ZIP_SEPARATOR);
         if (path == null) {
             throw new NodeInstantiationException(uri, "missing '" + ZIP_SEPARATOR +"'");

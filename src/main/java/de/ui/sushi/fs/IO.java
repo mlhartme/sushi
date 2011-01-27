@@ -216,7 +216,7 @@ public class IO {
         }
         fs = filesystems.get(scheme);
         if (fs == null) {
-            throw new NodeInstantiationException(uri, "unkown scheme: " + scheme);
+            throw new NodeInstantiationException(uri, "unknown scheme: " + scheme);
         }
         result = fs.node(uri, extra);
         if (base != null) {

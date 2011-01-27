@@ -82,22 +82,16 @@ public class ZipNodeTest {
 
     @Test
     public void jarWithBlank() throws Exception {
-        FileNode jar;
-        Node temp;
-        Node copy;
-        ZipNode zip;
-
-        jar = ioObj.locateClasspathItem(Assert.class);
-        temp = ioObj.getTemp().createTempDirectory();
-        copy = temp.join("a b").mkdir().join("jar file.jar");
-        jar.copyFile(copy);
-        zip = ((FileNode) copy).openZip();
-        assertEquals(1, zip.find("org/junit/Assert.class").size());
-        temp.delete();
+        checkSpecialPath("a b", "foo bar.jar");
     }
 
     @Test
     public void jarWithHash() throws Exception {
+        checkSpecialPath("ab#", "X#Y.jar");
+    }
+    
+    private void checkSpecialPath(String dir, String name) throws IOException {
+        final String clazz = "org/junit/Assert.class";
         FileNode jar;
         Node temp;
         Node copy;
@@ -105,10 +99,12 @@ public class ZipNodeTest {
 
         jar = ioObj.locateClasspathItem(Assert.class);
         temp = ioObj.getTemp().createTempDirectory();
-        copy = temp.join("ab#").mkdir().join("jar#file.jar");
+        copy = temp.join(dir).mkdir().join(name);
         jar.copyFile(copy);
         zip = ((FileNode) copy).openZip();
-        assertEquals(1, zip.find("org/junit/Assert.class").size());
+        assertEquals(1, zip.find(clazz).size());
+        assertNotNull(ioObj.validNode("zip:" + copy.getURI() + "!/" + clazz).readBytes());
+        assertNotNull(ioObj.validNode("jar:" + copy.getURI() + "!/" + clazz).readBytes());
         temp.delete();
     }
 

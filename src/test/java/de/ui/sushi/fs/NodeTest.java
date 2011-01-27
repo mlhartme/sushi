@@ -399,7 +399,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
                     checkDirectory("before" + c + "after" + c);
                 }
             } catch (Throwable e) {
-                throw new IOException("specialName failed: " + c + "=" + ((int) c) + ": "+ e.getMessage(), e);
+                throw new IOException("specialName failed: " + c + "=" + ((int) c) + ": " + e.getMessage(), e);
             }
         }
     }

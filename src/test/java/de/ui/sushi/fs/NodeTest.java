@@ -431,7 +431,17 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         file.delete();
     }
 
-    private static final String UMLAUTE = "äöüÄÖÜß";
+    private static final String ALL_CHARS;
+
+    static {
+        StringBuilder builder;
+
+        builder = new StringBuilder(Character.MAX_VALUE);
+        for (int i = 0; i < 55296; i++) {
+            builder.append((char) i);
+        }
+        ALL_CHARS = builder.toString();
+    }
 
     @Test
     public void readerEncoding() throws IOException {
@@ -439,9 +449,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Reader src;
         int c;
         StringBuilder str;
+        int max;
+        int left;
+        int right;
 
         file = work.join("foo");
-        file.writeBytes(UMLAUTE.getBytes(file.getIO().getSettings().encoding));
+        file.writeBytes(ALL_CHARS.getBytes(file.getIO().getSettings().encoding));
         src = file.createReader();
         str = new StringBuilder();
         while (true) {
@@ -451,7 +464,12 @@ public abstract class NodeTest extends NodeReadOnlyTest {
             }
             str.append((char) c);
         }
-        assertEquals(UMLAUTE, str.toString());
+        max = Math.max(ALL_CHARS.length(), str.length());
+        for (int i = 0; i < max; i++) {
+            left = i < ALL_CHARS.length() ? ALL_CHARS.charAt(i) : -1;
+            right = i < str.length() ? str.charAt(i) : - 1;
+            assertEquals("idx=" + i, left, right);
+        }
     }
 
     @Test
@@ -461,9 +479,9 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
         file = work.join("foo");
         dest = file.createWriter();
-        dest.write(UMLAUTE);
+        dest.write(ALL_CHARS);
         dest.close();
-        assertTrue(Arrays.equals(UMLAUTE.getBytes(file.getIO().getSettings().encoding), file.readBytes()));
+        assertTrue(Arrays.equals(ALL_CHARS.getBytes(file.getIO().getSettings().encoding), file.readBytes()));
     }
 
     @Test

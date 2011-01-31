@@ -51,26 +51,22 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * <p>Abstraction from a file: something stored under a path that you can get an input or output stream from.
+ * <p>Abstraction from a file: something stored under a path that you can get an input stream from or output stream to.
  * FileNode is the most prominent example of a node. The api is similar to java.io.File. It provides the
  * same functionality, adds some methods useful for scripting, and removes some redundant methods to simplify
  * api (in particular the constructors). </p>
  *
- * <p>A node is identified by a locator. It has a root, and a path. A node can have child nodes and a base.</p>
- *
- * <p>A locator is similar to a URL, it has the form filesystem ":" root separator path.</p>
- *
- * <p>The Root is, e.g. "/" on a unix machine, a drive letter on windows, or a hostname with login
- * information for ssh nodes.</p>
+ * <p>A node is identified by a URI, whose most important part is the path. </p>
  *
  * <p>The path is a sequence of names separated by the filesystem separator. It never starts
  * or ends with a separator. It does not include the root, but it always includes the path
- * of the base. A node with an empty path is called root node.
+ * of the base. A node with an empty path is called root node. That last part of the path is the name.
+ * Paths are always specified decoded, but URIs always contain encoded paths.
  *
  * <p>The base is a node this node is relative to. It's optional, a node without base is called absolute.
  * It's use to simplify (shorten!) toString output.</p>
  *
- * <p>You application usually creates some "working-directory" nodes with <code>io.node(locator)</code>.
+ * <p>Your application usually creates some "working-directory" nodes with <code>io.node(URI)</code>.
  * They will be used to create actual working nodes with <code>node.join(path)</code>. The constructor
  * of the respective node class is rarely used directly, it's used indirectly by the filesystem. </p>
  *
@@ -222,6 +218,7 @@ public abstract class Node {
     }
 
     public abstract String getPath();
+
 
     public URI getURI() {
         return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath());

@@ -64,7 +64,7 @@ public class SshNodeFullTest extends NodeTest {
     public void bug() throws Exception {
         FileNode file;
 
-        file = root.getFilesystem().getIO().file("/tmp/sushisshworkdir/before\\*after\\*");
+        file = root.getFilesystem().getIO().file("/tmp/sushisshworkdir/beforeafter");
         file.mkdir();
         try {
             super.setUp();

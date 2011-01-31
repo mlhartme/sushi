@@ -20,6 +20,8 @@ package de.ui.sushi.fs.webdav;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ import de.ui.sushi.util.Base64;
 
 public class WebdavRoot implements Root {
     private final WebdavFilesystem filesystem;
-    private final HttpHost host;
+    public final HttpHost host;
     private final HttpParams params;
     private String authorization;
     
@@ -120,23 +122,6 @@ public class WebdavRoot implements Root {
 
     public WebdavNode node(String path) {
         return new WebdavNode(this, path, false);
-    }
-
-    /** @return the encoded url */
-    public String toUrl(String path) {
-        StringBuilder builder;
-        int port;
-        
-        builder = new StringBuilder();
-        builder.append(host.getSchemeName());
-        builder.append("://");
-        builder.append(host.getHostName());
-        port = host.getPort();
-        if (port != -1 && port != 80) {
-            builder.append(':').append(port);
-        }
-        encodePath(path, builder);
-        return builder.toString();
     }
 
     public String encodePath(String path) {

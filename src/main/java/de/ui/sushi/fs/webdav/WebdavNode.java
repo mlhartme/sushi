@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
 import de.ui.sushi.fs.DeleteException;
@@ -69,6 +72,17 @@ public class WebdavNode extends Node {
         this.root = root;
         this.path = path;
         this.tryDir = tryDir;
+    }
+
+    public URI getURI() {
+        HttpHost host;
+
+        host = root.host;
+        try {
+            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, null, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
@@ -206,7 +220,7 @@ public class WebdavNode extends Node {
     public Node move(Node dest) throws MoveException {
         String after;
 
-        after = root.toUrl(((WebdavNode) dest).path);
+        after = dest.getURI().toString();
         try {
         	try {
         		new MoveMethod(root, path(tryDir), path(after, tryDir)).invoke();

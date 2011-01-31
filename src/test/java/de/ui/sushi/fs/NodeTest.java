@@ -388,6 +388,8 @@ public abstract class NodeTest extends NodeReadOnlyTest {
                     // skip
                 } else if (c == '/') {
                     // skip
+                } else if (c == '+') {
+                    // skip
                 } else if (c == '*') {
                     // skip
                 } else if (c == '?') {

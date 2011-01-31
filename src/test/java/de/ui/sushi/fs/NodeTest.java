@@ -378,7 +378,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     @Test
     public void specialNames() throws IOException {
-        for (char c = 32; c < 128; c++) {
+        for (char c = 32; c < 127; c++) {
             try {
                 if (c >= '0' && c <='9') {
                     // skip

@@ -25,6 +25,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
+import org.tmatesoft.svn.core.internal.util.SVNEncodingUtil;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
@@ -55,8 +56,8 @@ public class SvnFilesystem extends Filesystem {
 
     @Override
     public SvnNode node(URI uri, Object extra) throws NodeInstantiationException {
-        String schemeSpecific;
-        String path;
+        String encodedSchemeSpecific;
+        String encodedPath;
         String separator;
         String root;
         SVNRepository repository;
@@ -66,28 +67,28 @@ public class SvnFilesystem extends Filesystem {
         }
         checkOpaque(uri);
         separator = getSeparator();
-        schemeSpecific = uri.getSchemeSpecificPart();
+        encodedSchemeSpecific = uri.getRawSchemeSpecificPart();
         try {
-            repository = repository(schemeSpecific);
+            repository = repository(encodedSchemeSpecific);
             root = repository.getRepositoryRoot(true).toString();
-            if (!schemeSpecific.startsWith(root)) {
-                throw new IllegalStateException(schemeSpecific + " vs " + root);
+            if (!encodedSchemeSpecific.startsWith(root)) {
+                throw new IllegalStateException(encodedSchemeSpecific + " vs " + root);
             }
-            path = schemeSpecific.substring(root.length());
-            if (path.length() > 0) {
-                if (!path.startsWith(separator)) {
-                    throw new IllegalStateException(schemeSpecific + " vs " + root);
+            encodedPath = encodedSchemeSpecific.substring(root.length());
+            if (encodedPath.length() > 0) {
+                if (!encodedPath.startsWith(separator)) {
+                    throw new IllegalStateException(encodedSchemeSpecific + " vs " + root);
                 }
-                path = path.substring(separator.length());
+                encodedPath = encodedPath.substring(separator.length());
             }
-            if (path.endsWith(separator)) {
+            if (encodedPath.endsWith(separator)) {
                 throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
             }
-            if (path.startsWith(separator)) {
+            if (encodedPath.startsWith(separator)) {
                 throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
             }
-            repository = repository(schemeSpecific.substring(0, schemeSpecific.length() - path.length()));
-            return new SvnRoot(this, repository).node(path);
+            repository = repository(encodedSchemeSpecific.substring(0, encodedSchemeSpecific.length() - encodedPath.length()));
+            return new SvnRoot(this, repository).node(SVNEncodingUtil.uriDecode(encodedPath));
         } catch (SVNException e) {
             throw new NodeInstantiationException(uri, e.getMessage(), e);
         }

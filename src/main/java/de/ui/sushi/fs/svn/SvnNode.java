@@ -22,13 +22,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import de.ui.sushi.fs.DeleteException;
 import de.ui.sushi.fs.ExistsException;
@@ -43,8 +42,6 @@ import de.ui.sushi.io.CheckedByteArrayOutputStream;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNLogEntry;
-import org.tmatesoft.svn.core.SVNLogEntryPath;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
@@ -52,12 +49,7 @@ import org.tmatesoft.svn.core.io.ISVNEditor;
 import org.tmatesoft.svn.core.io.SVNFileRevision;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
-import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
-import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
-import org.tmatesoft.svn.core.wc.SVNStatus;
-import org.tmatesoft.svn.core.wc.SVNStatusType;
-import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 public class SvnNode extends Node {
     private final SvnRoot root;
@@ -67,6 +59,11 @@ public class SvnNode extends Node {
         super();
         this.root = root;
         this.path = path;
+    }
+
+    @Override
+    public URI getURI() {
+        return URI.create(root.getFilesystem().getScheme() + ":" + getSvnurl().toString());
     }
 
     @Override
@@ -431,13 +428,17 @@ public class SvnNode extends Node {
         } else {
             // repository updates has a target to restrict the result, but it supports
             // only one segment. So I have to create a new repository ...
-            sub = SvnFilesystem.repository(repository.getLocation().appendPath(path, true).toString(), null, null); // TODO: auth
+            sub = SvnFilesystem.repository(getSvnurl().toString(), null, null); // TODO: auth
         }
         sub.update(revision, "", true, exporter, exporter);
     }
 
-    public SVNURL getSvnurl() throws SVNException {
-        return root.getRepository().getLocation().appendPath(path, true);
+    public SVNURL getSvnurl() {
+        try {
+            return root.getRepository().getLocation().appendPath(path, false);
+        } catch (SVNException e) {
+            throw new IllegalStateException(path, e);
+        }
     }
 
     public static SvnNode fromWorkspace(FileNode workspace) throws IOException {

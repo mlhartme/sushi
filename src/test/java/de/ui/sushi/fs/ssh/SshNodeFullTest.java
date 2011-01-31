@@ -60,11 +60,11 @@ public class SshNodeFullTest extends NodeTest {
         }
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void bug() throws Exception {
         FileNode file;
 
-        file = root.getFilesystem().getIO().file("/tmp/sushisshworkdir/beforeafter");
+        file = root.getFilesystem().getIO().file("/tmp/sushisshworkdir/before\\*after");
         file.mkdir();
         try {
             super.setUp();

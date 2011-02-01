@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-import de.ui.sushi.util.Strings;
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
@@ -41,28 +40,10 @@ public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
     }
 
     @Override
-    public void write(byte[] bytes) throws IOException {
-        super.write(bytes);
-        logger.log(bytes);
-    }
-
-    @Override
-    public void write(int bytes) throws IOException {
-        super.write(bytes);
-        logger.log((byte) bytes);
-    }
-
-    @Override
     public void writeLine(CharArrayBuffer buffer) throws IOException {
-        super.writeLine(buffer);
+        // the buffer is *not* written via super.write ...
         logger.log(buffer.toString());
-        logger.log("\r\n");
-    }
-
-    @Override
-    public void writeLine(String str) throws IOException {
-        super.writeLine(str);
-        logger.log(str);
-        logger.log("\r\n");
+        super.writeLine(buffer);
+        // CRLF is written via super.write, thus, we have proper logging
     }
 }

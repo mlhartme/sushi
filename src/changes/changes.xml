@@ -17,6 +17,9 @@
         Fix globbing characters in SshNode file names.
       </action>
       <action dev="mlhartme" type="fix">
+        Fix CRLF in Webdav Logging.
+      </action>
+      <action dev="mlhartme" type="fix">
         Fix typo unkown -> unknown in various string constants.
       </action>
     </release>

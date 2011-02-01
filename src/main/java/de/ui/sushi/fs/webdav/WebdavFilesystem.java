@@ -21,6 +21,7 @@ import de.ui.sushi.fs.Features;
 import de.ui.sushi.fs.Filesystem;
 import de.ui.sushi.fs.IO;
 import de.ui.sushi.fs.NodeInstantiationException;
+import de.ui.sushi.fs.Settings;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,7 +33,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class WebdavFilesystem extends Filesystem {
-	public static final String ENCODING = "UTF-8";
+	public static final String ENCODING = Settings.UTF_8;
 	public static final Logger WIRE = Logger.getLogger("sushi.webdav.wire");
 
 	public static void wireLog(String file) {

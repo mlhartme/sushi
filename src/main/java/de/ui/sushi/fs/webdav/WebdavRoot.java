@@ -20,8 +20,6 @@ package de.ui.sushi.fs.webdav;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,20 +48,20 @@ public class WebdavRoot implements Root {
     public final HttpHost host;
     private final HttpParams params;
     private String authorization;
-    
+
     public WebdavRoot(WebdavFilesystem filesystem, String protocol, String host, int port) {
         this.filesystem = filesystem;
         this.host = new HttpHost(host, port, protocol);
         this.authorization = null;
         this.params = new BasicHttpParams();
-        
+
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setContentCharset(params, WebdavFilesystem.ENCODING);
     }
 
     public void setUserInfo(String userinfo) {
         int idx;
-        
+
         idx = userinfo.indexOf(':');
         if (idx == -1) {
             setCredentials(userinfo, "");
@@ -87,22 +85,22 @@ public class WebdavRoot implements Root {
     public int getSoTimeout() {
         return HttpConnectionParams.getSoTimeout(params);
     }
-    
+
     public void setSoTimeout(int millis) {
         HttpConnectionParams.setSoTimeout(params, millis);
     }
-        
+
     @Override
     public boolean equals(Object obj) {
         WebdavRoot root;
-        
+
         if (obj instanceof WebdavRoot) {
             root = (WebdavRoot) obj;
             return filesystem == root.filesystem /* TODO params etc */;
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         return host.hashCode();
@@ -114,7 +112,7 @@ public class WebdavRoot implements Root {
 
     public String getId() {
         int port;
-        
+
         port = host.getPort();
         // TODO: credentials?
         return "//" + host.getHostName() + (port == 80 ? "" : ":" + port) + "/";
@@ -126,7 +124,7 @@ public class WebdavRoot implements Root {
 
     public String encodePath(String path) {
     	StringBuilder builder;
-    	
+
     	builder = new StringBuilder();
     	encodePath(path, builder);
     	return builder.toString();
@@ -144,18 +142,18 @@ public class WebdavRoot implements Root {
     }
 
     //--
-    
+
     private final List<WebdavConnection> pool = new ArrayList<WebdavConnection>();
 
     public WebdavConnection allocate() throws IOException {
         int size;
-        
+
         size = pool.size();
         if (size > 0) {
             return pool.remove(size - 1);
         } else {
         	Socket socket;
-        	
+
             if ("https".equals(host.getSchemeName())) {
                 socket = SSLSocketFactory.getDefault().createSocket(host.getHostName(), host.getPort());
             } else {
@@ -164,10 +162,10 @@ public class WebdavRoot implements Root {
             return WebdavConnection.open(socket, params);
         }
     }
-    
+
     public void free(HttpResponse response, WebdavConnection connection) throws IOException {
         HttpEntity entity;
-        
+
         if (response != null) {
             entity = response.getEntity();
             if (entity != null) {
@@ -181,7 +179,7 @@ public class WebdavRoot implements Root {
             pool.add(connection);
         }
     }
-    
+
     private static boolean wantsClose(HttpResponse response) {
         if (response == null) {
             // no response yet
@@ -194,9 +192,9 @@ public class WebdavRoot implements Root {
         }
         return false;
     }
-    
+
     //--
-    
+
     public void send(WebdavConnection conn, HttpRequest request) throws IOException {
         // TODO: side effect
         request.addHeader(HTTP.TARGET_HOST, host.getHostName());
@@ -223,7 +221,7 @@ public class WebdavRoot implements Root {
             throw e;
         }
     }
-    
+
     public HttpResponse receive(WebdavConnection conn) throws IOException {
         HttpResponse response;
         int statuscode;
@@ -250,14 +248,14 @@ public class WebdavRoot implements Root {
             throw e;
         }
     }
-    
+
     private boolean canResponseHaveBody(HttpResponse response) {
         int status;
-        
-        status = response.getStatusLine().getStatusCode(); 
-        return status >= HttpStatus.SC_OK 
-            && status != HttpStatus.SC_NO_CONTENT 
+
+        status = response.getStatusLine().getStatusCode();
+        return status >= HttpStatus.SC_OK
+            && status != HttpStatus.SC_NO_CONTENT
             && status != HttpStatus.SC_NOT_MODIFIED
-            && status != HttpStatus.SC_RESET_CONTENT; 
+            && status != HttpStatus.SC_RESET_CONTENT;
     }
 }

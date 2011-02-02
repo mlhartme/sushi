@@ -477,24 +477,13 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
-        byte[] add;
-
-        if (append) {
-            try {
-                add = readBytes();
-            } catch (FileNotFoundException e) {
-                add = null;
-            }
-        } else {
-            add = null;
-        }
-        return new CheckedByteArrayOutputStream(add) {
+    public OutputStream createOutputStream(final boolean append) throws IOException {
+        return new CheckedByteArrayOutputStream() {
             @Override
             public void close() throws IOException {
                 super.close();
                 try {
-                    put(toByteArray());
+                    put(toByteArray(), append);
                 } catch (JSchException e) {
                     throw new IOException(e);
                 } catch (SftpException e) {
@@ -523,6 +512,10 @@ public class SshNode extends Node {
     }
 
     public void put(final byte[] data) throws JSchException, IOException, SftpException {
-        getChannel().put(new ByteArrayInputStream(data), escape(slashPath));
+        put(data, false);
+    }
+
+    public void put(final byte[] data, boolean append) throws JSchException, IOException, SftpException {
+        getChannel().put(new ByteArrayInputStream(data), escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
     }
 }

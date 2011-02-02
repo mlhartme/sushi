@@ -7,6 +7,9 @@
         Strings.split now throws an IllegalArgumentException for empty separator strings.
       </action>
       <action dev="mlhartme" type="update">
+        SshNodes: native append, no longer read old content before appending.
+      </action>
+      <action dev="mlhartme" type="update">
         Move Archive.unzip/unjar to Node.unzip/unjar.
       </action>
       <action dev="mlhartme" type="fix">
@@ -15,9 +18,6 @@
       </action>
       <action dev="mlhartme" type="fix">
         Fix globbing characters in SshNode file names.
-      </action>
-      <action dev="mlhartme" type="fix">
-        Fix CRLF in Webdav Logging.
       </action>
       <action dev="mlhartme" type="fix">
         Fix typo unkown -> unknown in various string constants.

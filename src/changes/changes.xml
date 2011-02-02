@@ -7,6 +7,9 @@
         Strings.split now throws an IllegalArgumentException for empty separator strings.
       </action>
       <action dev="mlhartme" type="update">
+        LineReader: separator is a pattern now (it was a string).
+      </action>
+      <action dev="mlhartme" type="update">
         SshNodes: native append, no longer read old content before appending.
       </action>
       <action dev="mlhartme" type="update">

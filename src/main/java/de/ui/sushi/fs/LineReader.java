@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public class LineReader {
@@ -33,19 +35,20 @@ public class LineReader {
     }
 
     public static LineReader create(Node node, Trim trim, boolean empty, String comment, int initialBufferSize) throws IOException {
-        return new LineReader(node.createReader(), node.getIO().getSettings().lineSeparator, trim, empty, comment, new char[initialBufferSize], 0);
+        return new LineReader(node.createReader(), Pattern.compile(Pattern.quote(node.getIO().getSettings().lineSeparator)), trim, empty, comment, new char[initialBufferSize], 0);
     }
 
     public static enum Trim {
         NOTHING, SEPARATOR, ALL
     }
 
-    public static final int INITIAL_BUFFER_SIZE = 2;
+    public static final int INITIAL_BUFFER_SIZE = 256;
 
     private final Reader reader;
 
     /** line separator */
-    private final String separator;
+    private final Pattern separator;
+
     /** line trimming mode */
     private final Trim trim;
     /** when true, next() returns empty line; otherwise, they're skipped */
@@ -53,26 +56,21 @@ public class LineReader {
     /** line comment prefix to be skipped; null to disable */
     private final String comment;
 
-    private final int sepLen;
-    private final int sepLenTrimmed;
-
+    /** current line number */
     private int line;
 
     private char[] buffer;
+    /** index into buffer */
     private int start;
+    /** index into buffer, points behind last valid character */
     private int end;
 
-    public LineReader(Reader reader, String separator, Trim trim, boolean empty, String comment, char[] initialBuffer, int initialLine) {
+    public LineReader(Reader reader, Pattern separator, Trim trim, boolean empty, String comment, char[] initialBuffer, int initialLine) {
         this.reader = reader;
-
         this.separator = separator;
         this.trim = trim;
         this.empty = empty;
         this.comment = comment;
-
-        this.sepLen = separator.length();
-        this.sepLenTrimmed = trim == Trim.NOTHING ? sepLen : 0;
-
         this.line = initialLine;
         this.buffer = initialBuffer;
         this.start = 0;
@@ -102,16 +100,17 @@ public class LineReader {
 
     /** Never closes the underlying reader. @return next line of null for end of file */
     public String next() throws IOException {
-        int idx;
         char[] newBuffer;
         String result;
         int len;
+        Matcher matcher;
 
         while (true) {
-            idx = findSeparator();
-            if (idx != -1) {
-                result = new String(buffer, start, idx - start + sepLenTrimmed);
-                start = idx + sepLen;
+            matcher = separator.matcher(new CharArraySequence(start, end, buffer));
+            if (matcher.find()) {
+                int behind = matcher.end();
+                result = new String(buffer, start, trim == Trim.NOTHING ? behind : matcher.start());
+                start += behind;
             } else {
                 if (end == buffer.length) {
                     if (start != 0) {
@@ -170,19 +169,30 @@ public class LineReader {
         }
     }
 
-    private int findSeparator() {
-        int j;
+    private static class CharArraySequence implements CharSequence {
+        private final int start;
+        private final int end;
+        private final char[] buffer;
 
-        for (int idx = start; idx <= end - sepLen; idx++) {
-            for (j = 0; j < sepLen; j++) {
-                if (separator.charAt(j) != buffer[idx + j]) {
-                    break;
-                }
-            }
-            if (j == sepLen) {
-                return idx;
-            }
+        public CharArraySequence(int start, int end, char[] buffer) {
+            this.start = start;
+            this.end = end;
+            this.buffer = buffer;
         }
-        return -1;
+
+        @Override
+        public int length() {
+            return end - start;
+        }
+
+        @Override
+        public char charAt(int index) {
+            return buffer[start + index];
+        }
+
+        @Override
+        public CharSequence subSequence(int start, int end) {
+            return new CharArraySequence(this.start + start, this.start + end, this.buffer);
+        }
     }
 }

@@ -20,11 +20,13 @@ package de.ui.sushi.fs;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class LineReaderTest {
+    Pattern separator;
     IO io = new IO();
     
     @Test
@@ -73,6 +75,13 @@ public class LineReaderTest {
               "hello\n", "world");
     }
 
+    @Test
+    public void separators() {
+        separator = LineReader.ANY_NEWLINE;
+        check("a\nb\rc\r\nd\n\re", LineReader.Trim.NOTHING, true, null, 4,
+                "a\n", "b\r", "c\r\n", "d\n\r", "e");
+    }
+
     //--
     
     private void check(String str, String ... expected) {
@@ -88,11 +97,13 @@ public class LineReaderTest {
     }
 
     private void check(String str, LineReader.Trim trim, boolean empty, String comment, int lastLine, int initialSize, String ... expected) {
+        Node node;
         LineReader reader;
         List<String> result;
 
         try {
-            reader = LineReader.create(io.stringNode(str), trim, empty, comment, initialSize);
+            node = io.stringNode(str);
+            reader = LineReader.create(node, separator == null ? LineReader.separator(node) : separator, trim, empty, comment, initialSize);
             result = reader.collect();
         } catch (IOException e) {
             throw new IllegalStateException(e);

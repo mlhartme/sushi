@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public class LineReader {
+    public static final Pattern ANY_NEWLINE = Pattern.compile(Pattern.quote("\n") + "|" + Pattern.quote("\r") + "|" + Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n"));
+
     public static LineReader create(Node node) throws IOException {
         return create(node, Trim.SEPARATOR, true, null);
     }
@@ -35,7 +37,15 @@ public class LineReader {
     }
 
     public static LineReader create(Node node, Trim trim, boolean empty, String comment, int initialBufferSize) throws IOException {
-        return new LineReader(node.createReader(), Pattern.compile(Pattern.quote(node.getIO().getSettings().lineSeparator)), trim, empty, comment, new char[initialBufferSize], 0);
+        return create(node, separator(node), trim, empty, comment, initialBufferSize);
+    }
+
+    public static LineReader create(Node node, Pattern separator, Trim trim, boolean empty, String comment, int initialBufferSize) throws IOException {
+        return new LineReader(node.createReader(), separator, trim, empty, comment, new char[initialBufferSize], 0);
+    }
+
+    public static Pattern separator(Node node) {
+        return Pattern.compile(Pattern.quote(node.getIO().getSettings().lineSeparator));
     }
 
     public static enum Trim {
@@ -97,9 +107,9 @@ public class LineReader {
         while (true) {
             matcher = separator.matcher(buffer);
             if (matcher.find()) {
-                int behind = matcher.end();
-                result = new String(buffer.chars, buffer.start, trim == Trim.NOTHING ? behind : matcher.start());
-                buffer.start += behind;
+                len = matcher.end();
+                result = new String(buffer.chars, buffer.start, trim == Trim.NOTHING ? len : matcher.start());
+                buffer.start += len;
             } else {
                 if (buffer.isFull()) {
                     buffer.grow();

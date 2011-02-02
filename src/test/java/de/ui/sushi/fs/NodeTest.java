@@ -1098,4 +1098,24 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         link.mkfile();
         link.mklink("..");
     }
+
+    @Test
+    public void linkDelete() throws IOException {
+        Node file;
+        Node link;
+
+        if (!canLink()) {
+            return;
+        }
+
+        file = work.join("file");
+        file.writeString("foo");
+        link = work.join("link");
+        file.link(link);
+        assertEquals("foo", link.readString());
+        link.delete();
+        assertFalse(link.isFile());
+        assertTrue(file.isFile());
+    }
+
 }

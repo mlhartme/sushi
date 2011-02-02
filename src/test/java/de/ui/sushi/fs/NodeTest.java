@@ -436,8 +436,8 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     static {
         StringBuilder builder;
 
-        builder = new StringBuilder(Character.MAX_VALUE);
-        for (int i = 0; i < 55296; i++) { // TODO!?
+        builder = new StringBuilder(Character.MIN_HIGH_SURROGATE);
+        for (int i = 0; i < Character.MIN_HIGH_SURROGATE; i++) {
             builder.append((char) i);
         }
         ALL_CHARS = builder.toString();

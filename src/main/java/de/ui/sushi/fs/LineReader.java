@@ -59,11 +59,7 @@ public class LineReader {
     /** current line number */
     private int line;
 
-    private char[] buffer;
-    /** index into buffer */
-    private int start;
-    /** index into buffer, points behind last valid character */
-    private int end;
+    private CharArraySequence buffer;
 
     public LineReader(Reader reader, Pattern separator, Trim trim, boolean empty, String comment, char[] initialBuffer, int initialLine) {
         this.reader = reader;
@@ -72,16 +68,10 @@ public class LineReader {
         this.empty = empty;
         this.comment = comment;
         this.line = initialLine;
-        this.buffer = initialBuffer;
-        this.start = 0;
-        this.end = 0;
+        this.buffer = new CharArraySequence(0, 0, initialBuffer);
     }
 
     //--
-
-    public char[] getBuffer() {
-        return buffer;
-    }
 
     /** @return number of the line return by the last call to next */
     public int getLine() {
@@ -100,40 +90,30 @@ public class LineReader {
 
     /** Never closes the underlying reader. @return next line of null for end of file */
     public String next() throws IOException {
-        char[] newBuffer;
         String result;
         int len;
         Matcher matcher;
 
         while (true) {
-            matcher = separator.matcher(new CharArraySequence(start, end, buffer));
+            matcher = separator.matcher(buffer);
             if (matcher.find()) {
                 int behind = matcher.end();
-                result = new String(buffer, start, trim == Trim.NOTHING ? behind : matcher.start());
-                start += behind;
+                result = new String(buffer.chars, buffer.start, trim == Trim.NOTHING ? behind : matcher.start());
+                buffer.start += behind;
             } else {
-                if (end == buffer.length) {
-                    if (start != 0) {
-                        System.arraycopy(buffer, start, buffer, 0, end - start);
-                        end -= start;
-                        start = 0;
-                    } else {
-                        newBuffer = new char[buffer.length * 3 / 2 + 10];
-                        System.arraycopy(buffer, 0, newBuffer, 0, end);
-                        buffer = newBuffer;
-                    }
+                if (buffer.isFull()) {
+                    buffer.grow();
                 }
-                len = reader.read(buffer, end, buffer.length - end);
+                len = buffer.fill(reader);
                 if (len == -1) {
-                    if (start != end) {
-                        result = new String(buffer, start, end - start);
-                        start = end;
-                    } else {
+                    if (buffer.isEmpty()) {
                         // EOF
                         return null;
+                    } else {
+                        result = buffer.eat();
                     }
                 } else {
-                    end += len;
+                    buffer.end += len;
                     continue;
                 }
             }
@@ -170,14 +150,14 @@ public class LineReader {
     }
 
     private static class CharArraySequence implements CharSequence {
-        private final int start;
-        private final int end;
-        private final char[] buffer;
+        private int start;
+        private int end;
+        private char[] chars;
 
-        public CharArraySequence(int start, int end, char[] buffer) {
+        public CharArraySequence(int start, int end, char[] chars) {
             this.start = start;
             this.end = end;
-            this.buffer = buffer;
+            this.chars = chars;
         }
 
         @Override
@@ -187,12 +167,46 @@ public class LineReader {
 
         @Override
         public char charAt(int index) {
-            return buffer[start + index];
+            return chars[start + index];
         }
 
         @Override
         public CharSequence subSequence(int start, int end) {
-            return new CharArraySequence(this.start + start, this.start + end, this.buffer);
+            return new CharArraySequence(this.start + start, this.start + end, this.chars);
+        }
+
+        public boolean isEmpty() {
+            return start == end;
+        }
+
+        public boolean isFull() {
+            return end == chars.length;
+        }
+
+        public String eat() {
+            String result;
+
+            result = new String(chars, start, end - start);
+            end = start;
+            return result;
+        }
+
+        public void grow() {
+            char[] tmp;
+
+            if (start != 0) {
+                System.arraycopy(chars, start, chars, 0, end - start);
+                end -= start;
+                start = 0;
+            } else {
+                tmp = new char[chars.length * 3 / 2 + 10];
+                System.arraycopy(chars, 0, tmp, 0, end);
+                chars = tmp;
+            }
+        }
+
+        public int fill(Reader src) throws IOException {
+            return src.read(chars, end, chars.length - end);
         }
     }
 }

@@ -42,14 +42,14 @@ public class LineReader {
     private CharArraySequence buffer;
 
     public LineReader(Reader reader, LineFormat format) {
-        this(reader, format, new char[INITIAL_BUFFER_SIZE]);
+        this(reader, format, INITIAL_BUFFER_SIZE);
     }
 
-    public LineReader(Reader reader, LineFormat format, char[] initialBuffer) {
+    public LineReader(Reader reader, LineFormat format, int initialBufferSize) {
         this.reader = reader;
         this.format = format;
-        this.line = format.firstLine;
-        this.buffer = new CharArraySequence(0, 0, initialBuffer);
+        this.line = 0;
+        this.buffer = new CharArraySequence(0, 0, new char[initialBufferSize]);
     }
 
     //--

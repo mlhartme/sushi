@@ -23,7 +23,7 @@ public class LineFormat {
     // order is important
     public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
 
-    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.SEPARATOR, true, null, 1);
+    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.SEPARATOR, true, null);
 
     public static enum Trim {
         NOTHING, SEPARATOR, ALL
@@ -41,13 +41,10 @@ public class LineFormat {
     /** line comment prefix to be skipped; null to disable */
     public final String comment;
 
-    public final int firstLine;
-
-    public LineFormat(Pattern separator, Trim trim, boolean empty, String comment, int firstLine) {
+    public LineFormat(Pattern separator, Trim trim, boolean empty, String comment) {
         this.separator = separator;
         this.trim = trim;
         this.empty = empty;
         this.comment = comment;
-        this.firstLine = firstLine;
     }
 }

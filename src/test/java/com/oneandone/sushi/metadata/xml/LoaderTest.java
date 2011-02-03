@@ -356,7 +356,7 @@ public class LoaderTest extends ModelBase {
         node = IO_OBJ.stringNode(
                 "<all>" +
                 "  <objects type='java.lang.Integer'>2</objects>" +
-                "  <objects type='de.ui.sushi.metadata.listmodel.Empty'/>" +
+                "  <objects type='de.oneandone.sushi.metadata.listmodel.Empty'/>" +
                 "  <objects type='java.lang.String'></objects>" +
                 "</all>"                
         );

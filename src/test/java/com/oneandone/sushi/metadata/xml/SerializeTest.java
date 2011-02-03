@@ -135,7 +135,7 @@ public class SerializeTest extends ModelBase {
         all.objects.add("");
         all.objects.add(2);
         assertEquals("<all>" + LF +
-                "  <objects type='de.ui.sushi.metadata.listmodel.Empty'/>" + LF +
+                "  <objects type='de.oneandone.sushi.metadata.listmodel.Empty'/>" + LF +
                 "  <objects type='java.lang.String'></objects>" + LF +
                 "  <objects type='java.lang.Integer'>2</objects>" + LF + 
                 "</all>" + LF, 

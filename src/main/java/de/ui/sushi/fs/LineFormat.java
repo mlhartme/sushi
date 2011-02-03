@@ -17,24 +17,13 @@
 
 package de.ui.sushi.fs;
 
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class LineFormat {
-    public static LineFormat create(Node node) throws IOException {
-        return create(node, Trim.SEPARATOR, true, null);
-    }
-
-    public static LineFormat create(Node node, Trim trim, boolean empty, String comment) throws IOException {
-        return new LineFormat(separator(node), trim, empty, comment, 1);
-    }
-
-    public static Pattern separator(Node node) {
-        return Pattern.compile(Pattern.quote(node.getIO().getSettings().lineSeparator));
-    }
-
     // order is important
     public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
+
+    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.SEPARATOR, true, null, 1);
 
     public static enum Trim {
         NOTHING, SEPARATOR, ALL

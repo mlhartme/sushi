@@ -17,6 +17,10 @@
 
 package de.ui.sushi.io;
 
+import de.ui.sushi.fs.LineFormat;
+
+import java.util.regex.Pattern;
+
 public enum OS {
     LINUX("Linux", "$", "", ':', "\n", 
     		new String[] { "--format", "%a"},

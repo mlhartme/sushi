@@ -19,6 +19,7 @@ package de.ui.sushi.fs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Pattern;
 
 import de.ui.sushi.io.OS;
 import de.ui.sushi.util.Strings;
@@ -36,6 +37,7 @@ public class Settings {
     
     public final String encoding;
     public final String lineSeparator;
+    public final LineFormat lineFormat;
 
     /** Create a Buffer with UTF-8 encoding */
     public Settings() {
@@ -54,6 +56,7 @@ public class Settings {
         }
         this.encoding = encoding;
         this.lineSeparator = lineSeparator;
+        this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)), LineFormat.Trim.SEPARATOR, true, null, 1);
     }
     
     public String join(String ... lines) {

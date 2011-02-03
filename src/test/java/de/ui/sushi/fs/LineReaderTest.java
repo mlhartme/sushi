@@ -20,14 +20,12 @@ package de.ui.sushi.fs;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class LineReaderTest {
     IO io = new IO();
-    Pattern separator = io.getSettings().lineFormat.separator;
 
     @Test
     public void zero() throws IOException {
@@ -60,27 +58,27 @@ public class LineReaderTest {
     @Test
     public void comment() {
         check("first\n // \n\n//comment\nlast",
-                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, false, "//"), 5,
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, LineFormat.excludes(true, "//")), 5,
                 "first", "last");
     }
 
     @Test
-    public void empty() {
+    public void excludeEmpty() {
         check("first\n\nthird\n  \nfifth",
-                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, false, null), 5,
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, LineFormat.excludes(true)), 5,
                 "first", "third", "fifth");
     }
 
     @Test
     public void trimNothing() {
         check("hello\nworld",
-                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.NOTHING, false, null), 2,
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.NOTHING, LineFormat.NO_EXCLUDES), 2,
                 "hello\n", "world");
     }
 
     @Test
     public void separators() {
-        check("a\nb\rc\r\nd\n\re", new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.NOTHING, false, null),
+        check("a\nb\rc\r\nd\n\re", LineFormat.RAW_FORMAT,
                 5, "a\n", "b\r", "c\r\n", "d\n\r", "e");
     }
 

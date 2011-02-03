@@ -24,10 +24,34 @@ public class LineFormat {
     public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
     public static final Pattern LF_SEPARATOR = Pattern.compile(Pattern.quote("\n"));
 
-    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR);
-
+    /** how to trim lines before they are returned by next() */
     public static enum Trim {
         NOTHING, SEPARATOR, ALL
+    }
+
+
+    public static final Pattern NO_EXCLUDES = Pattern.compile("\\za");
+
+    public static final LineFormat RAW_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.NOTHING);
+
+    public static Pattern excludes(boolean empty, String ... comments) {
+        StringBuilder builder;
+
+        if (!empty && comments.length == 0) {
+            return NO_EXCLUDES;
+        }
+        builder = new StringBuilder();
+        if (empty) {
+            builder.append(Pattern.quote(""));
+        }
+        for (String comment : comments) {
+            if (builder.length() > 0) {
+                builder.append('|');
+            }
+            builder.append(Pattern.quote(comment));
+            builder.append(".*|");
+        }
+        return Pattern.compile(builder.toString());
     }
 
     /** line separator */
@@ -36,23 +60,23 @@ public class LineFormat {
     /** line trimming mode */
     public final Trim trim;
 
-    /** when true, next() returns empty line; otherwise, they're skipped */
-    public final boolean empty;
-
-    /** line comment prefix to be skipped; null to disable */
-    public final String comment;
+    /** line that match this pattern after trimming will be excluded, they are never return by next. */
+    public final Pattern excludes;
 
     public LineFormat(Pattern separator) {
-        this(separator, Trim.SEPARATOR, true, null);
+        this(separator, Trim.SEPARATOR);
     }
 
-    public LineFormat(Pattern separator, Trim trim, boolean empty, String comment) {
+    public LineFormat(Pattern separator, Trim trim) {
+        this(separator, trim, NO_EXCLUDES);
+    }
+
+    public LineFormat(Pattern separator, Trim trim, Pattern excludes) {
         if (separator.matcher("").matches()) {
             throw new IllegalArgumentException(separator.pattern());
         }
         this.separator = separator;
         this.trim = trim;
-        this.empty = empty;
-        this.comment = comment;
+        this.excludes = excludes;
     }
 }

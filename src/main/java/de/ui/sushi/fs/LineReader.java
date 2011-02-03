@@ -114,10 +114,8 @@ public class LineReader {
             if (format.trim == LineFormat.Trim.ALL) {
                 result = result.trim();
             }
-            if (format.comment == null || !result.startsWith(format.comment)) {
-                if (format.empty || !result.isEmpty()) {
-                    return result;
-                }
+            if (!format.excludes.matcher(result).matches()) {
+                return result;
             }
         }
     }

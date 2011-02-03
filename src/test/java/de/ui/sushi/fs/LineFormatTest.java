@@ -24,6 +24,6 @@ import java.util.regex.Pattern;
 public class LineFormatTest {
     @Test(expected=IllegalArgumentException.class)
     public void nullSeparator() {
-        new LineFormat(Pattern.compile(""), LineFormat.Trim.SEPARATOR, true, null);
+        new LineFormat(Pattern.compile(""), LineFormat.Trim.SEPARATOR, LineFormat.NO_EXCLUDES);
     }
 }

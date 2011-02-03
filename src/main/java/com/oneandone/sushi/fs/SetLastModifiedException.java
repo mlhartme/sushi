@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 public class SetLastModifiedException extends NodeException {
     public SetLastModifiedException(Node node) {

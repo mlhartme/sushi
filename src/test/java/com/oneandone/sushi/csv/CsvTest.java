@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.csv;
+package com.oneandone.sushi.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
 
 public class CsvTest {
     private static final Format FMT = new Format();

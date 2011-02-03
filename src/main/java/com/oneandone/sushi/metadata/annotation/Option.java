@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.annotation;
+package com.oneandone.sushi.metadata.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.simpletypes;
+package com.oneandone.sushi.metadata.simpletypes;
 
-import de.ui.sushi.cli.ArgumentException;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeInstantiationException;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
+import com.oneandone.sushi.cli.ArgumentException;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
 
 import java.net.URISyntaxException;
 

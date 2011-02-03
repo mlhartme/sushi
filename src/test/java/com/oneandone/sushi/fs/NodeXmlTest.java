@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +26,7 @@ import javax.xml.transform.TransformerException;
 
 import org.junit.Test;
 
-import de.ui.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.fs.memory.MemoryNode;
 
 public class NodeXmlTest {
     private static final IO IO_OBJ = new IO();

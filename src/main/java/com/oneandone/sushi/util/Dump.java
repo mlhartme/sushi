@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -23,14 +23,14 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.metadata.ComplexType;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.metadata.ComplexType;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 /** Readable object output. Implementation uses metadata, but that's hidden from the caller. */
 public class Dump {

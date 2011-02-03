@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi;
+package com.oneandone.sushi;
 
 import java.io.IOException;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
 
 public class IOSample {
     /** print all Java files in your src/main/java directory */

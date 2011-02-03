@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.csv;
+package com.oneandone.sushi.csv;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.util.Misc;
+import com.oneandone.sushi.util.Misc;
 
 /** A list of cells, where each cell is a list of values */
 public class Line {

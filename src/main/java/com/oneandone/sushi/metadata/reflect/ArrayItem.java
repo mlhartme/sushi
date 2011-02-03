@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.reflect;
+package com.oneandone.sushi.metadata.reflect;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import de.ui.sushi.metadata.Cardinality;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.Cardinality;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Type;
 
 public class ArrayItem<T> extends Item<T> {
     private final Field field;

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.svn;
+package com.oneandone.sushi.fs.svn;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.Node;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNErrorCode;
 import org.tmatesoft.svn.core.SVNErrorMessage;

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.Node;
 
 public class TreeAction implements Action {
     private final List<Node> nodes;

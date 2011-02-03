@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.util.List;
 
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.SimpleTypeException;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.Type;
 
 public class SimpleElement extends Element {
     private final StringBuilder builder;

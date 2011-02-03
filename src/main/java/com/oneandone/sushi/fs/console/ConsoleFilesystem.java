@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.console;
+package com.oneandone.sushi.fs.console;
 
-import de.ui.sushi.fs.Features;
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.NodeInstantiationException;
-import de.ui.sushi.fs.Root;
+import com.oneandone.sushi.fs.Features;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.Root;
 
 import java.net.URI;
 

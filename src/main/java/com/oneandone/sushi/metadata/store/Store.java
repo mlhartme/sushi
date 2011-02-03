@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.store;
+package com.oneandone.sushi.metadata.store;
 
 import java.util.List;
 
-import de.ui.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Item;
 
 public interface Store {
     void write(List<Item<?>> parents, String path, String value) throws Exception;

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Builder;
 import org.w3c.dom.Element;
 
 /** You'll normally not use this class directly, use Data.toXml instead */

@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.ui.sushi.fs.filter.Filter;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.util.Strings;
 
 public class Diff {
     private final boolean brief;
@@ -115,7 +115,7 @@ public class Diff {
             header("###", relative, result);
             result.append(Strings.indent(right.readString(), "+ "));
         } else {
-            str = de.ui.sushi.util.Diff.diff(left.readString(), right.readString());
+            str = com.oneandone.sushi.util.Diff.diff(left.readString(), right.readString());
             if (str.length() > 0) {
                 header("###", relative, result);
                 result.append(str);

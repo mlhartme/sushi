@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.xml;
+package com.oneandone.sushi.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,7 +31,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.Node;
 import org.xml.sax.SAXException;
 
 /**

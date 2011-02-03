@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.timemachine;
+package com.oneandone.sushi.fs.timemachine;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
 
 public class Main {
     public static void main(String[] args) throws Exception {

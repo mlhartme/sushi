@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.metadata.store.PropertyStore;
-import de.ui.sushi.metadata.xml.Loader;
-import de.ui.sushi.metadata.xml.LoaderException;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.metadata.store.PropertyStore;
+import com.oneandone.sushi.metadata.xml.Loader;
+import com.oneandone.sushi.metadata.xml.LoaderException;
 import org.xml.sax.InputSource;
 
 public abstract class Type {
@@ -116,7 +116,7 @@ public abstract class Type {
     public <T> Instance<T> loadProperties(Properties props, String name) {
         T obj;
         
-        obj = (T) new de.ui.sushi.metadata.store.Reader(new PropertyStore(props)).read(name, this);
+        obj = (T) new com.oneandone.sushi.metadata.store.Reader(new PropertyStore(props)).read(name, this);
         return instance(obj);
     }
     

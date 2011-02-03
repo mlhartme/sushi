@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.annotation;
+package com.oneandone.sushi.metadata.annotation;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import de.ui.sushi.metadata.Cardinality;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.Cardinality;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.Type;
 
 public class OptionItem<T> extends Item<T> {
     public static <T> OptionItem<T> create(Schema metadata, Field field) {

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.model;
+package com.oneandone.sushi.metadata.model;
 
 import org.junit.Before;
 
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.annotation.AnnotationSchema;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public abstract class ModelBase {
     public static final Schema MODEL = new AnnotationSchema();

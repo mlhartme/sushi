@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import de.ui.sushi.util.Substitution;
-import de.ui.sushi.util.SubstitutionException;
+import com.oneandone.sushi.util.Substitution;
+import com.oneandone.sushi.util.SubstitutionException;
 
 public class SubstitutionTest {
     private Map<String, String> props;

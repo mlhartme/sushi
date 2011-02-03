@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
-import de.ui.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleType;
 
 /** TODO: merge with Item? */
 public abstract class Argument {

@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.file;
+package com.oneandone.sushi.fs.file;
 
 import java.io.File;
 
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.io.OS;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.io.OS;
 
 
 public class FileRoot implements Root {

@@ -1,10 +1,10 @@
-package de.ui.sushi.fs.ssh;
+package com.oneandone.sushi.fs.ssh;
 
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

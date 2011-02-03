@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 import org.apache.http.impl.io.SocketInputBuffer;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.xml;
+package com.oneandone.sushi.xml;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,7 +47,7 @@ public class Serializer {
     }
     
     /** Generates an xml/encoding declaration */
-    public void serialize(Node src, de.ui.sushi.fs.Node dest) throws IOException {
+    public void serialize(Node src, com.oneandone.sushi.fs.Node dest) throws IOException {
         OutputStream out;
         
         // don't use Writer to allow transformer to decide about encoding */

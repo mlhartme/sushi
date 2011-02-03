@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi;
+package com.oneandone.sushi;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import de.ui.sushi.xml.Xml;
+import com.oneandone.sushi.xml.Xml;
 
 public class XmlSample {
     private static final Xml XML = new Xml();

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.io.IOException;
 

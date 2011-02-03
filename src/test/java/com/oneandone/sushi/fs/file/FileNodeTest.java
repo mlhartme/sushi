@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.file;
+package com.oneandone.sushi.fs.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,12 +26,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.NodeInstantiationException;
 import org.junit.Test;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeTest;
-import de.ui.sushi.io.OS;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeTest;
+import com.oneandone.sushi.io.OS;
 
 /** TODO: move more tests into NodeTest */
 public class FileNodeTest extends NodeTest {

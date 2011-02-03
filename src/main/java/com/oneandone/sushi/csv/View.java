@@ -15,24 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.csv;
+package com.oneandone.sushi.csv;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.metadata.Instance;
-import de.ui.sushi.metadata.Path;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.SimpleTypeException;
-import de.ui.sushi.metadata.annotation.AnnotationSchema;
-import de.ui.sushi.metadata.annotation.Sequence;
-import de.ui.sushi.metadata.annotation.Type;
-import de.ui.sushi.metadata.annotation.Value;
-import de.ui.sushi.metadata.xml.LoaderException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.metadata.Instance;
+import com.oneandone.sushi.metadata.Path;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
+import com.oneandone.sushi.metadata.annotation.Sequence;
+import com.oneandone.sushi.metadata.annotation.Type;
+import com.oneandone.sushi.metadata.annotation.Value;
+import com.oneandone.sushi.metadata.xml.LoaderException;
 
 /** Defines how to turn instances into csv an vice versa */ 
 @Type public class View {

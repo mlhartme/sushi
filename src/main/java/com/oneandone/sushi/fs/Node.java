@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,11 +41,11 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import de.ui.sushi.archive.Archive;
-import de.ui.sushi.fs.filter.Filter;
-import de.ui.sushi.io.Buffer;
-import de.ui.sushi.util.Strings;
-import de.ui.sushi.xml.Serializer;
+import com.oneandone.sushi.archive.Archive;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.util.Strings;
+import com.oneandone.sushi.xml.Serializer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

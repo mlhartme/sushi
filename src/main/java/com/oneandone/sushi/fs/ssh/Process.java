@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.ssh;
+package com.oneandone.sushi.fs.ssh;
 
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import de.ui.sushi.util.ExitCode;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.ExitCode;
+import com.oneandone.sushi.util.Strings;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;

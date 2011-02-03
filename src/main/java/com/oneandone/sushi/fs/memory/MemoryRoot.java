@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.memory;
+package com.oneandone.sushi.fs.memory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import de.ui.sushi.fs.LengthException;
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.io.CheckedByteArrayInputStream;
+import com.oneandone.sushi.fs.LengthException;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.io.CheckedByteArrayInputStream;
 
 public class MemoryRoot implements Root {
     public final MemoryFilesystem filesystem;

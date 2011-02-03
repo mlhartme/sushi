@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
-import de.ui.sushi.io.OS;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Strings;
 
 /**
  * <p>Settings for nodes. Immutable. </p>

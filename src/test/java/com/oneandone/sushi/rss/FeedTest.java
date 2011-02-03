@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.rss;
+package com.oneandone.sushi.rss;
 
 import java.util.Date;
 
 import junit.framework.TestCase;
-import de.ui.sushi.xml.Xml;
-import de.ui.sushi.xml.XmlException;
+import com.oneandone.sushi.xml.Xml;
+import com.oneandone.sushi.xml.XmlException;
 
 public class FeedTest extends TestCase {
     private static final Xml XML = new Xml();

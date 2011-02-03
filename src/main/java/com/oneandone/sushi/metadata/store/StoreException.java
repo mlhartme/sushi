@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.store;
+package com.oneandone.sushi.metadata.store;
 
 public class StoreException extends RuntimeException {
     private static final long serialVersionUID = 1L;

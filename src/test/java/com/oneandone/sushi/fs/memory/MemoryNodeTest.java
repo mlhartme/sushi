@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.memory;
+package com.oneandone.sushi.fs.memory;
 
-import de.ui.sushi.fs.NodeTest;
+import com.oneandone.sushi.fs.NodeTest;
 
 public class MemoryNodeTest extends NodeTest {
     @Override

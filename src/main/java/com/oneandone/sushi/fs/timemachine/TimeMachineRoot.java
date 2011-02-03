@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.timemachine;
+package com.oneandone.sushi.fs.timemachine;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.util.Program;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.util.Program;
 
 public class TimeMachineRoot implements Root {
     public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {

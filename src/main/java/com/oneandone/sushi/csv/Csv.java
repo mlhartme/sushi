@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.csv;
+package com.oneandone.sushi.csv;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.util.Strings;
 
 /** A list of lines. http://de.wikipedia.org/wiki/CSV-Datei. */
 public class Csv implements Iterable<Line> {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.svn;
+package com.oneandone.sushi.fs.svn;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -29,16 +29,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.LengthException;
-import de.ui.sushi.fs.ListException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.SetLastModifiedException;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.io.CheckedByteArrayOutputStream;
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.GetLastModifiedException;
+import com.oneandone.sushi.fs.LengthException;
+import com.oneandone.sushi.fs.ListException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.SetLastModifiedException;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;

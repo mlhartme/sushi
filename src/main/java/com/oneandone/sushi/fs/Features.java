@@ -1,4 +1,4 @@
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 /**
  * To programmatically test the features available in a filesystem. A features is not specific to a node, it's specific

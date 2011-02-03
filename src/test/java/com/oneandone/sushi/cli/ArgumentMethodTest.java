@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import java.lang.reflect.Method;
 
 import org.junit.Test;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import static org.junit.Assert.*;
 
 public class ArgumentMethodTest {

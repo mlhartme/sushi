@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.archive;
+package com.oneandone.sushi.archive;
 
 import java.io.IOException;
 

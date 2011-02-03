@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.xml;
+package com.oneandone.sushi.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public class Builder {
     }
 
     /** Create a validating builder */
-    public Builder(de.ui.sushi.fs.Node schema) throws IOException, SAXException {
+    public Builder(com.oneandone.sushi.fs.Node schema) throws IOException, SAXException {
         this.builder = createValidatingDocumentBuilder(schema);
     }
 
@@ -70,7 +70,7 @@ public class Builder {
         }
     }
 
-    public Document parse(de.ui.sushi.fs.Node node) throws SAXException, IOException {
+    public Document parse(com.oneandone.sushi.fs.Node node) throws SAXException, IOException {
         InputStream stream;
         InputSource src;
         Document doc;
@@ -208,7 +208,7 @@ public class Builder {
         return result;
     }
 
-    public static DocumentBuilder createValidatingDocumentBuilder(de.ui.sushi.fs.Node schema) throws IOException, SAXException {
+    public static DocumentBuilder createValidatingDocumentBuilder(com.oneandone.sushi.fs.Node schema) throws IOException, SAXException {
         DocumentBuilderFactory factory;
         DocumentBuilder builder;
 
@@ -222,7 +222,7 @@ public class Builder {
         return builder;
     }
 
-    public static SAXParser createValidatingSAXParser(de.ui.sushi.fs.Node schema) throws IOException, SAXException {
+    public static SAXParser createValidatingSAXParser(com.oneandone.sushi.fs.Node schema) throws IOException, SAXException {
         return Factories.saxParser(schema);
     }
 

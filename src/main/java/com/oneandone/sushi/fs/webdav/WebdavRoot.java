@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -40,8 +40,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.util.Base64;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.util.Base64;
 
 public class WebdavRoot implements Root {
     private final WebdavFilesystem filesystem;

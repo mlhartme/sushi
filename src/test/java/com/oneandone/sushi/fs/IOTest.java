@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,13 +33,13 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import de.ui.sushi.fs.console.ConsoleNode;
-import de.ui.sushi.fs.file.FileFilesystem;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.fs.memory.MemoryNode;
-import de.ui.sushi.fs.webdav.WebdavNode;
-import de.ui.sushi.fs.zip.ZipNode;
-import de.ui.sushi.util.Reflect;
+import com.oneandone.sushi.fs.console.ConsoleNode;
+import com.oneandone.sushi.fs.file.FileFilesystem;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
+import com.oneandone.sushi.fs.zip.ZipNode;
+import com.oneandone.sushi.util.Reflect;
 
 public class IOTest {
     // TODO

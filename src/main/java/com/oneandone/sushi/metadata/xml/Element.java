@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.util.List;
 import java.util.Map;
 
-import de.ui.sushi.metadata.ComplexType;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.ComplexType;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.Type;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 

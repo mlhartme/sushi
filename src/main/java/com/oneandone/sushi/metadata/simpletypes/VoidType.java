@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.simpletypes;
+package com.oneandone.sushi.metadata.simpletypes;
 
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
 
 public class VoidType extends SimpleType {
     public VoidType(Schema schema) {

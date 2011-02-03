@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.zip;
+package com.oneandone.sushi.fs.zip;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MoveException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.SetLastModifiedException;
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.MoveException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.SetLastModifiedException;
 
 /** 
  * Use http networking properties to specify proxies:

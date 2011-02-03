@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.Type;
 
 public class ArgumentMethod extends Argument {
     public static ArgumentMethod create(String name, Schema metadata, Method method) {

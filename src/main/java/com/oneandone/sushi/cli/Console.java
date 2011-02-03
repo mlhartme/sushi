@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +23,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.io.InputLogStream;
-import de.ui.sushi.io.MultiOutputStream;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.io.InputLogStream;
+import com.oneandone.sushi.io.MultiOutputStream;
 
 /**
  * Configurable replacement for System.out, System.err and System.in. 

@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.ssh;
+package com.oneandone.sushi.fs.ssh;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
-import de.ui.sushi.fs.Root;
-import de.ui.sushi.fs.OnShutdown;
-import de.ui.sushi.io.MultiOutputStream;
-import de.ui.sushi.util.ExitCode;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.fs.OnShutdown;
+import com.oneandone.sushi.io.MultiOutputStream;
+import com.oneandone.sushi.util.ExitCode;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi;
+package com.oneandone.sushi;
 
 import java.util.Properties;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.Instance;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Instance;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public class PropertiesSample {
     /** Serialize object to xml and load the result back into an object */

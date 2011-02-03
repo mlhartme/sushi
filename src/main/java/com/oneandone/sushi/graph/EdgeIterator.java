@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.graph;
+package com.oneandone.sushi.graph;
 
 import java.util.ArrayList;
 import java.util.Iterator;

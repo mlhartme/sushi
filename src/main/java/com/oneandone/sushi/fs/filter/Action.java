@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import java.io.IOException;
 
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.Node;
 
 public interface Action {
     void enter(Node node, boolean isLink);

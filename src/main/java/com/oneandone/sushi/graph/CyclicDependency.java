@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.graph;
+package com.oneandone.sushi.graph;
 
 public class CyclicDependency extends Exception {
     private final Graph<?> graph;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.archive;
+package com.oneandone.sushi.archive;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
 
 import static org.junit.Assert.*;
 

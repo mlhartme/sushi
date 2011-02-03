@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.io.OS;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.io.OS;
 
 public class FilterTest {
     private Node root;

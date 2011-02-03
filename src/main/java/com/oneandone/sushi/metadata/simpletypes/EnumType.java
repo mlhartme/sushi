@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.simpletypes;
+package com.oneandone.sushi.metadata.simpletypes;
 
 import java.util.Set;
 
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.SimpleTypeException;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.util.Reflect;
-import de.ui.sushi.xml.Serializer;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.util.Reflect;
+import com.oneandone.sushi.xml.Serializer;
 
 
 public class EnumType extends SimpleType {

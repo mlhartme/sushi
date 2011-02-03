@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.rss;
+package com.oneandone.sushi.rss;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
 
-import de.ui.sushi.xml.Builder;
-import de.ui.sushi.xml.Selector;
-import de.ui.sushi.xml.XmlException;
+import com.oneandone.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Selector;
+import com.oneandone.sushi.xml.XmlException;
 
 public class Channel {
     public static Channel fromXml(Selector selector, Element channel) throws XmlException {

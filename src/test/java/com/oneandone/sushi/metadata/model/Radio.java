@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.model;
+package com.oneandone.sushi.metadata.model;
 
-import de.ui.sushi.metadata.annotation.Type;
-import de.ui.sushi.metadata.annotation.Option;
-import de.ui.sushi.metadata.annotation.Value;
+import com.oneandone.sushi.metadata.annotation.Type;
+import com.oneandone.sushi.metadata.annotation.Option;
+import com.oneandone.sushi.metadata.annotation.Value;
 
 @Type
 public class Radio {

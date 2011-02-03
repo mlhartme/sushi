@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.reflect;
+package com.oneandone.sushi.metadata.reflect;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.metadata.Type;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.metadata.Type;
 
 public class ReflectSchemaTest {
     @Test

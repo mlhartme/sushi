@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
-import de.ui.sushi.fs.webdav.methods.WebdavMethod;
-import de.ui.sushi.xml.Builder;
-import de.ui.sushi.xml.Namespace;
+import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
+import com.oneandone.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Namespace;
 import org.w3c.dom.Element;
 
 public class Name {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.file;
+package com.oneandone.sushi.fs.file;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,13 +27,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.archive.Archive;
-import de.ui.sushi.fs.*;
-import de.ui.sushi.fs.zip.ZipFilesystem;
-import de.ui.sushi.fs.zip.ZipNode;
-import de.ui.sushi.io.Buffer;
-import de.ui.sushi.io.OS;
-import de.ui.sushi.util.Program;
+import com.oneandone.sushi.archive.Archive;
+import com.oneandone.sushi.fs.*;
+import com.oneandone.sushi.fs.zip.ZipFilesystem;
+import com.oneandone.sushi.fs.zip.ZipNode;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Program;
 
 /**
  * <p>File, directory, symlink or something not yet created. Replacement for java.io.File.</p>

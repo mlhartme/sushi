@@ -15,23 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
 import org.junit.Test;
-import de.ui.sushi.io.OS;
-import de.ui.sushi.metadata.listmodel.All;
-import de.ui.sushi.metadata.listmodel.Empty;
-import de.ui.sushi.metadata.model.Car;
-import de.ui.sushi.metadata.model.Engine;
-import de.ui.sushi.metadata.model.Kind;
-import de.ui.sushi.metadata.model.ModelBase;
-import de.ui.sushi.metadata.model.Radio;
-import de.ui.sushi.metadata.model.Vendor;
-import de.ui.sushi.xml.Builder;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.metadata.listmodel.All;
+import com.oneandone.sushi.metadata.listmodel.Empty;
+import com.oneandone.sushi.metadata.model.Car;
+import com.oneandone.sushi.metadata.model.Engine;
+import com.oneandone.sushi.metadata.model.Kind;
+import com.oneandone.sushi.metadata.model.ModelBase;
+import com.oneandone.sushi.metadata.model.Radio;
+import com.oneandone.sushi.metadata.model.Vendor;
+import com.oneandone.sushi.xml.Builder;
 
 public class SerializeTest extends ModelBase {
     @Test
@@ -111,7 +111,7 @@ public class SerializeTest extends ModelBase {
                 "</engine>" + LF +
                 "</car>" + LF +
                 "</root>" + LF, 
-                new de.ui.sushi.xml.Serializer().serialize(root));
+                new com.oneandone.sushi.xml.Serializer().serialize(root));
     }
     
     private String run(Object obj) {

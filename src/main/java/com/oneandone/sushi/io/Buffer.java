@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.io;
+package com.oneandone.sushi.io;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.Node;
 
 /**
  * <p>Buffer to access streams. </p>

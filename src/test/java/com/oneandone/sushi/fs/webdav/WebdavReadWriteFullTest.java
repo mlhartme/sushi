@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import java.io.IOException;
 import java.util.List;
 
-import de.ui.sushi.TestProperties;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeTest;
+import com.oneandone.sushi.TestProperties;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ui.sushi.fs.filter.Filter;
-import de.ui.sushi.fs.filter.Tree;
-import de.ui.sushi.fs.filter.TreeAction;
-import de.ui.sushi.util.Substitution;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.fs.filter.Tree;
+import com.oneandone.sushi.fs.filter.TreeAction;
+import com.oneandone.sushi.util.Substitution;
 
 /** Copy configuration and command. */
 public class Copy {

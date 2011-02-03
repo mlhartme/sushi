@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.io;
+package com.oneandone.sushi.io;
 
-import de.ui.sushi.fs.LineFormat;
+import com.oneandone.sushi.fs.LineFormat;
 
 import java.util.regex.Pattern;
 

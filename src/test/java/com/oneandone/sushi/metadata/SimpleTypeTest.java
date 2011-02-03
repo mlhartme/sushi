@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.ui.sushi.metadata.model.Kind;
-import de.ui.sushi.metadata.model.ModelBase;
+import com.oneandone.sushi.metadata.model.Kind;
+import com.oneandone.sushi.metadata.model.ModelBase;
 
 public class SimpleTypeTest extends ModelBase {
     @Test

@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.reflect;
+package com.oneandone.sushi.metadata.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.ComplexType;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.simpletypes.NodeType;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.ComplexType;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.simpletypes.NodeType;
 
 public class ReflectSchema extends Schema {
     public ReflectSchema() {

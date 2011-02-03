@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.rss;
+package com.oneandone.sushi.rss;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,9 +24,9 @@ import java.util.Locale;
 
 import org.w3c.dom.Element;
 
-import de.ui.sushi.xml.Builder;
-import de.ui.sushi.xml.Selector;
-import de.ui.sushi.xml.XmlException;
+import com.oneandone.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Selector;
+import com.oneandone.sushi.xml.XmlException;
 
 public class Item {
     public static Item fromXml(Selector selector, Element item) throws XmlException {

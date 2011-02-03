@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import java.util.regex.Pattern;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 
 /**
  * File name patterns. Uses oro-matcher because we want to support jdk 1.3

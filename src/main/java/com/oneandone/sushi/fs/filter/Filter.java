@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.util.Strings;
 
 /**
  * <p>Similar to java.io.FileFilter or Ant File/Directory sets. A filter is basically a list of paths to 

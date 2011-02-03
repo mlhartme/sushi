@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,11 +25,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import de.ui.sushi.TestProperties;
+import com.oneandone.sushi.TestProperties;
 import org.junit.Test;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeReadOnlyTest;
-import de.ui.sushi.fs.webdav.WebdavNode;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeReadOnlyTest;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
 import org.junit.runners.Parameterized;
 
 /** Accesses external hosts and might need proxy configuration => Full test */

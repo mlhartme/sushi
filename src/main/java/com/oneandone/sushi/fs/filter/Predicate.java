@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.filter;
+package com.oneandone.sushi.fs.filter;
 
 import java.io.IOException;
 
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.Node;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.Node;
 
 public interface Predicate {
     Predicate FILE = new Predicate() {

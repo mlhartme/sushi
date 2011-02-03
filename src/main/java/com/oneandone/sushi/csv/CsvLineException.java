@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.csv;
+package com.oneandone.sushi.csv;
 
 public class CsvLineException extends Exception {
     public CsvLineException(String msg) {

@@ -2,7 +2,10 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.0.7" date="2011-01-??">
+    <release version="2.1.0" date="2011-02-??">
+      <action dev="mlhartme" type="update">
+        Moved all packages from de.ui.sushi to com.oneandone.sushi.
+      </action>
       <action dev="mlhartme" type="update">
         Strings.split now throws an IllegalArgumentException for empty separator strings.
       </action>

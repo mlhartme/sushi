@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.xml;
+package com.oneandone.sushi.xml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 
 public class Selector {
     private final XPathFactory factory;

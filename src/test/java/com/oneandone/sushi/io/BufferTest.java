@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.io;
+package com.oneandone.sushi.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Test;
-import de.ui.sushi.fs.Settings;
+import com.oneandone.sushi.fs.Settings;
 
 public class BufferTest {
     @Test

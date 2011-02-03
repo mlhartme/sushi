@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.rss;
+package com.oneandone.sushi.rss;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.xml.Builder;
-import de.ui.sushi.xml.Selector;
-import de.ui.sushi.xml.XmlException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Selector;
+import com.oneandone.sushi.xml.XmlException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;

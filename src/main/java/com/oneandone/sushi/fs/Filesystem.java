@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.net.URI;
 import java.util.List;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 
 public abstract class Filesystem {
     private final IO io;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -26,8 +26,8 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import de.ui.sushi.io.Buffer;
-import de.ui.sushi.io.OS;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
 
 public abstract class NodeReadOnlyTest {
     protected static final IO IO = new IO(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*");

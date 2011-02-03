@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,10 +24,10 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.message.BasicLineParser;
-import de.ui.sushi.fs.webdav.methods.WebdavMethod;
-import de.ui.sushi.xml.ChildElements;
-import de.ui.sushi.xml.Dom;
-import de.ui.sushi.xml.Xml;
+import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
+import com.oneandone.sushi.xml.ChildElements;
+import com.oneandone.sushi.xml.Dom;
+import com.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 

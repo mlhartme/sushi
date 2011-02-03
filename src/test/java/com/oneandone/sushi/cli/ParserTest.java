@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,10 +29,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public class ParserTest {
     private static final IO IO_OBJ = new IO();

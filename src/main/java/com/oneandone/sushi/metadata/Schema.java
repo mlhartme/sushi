@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,19 +23,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ui.sushi.metadata.simpletypes.BooleanType;
-import de.ui.sushi.metadata.simpletypes.CharacterType;
-import de.ui.sushi.metadata.simpletypes.ClassType;
-import de.ui.sushi.metadata.simpletypes.DoubleType;
-import de.ui.sushi.metadata.simpletypes.EnumType;
-import de.ui.sushi.metadata.simpletypes.FloatType;
-import de.ui.sushi.metadata.simpletypes.IntType;
-import de.ui.sushi.metadata.simpletypes.LongType;
-import de.ui.sushi.metadata.simpletypes.MethodType;
-import de.ui.sushi.metadata.simpletypes.StringType;
-import de.ui.sushi.metadata.simpletypes.VoidType;
-import de.ui.sushi.util.Reflect;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.metadata.simpletypes.BooleanType;
+import com.oneandone.sushi.metadata.simpletypes.CharacterType;
+import com.oneandone.sushi.metadata.simpletypes.ClassType;
+import com.oneandone.sushi.metadata.simpletypes.DoubleType;
+import com.oneandone.sushi.metadata.simpletypes.EnumType;
+import com.oneandone.sushi.metadata.simpletypes.FloatType;
+import com.oneandone.sushi.metadata.simpletypes.IntType;
+import com.oneandone.sushi.metadata.simpletypes.LongType;
+import com.oneandone.sushi.metadata.simpletypes.MethodType;
+import com.oneandone.sushi.metadata.simpletypes.StringType;
+import com.oneandone.sushi.metadata.simpletypes.VoidType;
+import com.oneandone.sushi.util.Reflect;
+import com.oneandone.sushi.util.Strings;
 
 /** 
  * A set of Types. Initially, the set consists of simple types only. Complex types

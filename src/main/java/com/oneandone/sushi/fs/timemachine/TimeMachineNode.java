@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.timemachine;
+package com.oneandone.sushi.fs.timemachine;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,19 +23,19 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.LengthException;
-import de.ui.sushi.fs.LinkException;
-import de.ui.sushi.fs.ListException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MoveException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.ReadLinkException;
-import de.ui.sushi.fs.SetLastModifiedException;
-import de.ui.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.GetLastModifiedException;
+import com.oneandone.sushi.fs.LengthException;
+import com.oneandone.sushi.fs.LinkException;
+import com.oneandone.sushi.fs.ListException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.MoveException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.ReadLinkException;
+import com.oneandone.sushi.fs.SetLastModifiedException;
+import com.oneandone.sushi.fs.file.FileNode;
 
 public class TimeMachineNode extends Node {
     private final TimeMachineRoot root;

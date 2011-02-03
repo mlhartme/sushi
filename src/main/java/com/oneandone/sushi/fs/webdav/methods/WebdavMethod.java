@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav.methods;
+package com.oneandone.sushi.fs.webdav.methods;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,10 +29,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.protocol.HTTP;
-import de.ui.sushi.fs.webdav.WebdavConnection;
-import de.ui.sushi.fs.webdav.WebdavRoot;
-import de.ui.sushi.xml.Namespace;
-import de.ui.sushi.xml.Xml;
+import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavRoot;
+import com.oneandone.sushi.xml.Namespace;
+import com.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 
 public abstract class WebdavMethod<T> {

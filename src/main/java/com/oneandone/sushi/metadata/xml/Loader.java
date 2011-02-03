@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.Item;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.xml.Builder;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.xml.Builder;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;

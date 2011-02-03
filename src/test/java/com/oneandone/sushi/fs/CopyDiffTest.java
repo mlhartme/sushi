@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import de.ui.sushi.util.Substitution;
+import com.oneandone.sushi.util.Substitution;
 
 public class CopyDiffTest {
 	private IO io;

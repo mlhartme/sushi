@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.SimpleType;
-import de.ui.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
 
 /**
  * A command line parser defined by option, value and child annotations taken from the defining class

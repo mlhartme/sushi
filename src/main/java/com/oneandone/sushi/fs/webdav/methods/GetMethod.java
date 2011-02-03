@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav.methods;
+package com.oneandone.sushi.fs.webdav.methods;
 
 import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
@@ -24,9 +24,9 @@ import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import de.ui.sushi.fs.webdav.StatusException;
-import de.ui.sushi.fs.webdav.WebdavConnection;
-import de.ui.sushi.fs.webdav.WebdavRoot;
+import com.oneandone.sushi.fs.webdav.StatusException;
+import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavRoot;
 
 public class GetMethod extends WebdavMethod<InputStream> {
     public GetMethod(WebdavRoot root, String path) {

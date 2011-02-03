@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -83,7 +83,7 @@ public class WriterTree extends Tree {
         dest.write(name);
         type(typeAttribute);
         dest.write('>');
-        dest.write(de.ui.sushi.xml.Serializer.escapeEntities(text));
+        dest.write(com.oneandone.sushi.xml.Serializer.escapeEntities(text));
         dest.write("</");
         dest.write(name);
         dest.write(">\n");

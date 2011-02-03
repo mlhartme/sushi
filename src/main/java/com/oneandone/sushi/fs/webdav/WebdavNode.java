@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,24 +36,24 @@ import java.util.TimeZone;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
-import de.ui.sushi.fs.DeleteException;
-import de.ui.sushi.fs.ExistsException;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.LengthException;
-import de.ui.sushi.fs.ListException;
-import de.ui.sushi.fs.MkdirException;
-import de.ui.sushi.fs.MoveException;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.SetLastModifiedException;
-import de.ui.sushi.fs.webdav.methods.DeleteMethod;
-import de.ui.sushi.fs.webdav.methods.GetMethod;
-import de.ui.sushi.fs.webdav.methods.HeadMethod;
-import de.ui.sushi.fs.webdav.methods.MkColMethod;
-import de.ui.sushi.fs.webdav.methods.MoveMethod;
-import de.ui.sushi.fs.webdav.methods.PropFindMethod;
-import de.ui.sushi.fs.webdav.methods.PropPatchMethod;
-import de.ui.sushi.fs.webdav.methods.PutMethod;
-import de.ui.sushi.fs.webdav.methods.WebdavMethod;
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.GetLastModifiedException;
+import com.oneandone.sushi.fs.LengthException;
+import com.oneandone.sushi.fs.ListException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.MoveException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.SetLastModifiedException;
+import com.oneandone.sushi.fs.webdav.methods.DeleteMethod;
+import com.oneandone.sushi.fs.webdav.methods.GetMethod;
+import com.oneandone.sushi.fs.webdav.methods.HeadMethod;
+import com.oneandone.sushi.fs.webdav.methods.MkColMethod;
+import com.oneandone.sushi.fs.webdav.methods.MoveMethod;
+import com.oneandone.sushi.fs.webdav.methods.PropFindMethod;
+import com.oneandone.sushi.fs.webdav.methods.PropPatchMethod;
+import com.oneandone.sushi.fs.webdav.methods.PutMethod;
+import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
 
 public class WebdavNode extends Node {
 	private final WebdavRoot root;

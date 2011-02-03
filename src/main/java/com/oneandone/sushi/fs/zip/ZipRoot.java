@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.zip;
+package com.oneandone.sushi.fs.zip;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +23,8 @@ import java.io.InputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipFile;
 
-import de.ui.sushi.archive.Archive;
-import de.ui.sushi.fs.Root;
+import com.oneandone.sushi.archive.Archive;
+import com.oneandone.sushi.fs.Root;
 
 public class ZipRoot implements Root {
     private final ZipFilesystem filesystem;

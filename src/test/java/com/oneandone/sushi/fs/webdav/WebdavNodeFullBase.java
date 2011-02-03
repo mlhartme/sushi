@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.junit.Test;
-import de.ui.sushi.fs.NodeTest;
+import com.oneandone.sushi.fs.NodeTest;
 
 public abstract class WebdavNodeFullBase extends NodeTest {
 	@Test

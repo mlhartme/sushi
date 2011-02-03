@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,16 +31,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ui.sushi.fs.file.FileFilesystem;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.fs.filter.Filter;
-import de.ui.sushi.fs.memory.MemoryFilesystem;
-import de.ui.sushi.fs.memory.MemoryNode;
-import de.ui.sushi.io.Buffer;
-import de.ui.sushi.io.OS;
-import de.ui.sushi.util.Reflect;
-import de.ui.sushi.util.Strings;
-import de.ui.sushi.xml.Xml;
+import com.oneandone.sushi.fs.file.FileFilesystem;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.fs.memory.MemoryFilesystem;
+import com.oneandone.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Reflect;
+import com.oneandone.sushi.util.Strings;
+import com.oneandone.sushi.xml.Xml;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and

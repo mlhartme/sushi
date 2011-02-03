@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 
 public class Path {
     private final String path;

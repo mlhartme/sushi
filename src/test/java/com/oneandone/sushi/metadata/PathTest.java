@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import de.ui.sushi.metadata.Path.Step;
-import de.ui.sushi.metadata.model.Car;
-import de.ui.sushi.metadata.model.ModelBase;
+import com.oneandone.sushi.metadata.Path.Step;
+import com.oneandone.sushi.metadata.model.Car;
+import com.oneandone.sushi.metadata.model.ModelBase;
 
 public class PathTest extends ModelBase {
     @Test

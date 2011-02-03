@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,10 +26,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import de.ui.sushi.fs.GetLastModifiedException;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.GetLastModifiedException;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.file.FileNode;
 
 public class DiffTest {
     @Test

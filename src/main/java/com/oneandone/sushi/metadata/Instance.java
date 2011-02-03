@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata;
+package com.oneandone.sushi.metadata;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,17 +24,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import de.ui.sushi.csv.Csv;
-import de.ui.sushi.csv.View;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeWriter;
-import de.ui.sushi.metadata.store.PropertyStore;
-import de.ui.sushi.metadata.xml.DomTree;
-import de.ui.sushi.metadata.xml.LoaderException;
-import de.ui.sushi.metadata.xml.Serializer;
-import de.ui.sushi.metadata.xml.Tree;
-import de.ui.sushi.metadata.xml.WriterTree;
+import com.oneandone.sushi.csv.Csv;
+import com.oneandone.sushi.csv.View;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeWriter;
+import com.oneandone.sushi.metadata.store.PropertyStore;
+import com.oneandone.sushi.metadata.xml.DomTree;
+import com.oneandone.sushi.metadata.xml.LoaderException;
+import com.oneandone.sushi.metadata.xml.Serializer;
+import com.oneandone.sushi.metadata.xml.Tree;
+import com.oneandone.sushi.metadata.xml.WriterTree;
 import org.w3c.dom.Element;
 
 /** Some object and its type. TODO: toCsv, fromCsv. */
@@ -141,7 +141,7 @@ public class Instance<T> {
     }
     
     public void toProperties(Properties props, String name) {
-        de.ui.sushi.metadata.store.Writer.write(getType(), get(), name, new PropertyStore(props));
+        com.oneandone.sushi.metadata.store.Writer.write(getType(), get(), name, new PropertyStore(props));
     }
     
     public void exportCsv(View view, Csv dest, String ... selection) {

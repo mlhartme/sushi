@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.cli;
+package com.oneandone.sushi.cli;
 
 import java.util.Arrays;
 import java.util.Locale;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.Schema;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 /** 
  * Base class for classes with main methods. The command line is defined by annotating

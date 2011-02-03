@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import de.ui.sushi.fs.Settings;
+import com.oneandone.sushi.fs.Settings;
 
 public class Base64 {
     /** true create base64 */

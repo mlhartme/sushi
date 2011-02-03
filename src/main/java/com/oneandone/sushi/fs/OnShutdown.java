@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs;
+package com.oneandone.sushi.fs;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.ui.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.file.FileNode;
 
 /** 
  * Shutdown hook to delete temporary FileNodes (in particular: directories, because 

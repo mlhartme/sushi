@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.file.FileNode;
 
 /**
  * Wraps a Process builder to add some convenience methods

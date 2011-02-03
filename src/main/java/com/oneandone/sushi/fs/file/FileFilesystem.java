@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.file;
+package com.oneandone.sushi.fs.file;
 
-import de.ui.sushi.fs.Features;
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.Node;
-import de.ui.sushi.fs.NodeInstantiationException;
-import de.ui.sushi.io.OS;
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.fs.Features;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Strings;
 
 import java.io.File;
 import java.net.URI;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.xml;
+package com.oneandone.sushi.metadata.xml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,18 +27,18 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.Instance;
-import de.ui.sushi.metadata.SimpleTypeException;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.metadata.Variable;
-import de.ui.sushi.metadata.listmodel.All;
-import de.ui.sushi.metadata.listmodel.Empty;
-import de.ui.sushi.metadata.model.Car;
-import de.ui.sushi.metadata.model.Engine;
-import de.ui.sushi.metadata.model.ModelBase;
-import de.ui.sushi.metadata.model.Vendor;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Instance;
+import com.oneandone.sushi.metadata.SimpleTypeException;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.Variable;
+import com.oneandone.sushi.metadata.listmodel.All;
+import com.oneandone.sushi.metadata.listmodel.Empty;
+import com.oneandone.sushi.metadata.model.Car;
+import com.oneandone.sushi.metadata.model.Engine;
+import com.oneandone.sushi.metadata.model.ModelBase;
+import com.oneandone.sushi.metadata.model.Vendor;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.xml.sax.SAXException;
 
 public class LoaderTest extends ModelBase {
@@ -327,7 +327,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void object() throws Exception {
         Object obj;
-        de.ui.sushi.fs.Node node;
+        com.oneandone.sushi.fs.Node node;
         
         node = IO_OBJ.stringNode(
                 "<object/>"
@@ -339,7 +339,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void objectString() throws Exception {
         Object obj;
-        de.ui.sushi.fs.Node node;
+        com.oneandone.sushi.fs.Node node;
         
         node = IO_OBJ.stringNode(
                 "<object type='java.lang.String'>foo</object>"
@@ -351,7 +351,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void list() throws Exception {
         All all;
-        de.ui.sushi.fs.Node node;
+        com.oneandone.sushi.fs.Node node;
         
         node = IO_OBJ.stringNode(
                 "<all>" +

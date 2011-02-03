@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.store;
+package com.oneandone.sushi.metadata.store;
 
 import java.util.List;
 import java.util.Properties;
 
-import de.ui.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Item;
 
 public class PropertyStore implements Store {
     private final Properties props;

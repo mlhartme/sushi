@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi;
+package com.oneandone.sushi;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.cli.Cli;
-import de.ui.sushi.cli.Command;
-import de.ui.sushi.cli.Option;
-import de.ui.sushi.cli.Value;
-import de.ui.sushi.cli.Remaining;
+import com.oneandone.sushi.cli.Cli;
+import com.oneandone.sushi.cli.Command;
+import com.oneandone.sushi.cli.Option;
+import com.oneandone.sushi.cli.Value;
+import com.oneandone.sushi.cli.Remaining;
 
 public class CliSample extends Cli implements Command {
     public static void main(String[] args) {

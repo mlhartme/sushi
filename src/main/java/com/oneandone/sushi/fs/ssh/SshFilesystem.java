@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.ssh;
+package com.oneandone.sushi.fs.ssh;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import de.ui.sushi.fs.Features;
-import de.ui.sushi.fs.Filesystem;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.Features;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.NodeInstantiationException;
 
 import java.io.IOException;
 import java.net.URI;

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.metadata.model;
+package com.oneandone.sushi.metadata.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ui.sushi.metadata.annotation.Sequence;
-import de.ui.sushi.metadata.annotation.Type;
-import de.ui.sushi.metadata.annotation.Value;
+import com.oneandone.sushi.metadata.annotation.Sequence;
+import com.oneandone.sushi.metadata.annotation.Type;
+import com.oneandone.sushi.metadata.annotation.Value;
 
 @Type
 public class Vendor {

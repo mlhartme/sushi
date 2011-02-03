@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.xml;
+package com.oneandone.sushi.xml;
  
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -28,9 +28,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Test;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.fs.file.FileNode;
-import de.ui.sushi.io.OS;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.io.OS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

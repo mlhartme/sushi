@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
-import de.ui.sushi.fs.NodeException;
+import com.oneandone.sushi.fs.NodeException;
 
 public class WebdavException extends NodeException {
     public WebdavException(WebdavNode node, Throwable cause) {

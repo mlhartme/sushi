@@ -1,6 +1,6 @@
-package de.ui.sushi.fs.webdav;
+package com.oneandone.sushi.fs.webdav;
 
-import de.ui.sushi.util.Strings;
+import com.oneandone.sushi.util.Strings;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

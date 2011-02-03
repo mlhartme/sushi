@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi.util;
+package com.oneandone.sushi.util;
 
 import org.junit.Test;
 
-import de.ui.sushi.metadata.model.Car;
-import de.ui.sushi.metadata.model.Engine;
-import de.ui.sushi.metadata.model.Vendor;
+import com.oneandone.sushi.metadata.model.Car;
+import com.oneandone.sushi.metadata.model.Engine;
+import com.oneandone.sushi.metadata.model.Vendor;
 import static org.junit.Assert.*;
 
 public class DumpTest {

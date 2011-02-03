@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.ui.sushi;
+package com.oneandone.sushi;
 
 import java.util.Arrays;
 
-import de.ui.sushi.csv.Csv;
-import de.ui.sushi.csv.Format;
-import de.ui.sushi.csv.View;
-import de.ui.sushi.fs.IO;
-import de.ui.sushi.metadata.Instance;
-import de.ui.sushi.metadata.Type;
-import de.ui.sushi.metadata.reflect.ReflectSchema;
+import com.oneandone.sushi.csv.Csv;
+import com.oneandone.sushi.csv.Format;
+import com.oneandone.sushi.csv.View;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Instance;
+import com.oneandone.sushi.metadata.Type;
+import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public class CsvSample {
     private static final IO IO_OBJ = new IO();

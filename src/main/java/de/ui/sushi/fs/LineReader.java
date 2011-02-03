@@ -22,35 +22,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public class LineReader {
-    // order is important
-    public static final Pattern ANY_NEWLINE = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
-
     public static LineReader create(Node node) throws IOException {
-        return create(node, Trim.SEPARATOR, true, null);
-    }
-    
-    public static LineReader create(Node node, Trim trim, boolean empty, String comment) throws IOException {
-        return create(node, trim, empty, comment, INITIAL_BUFFER_SIZE);
-    }
-
-    public static LineReader create(Node node, Trim trim, boolean empty, String comment, int initialBufferSize) throws IOException {
-        return create(node, separator(node), trim, empty, comment, initialBufferSize);
-    }
-
-    public static LineReader create(Node node, Pattern separator, Trim trim, boolean empty, String comment, int initialBufferSize) throws IOException {
-        return new LineReader(node.createReader(), separator, trim, empty, comment, new char[initialBufferSize], 0);
-    }
-
-    public static Pattern separator(Node node) {
-        return Pattern.compile(Pattern.quote(node.getIO().getSettings().lineSeparator));
-    }
-
-    public static enum Trim {
-        NOTHING, SEPARATOR, ALL
+        return new LineReader(node.createReader(), LineFormat.create(node));
     }
 
     public static final int INITIAL_BUFFER_SIZE = 256;
@@ -58,29 +34,21 @@ public class LineReader {
     private final Reader reader;
 
     /** line separator */
-    private final Pattern separator;
-
-    /** line trimming mode */
-    private final Trim trim;
-
-    /** when true, next() returns empty line; otherwise, they're skipped */
-    private final boolean empty;
-
-    /** line comment prefix to be skipped; null to disable */
-    private final String comment;
+    private final LineFormat format;
 
     /** current line number */
     private int line;
 
     private CharArraySequence buffer;
 
-    public LineReader(Reader reader, Pattern separator, Trim trim, boolean empty, String comment, char[] initialBuffer, int initialLine) {
+    public LineReader(Reader reader, LineFormat format) {
+        this(reader, format, new char[INITIAL_BUFFER_SIZE]);
+    }
+
+    public LineReader(Reader reader, LineFormat format, char[] initialBuffer) {
         this.reader = reader;
-        this.separator = separator;
-        this.trim = trim;
-        this.empty = empty;
-        this.comment = comment;
-        this.line = initialLine;
+        this.format = format;
+        this.line = format.firstLine;
         this.buffer = new CharArraySequence(0, 0, initialBuffer);
     }
 
@@ -93,6 +61,10 @@ public class LineReader {
 
     public Reader getReader() {
         return reader;
+    }
+
+    public LineFormat getFormat() {
+        return format;
     }
 
     public void close() throws IOException {
@@ -108,7 +80,7 @@ public class LineReader {
         Matcher matcher;
 
         while (true) {
-            matcher = separator.matcher(buffer);
+            matcher = format.separator.matcher(buffer);
             if (matcher.find()) {
                 len = matcher.end();
                 if (buffer.start + len == buffer.end) {
@@ -117,13 +89,13 @@ public class LineReader {
                         buffer.grow();
                     }
                     buffer.fill(reader);
-                    matcher = separator.matcher(buffer);
+                    matcher = format.separator.matcher(buffer);
                     if (!matcher.find()) {
                         throw new IllegalStateException();
                     }
                     len = matcher.end();
                 }
-                result = new String(buffer.chars, buffer.start, trim == Trim.NOTHING ? len : matcher.start());
+                result = new String(buffer.chars, buffer.start, format.trim == LineFormat.Trim.NOTHING ? len : matcher.start());
                 buffer.start += len;
             } else {
                 if (buffer.isFull()) {
@@ -143,11 +115,11 @@ public class LineReader {
 
             // always bump, even if we don't return the line 
             line++;
-            if (trim == Trim.ALL) {
+            if (format.trim == LineFormat.Trim.ALL) {
                 result = result.trim();
             }
-            if (comment == null || !result.startsWith(comment)) {
-                if (empty || !result.isEmpty()) {
+            if (format.comment == null || !result.startsWith(format.comment)) {
+                if (format.empty || !result.isEmpty()) {
                     return result;
                 }
             }

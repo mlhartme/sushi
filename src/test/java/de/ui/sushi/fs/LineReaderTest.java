@@ -78,7 +78,7 @@ public class LineReaderTest {
     @Test
     public void separators() {
         separator = LineReader.ANY_NEWLINE;
-        check("a\nb\rc\r\nd\n\re", LineReader.Trim.NOTHING, true, null, 4,
+        check("a\nb\rc\r\nd\n\re", LineReader.Trim.NOTHING, false, null, 5,
                 "a\n", "b\r", "c\r\n", "d\n\r", "e");
     }
 

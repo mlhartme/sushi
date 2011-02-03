@@ -26,7 +26,8 @@ import java.util.regex.Pattern;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public class LineReader {
-    public static final Pattern ANY_NEWLINE = Pattern.compile(Pattern.quote("\n") + "|" + Pattern.quote("\r") + "|" + Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n"));
+    // order is important
+    public static final Pattern ANY_NEWLINE = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
 
     public static LineReader create(Node node) throws IOException {
         return create(node, Trim.SEPARATOR, true, null);
@@ -61,8 +62,10 @@ public class LineReader {
 
     /** line trimming mode */
     private final Trim trim;
+
     /** when true, next() returns empty line; otherwise, they're skipped */
     private final boolean empty;
+
     /** line comment prefix to be skipped; null to disable */
     private final String comment;
 
@@ -108,23 +111,33 @@ public class LineReader {
             matcher = separator.matcher(buffer);
             if (matcher.find()) {
                 len = matcher.end();
+                if (buffer.start + len == buffer.end) {
+                    // make sure we match the longest separator possible
+                    if (buffer.isFull()) {
+                        buffer.grow();
+                    }
+                    buffer.fill(reader);
+                    matcher = separator.matcher(buffer);
+                    if (!matcher.find()) {
+                        throw new IllegalStateException();
+                    }
+                    len = matcher.end();
+                }
                 result = new String(buffer.chars, buffer.start, trim == Trim.NOTHING ? len : matcher.start());
                 buffer.start += len;
             } else {
                 if (buffer.isFull()) {
                     buffer.grow();
                 }
-                len = buffer.fill(reader);
-                if (len == -1) {
+                if (buffer.fill(reader)) {
+                    continue;
+                } else {
                     if (buffer.isEmpty()) {
                         // EOF
                         return null;
                     } else {
                         result = buffer.eat();
                     }
-                } else {
-                    buffer.end += len;
-                    continue;
                 }
             }
 
@@ -215,8 +228,16 @@ public class LineReader {
             }
         }
 
-        public int fill(Reader src) throws IOException {
-            return src.read(chars, end, chars.length - end);
+        public boolean fill(Reader src) throws IOException {
+            int len;
+
+            len = src.read(chars, end, chars.length - end);
+            if (len != -1) {
+                end += len;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

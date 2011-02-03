@@ -59,51 +59,53 @@ public class LineReaderTest {
 
     @Test
     public void comment() {
-        check("first\n // \n\n//comment\nlast", LineFormat.Trim.ALL, false, "//", 5,
-              "first", "last");
+        check("first\n // \n\n//comment\nlast",
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, false, "//"), 5,
+                "first", "last");
     }
 
     @Test
     public void empty() {
-        check("first\n\nthird\n  \nfifth", LineFormat.Trim.ALL, false, null, 5,
-              "first", "third", "fifth");
+        check("first\n\nthird\n  \nfifth",
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, false, null), 5,
+                "first", "third", "fifth");
     }
 
     @Test
     public void trimNothing() {
-        check("hello\nworld", LineFormat.Trim.NOTHING, false, null, 2,
-              "hello\n", "world");
+        check("hello\nworld",
+                new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.NOTHING, false, null), 2,
+                "hello\n", "world");
     }
 
     @Test
     public void separators() {
-        separator = LineFormat.GENERIC_SEPARATOR;
-        check("a\nb\rc\r\nd\n\re", LineFormat.Trim.NOTHING, false, null, 5,
-                "a\n", "b\r", "c\r\n", "d\n\r", "e");
+        check("a\nb\rc\r\nd\n\re", new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.NOTHING, false, null),
+                5, "a\n", "b\r", "c\r\n", "d\n\r", "e");
     }
 
     //--
     
     private void check(String str, String ... expected) {
-        check(str, LineFormat.Trim.SEPARATOR, true, null, expected.length, expected);
+        check(str, io.getSettings().lineFormat, expected.length, expected);
     }
 
-    private void check(String str, LineFormat.Trim trim, boolean empty, String comment, int lastLine, String ... expected) {
-        check(str, trim, empty, comment, lastLine, 1024, expected);
-        check(str, trim, empty, comment, lastLine, 10, expected);
-        check(str, trim, empty, comment, lastLine, 7, expected);
-        check(str, trim, empty, comment, lastLine, 3, expected);
-        check(str, trim, empty, comment, lastLine, 1, expected);
+    private void check(String str, LineFormat format, int lastLine, String ... expected) {
+        check(str, format, lastLine, 1024, expected);
+        check(str, format, lastLine, 10, expected);
+        check(str, format, lastLine, 7, expected);
+        check(str, format, lastLine, 3, expected);
+        check(str, format, lastLine, 1, expected);
     }
 
-    private void check(String str, LineFormat.Trim trim, boolean empty, String comment, int lastLine, int initialSize, String ... expected) {
+    private void check(String str, LineFormat format, int lastLine, int initialSize, String ... expected) {
         Node node;
         LineReader reader;
         List<String> result;
 
         try {
             node = io.stringNode(str);
-            reader = new LineReader(node.createReader(), new LineFormat(separator, trim, empty, comment), initialSize);
+            reader = new LineReader(node.createReader(), format, initialSize);
             result = reader.collect();
         } catch (IOException e) {
             throw new IllegalStateException(e);

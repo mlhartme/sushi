@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 public class LineFormat {
     // order is important
     public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
+    public static final Pattern LF_SEPARATOR = Pattern.compile(Pattern.quote("\n"));
 
     public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR);
 

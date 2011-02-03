@@ -25,10 +25,6 @@ import java.util.regex.Matcher;
 
 /** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
 public class LineReader {
-    public static LineReader create(Node node) throws IOException {
-        return new LineReader(node.createReader(), node.getIO().getSettings().lineFormat);
-    }
-
     public static final int INITIAL_BUFFER_SIZE = 256;
 
     private final Reader reader;

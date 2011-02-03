@@ -352,7 +352,12 @@ public abstract class Node {
 
     /** @return lines without tailing line separator */
     public List<String> readLines() throws IOException {
-        return LineReader.create(this).collect();
+        return readLines(getIO().getSettings().lineFormat);
+    }
+
+    /** @return lines without tailing line separator */
+    public List<String> readLines(LineFormat format) throws IOException {
+        return new LineReader(createReader(), format).collect();
     }
 
     public Object readObject() throws IOException {

@@ -93,12 +93,12 @@ public class DumpTest {
     
     @Test
     public void clazz() throws Exception {
-        check("de.oneandone.sushi.util.DumpTest\n", getClass());
+        check("com.oneandone.sushi.util.DumpTest\n", getClass());
     }
 
     @Test
     public void method() throws Exception {
-        check("public void de.oneandone.sushi.util.DumpTest.method() throws java.lang.Exception\n",
+        check("public void com.oneandone.sushi.util.DumpTest.method() throws java.lang.Exception\n",
                 getClass().getDeclaredMethod("method", new Class[] {}));
     }
 

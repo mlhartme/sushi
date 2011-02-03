@@ -4,7 +4,7 @@
   <body>
     <release version="2.1.0" date="2011-02-??">
       <action dev="mlhartme" type="update">
-        Moved all packages from de.ui.sushi to com.oneandone.sushi.
+        Changed groupId and packages from de.ui.sushi to com.oneandone.sushi.
       </action>
       <action dev="mlhartme" type="update">
         Strings.split now throws an IllegalArgumentException for empty separator strings.

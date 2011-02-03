@@ -437,7 +437,7 @@ public class IO {
         Buffer buffer;
         String content;
 
-        descriptor = "META-INF/de/ui/sushi/filesystems";
+        descriptor = "META-INF/com/oneandone/sushi/filesystems";
         buffer = new Buffer();
         enm = getClass().getClassLoader().getResources(descriptor);
         while (enm.hasMoreElements()) {

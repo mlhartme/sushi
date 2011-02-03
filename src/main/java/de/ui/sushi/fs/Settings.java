@@ -56,7 +56,7 @@ public class Settings {
         }
         this.encoding = encoding;
         this.lineSeparator = lineSeparator;
-        this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)), LineFormat.Trim.SEPARATOR, true, null);
+        this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)));
     }
     
     public String join(String ... lines) {

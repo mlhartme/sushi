@@ -17,13 +17,14 @@
 
 package de.ui.sushi.fs;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LineFormat {
     // order is important
     public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
 
-    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.SEPARATOR, true, null);
+    public static final LineFormat GENERIC_FORMAT = new LineFormat(GENERIC_SEPARATOR);
 
     public static enum Trim {
         NOTHING, SEPARATOR, ALL
@@ -41,7 +42,14 @@ public class LineFormat {
     /** line comment prefix to be skipped; null to disable */
     public final String comment;
 
+    public LineFormat(Pattern separator) {
+        this(separator, Trim.SEPARATOR, true, null);
+    }
+
     public LineFormat(Pattern separator, Trim trim, boolean empty, String comment) {
+        if (separator.matcher("").matches()) {
+            throw new IllegalArgumentException(separator.pattern());
+        }
         this.separator = separator;
         this.trim = trim;
         this.empty = empty;

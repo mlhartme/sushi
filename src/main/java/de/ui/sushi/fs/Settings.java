@@ -25,13 +25,13 @@ import de.ui.sushi.io.OS;
 import de.ui.sushi.util.Strings;
 
 /**
- * <p>Immutable. </p>
+ * <p>Settings for nodes. Immutable. </p>
  */
 public class Settings {
     public static final String UTF_8 = "UTF-8";
     public static final String ISO8859_1 = "ISO8859_1";
 
-    public static final String DEFAULT_LINESEPARATOR = OS.CURRENT.lineSeparator;
+    public static final String DEFAULT_LINE_SEPARATOR = OS.CURRENT.lineSeparator;
 
     private static final byte[] BYTES = { 65 };
     
@@ -45,7 +45,7 @@ public class Settings {
     }
 
     public Settings(String encoding) {
-        this(encoding, DEFAULT_LINESEPARATOR);
+        this(encoding, DEFAULT_LINE_SEPARATOR);
     }
 
     public Settings(String encoding, String lineSeparator) {

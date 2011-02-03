@@ -50,7 +50,7 @@ public class LineReader {
 
     //--
 
-    /** @return number of the line return by the last call to next */
+    /** @return number of the line return by the last call to next. First line has number 1. */
     public int getLine() {
         return line;
     }

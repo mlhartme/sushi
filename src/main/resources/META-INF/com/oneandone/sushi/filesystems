@@ -1,9 +1,9 @@
-de.ui.sushi.fs.console.ConsoleFilesystem console
-de.ui.sushi.fs.file.FileFilesystem file
-de.ui.sushi.fs.memory.MemoryFilesystem mem
-de.ui.sushi.fs.zip.ZipFilesystem zip jar
-de.ui.sushi.fs.timemachine.TimeMachineFilesystem tm
-de.ui.sushi.fs.ssh.SshFilesystem* ssh
-de.ui.sushi.fs.svn.SvnFilesystem* svn
-de.ui.sushi.fs.webdav.WebdavFilesystem* http https
+com.oneandone.sushi.fs.console.ConsoleFilesystem console
+com.oneandone.sushi.fs.file.FileFilesystem file
+com.oneandone.sushi.fs.memory.MemoryFilesystem mem
+com.oneandone.sushi.fs.zip.ZipFilesystem zip jar
+com.oneandone.sushi.fs.timemachine.TimeMachineFilesystem tm
+com.oneandone.sushi.fs.ssh.SshFilesystem* ssh
+com.oneandone.sushi.fs.svn.SvnFilesystem* svn
+com.oneandone.sushi.fs.webdav.WebdavFilesystem* http https
 

@@ -86,10 +86,19 @@ public class WebdavNode extends Node {
 
     public URI getURI() {
         HttpHost host;
+        String query;
 
         host = root.host;
+        query = encodedQuery;
+        if (query != null) {
+            try {
+                query = URLDecoder.decode(encodedQuery, WebdavFilesystem.ENCODING);
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalStateException(e);
+            }
+        }
         try {
-            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, encodedQuery /* TODO: decoded */, null);
+            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, query, null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }

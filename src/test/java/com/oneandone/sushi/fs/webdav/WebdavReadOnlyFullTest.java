@@ -51,6 +51,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
         uri = URI.create("http://dict.tu-chemnitz.de:80/dings.cgi?lang=en&noframes=1&service=&query=foobarbaz&optword=1&optcase=1&opterrors=0&optpro=0&style=&dlink=self");
         node = (WebdavNode) IO.node(uri);
         assertEquals(uri, node.getURI());
+        assertTrue(node.isFile());
         str = node.readString();
         assertTrue(str.contains("foobarbaz"));
     }

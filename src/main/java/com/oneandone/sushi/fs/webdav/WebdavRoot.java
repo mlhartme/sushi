@@ -36,9 +36,7 @@ import org.apache.http.protocol.HTTP;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 

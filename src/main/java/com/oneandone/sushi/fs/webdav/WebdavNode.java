@@ -258,11 +258,11 @@ public class WebdavNode extends Node {
         try {
         	try {
                 dest.tryDir = tryDir;
-        		new Move(this, dest.getURI()).invoke();
+        		new Move(this, dest).invoke();
         	} catch (MovedException e) {
                 tryDir = !tryDir;
                 dest.tryDir = tryDir;
-        		new Move(this, dest.getURI()).invoke();
+        		new Move(this, dest).invoke();
         	}
 		} catch (IOException e) {
 			throw new MoveException(this, dest, e.getMessage(), e);

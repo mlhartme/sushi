@@ -73,9 +73,6 @@ public class IOTest {
         io = new IO();
         node = io.node("file:/usr");
         assertEquals("usr", node.getPath());
-        // TODO node = io.node("http://heise.de");
-        node = io.node("http://heise.de/");
-        assertTrue(node instanceof WebdavNode);
         node = io.node("console:///");
         assertTrue(node instanceof ConsoleNode);
         node = io.node("mem://1/foo");

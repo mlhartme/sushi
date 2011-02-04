@@ -547,16 +547,20 @@ public class WebdavNode extends Node {
         StringBuilder builder;
 
         builder = new StringBuilder(path.length() + 10);
-        for (String segment : Strings.split("/", path)) {
+        if (path.isEmpty()) {
             builder.append('/');
-            try {
-                builder.append(URLEncoder.encode(segment, WebdavFilesystem.ENCODING));
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(e);
+        } else {
+            for (String segment : Strings.split("/", path)) {
+                builder.append('/');
+                try {
+                    builder.append(URLEncoder.encode(segment, WebdavFilesystem.ENCODING));
+                } catch (UnsupportedEncodingException e) {
+                    throw new IllegalStateException(e);
+                }
             }
-        }
-        if (tryDir) {
-            builder.append('/');
+            if (tryDir) {
+                builder.append('/');
+            }
         }
         if (encodedQuery != null) {
             builder.append('?');

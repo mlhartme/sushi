@@ -26,9 +26,14 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
+    static {
+        WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readonly.log");
+    }
+
     @Test
     public void normal() throws Exception {
         WebdavNode node;
@@ -40,6 +45,16 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
         assertEquals("//englishediting.de/", node.getRoot().getId());
         assertEquals("index.html", node.getPath());
         assertEquals("", node.getParent().getPath());
+    }
+
+    @Test
+    public void uriWithEmptyPath() throws Exception {
+        Node node;
+    
+        node = IO.node("http://www.heise.de");
+        assertTrue(node instanceof WebdavNode);
+        assertEquals("http://www.heise.de:80/", node.getURI().toString());
+        assertNotNull(node.readBytes());
     }
 
     @Test

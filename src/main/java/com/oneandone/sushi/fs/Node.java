@@ -218,7 +218,7 @@ public abstract class Node {
 
     public abstract String getPath();
 
-
+    /** @return a normalized URI, not necesarily the URI this node was created from */
     public URI getURI() {
         return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath());
     }

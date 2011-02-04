@@ -98,12 +98,14 @@ public abstract class Filesystem {
         String path;
 
         path = uri.getPath();
-        if (!path.startsWith(separator)) {
-            throw new NodeInstantiationException(uri, "missing initial separator " + separator);
-        }
-        path = path.substring(separator.length());
-        if (path.endsWith(separator)) {
-            throw new NodeInstantiationException(uri, "invalid tailing " + separator);
+        if (path.length() > 0) {
+            if (!path.startsWith(separator)) {
+                throw new NodeInstantiationException(uri, "missing initial separator " + separator);
+            }
+            path = path.substring(separator.length());
+            if (path.endsWith(separator)) {
+                throw new NodeInstantiationException(uri, "invalid tailing " + separator);
+            }
         }
         return path;
     }

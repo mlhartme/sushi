@@ -66,7 +66,7 @@ public class Instance<T> {
         tmp = new StringWriter();
         try {
             toXml(tmp);
-            return type.loadXml(io.stringNode(tmp.getBuffer().toString()));
+            return type.loadXml(io.memoryNode(tmp.getBuffer().toString()));
         } catch (LoaderException e) {
             throw new RuntimeException("invalid!?", e);
         } catch (IOException e) {

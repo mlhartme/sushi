@@ -307,12 +307,25 @@ public class IO {
         return result;
     }
 
-    // TODO: re-use root?
-    public MemoryNode stringNode(String content) {
+    private MemoryNode memoryNode() {
+        // TODO: re-use root?
+        // TODO: when delete?
+        return memoryFilesystem.root().node("tmp", null);
+    }
+
+    public MemoryNode memoryNode(String content) {
         try {
-            return (MemoryNode) memoryFilesystem.root().node("tmp", null).writeString(content);
+            return (MemoryNode) memoryNode().writeString(content);
         } catch (IOException e) {
-            throw new RuntimeException("unexpected", e);
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public MemoryNode memoryNode(byte ... bytes) {
+        try {
+            return (MemoryNode) memoryNode().writeBytes(bytes);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
         }
     }
 

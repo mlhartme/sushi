@@ -35,13 +35,13 @@ public class NodeXmlTest {
         MemoryNode src;
         MemoryNode dest;
         
-        t = IO_OBJ.stringNode(
+        t = IO_OBJ.memoryNode(
                 "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>" +
                 "  <xsl:output method='xml' indent='yes'/>" +
                 "  <xsl:template match='/' ><out/></xsl:template>" +
                 "</xsl:stylesheet>").readXsl();
-        src = IO_OBJ.stringNode("<foo><bar/></foo>");
-        dest = IO_OBJ.stringNode("");
+        src = IO_OBJ.memoryNode("<foo><bar/></foo>");
+        dest = IO_OBJ.memoryNode("");
         src.xslt(t, dest);
         assertEquals(IO_OBJ.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""), 
                 dest.readString());

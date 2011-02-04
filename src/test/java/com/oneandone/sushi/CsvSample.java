@@ -44,7 +44,7 @@ public class CsvSample {
         
         data = TYPE.instance(all);
         csv = new Csv(new Format());
-        view = View.fromXml(IO_OBJ.stringNode("<view>" +
+        view = View.fromXml(IO_OBJ.memoryNode("<view>" +
                 "  <scope>items</scope>" +
                 "  <field><name>Id</name><path>id</path></field>" +
                 "  <field><name>String</name><path>string</path></field>" +

@@ -103,7 +103,7 @@ public class LineReaderTest {
         List<String> result;
 
         try {
-            node = io.stringNode(str);
+            node = io.memoryNode(str);
             reader = new LineReader(node.createReader(), format, initialSize);
             result = reader.collect();
         } catch (IOException e) {

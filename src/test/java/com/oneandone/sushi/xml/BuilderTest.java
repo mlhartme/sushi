@@ -99,7 +99,7 @@ public class BuilderTest {
         Node file;
         Builder builder;
 
-        file = IO_OBJ.stringNode(SCHEMA);
+        file = IO_OBJ.memoryNode(SCHEMA);
         builder = new Builder(file);
         builder.parseString("<a><num>1</num><string/><string/></a>");
         try {
@@ -118,6 +118,6 @@ public class BuilderTest {
 
     @Test(expected=SAXParseException.class)
     public void invalidSchema() throws IOException, SAXException {
-        new Builder(IO_OBJ.stringNode("xxx" + SCHEMA));
+        new Builder(IO_OBJ.memoryNode("xxx" + SCHEMA));
     }
 }

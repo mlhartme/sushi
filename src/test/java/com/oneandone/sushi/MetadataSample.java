@@ -28,7 +28,7 @@ public class MetadataSample {
         Instance<Obj> data;
         Obj obj;
         
-        data = TYPE.loadXml(new IO().stringNode("<obj><number>2</number><string>str</string></obj>"));
+        data = TYPE.loadXml(new IO().memoryNode("<obj><number>2</number><string>str</string></obj>"));
         obj = data.get();
         System.out.println("object:\n" + obj);
         obj.number = 3;

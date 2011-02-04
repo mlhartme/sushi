@@ -77,7 +77,7 @@ public class CsvTest {
     }
     
     private Node node(String str) throws IOException {
-        return IO_OBJ.stringNode(str);
+        return IO_OBJ.memoryNode(str);
     }
     
     private void check(String orig, String ... lines) throws IOException {

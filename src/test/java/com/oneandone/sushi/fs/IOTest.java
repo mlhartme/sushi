@@ -213,7 +213,7 @@ public class IOTest {
 
     //--
 
-    @Test
+    @Test(expected=RuntimeException.class)
     public void locate() throws IOException {
         IO io;
 
@@ -225,12 +225,7 @@ public class IOTest {
         io.locateClasspathItem("/java/lang/Object.class").checkFile();
         assertEquals("foo%20bar.jar", io.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", io.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        try {
-            assertNull(io.locateClasspathItem("/nosuchresource"));
-            fail();
-        } catch (RuntimeException e) {
-            // ok
-        }
+        io.locateClasspathItem("/nosuchresource");
     }
 
     //--

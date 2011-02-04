@@ -314,7 +314,7 @@ public class LoaderTest extends ModelBase {
     
     private static Instance<?> loadXml(Type type, String str) throws LoaderException {
         try {
-            return type.loadXml(IO_OBJ.stringNode(str));
+            return type.loadXml(IO_OBJ.memoryNode(str));
         } catch (LoaderException e) {
             throw e;
         } catch (IOException e) {
@@ -329,9 +329,7 @@ public class LoaderTest extends ModelBase {
         Object obj;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.stringNode(
-                "<object/>"
-        );
+        node = IO_OBJ.memoryNode("<object/>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertTrue(obj instanceof Object);
     }
@@ -341,9 +339,7 @@ public class LoaderTest extends ModelBase {
         Object obj;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.stringNode(
-                "<object type='java.lang.String'>foo</object>"
-        );
+        node = IO_OBJ.memoryNode("<object type='java.lang.String'>foo</object>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertEquals("foo", obj);
     }
@@ -353,7 +349,7 @@ public class LoaderTest extends ModelBase {
         All all;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.stringNode(
+        node = IO_OBJ.memoryNode(
                 "<all>" +
                 "  <objects type='java.lang.Integer'>2</objects>" +
                 "  <objects type='com.oneandone.sushi.metadata.listmodel.Empty'/>" +

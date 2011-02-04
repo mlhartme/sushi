@@ -35,6 +35,7 @@ import com.oneandone.sushi.fs.webdav.methods.Move;
 import com.oneandone.sushi.fs.webdav.methods.PropFind;
 import com.oneandone.sushi.fs.webdav.methods.PropPatch;
 import com.oneandone.sushi.fs.webdav.methods.Put;
+import com.oneandone.sushi.util.Strings;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
@@ -47,6 +48,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,19 +88,10 @@ public class WebdavNode extends Node {
 
     public URI getURI() {
         HttpHost host;
-        String query;
 
         host = root.host;
-        query = encodedQuery;
-        if (query != null) {
-            try {
-                query = URLDecoder.decode(encodedQuery, WebdavFilesystem.ENCODING);
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(e);
-            }
-        }
         try {
-            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, query, null);
+            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, getQuery(), null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }
@@ -225,8 +218,16 @@ public class WebdavNode extends Node {
         return path;
     }
 
-    public String getEncodedQuery() {
-        return encodedQuery;
+    public String getQuery() {
+        if (encodedQuery != null) {
+            try {
+                return URLDecoder.decode(encodedQuery, WebdavFilesystem.ENCODING);
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalStateException(e);
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -535,10 +536,26 @@ public class WebdavNode extends Node {
 
     //--
     
-    public String getEncodedPath() {
-        String result;
+    /** see http://tools.ietf.org/html/rfc2616#section-5.1.2 */
+    public String getAbsPath() {
+        StringBuilder builder;
 
-        result = tryDir ? path + "/" : path;
-        return root.encodePath(result);
+        builder = new StringBuilder(path.length() + 10);
+        for (String segment : Strings.split("/", path)) {
+            builder.append('/');
+            try {
+                builder.append(URLEncoder.encode(segment, WebdavFilesystem.ENCODING));
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        if (tryDir) {
+            builder.append('/');
+        }
+        if (encodedQuery != null) {
+            builder.append('?');
+            builder.append(encodedQuery);
+        }
+        return builder.toString();
     }
 }

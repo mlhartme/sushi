@@ -48,18 +48,8 @@ public abstract class Method<T> {
     private BasicHttpEntityEnclosingRequest request;
     
     public Method(String method, WebdavNode resource) {
-        String encodedQuery;
-        String absPath; // see http://tools.ietf.org/html/rfc2616#section-5.1.2
-
-        encodedQuery = resource.getEncodedQuery();
-        if (encodedQuery == null) {
-            absPath = resource.getEncodedPath();
-        } else {
-            absPath = resource.getEncodedPath() + "?" + encodedQuery;
-        }
-
         this.root = resource.getRoot();
-        this.request = new BasicHttpEntityEnclosingRequest(method, absPath);
+        this.request = new BasicHttpEntityEnclosingRequest(method, resource.getAbsPath());
     }
 
     //--

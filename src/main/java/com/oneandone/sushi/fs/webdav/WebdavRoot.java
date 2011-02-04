@@ -121,27 +121,6 @@ public class WebdavRoot implements Root {
         return new WebdavNode(this, path, encodedQuery, false);
     }
 
-    public String encodePath(String path) {
-    	StringBuilder builder;
-
-    	builder = new StringBuilder();
-    	encodePath(path, builder);
-    	return builder.toString();
-    }
-
-    private void encodePath(String path, StringBuilder dest) {
-        for (String segment : filesystem.split(path)) {
-            dest.append('/');
-            try {
-                dest.append(URLEncoder.encode(segment, WebdavFilesystem.ENCODING));
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
-    //--
-
     private final List<WebdavConnection> pool = new ArrayList<WebdavConnection>();
 
     public WebdavConnection allocate() throws IOException {

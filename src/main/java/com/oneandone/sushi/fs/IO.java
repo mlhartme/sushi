@@ -187,7 +187,7 @@ public class IO {
         try {
             constructor = null;
             for (Constructor c : clazz.getConstructors()) {
-                if (matches(c.getParameterTypes(), args)) {
+                if (Reflect.matches(c.getParameterTypes(), args)) {
                     if (constructor != null) {
                         throw new IllegalArgumentException("constructor ambiguous");
                     }
@@ -205,32 +205,6 @@ public class IO {
         } catch (Exception e) {
             throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
         }
-    }
-
-    private static boolean matches(Class<?>[] formals, Object[] actuals) {
-        int max;
-        Class<?> formal;
-        Object actual;
-
-        max = formals.length;
-        if (actuals.length != max) {
-            return false;
-        }
-        for (int i = 0; i < max; i++) {
-            formal = formals[i];
-            actual = actuals[i];
-            if (!formal.isInstance(actual)) {
-                if (formal.isPrimitive()) {
-                    formal = Reflect.getWrapper(formal);
-                    if (!formal.isInstance(actual)) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public Filesystem getFilesystem(String scheme) {

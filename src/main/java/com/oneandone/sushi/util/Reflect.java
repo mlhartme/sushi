@@ -140,4 +140,30 @@ public class Reflect {
         }
     }
     
+    public static boolean matches(Class<?>[] formals, Object[] actuals) {
+        int max;
+        Class<?> formal;
+        Object actual;
+
+        max = formals.length;
+        if (actuals.length != max) {
+            return false;
+        }
+        for (int i = 0; i < max; i++) {
+            formal = formals[i];
+            actual = actuals[i];
+            if (!formal.isInstance(actual)) {
+                if (formal.isPrimitive()) {
+                    formal = Reflect.getWrapper(formal);
+                    if (!formal.isInstance(actual)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }

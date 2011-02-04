@@ -57,13 +57,13 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
 
     @Test
     public void node() throws Exception {
-        String url;
+        URI uri;
         WebdavNode node;
 
-        url = "http://englishediting.de/index.html";
-        node = (WebdavNode) IO.node(url);
+        uri = new URI("http://englishediting.de:80/index.html");
+        node = (WebdavNode) IO.node(uri);
         assertEquals("index.html", node.getPath());
-        assertEquals(url, node.getUrl().toString());
+        assertEquals(uri, node.getURI());
     }
 
     @Override

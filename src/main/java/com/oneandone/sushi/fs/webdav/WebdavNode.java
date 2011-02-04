@@ -303,12 +303,12 @@ public class WebdavNode extends Node {
 
     @Override
     public boolean isFile() throws ExistsException {
-        return Boolean.FALSE.equals(getType());
+        return tryDir(false);
     }
 
     @Override
     public boolean isDirectory() throws ExistsException {
-        return Boolean.TRUE.equals(getType());
+        return tryDir(true);
     }
     
     @Override
@@ -466,42 +466,45 @@ public class WebdavNode extends Node {
         return MultiStatus.lookupOne(response, name).property;
     }
 
-    /** @return null if not existing, true for dir, false for file */
-    private Boolean getType() throws ExistsException {
+    private boolean tryDir(boolean tryTryDir) throws ExistsException {
+        boolean reset;
+        boolean result;
+
+        reset = tryDir;
+        tryDir = tryTryDir;
         try {
-            try {
-                return doGetType();
-            } catch (FileNotFoundException fse) {
-                return null;
-            } catch (MovedException e) {
-            	// TODO: omit this call?
-                tryDir = !tryDir;
-            	return doGetType();
-            }
+            result = doTryDir();
         } catch (IOException e) {
+            tryDir = reset;
             throw new ExistsException(this, e);
         }
+        if (!result) {
+            tryDir = reset;
+        }
+        return result;
     }
 
-    private Boolean doGetType() throws IOException {
+    private boolean doTryDir() throws IOException {
         Property property;
         org.w3c.dom.Node node;
         int code;
 
         try {
             property = getProperty(Name.RESOURCETYPE);
+            node = (org.w3c.dom.Node) property.getValue();
+            return tryDir == node.getLocalName().equals("collection");
         } catch (StatusException e) {
             code = e.getStatusLine().getStatusCode();
             if (code == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 try {
                     new Head(this).invoke();
-                    return tryDir;
+                    return true;
                 } catch (StatusException e2) {
                     switch (e2.getStatusLine().getStatusCode()) {
                         case HttpStatus.SC_MOVED_PERMANENTLY:
-                            throw new MovedException();
+                            return false;
                         case HttpStatus.SC_NOT_FOUND:
-                            return null;
+                            return false;
                         default:
                             throw e2;
                     }
@@ -510,9 +513,6 @@ public class WebdavNode extends Node {
                 throw e;
             }
         }
-        node = (org.w3c.dom.Node) property.getValue();
-        tryDir = node == null ? false : node.getLocalName().equals("collection");
-        return tryDir;
     }
 
     //--
@@ -522,9 +522,5 @@ public class WebdavNode extends Node {
 
         result = tryDir ? path + "/" : path;
         return root.encodePath(result);
-    }
-
-    public String getUrl() {
-        return root.getFilesystem().getScheme() + ":" + root.getId() + getPath();
     }
 }

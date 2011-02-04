@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Support webdav URIs with queries.
       </action>
+      <action dev="mlhartme" type="delete">
+        WebdavNode.getUrl() dumped.
+      </action>
       <action dev="mlhartme" type="update">
         Changed groupId and packages from de.ui.sushi to com.oneandone.sushi.
       </action>

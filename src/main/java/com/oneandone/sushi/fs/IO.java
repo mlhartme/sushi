@@ -17,11 +17,14 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.fs.console.ConsoleFilesystem;
 import com.oneandone.sushi.fs.file.FileFilesystem;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.fs.filter.Filter;
 import com.oneandone.sushi.fs.memory.MemoryFilesystem;
 import com.oneandone.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
+import com.oneandone.sushi.fs.zip.ZipFilesystem;
 import com.oneandone.sushi.io.Buffer;
 import com.oneandone.sushi.io.OS;
 import com.oneandone.sushi.util.Reflect;
@@ -32,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -44,11 +48,10 @@ import java.util.Map;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and
- * afterwards use it through-out your application to create nodes via IO.node or
- * IO.file. </p>
+ * afterwards use it through-out your application to create nodes via IO.node or IO.file. </p>
  *
  * <p>Sushi's FS subsystem forms a tree: An IO object is the root, having filesystems as it's children, roots as
- * grand-children and nodes as leafes. This tree is traversable from nodes up to the IO object via Node.getRoot(),
+ * grand-children and nodes as leaves. This tree is traversable from nodes up to the IO object via Node.getRoot(),
  * Root.getFilesystem() and Filesystem.getIO(), which is used internally e.g. to pick default encoding settings
  * from IO. (Traversing in reverse order is not implemented - to resource consuming)</p>
  *
@@ -79,6 +82,7 @@ public class IO {
 
     private final Map<String, Filesystem> filesystems;
     private final FileFilesystem fileFilesystem;
+    private final MemoryFilesystem memoryFilesystem;
 
     public IO() {
         this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
@@ -89,16 +93,19 @@ public class IO {
         this.settings = settings;
         this.buffer = buffer;
         this.filesystems = new HashMap<String, Filesystem>();
-        try {
-            initFilesystems();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        this.fileFilesystem = getFilesystem(FileFilesystem.class);
+        this.fileFilesystem = this.addFilesystem(new FileFilesystem(this, "file"));
+        this.memoryFilesystem = this.addFilesystem(new MemoryFilesystem(this, "mem"));
+        addFilesystem(new ConsoleFilesystem(this, "console"));
+        addFilesystem(new ZipFilesystem(this, "zip"));
+        addFilesystem(new ZipFilesystem(this, "jar"));
+        addFilesystem(new TimeMachineFilesystem(this, "tm"));
+        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", "ssh");
+        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", "svn");
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.HttpFilesystem", "http", "https");
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.DavFilesystem", "dav", "davs");
         this.temp = init("java.io.tmpdir");
         this.home = init("user.home");
         this.working = init("user.dir");
-
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<String>(Arrays.asList(defaultExcludes));
     }
@@ -227,22 +234,11 @@ public class IO {
 
     // TODO: re-use root?
     public MemoryNode stringNode(String content) {
-        MemoryFilesystem memFs;
-
-        memFs = getMemoryFilesystem();
         try {
-            return (MemoryNode) memFs.root().node("tmp", null).writeString(content);
+            return (MemoryNode) memoryFilesystem.root().node("tmp", null).writeString(content);
         } catch (IOException e) {
             throw new RuntimeException("unexpected", e);
         }
-    }
-
-    public MemoryFilesystem getMemoryFilesystem() {
-        return getFilesystem(MemoryFilesystem.class);
-    }
-
-    public FileFilesystem getFileFilesystem() {
-        return fileFilesystem;
     }
 
     /** @param name must not start with a slash */
@@ -426,62 +422,39 @@ public class IO {
         return file;
     }
 
-    //--
+    //--  filesystems
 
-    // cannot use Nodes/IO because they're not yet initialized
-    public void initFilesystems() throws IOException {
-        String descriptor;
-        Enumeration<URL> enm;
-        URL url;
-        InputStream src;
-        Buffer buffer;
-        String content;
-
-        descriptor = "META-INF/com/oneandone/sushi/filesystems";
-        buffer = new Buffer();
-        enm = getClass().getClassLoader().getResources(descriptor);
-        while (enm.hasMoreElements()) {
-            url = enm.nextElement();
-            src = url.openStream();
-            content = buffer.readString(src, Settings.UTF_8);
-            for (String line : Strings.split("\n", content)) {
-                line = line.trim();
-                if (line.length() > 0) {
-                    initFilesystem(Strings.split(" ", line.trim()));
-                }
-            }
-            src.close();
-        }
-    }
-
-    private void initFilesystem(List<String> declaration)  {
-        String filesystemClass;
-        Class<?> clazz;
-
-        filesystemClass = Strings.removeEndOpt(declaration.get(0), "*");
-        try {
-            clazz = Class.forName(filesystemClass);
-            for (int i = 1; i < declaration.size(); i++) {
-            	addFilesystem((Filesystem) clazz.getConstructor(IO.class, String.class).newInstance(this, declaration.get(i)));
-            }
-        } catch (Throwable e) {
-            if (declaration.get(0).equals(filesystemClass)) {
-                throw new IllegalArgumentException(e);
-            } else {
-                // optional system - missing dependency
-                return;
-            }
-        }
-    }
-
-    public void addFilesystem(Filesystem filesystem) {
+    public <T extends Filesystem> T addFilesystem(T filesystem) {
     	String name;
 
     	name = filesystem.getScheme();
         if (filesystems.containsKey(name)) {
-            throw new IllegalArgumentException("duplicate filesystem name: " + name);
+            throw new IllegalArgumentException("duplicate filesystem scheme: " + name);
         }
         filesystems.put(name, filesystem);
+        return filesystem;
+    }
+
+    public boolean addFilesystemOpt(String filesystemClass, String ... schemes) {
+        Class<?> clazz;
+        Filesystem filesystem;
+
+        try {
+            clazz = Class.forName(filesystemClass);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        for (String scheme : schemes) {
+            try {
+                filesystem = (Filesystem) clazz.getConstructor(IO.class, String.class).newInstance(this, scheme);
+                addFilesystem(filesystem);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
+            }
+        }
+        return true;
     }
 
     public Filesystem getFilesystem(String scheme) {
@@ -494,23 +467,29 @@ public class IO {
         return result;
     }
 
-    public <T extends Filesystem> T getFilesystem(Class<T> c) {
-        T result;
-
-        result = lookupFilesystem(c);
-        if (result == null) {
-            throw new IllegalArgumentException("no such filesystem: " + c.getName());
-        }
-        return result;
+    public FileFilesystem getFileFilesystem() {
+        return fileFilesystem;
     }
 
-    public <T extends Filesystem> T lookupFilesystem(Class<T> c) {
-        for (Filesystem fs : filesystems.values()) {
-            if (fs.getClass().equals(c)) {
-                return (T) fs;
-            }
+    public MemoryFilesystem getMemoryFilesystem() {
+        return memoryFilesystem;
+    }
+
+    public <T extends Filesystem> T getFilesystem(String scheme, Class<T> clazz) {
+        Filesystem filesystem;
+
+        filesystem = lookupFilesystem(scheme);
+        if (filesystem == null) {
+            throw new IllegalArgumentException("no such filesystem: " + scheme);
         }
-        return null;
+        if (!clazz.isInstance(filesystem)) {
+            throw new IllegalArgumentException("unexpected file system type: " + filesystem.getClass().getName());
+        }
+        return (T) filesystem;
+    }
+
+    public Filesystem lookupFilesystem(String scheme) {
+        return filesystems.get(scheme);
     }
 
     //--

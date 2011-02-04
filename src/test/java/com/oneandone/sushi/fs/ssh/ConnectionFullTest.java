@@ -53,7 +53,7 @@ public class ConnectionFullTest {
         if (user.isEmpty()) {
             user = System.getProperty("user.name");
         }
-        return IO_OBJ.getFilesystem(SshFilesystem.class).root(host, user);
+        return IO_OBJ.getFilesystem("ssh", SshFilesystem.class).root(host, user);
     }
 
     private SshRoot root;

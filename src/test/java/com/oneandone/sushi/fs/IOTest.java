@@ -22,6 +22,7 @@ import com.oneandone.sushi.fs.file.FileFilesystem;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.fs.memory.MemoryNode;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
+import com.oneandone.sushi.fs.zip.ZipFilesystem;
 import com.oneandone.sushi.fs.zip.ZipNode;
 import com.oneandone.sushi.util.Reflect;
 import org.junit.Ignore;
@@ -49,12 +50,18 @@ public class IOTest {
 
     //-- filesystems
 
+    @Test
+    public void getFilesystem() {
+        IO io;
+
+        io = new IO();
+        assertTrue(io.getFilesystem("zip") instanceof ZipFilesystem);
+    }
 
     @Test(expected=IllegalArgumentException.class)
     public void filesystemDuplicate() throws IOException {
         IO io = new IO();
 
-        io.addFilesystem(new FileFilesystem(io, "file"));
         io.addFilesystem(new FileFilesystem(io, "file"));
     }
 

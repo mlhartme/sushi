@@ -17,32 +17,34 @@
 
 package com.oneandone.sushi.fs.webdav.methods;
 
-import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class DeleteMethod extends Method<Void> {
-    public DeleteMethod(WebdavNode resource) {
-        super("DELETE", resource);
+public class Head extends Method<Void> {
+    public Head(WebdavNode resource) {
+        super("HEAD", resource);
     }
 
     @Override
-    public Void processResponse(WebdavConnection connection, HttpResponse response) throws IOException {
-        switch (response.getStatusLine().getStatusCode()) {
-        case HttpStatus.SC_NO_CONTENT:
+    public Void processResponse(final WebdavConnection connection, final HttpResponse response) throws IOException {
+    	int status;
+    	
+        status = response.getStatusLine().getStatusCode();
+        switch (status) {
+        case HttpStatus.SC_OK:
         	return null;
-        case HttpStatus.SC_MOVED_PERMANENTLY:
-        	throw new MovedException();
-        case HttpStatus.SC_NOT_FOUND:
-        	throw new FileNotFoundException(getUri());
-       	default:
+        default:
         	throw new StatusException(response.getStatusLine());
         }
+    }
+    
+    @Override
+    public void done(HttpResponse response, WebdavConnection connection) {
+    	// do nothing
     }
 }

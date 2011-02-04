@@ -22,41 +22,28 @@ import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.protocol.HTTP;
 
-import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-public class GetMethod extends Method<InputStream> {
-    public GetMethod(WebdavNode resource) {
-        super("GET", resource);
+public class Put extends Method<Void> {
+    public Put(WebdavNode resource) {
+        super("PUT", resource);
     }
 
     @Override
-    public InputStream processResponse(final WebdavConnection connection, final HttpResponse response) throws IOException {
-    	int status;
-    	
-        status = response.getStatusLine().getStatusCode();
-        switch (status) {
-        case HttpStatus.SC_OK:
-        	return new FilterInputStream(response.getEntity().getContent()) {
-        		@Override
-        		public void close() throws IOException {
-        			root.free(response, connection);
-        		}
-        	};
-        case HttpStatus.SC_NOT_FOUND:
-        case HttpStatus.SC_GONE:
-        case HttpStatus.SC_MOVED_PERMANENTLY:
-            throw new FileNotFoundException(getUri());
-        default:
-        	throw new StatusException(response.getStatusLine());
-        }
+    protected void setContentHeader() {
+        setRequestHeader(HTTP.TRANSFER_ENCODING, HTTP.CHUNK_CODING);
     }
     
     @Override
-    public void done(HttpResponse response, WebdavConnection connection) {
-    	// do nothing
+    public Void processResponse(WebdavConnection connection, HttpResponse response) throws IOException {
+    	int status;
+    	
+    	status = response.getStatusLine().getStatusCode();
+        if (status != HttpStatus.SC_NO_CONTENT && status != HttpStatus.SC_CREATED) {
+        	throw new StatusException(response.getStatusLine());
+        }
+        return null;
     }
 }

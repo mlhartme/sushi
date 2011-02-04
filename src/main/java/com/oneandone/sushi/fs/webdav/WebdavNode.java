@@ -26,15 +26,15 @@ import com.oneandone.sushi.fs.MkdirException;
 import com.oneandone.sushi.fs.MoveException;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.SetLastModifiedException;
-import com.oneandone.sushi.fs.webdav.methods.DeleteMethod;
-import com.oneandone.sushi.fs.webdav.methods.GetMethod;
-import com.oneandone.sushi.fs.webdav.methods.HeadMethod;
+import com.oneandone.sushi.fs.webdav.methods.Delete;
+import com.oneandone.sushi.fs.webdav.methods.Get;
+import com.oneandone.sushi.fs.webdav.methods.Head;
 import com.oneandone.sushi.fs.webdav.methods.Method;
-import com.oneandone.sushi.fs.webdav.methods.MkColMethod;
-import com.oneandone.sushi.fs.webdav.methods.MoveMethod;
-import com.oneandone.sushi.fs.webdav.methods.PropFindMethod;
-import com.oneandone.sushi.fs.webdav.methods.PropPatchMethod;
-import com.oneandone.sushi.fs.webdav.methods.PutMethod;
+import com.oneandone.sushi.fs.webdav.methods.MkCol;
+import com.oneandone.sushi.fs.webdav.methods.Move;
+import com.oneandone.sushi.fs.webdav.methods.PropFind;
+import com.oneandone.sushi.fs.webdav.methods.PropPatch;
+import com.oneandone.sushi.fs.webdav.methods.Put;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
@@ -210,10 +210,10 @@ public class WebdavNode extends Node {
     public Node delete() throws DeleteException {
         try {
         	try {
-        		new DeleteMethod(this).invoke();
+        		new Delete(this).invoke();
         	} catch (MovedException e) {
                 tryDir = !tryDir;
-        		new DeleteMethod(this).invoke();
+        		new Delete(this).invoke();
         	}
         } catch (IOException e) {
             throw new DeleteException(this, e);
@@ -234,11 +234,11 @@ public class WebdavNode extends Node {
         try {
         	try {
                 dest.tryDir = tryDir;
-        		new MoveMethod(this, dest.getURI()).invoke();
+        		new Move(this, dest.getURI()).invoke();
         	} catch (MovedException e) {
                 tryDir = !tryDir;
                 dest.tryDir = tryDir;
-        		new MoveMethod(this, dest.getURI()).invoke();
+        		new Move(this, dest.getURI()).invoke();
         	}
 		} catch (IOException e) {
 			throw new MoveException(this, dest, e.getMessage(), e);
@@ -250,7 +250,7 @@ public class WebdavNode extends Node {
     public WebdavNode mkdir() throws MkdirException {
         try {
             tryDir = true;
-            new MkColMethod(this).invoke();
+            new MkCol(this).invoke();
         } catch (IOException e) {
             throw new MkdirException(this, e);
         }
@@ -270,7 +270,7 @@ public class WebdavNode extends Node {
     @Override
     public boolean exists() throws ExistsException {
         try {
-            new HeadMethod(this).invoke();
+            new Head(this).invoke();
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().getStatusCode()) {
@@ -305,13 +305,13 @@ public class WebdavNode extends Node {
     @Override
     public InputStream createInputStream() throws IOException {
         tryDir = false;
-        return new GetMethod(this).invoke();
+        return new Get(this).invoke();
     }
 
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
         byte[] add;
-        final PutMethod method;
+        final Put method;
         final WebdavConnection connection;
         OutputStream result;
 
@@ -325,7 +325,7 @@ public class WebdavNode extends Node {
             add = null;
         }
         tryDir = false;
-        method = new PutMethod(this);
+        method = new Put(this);
         connection = method.request();
         result = new ChunkedOutputStream(connection.getOutputBuffer()) {
             private boolean closed = false;
@@ -347,13 +347,13 @@ public class WebdavNode extends Node {
 
     @Override
     public List<Node> list() throws ListException {
-        PropFindMethod method;
+        PropFind method;
         List<Node> result;
         String href;
         
         try {
             tryDir = true;
-            method = new PropFindMethod(this, Name.DISPLAYNAME, 1);
+            method = new PropFind(this, Name.DISPLAYNAME, 1);
             result = new ArrayList<Node>();
             for (MultiStatus response : method.invoke()) {
             	href = response.href;
@@ -425,10 +425,10 @@ public class WebdavNode extends Node {
     	
         prop = new Property(name, value);
        	try {
-       		new PropPatchMethod(this, prop).invoke();
+       		new PropPatch(this, prop).invoke();
        	} catch (MovedException e) {
             tryDir = !tryDir;
-       		new PropPatchMethod(this, prop).invoke();
+       		new PropPatch(this, prop).invoke();
       	}
     }
 
@@ -444,10 +444,10 @@ public class WebdavNode extends Node {
     }
 
     private Property getPropertyOpt(Name name) throws IOException {
-        PropFindMethod method;
+        PropFind method;
         List<MultiStatus> response;
         
-        method = new PropFindMethod(this, name, 0);
+        method = new PropFind(this, name, 0);
         response = method.invoke();
         return MultiStatus.lookupOne(response, name).property;
     }
@@ -480,7 +480,7 @@ public class WebdavNode extends Node {
             code = e.getStatusLine().getStatusCode();
             if (code == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 try {
-                    new HeadMethod(this).invoke();
+                    new Head(this).invoke();
                     return tryDir;
                 } catch (StatusException e2) {
                     switch (e2.getStatusLine().getStatusCode()) {

@@ -32,8 +32,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-public class PropFindMethod extends Method<List<MultiStatus>> {
-    public PropFindMethod(WebdavNode resource, Name name, int depth) throws IOException {
+public class PropFind extends Method<List<MultiStatus>> {
+    public PropFind(WebdavNode resource, Name name, int depth) throws IOException {
     	super("PROPFIND", resource);
     	
         Document document;

@@ -26,8 +26,8 @@ import org.apache.http.HttpStatus;
 import java.io.IOException;
 
 
-public class MkColMethod extends Method<Void> {
-    public MkColMethod(WebdavNode resource) {
+public class MkCol extends Method<Void> {
+    public MkCol(WebdavNode resource) {
         super("MKCOL", resource);
     }
 

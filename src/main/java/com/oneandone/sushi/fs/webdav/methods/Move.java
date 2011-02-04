@@ -27,8 +27,8 @@ import org.apache.http.HttpStatus;
 import java.io.IOException;
 import java.net.URI;
 
-public class MoveMethod extends Method<Void> {
-    public MoveMethod(WebdavNode source, URI destination) {
+public class Move extends Method<Void> {
+    public Move(WebdavNode source, URI destination) {
         super("MOVE", source);
         setRequestHeader("Destination", destination.toString());
         setRequestHeader("Overwrite", "F");

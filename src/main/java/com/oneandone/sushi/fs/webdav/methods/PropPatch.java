@@ -35,10 +35,10 @@ import org.w3c.dom.Element;
 import java.io.IOException;
 import java.util.List;
 
-public class PropPatchMethod extends Method<Void> {
+public class PropPatch extends Method<Void> {
     private final Name dest;
 
-    public PropPatchMethod(WebdavNode resource, Property property) throws IOException {
+    public PropPatch(WebdavNode resource, Property property) throws IOException {
         super("PROPPATCH", resource);
 
         Document document;

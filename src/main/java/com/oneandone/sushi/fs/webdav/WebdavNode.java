@@ -92,11 +92,15 @@ public class WebdavNode extends Node {
 
     @Override
     public long length() throws LengthException {
+        boolean oldTryDir;
         Property property;
-        
+
+        oldTryDir = tryDir;
         try {
-            property = getProperty(path, Name.GETCONTENTLENGTH);
+            tryDir = false;
+            property = getProperty(Name.GETCONTENTLENGTH);
         } catch (IOException e) {
+            tryDir = oldTryDir;
             throw new LengthException(this, e);
         }
         return Long.parseLong((String) property.getValue());
@@ -120,10 +124,10 @@ public class WebdavNode extends Node {
         
         try {
         	try {
-        		property = getProperty(path(tryDir), Name.GETLASTMODIFIED);
+        		property = getProperty(Name.GETLASTMODIFIED);
         	} catch (MovedException e) {
-        		property = getProperty(path(!tryDir), Name.GETLASTMODIFIED);
-        		tryDir = !tryDir;
+                tryDir = !tryDir;
+        		property = getProperty(Name.GETLASTMODIFIED);
         	}
         } catch (IOException e) {
             throw new GetLastModifiedException(this, e);
@@ -206,9 +210,10 @@ public class WebdavNode extends Node {
     public Node delete() throws DeleteException {
         try {
         	try {
-        		new DeleteMethod(root, path).invoke();
+        		new DeleteMethod(this).invoke();
         	} catch (MovedException e) {
-        		new DeleteMethod(root, path + '/').invoke();
+                tryDir = !tryDir;
+        		new DeleteMethod(this).invoke();
         	}
         } catch (IOException e) {
             throw new DeleteException(this, e);
@@ -218,15 +223,22 @@ public class WebdavNode extends Node {
 
     @Override
     public Node move(Node dest) throws MoveException {
-        String after;
+        if (dest instanceof WebdavNode) {
+            return move((WebdavNode) dest);
+        } else {
+            throw new MoveException(this, dest, "cannot move webdav node to none-webdav node");
+        }
+    }
 
-        after = dest.getURI().toString();
+    public WebdavNode move(WebdavNode dest) throws MoveException {
         try {
         	try {
-        		new MoveMethod(root, path(tryDir), path(after, tryDir)).invoke();
+                dest.tryDir = tryDir;
+        		new MoveMethod(this, dest.getURI()).invoke();
         	} catch (MovedException e) {
-        		new MoveMethod(root, path(!tryDir), path(after, !tryDir)).invoke();
-        		tryDir = !tryDir;
+                tryDir = !tryDir;
+                dest.tryDir = tryDir;
+        		new MoveMethod(this, dest.getURI()).invoke();
         	}
 		} catch (IOException e) {
 			throw new MoveException(this, dest, e.getMessage(), e);
@@ -237,7 +249,8 @@ public class WebdavNode extends Node {
     @Override
     public WebdavNode mkdir() throws MkdirException {
         try {
-            new MkColMethod(root, path + "/").invoke();
+            tryDir = true;
+            new MkColMethod(this).invoke();
         } catch (IOException e) {
             throw new MkdirException(this, e);
         }
@@ -251,13 +264,13 @@ public class WebdavNode extends Node {
 
     @Override
     public String readLink() {
-        throw unsupported("readLinkT()");
+        throw unsupported("readLink()");
     }
 
     @Override
     public boolean exists() throws ExistsException {
         try {
-            new HeadMethod(getRoot(), path(path, tryDir)).invoke();
+            new HeadMethod(this).invoke();
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().getStatusCode()) {
@@ -291,7 +304,8 @@ public class WebdavNode extends Node {
 
     @Override
     public InputStream createInputStream() throws IOException {
-        return new GetMethod(root, path).invoke();
+        tryDir = false;
+        return new GetMethod(this).invoke();
     }
 
     @Override
@@ -310,7 +324,8 @@ public class WebdavNode extends Node {
         } else {
             add = null;
         }
-        method = new PutMethod(root, path);
+        tryDir = false;
+        method = new PutMethod(this);
         connection = method.request();
         result = new ChunkedOutputStream(connection.getOutputBuffer()) {
             private boolean closed = false;
@@ -337,7 +352,8 @@ public class WebdavNode extends Node {
         String href;
         
         try {
-            method = new PropFindMethod(root, path + "/", Name.DISPLAYNAME, 1);
+            tryDir = true;
+            method = new PropFindMethod(this, Name.DISPLAYNAME, 1);
             result = new ArrayList<Node>();
             for (MultiStatus response : method.invoke()) {
             	href = response.href;
@@ -354,6 +370,7 @@ public class WebdavNode extends Node {
             }
             throw new ListException(this, e);
         } catch (MovedException e) {
+            tryDir = false;
             return null; // this is a file
         } catch (IOException e) {
             throw new ListException(this, e);
@@ -384,10 +401,10 @@ public class WebdavNode extends Node {
     	n = new Name(name, WebdavMethod.DAV);
         try {
         	try {
-        		result = getPropertyOpt(path(tryDir), n);
+        		result = getPropertyOpt(n);
         	} catch (MovedException e) {
-        		result = getPropertyOpt(path(!tryDir), n);
-        		tryDir = !tryDir;
+                tryDir = !tryDir;
+        		result = getPropertyOpt(n);
         	}
         	return result == null ? null : (String) result.getValue();
 		} catch (IOException e) {
@@ -408,66 +425,63 @@ public class WebdavNode extends Node {
     	
         prop = new Property(name, value);
        	try {
-       		new PropPatchMethod(root, path(tryDir), prop).invoke();
+       		new PropPatchMethod(this, prop).invoke();
        	} catch (MovedException e) {
-       		new PropPatchMethod(root, path(!tryDir), prop).invoke();
-       		tryDir = !tryDir;
+            tryDir = !tryDir;
+       		new PropPatchMethod(this, prop).invoke();
       	}
     }
 
     /** @return never null */
-    private Property getProperty(String path, Name name) throws IOException {
+    private Property getProperty(Name name) throws IOException {
     	Property result;
         
-        result = getPropertyOpt(path, name);
+        result = getPropertyOpt(name);
         if (result == null) {
             throw new IllegalStateException();
         }
         return result;
     }
 
-    private Property getPropertyOpt(String path, Name name) throws IOException {
+    private Property getPropertyOpt(Name name) throws IOException {
         PropFindMethod method;
         List<MultiStatus> response;
         
-        method = new PropFindMethod(root, path, name, 0);
+        method = new PropFindMethod(this, name, 0);
         response = method.invoke();
         return MultiStatus.lookupOne(response, name).property;
     }
 
     /** @return null if not existing, true for dir, false for file */
     private Boolean getType() throws ExistsException {
-    	boolean result;
-    	
         try {
             try {
-                return doGetType(path(tryDir), tryDir);
+                return doGetType();
             } catch (FileNotFoundException fse) {
                 return null;
             } catch (MovedException e) {
             	// TODO: omit this call?
-            	result = doGetType(path(!tryDir), !tryDir);
-            	tryDir = !tryDir;
-            	return result;
+                tryDir = !tryDir;
+            	return doGetType();
             }
         } catch (IOException e) {
             throw new ExistsException(this, e);
         }
     }
 
-    private Boolean doGetType(String path, boolean dirPath) throws IOException {
+    private Boolean doGetType() throws IOException {
         Property property;
         org.w3c.dom.Node node;
         int code;
 
         try {
-            property = getProperty(path, Name.RESOURCETYPE);
+            property = getProperty(Name.RESOURCETYPE);
         } catch (StatusException e) {
             code = e.getStatusLine().getStatusCode();
-            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED || code == HttpStatus.SC_UNAUTHORIZED /* returned by Nexus 1.7.0 */) {
+            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED) {
                 try {
-                    new HeadMethod(getRoot(), path).invoke();
-                    return dirPath;
+                    new HeadMethod(this).invoke();
+                    return tryDir;
                 } catch (StatusException e2) {
                     switch (e2.getStatusLine().getStatusCode()) {
                         case HttpStatus.SC_MOVED_PERMANENTLY:
@@ -483,19 +497,19 @@ public class WebdavNode extends Node {
             }
         }
         node = (org.w3c.dom.Node) property.getValue();
-        return node == null ? false : node.getLocalName().equals("collection");
+        tryDir = node == null ? false : node.getLocalName().equals("collection");
+        return tryDir;
     }
 
     //--
     
-    private String path(boolean dir) {
-    	return path(path, dir);
+    public String getEncodedPath() {
+        String result;
+
+        result = tryDir ? path + "/" : path;
+        return root.encodePath(result);
     }
 
-    private static String path(String path, boolean dir) {
-    	return dir ? path + "/" : path;
-    }
-    
     public String getUrl() {
         return root.getFilesystem().getScheme() + ":" + root.getId() + getPath();
     }

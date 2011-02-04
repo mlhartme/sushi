@@ -20,16 +20,18 @@ package com.oneandone.sushi.fs.webdav.methods;
 import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
 import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class MoveMethod extends WebdavMethod<Void> {
-    public MoveMethod(WebdavRoot root, String path, String destination) {
-        super(root, "MOVE", path);
-        setRequestHeader("Destination", destination);
+    public MoveMethod(WebdavNode source, URI destination) {
+        super("MOVE", source);
+        setRequestHeader("Destination", destination.toString());
         setRequestHeader("Overwrite", "F");
     }
     

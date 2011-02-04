@@ -22,6 +22,7 @@ import com.oneandone.sushi.fs.webdav.MultiStatus;
 import com.oneandone.sushi.fs.webdav.Name;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
 import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import com.oneandone.sushi.xml.Builder;
 import org.apache.http.HttpResponse;
@@ -33,8 +34,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class PropFindMethod extends WebdavMethod<List<MultiStatus>> {
-    public PropFindMethod(WebdavRoot root, String path, Name name, int depth) throws IOException {
-    	super(root, "PROPFIND", path);
+    public PropFindMethod(WebdavNode resource, Name name, int depth) throws IOException {
+    	super("PROPFIND", resource);
     	
         Document document;
 
@@ -45,10 +46,11 @@ public class PropFindMethod extends WebdavMethod<List<MultiStatus>> {
     }
 
     @Override
-    public List<MultiStatus> processResponse(WebdavConnection conection, HttpResponse response) throws IOException {
+    public List<MultiStatus> processResponse(WebdavConnection connection, HttpResponse response) throws IOException {
         switch (response.getStatusLine().getStatusCode()) {
         case HttpStatus.SC_MULTI_STATUS:
             return MultiStatus.fromResponse(getXml(), response);
+        case HttpStatus.SC_BAD_REQUEST: // TODO
         case HttpStatus.SC_MOVED_PERMANENTLY:
         	throw new MovedException();
         case HttpStatus.SC_NOT_FOUND:

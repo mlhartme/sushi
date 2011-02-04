@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.webdav.methods;
 
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class GetMethod extends WebdavMethod<InputStream> {
-    public GetMethod(WebdavRoot root, String path) {
-        super(root, "GET", path);
+    public GetMethod(WebdavNode resource) {
+        super("GET", resource);
     }
 
     @Override

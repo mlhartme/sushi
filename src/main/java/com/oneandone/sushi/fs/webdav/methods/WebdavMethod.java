@@ -18,6 +18,7 @@
 package com.oneandone.sushi.fs.webdav.methods;
 
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
 import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import com.oneandone.sushi.xml.Namespace;
 import com.oneandone.sushi.xml.Xml;
@@ -46,9 +47,9 @@ public abstract class WebdavMethod<T> {
 
     private BasicHttpEntityEnclosingRequest request;
     
-    public WebdavMethod(WebdavRoot root, String method, String path) {
-        this.request = new BasicHttpEntityEnclosingRequest(method, root.encodePath(path));
-        this.root = root;
+    public WebdavMethod(String method, WebdavNode resource) {
+        this.root = resource.getRoot();
+        this.request = new BasicHttpEntityEnclosingRequest(method, resource.getEncodedPath());
     }
 
     //--

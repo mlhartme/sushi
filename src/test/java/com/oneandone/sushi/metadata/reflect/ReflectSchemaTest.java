@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Type;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ReflectSchemaTest {
     @Test

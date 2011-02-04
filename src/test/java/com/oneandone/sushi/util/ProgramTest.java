@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-
-import org.junit.Test;
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.io.OS;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ProgramTest {
     private static final IO IO_OBJ = new IO();

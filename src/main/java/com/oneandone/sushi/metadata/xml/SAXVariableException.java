@@ -17,9 +17,8 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import org.xml.sax.Locator;
-
 import com.oneandone.sushi.metadata.Variable;
+import org.xml.sax.Locator;
 
 public class SAXVariableException extends SAXLoaderException {
     public final Variable<?> variable;

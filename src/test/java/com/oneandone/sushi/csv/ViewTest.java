@@ -17,21 +17,20 @@
 
 package com.oneandone.sushi.csv;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.metadata.Path;
+import com.oneandone.sushi.metadata.model.ModelBase;
+import com.oneandone.sushi.metadata.xml.LoaderException;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.util.Arrays;
-
-import org.junit.Test;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.metadata.Path;
-import com.oneandone.sushi.metadata.model.ModelBase;
-import com.oneandone.sushi.metadata.xml.LoaderException;
 
 public class ViewTest extends ModelBase {
     private static final Format NORMAL = new Format(false);

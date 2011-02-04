@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.metadata.simpletypes;
 
-import java.lang.reflect.Method;
-
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
+
+import java.lang.reflect.Method;
 
 public class MethodType extends SimpleType {
     public MethodType(Schema schema) {

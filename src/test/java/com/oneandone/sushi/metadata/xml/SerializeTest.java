@@ -17,11 +17,6 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
-import org.junit.Test;
 import com.oneandone.sushi.io.OS;
 import com.oneandone.sushi.metadata.listmodel.All;
 import com.oneandone.sushi.metadata.listmodel.Empty;
@@ -32,6 +27,11 @@ import com.oneandone.sushi.metadata.model.ModelBase;
 import com.oneandone.sushi.metadata.model.Radio;
 import com.oneandone.sushi.metadata.model.Vendor;
 import com.oneandone.sushi.xml.Builder;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 public class SerializeTest extends ModelBase {
     @Test

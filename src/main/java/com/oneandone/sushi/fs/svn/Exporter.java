@@ -17,9 +17,6 @@
 
 package com.oneandone.sushi.fs.svn;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import com.oneandone.sushi.fs.MkdirException;
 import com.oneandone.sushi.fs.Node;
 import org.tmatesoft.svn.core.SVNCommitInfo;
@@ -33,6 +30,9 @@ import org.tmatesoft.svn.core.io.ISVNReporter;
 import org.tmatesoft.svn.core.io.ISVNReporterBaton;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaProcessor;
 import org.tmatesoft.svn.core.io.diff.SVNDiffWindow;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /** See https://wiki.svnkit.com/Updating_From_A_Repository */
 public class Exporter implements ISVNReporterBaton, ISVNEditor {

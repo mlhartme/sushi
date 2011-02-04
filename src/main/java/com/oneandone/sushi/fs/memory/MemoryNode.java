@@ -17,14 +17,6 @@
 
 package com.oneandone.sushi.fs.memory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.GetLastModifiedException;
@@ -34,6 +26,14 @@ import com.oneandone.sushi.fs.MkdirException;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.SetLastModifiedException;
 import com.oneandone.sushi.io.CheckedByteArrayOutputStream;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 /** You'll normally use IO.stringNode() to create instances */
 public class MemoryNode extends Node {

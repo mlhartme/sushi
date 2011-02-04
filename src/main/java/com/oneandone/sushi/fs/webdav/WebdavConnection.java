@@ -17,11 +17,6 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketException;
-import java.util.logging.Level;
-
 import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpConnectionMetrics;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -42,6 +37,11 @@ import org.apache.http.io.HttpMessageParser;
 import org.apache.http.io.HttpMessageWriter;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.logging.Level;
 
 public class WebdavConnection implements HttpClientConnection {
     public static WebdavConnection open(Socket socket, HttpParams params) throws IOException {

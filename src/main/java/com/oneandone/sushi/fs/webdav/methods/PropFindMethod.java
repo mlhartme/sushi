@@ -17,12 +17,6 @@
 
 package com.oneandone.sushi.fs.webdav.methods;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.MultiStatus;
 import com.oneandone.sushi.fs.webdav.Name;
@@ -30,7 +24,13 @@ import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import com.oneandone.sushi.xml.Builder;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.w3c.dom.Document;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 public class PropFindMethod extends WebdavMethod<List<MultiStatus>> {
     public PropFindMethod(WebdavRoot root, String path, Name name, int depth) throws IOException {

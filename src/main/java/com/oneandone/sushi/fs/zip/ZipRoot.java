@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.fs.zip;
 
+import com.oneandone.sushi.archive.Archive;
+import com.oneandone.sushi.fs.Root;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipFile;
-
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.Root;
 
 public class ZipRoot implements Root {
     private final ZipFilesystem filesystem;

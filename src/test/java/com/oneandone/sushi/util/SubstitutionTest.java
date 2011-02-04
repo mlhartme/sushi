@@ -17,16 +17,14 @@
 
 package com.oneandone.sushi.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import com.oneandone.sushi.util.Substitution;
-import com.oneandone.sushi.util.SubstitutionException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SubstitutionTest {
     private Map<String, String> props;

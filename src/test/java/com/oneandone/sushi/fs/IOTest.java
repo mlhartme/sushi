@@ -17,12 +17,15 @@
 
 package com.oneandone.sushi.fs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.oneandone.sushi.fs.console.ConsoleNode;
+import com.oneandone.sushi.fs.file.FileFilesystem;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.fs.webdav.WebdavNode;
+import com.oneandone.sushi.fs.zip.ZipNode;
+import com.oneandone.sushi.util.Reflect;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,15 +34,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import com.oneandone.sushi.fs.console.ConsoleNode;
-import com.oneandone.sushi.fs.file.FileFilesystem;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.fs.memory.MemoryNode;
-import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.fs.zip.ZipNode;
-import com.oneandone.sushi.util.Reflect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class IOTest {
     // TODO

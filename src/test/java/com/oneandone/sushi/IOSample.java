@@ -17,8 +17,6 @@
 
 package com.oneandone.sushi;
 
-import java.io.IOException;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
 

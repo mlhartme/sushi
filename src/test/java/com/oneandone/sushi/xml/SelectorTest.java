@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.xml;
 
+import org.junit.Test;
+import org.w3c.dom.Document;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import org.junit.Test;
-import org.w3c.dom.Document;
 
 public class SelectorTest {
     private static final Builder BUILDER = new Builder();

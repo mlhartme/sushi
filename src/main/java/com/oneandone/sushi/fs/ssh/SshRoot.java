@@ -17,20 +17,19 @@
 
 package com.oneandone.sushi.fs.ssh;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-
-import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.fs.OnShutdown;
-import com.oneandone.sushi.io.MultiOutputStream;
-import com.oneandone.sushi.util.ExitCode;
-
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
+import com.oneandone.sushi.fs.OnShutdown;
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.io.MultiOutputStream;
+import com.oneandone.sushi.util.ExitCode;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 // TODO: dump UserInfo interface?
 public class SshRoot implements Root, UserInfo, Runnable {

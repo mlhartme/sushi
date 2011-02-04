@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.util.Strings;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.util.Strings;
 
 public class Diff {
     private final boolean brief;

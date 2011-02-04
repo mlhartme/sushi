@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.io;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class OSTest {
     @Test

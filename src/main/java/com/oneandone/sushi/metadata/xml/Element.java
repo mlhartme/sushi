@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.util.List;
-import java.util.Map;
-
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.Type;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+
+import java.util.List;
+import java.util.Map;
 
 public abstract class Element {
     public static Element create(Item<?> owner, Type type) {

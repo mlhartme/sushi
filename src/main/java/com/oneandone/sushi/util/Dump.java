@@ -17,12 +17,6 @@
 
 package com.oneandone.sushi.util;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.metadata.ComplexType;
@@ -31,6 +25,12 @@ import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Readable object output. Implementation uses metadata, but that's hidden from the caller. */
 public class Dump {

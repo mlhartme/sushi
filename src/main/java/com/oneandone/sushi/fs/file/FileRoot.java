@@ -17,10 +17,9 @@
 
 package com.oneandone.sushi.fs.file;
 
-import java.io.File;
-
 import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.io.OS;
+
+import java.io.File;
 
 
 public class FileRoot implements Root {

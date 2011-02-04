@@ -17,13 +17,6 @@
 
 package com.oneandone.sushi.metadata;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-
 import com.oneandone.sushi.csv.Csv;
 import com.oneandone.sushi.csv.View;
 import com.oneandone.sushi.fs.IO;
@@ -36,6 +29,13 @@ import com.oneandone.sushi.metadata.xml.Serializer;
 import com.oneandone.sushi.metadata.xml.Tree;
 import com.oneandone.sushi.metadata.xml.WriterTree;
 import org.w3c.dom.Element;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 
 /** Some object and its type. TODO: toCsv, fromCsv. */
 public class Instance<T> {

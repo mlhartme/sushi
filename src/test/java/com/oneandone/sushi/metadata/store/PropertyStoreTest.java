@@ -17,19 +17,15 @@
 
 package com.oneandone.sushi.metadata.store;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Properties;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.file.FileNode;
-import org.junit.Test;
-
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.model.Engine;
 import com.oneandone.sushi.metadata.model.ModelBase;
 import com.oneandone.sushi.metadata.model.Vendor;
+import org.junit.Test;
+
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
 
 public class PropertyStoreTest extends ModelBase {
     @Test

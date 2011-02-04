@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.oneandone.sushi.TestProperties;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

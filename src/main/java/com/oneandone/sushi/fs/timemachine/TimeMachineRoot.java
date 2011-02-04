@@ -17,13 +17,12 @@
 
 package com.oneandone.sushi.fs.timemachine;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.Root;
 import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.util.Program;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class TimeMachineRoot implements Root {
     public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {

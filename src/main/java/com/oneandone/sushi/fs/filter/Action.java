@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import java.io.IOException;
-
 import com.oneandone.sushi.fs.Node;
+
+import java.io.IOException;
 
 public interface Action {
     void enter(Node node, boolean isLink);

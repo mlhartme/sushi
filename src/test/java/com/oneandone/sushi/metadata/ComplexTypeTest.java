@@ -17,18 +17,17 @@
 
 package com.oneandone.sushi.metadata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
 import com.oneandone.sushi.metadata.model.Car;
 import com.oneandone.sushi.metadata.model.Engine;
 import com.oneandone.sushi.metadata.model.Kind;
 import com.oneandone.sushi.metadata.model.Radio;
 import com.oneandone.sushi.metadata.model.Vendor;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ComplexTypeTest {
     private static final Schema METADATA = new AnnotationSchema();

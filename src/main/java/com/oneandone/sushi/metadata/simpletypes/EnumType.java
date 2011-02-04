@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.metadata.simpletypes;
 
-import java.util.Set;
-
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.SimpleTypeException;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.util.Reflect;
 import com.oneandone.sushi.xml.Serializer;
+
+import java.util.Set;
 
 
 public class EnumType extends SimpleType {

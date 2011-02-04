@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.csv;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.Test;
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CsvTest {
     private static final Format FMT = new Format();

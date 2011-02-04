@@ -17,15 +17,20 @@
 
 package com.oneandone.sushi.metadata;
 
-import java.util.List;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 import com.oneandone.sushi.metadata.Path.Step;
 import com.oneandone.sushi.metadata.model.Car;
 import com.oneandone.sushi.metadata.model.ModelBase;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class PathTest extends ModelBase {
     @Test

@@ -17,15 +17,8 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.Socket;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.net.ssl.SSLSocketFactory;
-
+import com.oneandone.sushi.fs.Root;
+import com.oneandone.sushi.util.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -40,8 +33,14 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.util.Base64;
+
+import javax.net.ssl.SSLSocketFactory;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WebdavRoot implements Root {
     private final WebdavFilesystem filesystem;

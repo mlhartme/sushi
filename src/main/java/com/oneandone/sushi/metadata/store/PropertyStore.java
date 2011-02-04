@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.metadata.store;
 
+import com.oneandone.sushi.metadata.Item;
+
 import java.util.List;
 import java.util.Properties;
-
-import com.oneandone.sushi.metadata.Item;
 
 public class PropertyStore implements Store {
     private final Properties props;

@@ -17,6 +17,17 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.fs.file.FileFilesystem;
+import com.oneandone.sushi.fs.file.FileNode;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.fs.memory.MemoryFilesystem;
+import com.oneandone.sushi.fs.memory.MemoryNode;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Reflect;
+import com.oneandone.sushi.util.Strings;
+import com.oneandone.sushi.xml.Xml;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,17 +41,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.oneandone.sushi.fs.file.FileFilesystem;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.fs.memory.MemoryFilesystem;
-import com.oneandone.sushi.fs.memory.MemoryNode;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Reflect;
-import com.oneandone.sushi.util.Strings;
-import com.oneandone.sushi.xml.Xml;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and

@@ -17,16 +17,14 @@
 
 package com.oneandone.sushi.fs;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
+import com.oneandone.sushi.fs.memory.MemoryNode;
+import org.junit.Test;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
 
-import org.junit.Test;
-
-import com.oneandone.sushi.fs.memory.MemoryNode;
+import static org.junit.Assert.assertEquals;
 
 public class NodeXmlTest {
     private static final IO IO_OBJ = new IO();

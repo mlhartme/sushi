@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-
 import com.oneandone.sushi.metadata.Cardinality;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Type;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
 
 public class CollectionItem extends Item<Object> {
     private final Field field;

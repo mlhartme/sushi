@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi.archive;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ArchiveTest {
     private static final IO IO_OBJ = new IO();

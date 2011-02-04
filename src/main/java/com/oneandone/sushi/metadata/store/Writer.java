@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.metadata.store;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.oneandone.sushi.metadata.Cardinality;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.Type;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Helper class to read and write properties. You'll usually not use this class directly,

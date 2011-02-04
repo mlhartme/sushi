@@ -17,12 +17,6 @@
 
 package com.oneandone.sushi.fs.timemachine;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.Filesystem;
@@ -36,6 +30,12 @@ import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.ReadLinkException;
 import com.oneandone.sushi.fs.SetLastModifiedException;
 import com.oneandone.sushi.fs.file.FileNode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TimeMachineNode extends Node {
     private final TimeMachineRoot root;

@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.util.Strings;
+
 import java.net.URI;
 import java.util.List;
-
-import com.oneandone.sushi.util.Strings;
 
 public abstract class Filesystem {
     private final IO io;

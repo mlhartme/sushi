@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.util.logging.Logger;
-
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.CharArrayBuffer;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Logger;
 
 public class LoggingSessionOutputBuffer extends SocketOutputBuffer {
     private final LineLogger logger;

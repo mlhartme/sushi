@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.fs.filter;
 
+import com.oneandone.sushi.fs.Node;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.oneandone.sushi.fs.Node;
 
 // TODO: is this another node-type?
 public class Tree {

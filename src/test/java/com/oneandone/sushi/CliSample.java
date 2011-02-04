@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.oneandone.sushi.cli.Cli;
 import com.oneandone.sushi.cli.Command;
 import com.oneandone.sushi.cli.Option;
-import com.oneandone.sushi.cli.Value;
 import com.oneandone.sushi.cli.Remaining;
+import com.oneandone.sushi.cli.Value;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CliSample extends Cli implements Command {
     public static void main(String[] args) {

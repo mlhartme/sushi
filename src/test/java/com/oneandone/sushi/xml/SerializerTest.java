@@ -16,25 +16,24 @@
  */
 
 package com.oneandone.sushi.xml;
- 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.junit.Test;
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.io.OS;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 public class SerializerTest {
     private static final String LF = OS.CURRENT.lineSeparator;

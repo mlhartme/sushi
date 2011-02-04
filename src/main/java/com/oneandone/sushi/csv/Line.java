@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.csv;
 
+import com.oneandone.sushi.util.Misc;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.oneandone.sushi.util.Misc;
 
 /** A list of cells, where each cell is a list of values */
 public class Line {

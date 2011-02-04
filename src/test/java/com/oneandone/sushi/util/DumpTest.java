@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.util;
 
-import org.junit.Test;
-
 import com.oneandone.sushi.metadata.model.Car;
 import com.oneandone.sushi.metadata.model.Engine;
 import com.oneandone.sushi.metadata.model.Vendor;
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class DumpTest {
     @Test

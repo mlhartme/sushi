@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.util;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ReflectTest {
     public static enum Foo {

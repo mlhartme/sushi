@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi.fs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.io.OS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public abstract class NodeReadOnlyTest {
     protected static final IO IO = new IO(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*");

@@ -17,10 +17,6 @@
 
 package com.oneandone.sushi.rss;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.xml.Builder;
 import com.oneandone.sushi.xml.Selector;
@@ -28,6 +24,10 @@ import com.oneandone.sushi.xml.XmlException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Feed {
     private final List<Channel> channels;

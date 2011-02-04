@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.cli;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.io.InputLogStream;
+import com.oneandone.sushi.io.MultiOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.io.InputLogStream;
-import com.oneandone.sushi.io.MultiOutputStream;
 
 /**
  * Configurable replacement for System.out, System.err and System.in. 

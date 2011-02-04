@@ -17,9 +17,12 @@
 
 package com.oneandone.sushi.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,13 +30,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class BuilderTest {
     private static final IO IO_OBJ = new IO();

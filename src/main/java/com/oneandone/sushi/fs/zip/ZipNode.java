@@ -17,6 +17,12 @@
 
 package com.oneandone.sushi.fs.zip;
 
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.MoveException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.SetLastModifiedException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +32,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.MkdirException;
-import com.oneandone.sushi.fs.MoveException;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.SetLastModifiedException;
 
 /** 
  * Use http networking properties to specify proxies:

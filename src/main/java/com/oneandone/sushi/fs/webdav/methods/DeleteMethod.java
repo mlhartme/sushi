@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.fs.webdav.methods;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavRoot;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class DeleteMethod extends WebdavMethod<Void> {
     public DeleteMethod(WebdavRoot root, String path) {

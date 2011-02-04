@@ -23,7 +23,6 @@ import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Strings;
 
 import java.io.File;
 import java.net.URI;

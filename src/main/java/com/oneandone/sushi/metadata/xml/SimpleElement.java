@@ -17,15 +17,14 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.util.List;
-
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.SimpleTypeException;
 import com.oneandone.sushi.metadata.Type;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+
+import java.util.List;
 
 public class SimpleElement extends Element {
     private final StringBuilder builder;

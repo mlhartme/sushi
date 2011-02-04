@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.metadata.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Option;
 import com.oneandone.sushi.metadata.annotation.Sequence;
+import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Value;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Type
 public class Car {

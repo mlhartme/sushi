@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.csv;
 
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.util.Strings;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.util.Strings;
 
 /** A list of lines. http://de.wikipedia.org/wiki/CSV-Datei. */
 public class Csv implements Iterable<Line> {

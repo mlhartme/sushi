@@ -17,20 +17,14 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import com.oneandone.sushi.TestProperties;
-import org.junit.Test;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeReadOnlyTest;
-import com.oneandone.sushi.fs.webdav.WebdavNode;
-import org.junit.runners.Parameterized;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {

@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
+import com.oneandone.sushi.metadata.Cardinality;
+import com.oneandone.sushi.metadata.Item;
+import com.oneandone.sushi.metadata.Type;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
-import com.oneandone.sushi.metadata.Cardinality;
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.Type;
 
 public class ArrayItem<T> extends Item<T> {
     private final Field field;

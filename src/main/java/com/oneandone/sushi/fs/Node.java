@@ -17,6 +17,22 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.archive.Archive;
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.util.Strings;
+import com.oneandone.sushi.xml.Serializer;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,23 +48,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.util.Strings;
-import com.oneandone.sushi.xml.Serializer;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * <p>Abstraction from a file: something stored under a path that you can get an input stream from or output stream to.

@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.metadata.model;
 
-import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Option;
+import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Value;
 
 @Type

@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import com.oneandone.sushi.fs.NodeTest;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Test;
-import com.oneandone.sushi.fs.NodeTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 public abstract class WebdavNodeFullBase extends NodeTest {
 	@Test

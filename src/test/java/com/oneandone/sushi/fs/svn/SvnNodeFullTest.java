@@ -17,22 +17,22 @@
 
 package com.oneandone.sushi.fs.svn;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.NodeTest;
+import com.oneandone.sushi.fs.file.FileNode;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import com.oneandone.sushi.fs.NodeInstantiationException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeTest;
-import com.oneandone.sushi.fs.file.FileNode;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SvnNodeFullTest extends NodeTest {
     private static SVNURL URL;

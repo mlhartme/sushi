@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import java.io.IOException;
-
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.Node;
+
+import java.io.IOException;
 
 public interface Predicate {
     Predicate FILE = new Predicate() {

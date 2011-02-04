@@ -17,23 +17,21 @@
 
 package com.oneandone.sushi.fs.ssh;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.jcraft.jsch.JSchException;
+import com.oneandone.sushi.TestProperties;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.util.ExitCode;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import com.oneandone.sushi.TestProperties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.util.ExitCode;
-
-import com.jcraft.jsch.JSchException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ConnectionFullTest {
     private static final IO IO_OBJ = new IO();

@@ -17,6 +17,10 @@
 
 package com.oneandone.sushi.archive;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.io.Buffer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,11 +32,6 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.io.Buffer;
 
 /** Represents a Zip or Jar file. For Zip files, the manifest is null. */
 public class Archive {

@@ -17,11 +17,10 @@
 
 package com.oneandone.sushi;
 
+import com.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-
-import com.oneandone.sushi.xml.Xml;
 
 public class XmlSample {
     private static final Xml XML = new Xml();

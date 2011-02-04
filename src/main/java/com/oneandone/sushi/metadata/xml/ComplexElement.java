@@ -17,11 +17,6 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.ItemException;
@@ -29,6 +24,11 @@ import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.Variable;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ComplexElement extends Element {
     private final ComplexType type;

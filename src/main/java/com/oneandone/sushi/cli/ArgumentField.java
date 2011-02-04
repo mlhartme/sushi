@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.cli;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.Type;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
     public static ArgumentField create(String name, Schema metadata, Field field) {

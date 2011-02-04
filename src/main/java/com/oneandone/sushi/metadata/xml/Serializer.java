@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.Type;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** 
  * You'll normally not use this class directly, use Data.toXml instead.

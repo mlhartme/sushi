@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.cli;
 
-import java.util.Arrays;
-import java.util.Locale;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 /** 
  * Base class for classes with main methods. The command line is defined by annotating

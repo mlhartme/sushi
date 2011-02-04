@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi;
 
-import java.util.Properties;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+
+import java.util.Properties;
 
 public class PropertiesSample {
     /** Serialize object to xml and load the result back into an object */

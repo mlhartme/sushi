@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Strings;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
-
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Strings;
 
 /**
  * <p>Settings for nodes. Immutable. </p>

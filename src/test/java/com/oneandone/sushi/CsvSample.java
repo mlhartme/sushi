@@ -17,8 +17,6 @@
 
 package com.oneandone.sushi;
 
-import java.util.Arrays;
-
 import com.oneandone.sushi.csv.Csv;
 import com.oneandone.sushi.csv.Format;
 import com.oneandone.sushi.csv.View;
@@ -26,6 +24,8 @@ import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+
+import java.util.Arrays;
 
 public class CsvSample {
     private static final IO IO_OBJ = new IO();

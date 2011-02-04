@@ -17,19 +17,19 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.message.BasicLineParser;
 import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
 import com.oneandone.sushi.xml.ChildElements;
 import com.oneandone.sushi.xml.Dom;
 import com.oneandone.sushi.xml.Xml;
+import org.apache.http.HttpResponse;
+import org.apache.http.message.BasicLineParser;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultiStatus {
     private static final String XML_STATUS = "status";

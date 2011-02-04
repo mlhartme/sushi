@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.IOException;
-
 import org.apache.http.StatusLine;
+
+import java.io.IOException;
 
 public class StatusException extends IOException {
     private final StatusLine statusline;

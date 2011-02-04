@@ -17,10 +17,8 @@
 
 package com.oneandone.sushi.xml;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.oneandone.sushi.fs.Node;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,9 +28,10 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
-
-import com.oneandone.sushi.fs.Node;
-import org.xml.sax.SAXException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Create SaxParser- and DocumentBuilder Factories. 

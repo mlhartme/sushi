@@ -17,14 +17,13 @@
 
 package com.oneandone.sushi.fs.ssh;
 
-import java.io.OutputStream;
-import java.util.Arrays;
-
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSchException;
 import com.oneandone.sushi.util.ExitCode;
 import com.oneandone.sushi.util.Strings;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSchException;
+import java.io.OutputStream;
+import java.util.Arrays;
 
 /** Process on the remote host */
 public class Process {

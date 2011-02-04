@@ -17,6 +17,26 @@
 
 package com.oneandone.sushi.fs.file;
 
+import com.oneandone.sushi.fs.DeleteException;
+import com.oneandone.sushi.fs.ExistsException;
+import com.oneandone.sushi.fs.GetLastModifiedException;
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.LengthException;
+import com.oneandone.sushi.fs.LinkException;
+import com.oneandone.sushi.fs.ListException;
+import com.oneandone.sushi.fs.MkdirException;
+import com.oneandone.sushi.fs.MkfileException;
+import com.oneandone.sushi.fs.MoveException;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.OnShutdown;
+import com.oneandone.sushi.fs.ReadLinkException;
+import com.oneandone.sushi.fs.SetLastModifiedException;
+import com.oneandone.sushi.fs.zip.ZipFilesystem;
+import com.oneandone.sushi.fs.zip.ZipNode;
+import com.oneandone.sushi.io.Buffer;
+import com.oneandone.sushi.io.OS;
+import com.oneandone.sushi.util.Program;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,14 +46,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.*;
-import com.oneandone.sushi.fs.zip.ZipFilesystem;
-import com.oneandone.sushi.fs.zip.ZipNode;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Program;
 
 /**
  * <p>File, directory, symlink or something not yet created. Replacement for java.io.File.</p>

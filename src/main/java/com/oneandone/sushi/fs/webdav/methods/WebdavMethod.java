@@ -17,23 +17,22 @@
 
 package com.oneandone.sushi.fs.webdav.methods;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavRoot;
+import com.oneandone.sushi.xml.Namespace;
+import com.oneandone.sushi.xml.Xml;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.protocol.HTTP;
-import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
-import com.oneandone.sushi.xml.Namespace;
-import com.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public abstract class WebdavMethod<T> {
     public static final Namespace DAV = Namespace.getNamespace("D", "DAV:");

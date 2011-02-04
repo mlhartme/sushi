@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.fs.console;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.MkdirException;
 import com.oneandone.sushi.fs.MoveException;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.SetLastModifiedException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 
 public class ConsoleNode extends Node {
     private final ConsoleFilesystem root;

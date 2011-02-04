@@ -17,11 +17,6 @@
 
 package com.oneandone.sushi.csv;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Path;
@@ -33,6 +28,11 @@ import com.oneandone.sushi.metadata.annotation.Sequence;
 import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Value;
 import com.oneandone.sushi.metadata.xml.LoaderException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /** Defines how to turn instances into csv an vice versa */ 
 @Type public class View {

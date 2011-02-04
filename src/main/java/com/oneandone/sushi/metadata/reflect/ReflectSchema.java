@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.simpletypes.NodeType;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
 
 public class ReflectSchema extends Schema {
     public ReflectSchema() {

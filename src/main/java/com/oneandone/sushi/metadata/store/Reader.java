@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi.metadata.store;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import com.oneandone.sushi.metadata.Cardinality;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.SimpleType;
 import com.oneandone.sushi.metadata.SimpleTypeException;
 import com.oneandone.sushi.metadata.Type;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class Reader {
     private final Store src;

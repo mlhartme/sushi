@@ -17,13 +17,10 @@
 
 package com.oneandone.sushi.fs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,10 +33,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public abstract class NodeTest extends NodeReadOnlyTest {
     @Test

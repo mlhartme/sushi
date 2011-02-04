@@ -17,11 +17,11 @@
 
 package com.oneandone.sushi.rss;
 
-import java.util.Date;
-
-import junit.framework.TestCase;
 import com.oneandone.sushi.xml.Xml;
 import com.oneandone.sushi.xml.XmlException;
+import junit.framework.TestCase;
+
+import java.util.Date;
 
 public class FeedTest extends TestCase {
     private static final Xml XML = new Xml();

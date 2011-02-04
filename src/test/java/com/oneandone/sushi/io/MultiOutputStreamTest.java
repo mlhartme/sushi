@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.io;
 
-import java.io.IOException;
-
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class MultiOutputStreamTest {
     @Test

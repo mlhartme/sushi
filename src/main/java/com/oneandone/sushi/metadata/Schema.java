@@ -17,12 +17,6 @@
 
 package com.oneandone.sushi.metadata;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.oneandone.sushi.metadata.simpletypes.BooleanType;
 import com.oneandone.sushi.metadata.simpletypes.CharacterType;
 import com.oneandone.sushi.metadata.simpletypes.ClassType;
@@ -36,6 +30,12 @@ import com.oneandone.sushi.metadata.simpletypes.StringType;
 import com.oneandone.sushi.metadata.simpletypes.VoidType;
 import com.oneandone.sushi.util.Reflect;
 import com.oneandone.sushi.util.Strings;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
  * A set of Types. Initially, the set consists of simple types only. Complex types

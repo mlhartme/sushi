@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.fs.filter;
 
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.util.Strings;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.util.Strings;
 
 /**
  * <p>Similar to java.io.FileFilter or Ant File/Directory sets. A filter is basically a list of paths to 

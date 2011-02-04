@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.csv;
 
-import java.util.List;
-
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Path;
 import com.oneandone.sushi.metadata.SimpleTypeException;
 import com.oneandone.sushi.metadata.Variable;
 import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Value;
+
+import java.util.List;
 
 @Type public class Field {
     @Value private String name;

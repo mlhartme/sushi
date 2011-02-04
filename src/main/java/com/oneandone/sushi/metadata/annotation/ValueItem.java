@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi.metadata.annotation;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-
 import com.oneandone.sushi.metadata.Cardinality;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.ItemException;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.Type;
+
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ValueItem<T> extends Item<T> {
     public static ValueItem create(Schema metadata, Field field) {

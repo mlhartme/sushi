@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.fs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.oneandone.sushi.util.Substitution;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import com.oneandone.sushi.util.Substitution;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CopyDiffTest {
 	private IO io;

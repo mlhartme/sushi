@@ -17,11 +17,11 @@
 
 package com.oneandone.sushi.fs.filter;
 
+import com.oneandone.sushi.fs.Node;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.oneandone.sushi.fs.Node;
 
 public class TreeAction implements Action {
     private final List<Node> nodes;

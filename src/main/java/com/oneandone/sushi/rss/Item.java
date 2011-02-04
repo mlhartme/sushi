@@ -17,16 +17,15 @@
 
 package com.oneandone.sushi.rss;
 
+import com.oneandone.sushi.xml.Builder;
+import com.oneandone.sushi.xml.Selector;
+import com.oneandone.sushi.xml.XmlException;
+import org.w3c.dom.Element;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import org.w3c.dom.Element;
-
-import com.oneandone.sushi.xml.Builder;
-import com.oneandone.sushi.xml.Selector;
-import com.oneandone.sushi.xml.XmlException;
 
 public class Item {
     public static Item fromXml(Selector selector, Element item) throws XmlException {

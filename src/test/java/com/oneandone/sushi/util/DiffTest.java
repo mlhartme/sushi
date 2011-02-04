@@ -17,19 +17,16 @@
 
 package com.oneandone.sushi.util;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.Test;
-import com.oneandone.sushi.fs.GetLastModifiedException;
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class DiffTest {
     @Test

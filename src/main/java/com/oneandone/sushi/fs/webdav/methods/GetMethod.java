@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.fs.webdav.methods;
 
+import com.oneandone.sushi.fs.webdav.StatusException;
+import com.oneandone.sushi.fs.webdav.WebdavConnection;
+import com.oneandone.sushi.fs.webdav.WebdavRoot;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+
 import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import com.oneandone.sushi.fs.webdav.StatusException;
-import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
 
 public class GetMethod extends WebdavMethod<InputStream> {
     public GetMethod(WebdavRoot root, String path) {

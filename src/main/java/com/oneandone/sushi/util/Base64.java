@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.util;
 
+import com.oneandone.sushi.fs.Settings;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-
-import com.oneandone.sushi.fs.Settings;
 
 public class Base64 {
     /** true create base64 */

@@ -17,13 +17,16 @@
 
 package com.oneandone.sushi.xml;
 
-import java.util.List;
-
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 public class DomTest {
     private static final Builder BUILDER = new Builder();

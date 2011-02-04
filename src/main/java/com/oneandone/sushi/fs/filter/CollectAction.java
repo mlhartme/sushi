@@ -17,10 +17,10 @@
 
 package com.oneandone.sushi.fs.filter;
 
+import com.oneandone.sushi.fs.Node;
+
 import java.io.IOException;
 import java.util.Collection;
-
-import com.oneandone.sushi.fs.Node;
 
 public class CollectAction implements Action {
     private final Collection<Node> collection;

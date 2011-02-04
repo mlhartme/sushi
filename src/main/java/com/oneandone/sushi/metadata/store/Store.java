@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.metadata.store;
 
-import java.util.List;
-
 import com.oneandone.sushi.metadata.Item;
+
+import java.util.List;
 
 public interface Store {
     void write(List<Item<?>> parents, String path, String value) throws Exception;

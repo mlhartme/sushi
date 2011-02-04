@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.metadata;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import com.oneandone.sushi.metadata.model.Kind;
 import com.oneandone.sushi.metadata.model.ModelBase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SimpleTypeTest extends ModelBase {
     @Test

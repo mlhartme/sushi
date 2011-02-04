@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.rss;
 
-import java.text.ParseException;
-
 import junit.framework.TestCase;
+
+import java.text.ParseException;
 
 public class ItemTest extends TestCase {
     public void testDate() throws ParseException {

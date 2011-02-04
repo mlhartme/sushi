@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A none-empty list of sax exceptions with position information in the message. */
 public class LoaderException extends IOException {

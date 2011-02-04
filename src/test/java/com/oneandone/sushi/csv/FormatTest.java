@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.csv;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class FormatTest {
     private Format format = new Format(false, '/', '\'');

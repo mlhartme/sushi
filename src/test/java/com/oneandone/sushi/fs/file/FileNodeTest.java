@@ -17,21 +17,20 @@
 
 package com.oneandone.sushi.fs.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.oneandone.sushi.fs.Filesystem;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.NodeTest;
+import com.oneandone.sushi.io.OS;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.NodeInstantiationException;
-import org.junit.Test;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeTest;
-import com.oneandone.sushi.io.OS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /** TODO: move more tests into NodeTest */
 public class FileNodeTest extends NodeTest {

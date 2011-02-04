@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.metadata.xml;
 
+import com.oneandone.sushi.xml.Builder;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.oneandone.sushi.xml.Builder;
-import org.w3c.dom.Element;
 
 /** You'll normally not use this class directly, use Data.toXml instead */
 public class DomTree extends Tree {

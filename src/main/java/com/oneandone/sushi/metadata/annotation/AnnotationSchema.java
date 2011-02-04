@@ -17,12 +17,12 @@
 
 package com.oneandone.sushi.metadata.annotation;
 
+import com.oneandone.sushi.metadata.ComplexType;
+import com.oneandone.sushi.metadata.Schema;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
-import com.oneandone.sushi.metadata.ComplexType;
-import com.oneandone.sushi.metadata.Schema;
 
 /** Metadata based on annotations */
 public class AnnotationSchema extends Schema {

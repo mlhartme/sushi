@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.util;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.file.FileNode;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.file.FileNode;
 
 /**
  * Wraps a Process builder to add some convenience methods

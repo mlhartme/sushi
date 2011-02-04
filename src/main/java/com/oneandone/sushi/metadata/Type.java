@@ -17,6 +17,13 @@
 
 package com.oneandone.sushi.metadata;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.metadata.store.PropertyStore;
+import com.oneandone.sushi.metadata.xml.Loader;
+import com.oneandone.sushi.metadata.xml.LoaderException;
+import org.xml.sax.InputSource;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -25,13 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.metadata.store.PropertyStore;
-import com.oneandone.sushi.metadata.xml.Loader;
-import com.oneandone.sushi.metadata.xml.LoaderException;
-import org.xml.sax.InputSource;
 
 public abstract class Type {
     public static final String SCHEMA_HEAD = 

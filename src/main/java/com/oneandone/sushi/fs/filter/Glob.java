@@ -17,9 +17,9 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import java.util.regex.Pattern;
-
 import com.oneandone.sushi.util.Strings;
+
+import java.util.regex.Pattern;
 
 /**
  * File name patterns. Uses oro-matcher because we want to support jdk 1.3

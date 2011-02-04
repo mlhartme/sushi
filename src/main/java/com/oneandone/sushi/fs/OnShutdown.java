@@ -17,14 +17,14 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.fs.file.FileNode;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.oneandone.sushi.fs.file.FileNode;
 
 /** 
  * Shutdown hook to delete temporary FileNodes (in particular: directories, because 

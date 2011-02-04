@@ -17,12 +17,13 @@
 
 package com.oneandone.sushi.fs;
 
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class LineReaderTest {
     IO io = new IO();

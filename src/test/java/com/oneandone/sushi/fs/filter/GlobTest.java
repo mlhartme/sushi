@@ -17,11 +17,13 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import java.util.regex.Pattern;
-
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.regex.Pattern;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GlobTest {
     private Pattern p;

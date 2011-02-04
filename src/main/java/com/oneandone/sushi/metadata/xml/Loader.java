@@ -17,14 +17,6 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.SAXParser;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Type;
@@ -35,6 +27,13 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Loader extends DefaultHandler {
     private Locator locator;

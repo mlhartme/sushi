@@ -17,14 +17,18 @@
 
 package com.oneandone.sushi.fs.memory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
 import com.oneandone.sushi.fs.LengthException;
 import com.oneandone.sushi.fs.Root;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.io.CheckedByteArrayInputStream;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MemoryRoot implements Root {
     public final MemoryFilesystem filesystem;

@@ -17,13 +17,13 @@
 
 package com.oneandone.sushi.cli;
 
-import java.lang.reflect.Method;
-
-import org.junit.Test;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertEquals;
 
 public class ArgumentMethodTest {
     @Test

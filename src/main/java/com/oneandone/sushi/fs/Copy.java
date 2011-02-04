@@ -17,6 +17,11 @@
 
 package com.oneandone.sushi.fs;
 
+import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.fs.filter.Tree;
+import com.oneandone.sushi.fs.filter.TreeAction;
+import com.oneandone.sushi.util.Substitution;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,11 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.fs.filter.Tree;
-import com.oneandone.sushi.fs.filter.TreeAction;
-import com.oneandone.sushi.util.Substitution;
 
 /** Copy configuration and command. */
 public class Copy {

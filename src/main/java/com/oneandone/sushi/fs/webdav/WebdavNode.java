@@ -17,25 +17,6 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import org.apache.http.HttpHost;
-import org.apache.http.HttpStatus;
-import org.apache.http.impl.io.ChunkedOutputStream;
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.GetLastModifiedException;
@@ -54,6 +35,25 @@ import com.oneandone.sushi.fs.webdav.methods.PropFindMethod;
 import com.oneandone.sushi.fs.webdav.methods.PropPatchMethod;
 import com.oneandone.sushi.fs.webdav.methods.PutMethod;
 import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpStatus;
+import org.apache.http.impl.io.ChunkedOutputStream;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class WebdavNode extends Node {
 	private final WebdavRoot root;

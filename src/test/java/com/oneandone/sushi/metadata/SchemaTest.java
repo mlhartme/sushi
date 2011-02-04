@@ -17,21 +17,20 @@
 
 package com.oneandone.sushi.metadata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
 import com.oneandone.sushi.metadata.model.Engine;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import com.oneandone.sushi.xml.Builder;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class SchemaTest {
     private static final IO IO_OBJ = new IO();

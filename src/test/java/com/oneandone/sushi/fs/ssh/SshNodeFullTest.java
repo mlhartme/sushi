@@ -17,24 +17,20 @@
 
 package com.oneandone.sushi.fs.ssh;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.List;
-
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
+import com.jcraft.jsch.JSchException;
+import com.oneandone.sushi.fs.NodeTest;
 import com.oneandone.sushi.fs.file.FileNode;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import com.oneandone.sushi.fs.NodeTest;
 
-import com.jcraft.jsch.JSchException;
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SshNodeFullTest extends NodeTest {
     private static SshRoot root;

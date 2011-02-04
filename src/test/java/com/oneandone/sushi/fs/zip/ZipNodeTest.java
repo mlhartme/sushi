@@ -17,22 +17,21 @@
 
 package com.oneandone.sushi.fs.zip;
 
+import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.file.FileNode;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URLClassLoader;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.file.FileNode;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {

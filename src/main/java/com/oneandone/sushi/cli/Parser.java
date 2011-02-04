@@ -17,6 +17,10 @@
 
 package com.oneandone.sushi.cli;
 
+import com.oneandone.sushi.metadata.Schema;
+import com.oneandone.sushi.metadata.SimpleType;
+import com.oneandone.sushi.metadata.SimpleTypeException;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,10 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
-import com.oneandone.sushi.metadata.SimpleTypeException;
 
 /**
  * A command line parser defined by option, value and child annotations taken from the defining class

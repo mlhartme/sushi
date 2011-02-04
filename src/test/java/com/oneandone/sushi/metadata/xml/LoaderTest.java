@@ -17,16 +17,6 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-
-import org.junit.Test;
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.SimpleTypeException;
@@ -39,7 +29,17 @@ import com.oneandone.sushi.metadata.model.Engine;
 import com.oneandone.sushi.metadata.model.ModelBase;
 import com.oneandone.sushi.metadata.model.Vendor;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class LoaderTest extends ModelBase {
     // primitives

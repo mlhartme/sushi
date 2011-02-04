@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-public class WebdavFilesystem extends Filesystem {
+public abstract class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = Settings.UTF_8;
 	public static final Logger WIRE = Logger.getLogger("sushi.webdav.wire");
 
@@ -70,8 +70,8 @@ public class WebdavFilesystem extends Filesystem {
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
 
-    public WebdavFilesystem(IO io, String name) {
-        super(io, '/', new Features(true /* TODO: not always */, true, false, false, false, false), name);
+    public WebdavFilesystem(IO io, String scheme, boolean write) {
+        super(io, '/', new Features(write, true, false, false, false, false), scheme);
 
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;

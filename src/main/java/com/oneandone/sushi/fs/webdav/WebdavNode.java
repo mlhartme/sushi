@@ -483,7 +483,11 @@ public class WebdavNode extends Node {
         reset = tryDir;
         tryDir = tryTryDir;
         try {
-            result = doTryDir();
+            if (getRoot().getFilesystem() instanceof HttpFilesystem) {
+                result = doTryDirHttp();
+            } else {
+                result = doTryDirDav();
+            }
         } catch (MovedException e) {
             tryDir = reset;
             return false;
@@ -500,36 +504,30 @@ public class WebdavNode extends Node {
         return result;
     }
 
-    private boolean doTryDir() throws IOException {
+    private boolean doTryDirDav() throws IOException {
         Property property;
         org.w3c.dom.Node node;
-        int code;
 
+        property = getProperty(Name.RESOURCETYPE);
+        node = (org.w3c.dom.Node) property.getValue();
+        if (node == null) {
+            return tryDir == false;
+        }
+        return tryDir == "collection".equals(node.getLocalName());
+    }
+
+    private boolean doTryDirHttp() throws IOException {
         try {
-            property = getProperty(Name.RESOURCETYPE);
-            node = (org.w3c.dom.Node) property.getValue();
-            if (node == null) {
-                return tryDir == false;
-            }
-            return tryDir == "collection".equals(node.getLocalName());
-        } catch (StatusException e) {
-            code = e.getStatusLine().getStatusCode();
-            if (code == HttpStatus.SC_METHOD_NOT_ALLOWED) {
-                try {
-                    new Head(this).invoke();
-                    return true;
-                } catch (StatusException e2) {
-                    switch (e2.getStatusLine().getStatusCode()) {
-                        case HttpStatus.SC_MOVED_PERMANENTLY:
-                            return false;
-                        case HttpStatus.SC_NOT_FOUND:
-                            return false;
-                        default:
-                            throw e2;
-                    }
-                }
-            } else {
-                throw e;
+            new Head(this).invoke();
+            return true;
+        } catch (StatusException e2) {
+            switch (e2.getStatusLine().getStatusCode()) {
+                case HttpStatus.SC_MOVED_PERMANENTLY:
+                    return false;
+                case HttpStatus.SC_NOT_FOUND:
+                    return false;
+                default:
+                    throw e2;
             }
         }
     }

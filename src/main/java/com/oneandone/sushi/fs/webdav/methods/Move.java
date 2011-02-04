@@ -21,6 +21,7 @@ import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
+import com.oneandone.sushi.util.Strings;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
@@ -30,7 +31,7 @@ import java.net.URI;
 public class Move extends Method<Void> {
     public Move(WebdavNode source, URI destination) {
         super("MOVE", source);
-        setRequestHeader("Destination", destination.toString());
+        setRequestHeader("Destination", "http" + Strings.removeStart(destination.toString(), "dav"));  // TODO
         setRequestHeader("Overwrite", "F");
     }
     

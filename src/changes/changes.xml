@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Support webdav URIs with queries.
       </action>
+      <action dev="mlhartme" type="update">
+        Distinguish dav(s) and http(s) schemes.
+      </action>
       <action dev="mlhartme" type="delete">
         WebdavNode.getUrl() dumped.
       </action>

@@ -86,6 +86,7 @@ public class IO {
 
     public IO() {
         this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
+        addStandardFilesystems();
     }
 
     public IO(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
@@ -95,14 +96,6 @@ public class IO {
         this.filesystems = new HashMap<String, Filesystem>();
         this.fileFilesystem = this.addFilesystem(new FileFilesystem(this, "file"));
         this.memoryFilesystem = this.addFilesystem(new MemoryFilesystem(this, "mem"));
-        addFilesystem(new ConsoleFilesystem(this, "console"));
-        addFilesystem(new ZipFilesystem(this, "zip"));
-        addFilesystem(new ZipFilesystem(this, "jar"));
-        addFilesystem(new TimeMachineFilesystem(this, "tm"));
-        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", "ssh");
-        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", "svn");
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.HttpFilesystem", "http", "https");
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.DavFilesystem", "dav", "davs");
         this.temp = init("java.io.tmpdir");
         this.home = init("user.home");
         this.working = init("user.dir");
@@ -153,18 +146,86 @@ public class IO {
         return xml;
     }
 
-    //--
+    //--  filesystems
 
-    public Filter filter() {
-        Filter filter;
-
-        filter = new Filter();
-        filter.exclude(defaultExcludes);
-        return filter;
+    public IO addStandardFilesystems() {
+        addFilesystem(new ConsoleFilesystem(this, "console"));
+        addFilesystem(new ZipFilesystem(this, "zip"));
+        addFilesystem(new ZipFilesystem(this, "jar"));
+        addFilesystem(new TimeMachineFilesystem(this, "tm"));
+        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", "ssh");
+        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", "svn");
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.HttpFilesystem", "http", "https");
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.DavFilesystem", "dav", "davs");
+        return this;
     }
 
-    public List<String> defaultExcludes() {
-        return defaultExcludes;
+    public <T extends Filesystem> T addFilesystem(T filesystem) {
+    	String name;
+
+    	name = filesystem.getScheme();
+        if (filesystems.containsKey(name)) {
+            throw new IllegalArgumentException("duplicate filesystem scheme: " + name);
+        }
+        filesystems.put(name, filesystem);
+        return filesystem;
+    }
+
+    public boolean addFilesystemOpt(String filesystemClass, String ... schemes) {
+        Class<?> clazz;
+        Filesystem filesystem;
+
+        try {
+            clazz = Class.forName(filesystemClass);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        for (String scheme : schemes) {
+            try {
+                filesystem = (Filesystem) clazz.getConstructor(IO.class, String.class).newInstance(this, scheme);
+                addFilesystem(filesystem);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
+            }
+        }
+        return true;
+    }
+
+    public Filesystem getFilesystem(String scheme) {
+        Filesystem result;
+
+        result = filesystems.get(scheme);
+        if (result == null) {
+            throw new IllegalArgumentException("unknown scheme: " + scheme);
+        }
+        return result;
+    }
+
+    public FileFilesystem getFileFilesystem() {
+        return fileFilesystem;
+    }
+
+    public MemoryFilesystem getMemoryFilesystem() {
+        return memoryFilesystem;
+    }
+
+    public <T extends Filesystem> T getFilesystem(String scheme, Class<T> clazz) {
+        Filesystem filesystem;
+
+        filesystem = lookupFilesystem(scheme);
+        if (filesystem == null) {
+            throw new IllegalArgumentException("no such filesystem: " + scheme);
+        }
+        if (!clazz.isInstance(filesystem)) {
+            throw new IllegalArgumentException("unexpected file system type: " + filesystem.getClass().getName());
+        }
+        return (T) filesystem;
+    }
+
+    public Filesystem lookupFilesystem(String scheme) {
+        return filesystems.get(scheme);
     }
 
     //-- Node creation
@@ -299,6 +360,20 @@ public class IO {
 
     //--
 
+    public Filter filter() {
+        Filter filter;
+
+        filter = new Filter();
+        filter.exclude(defaultExcludes);
+        return filter;
+    }
+
+    public List<String> defaultExcludes() {
+        return defaultExcludes;
+    }
+
+    //--
+
     public List<Node> path(String path) throws URISyntaxException, NodeInstantiationException {
         List<Node> result;
 
@@ -319,7 +394,7 @@ public class IO {
         return result;
     }
 
-    //--
+    //-- classpath
 
     /**
      * Returns the file or directory containing the specified resource.
@@ -420,76 +495,6 @@ public class IO {
             throw new RuntimeException("protocol not supported: " + protocol);
         }
         return file;
-    }
-
-    //--  filesystems
-
-    public <T extends Filesystem> T addFilesystem(T filesystem) {
-    	String name;
-
-    	name = filesystem.getScheme();
-        if (filesystems.containsKey(name)) {
-            throw new IllegalArgumentException("duplicate filesystem scheme: " + name);
-        }
-        filesystems.put(name, filesystem);
-        return filesystem;
-    }
-
-    public boolean addFilesystemOpt(String filesystemClass, String ... schemes) {
-        Class<?> clazz;
-        Filesystem filesystem;
-
-        try {
-            clazz = Class.forName(filesystemClass);
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-        for (String scheme : schemes) {
-            try {
-                filesystem = (Filesystem) clazz.getConstructor(IO.class, String.class).newInstance(this, scheme);
-                addFilesystem(filesystem);
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
-            }
-        }
-        return true;
-    }
-
-    public Filesystem getFilesystem(String scheme) {
-        Filesystem result;
-
-        result = filesystems.get(scheme);
-        if (result == null) {
-            throw new IllegalArgumentException("unknown scheme: " + scheme);
-        }
-        return result;
-    }
-
-    public FileFilesystem getFileFilesystem() {
-        return fileFilesystem;
-    }
-
-    public MemoryFilesystem getMemoryFilesystem() {
-        return memoryFilesystem;
-    }
-
-    public <T extends Filesystem> T getFilesystem(String scheme, Class<T> clazz) {
-        Filesystem filesystem;
-
-        filesystem = lookupFilesystem(scheme);
-        if (filesystem == null) {
-            throw new IllegalArgumentException("no such filesystem: " + scheme);
-        }
-        if (!clazz.isInstance(filesystem)) {
-            throw new IllegalArgumentException("unexpected file system type: " + filesystem.getClass().getName());
-        }
-        return (T) filesystem;
-    }
-
-    public Filesystem lookupFilesystem(String scheme) {
-        return filesystems.get(scheme);
     }
 
     //--

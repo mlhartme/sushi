@@ -87,11 +87,19 @@ public class WebdavNode extends Node {
     }
 
     public URI getURI() {
+        return getURI(root.getFilesystem().getScheme());
+    }
+
+    public URI getInternalURI() {
+        return getURI(root.getFilesystem().getInternalScheme());
+    }
+
+    private URI getURI(String scheme) {
         HttpHost host;
 
         host = root.host;
         try {
-            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, getQuery(), null);
+            return new URI(scheme, null, host.getHostName(), host.getPort(), "/" + path, getQuery(), null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }
@@ -483,10 +491,10 @@ public class WebdavNode extends Node {
         reset = tryDir;
         tryDir = tryTryDir;
         try {
-            if (getRoot().getFilesystem() instanceof HttpFilesystem) {
-                result = doTryDirHttp();
-            } else {
+            if (getRoot().getFilesystem().isDav()) {
                 result = doTryDirDav();
+            } else {
+                result = doTryDirHttp();
             }
         } catch (MovedException e) {
             tryDir = reset;

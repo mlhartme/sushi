@@ -31,7 +31,7 @@ import java.net.URI;
 public class Move extends Method<Void> {
     public Move(WebdavNode source, WebdavNode destination) {
         super("MOVE", source);
-        setRequestHeader("Destination", "http" + Strings.removeStart(destination.getURI().toString(), "dav")); // TODO
+        setRequestHeader("Destination", destination.getInternalURI().toString());
         setRequestHeader("Overwrite", "F");
     }
     

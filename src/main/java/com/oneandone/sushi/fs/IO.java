@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -153,10 +154,12 @@ public class IO {
         addFilesystem(new ZipFilesystem(this, "zip"));
         addFilesystem(new ZipFilesystem(this, "jar"));
         addFilesystem(new TimeMachineFilesystem(this, "tm"));
-        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", "ssh");
-        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", "svn");
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.HttpFilesystem", "http", "https");
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.DavFilesystem", "dav", "davs");
+        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh");
+        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "dav", "http", true);
+        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "davs", "https", true);
         return this;
     }
 
@@ -171,23 +174,60 @@ public class IO {
         return filesystem;
     }
 
-    public boolean addFilesystemOpt(String filesystemClass, String ... schemes) {
+    public Filesystem addFilesystemOpt(String filesystemClass, Object ... args) {
         Class<?> clazz;
+        Constructor constructor;
         Filesystem filesystem;
 
         try {
             clazz = Class.forName(filesystemClass);
         } catch (ClassNotFoundException e) {
+            return null;
+        }
+        try {
+            constructor = null;
+            for (Constructor c : clazz.getConstructors()) {
+                if (matches(c.getParameterTypes(), args)) {
+                    if (constructor != null) {
+                        throw new IllegalArgumentException("constructor ambiguous");
+                    }
+                    constructor = c;
+                }
+            }
+            if (constructor == null) {
+                throw new IllegalArgumentException("no constructor: " + filesystemClass);
+            }
+            filesystem = (Filesystem) constructor.newInstance(args);
+            addFilesystem(filesystem);
+            return filesystem;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
+        }
+    }
+
+    private static boolean matches(Class<?>[] formals, Object[] actuals) {
+        int max;
+        Class<?> formal;
+        Object actual;
+
+        max = formals.length;
+        if (actuals.length != max) {
             return false;
         }
-        for (String scheme : schemes) {
-            try {
-                filesystem = (Filesystem) clazz.getConstructor(IO.class, String.class).newInstance(this, scheme);
-                addFilesystem(filesystem);
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalArgumentException("cannot instantiate " + filesystemClass, e);
+        for (int i = 0; i < max; i++) {
+            formal = formals[i];
+            actual = actuals[i];
+            if (!formal.isInstance(actual)) {
+                if (formal.isPrimitive()) {
+                    formal = Reflect.getWrapper(formal);
+                    if (!formal.isInstance(actual)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
         }
         return true;

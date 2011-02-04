@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-public abstract class WebdavFilesystem extends Filesystem {
+public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = Settings.UTF_8;
 	public static final Logger WIRE = Logger.getLogger("sushi.webdav.wire");
 
@@ -67,12 +67,16 @@ public abstract class WebdavFilesystem extends Filesystem {
         WIRE.addHandler(handler);
 	}
 
+    private final String internalScheme;
+    private final boolean dav;
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
 
-    public WebdavFilesystem(IO io, String scheme, boolean write) {
-        super(io, '/', new Features(write, true, false, false, false, false), scheme);
+    public WebdavFilesystem(IO io, String scheme, String internalScheme, boolean dav) {
+        super(io, '/', new Features(dav, true, false, false, false, false), scheme);
 
+        this.internalScheme = internalScheme;
+        this.dav = dav;
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
     }
@@ -91,6 +95,14 @@ public abstract class WebdavFilesystem extends Filesystem {
         return root(uri).node(getCheckedPath(uri), uri.getRawQuery());
     }
 
+    public String getInternalScheme() {
+        return internalScheme;
+    }
+
+    public boolean isDav() {
+        return dav;
+    }
+
     public WebdavRoot root(URI uri) {
         WebdavRoot result;
         String info;
@@ -104,7 +116,7 @@ public abstract class WebdavFilesystem extends Filesystem {
         if (port == -1) {
         	port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
-        result = new WebdavRoot(this, uri.getScheme(), uri.getHost(), port);
+        result = new WebdavRoot(this, internalScheme, uri.getHost(), port);
         info = uri.getUserInfo();
         if (info != null) {
             result.setUserInfo(info);

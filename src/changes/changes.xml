@@ -7,6 +7,9 @@
         Support webdav URIs with queries.
       </action>
       <action dev="mlhartme" type="update">
+        Simplified IO creation, dump META-INF filesystem descriptor.
+      </action>
+      <action dev="mlhartme" type="update">
         Distinguish dav(s) and http(s) schemes.
       </action>
       <action dev="mlhartme" type="delete">

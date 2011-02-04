@@ -242,9 +242,9 @@ public abstract class Node {
         }
         idx = path.lastIndexOf(getRoot().getFilesystem().getSeparatorChar());
         if (idx == -1) {
-            return getRoot().node("");
+            return getRoot().node("", null);
         } else {
-            return getRoot().node(path.substring(0, idx));
+            return getRoot().node(path.substring(0, idx), null);
         }
     }
 
@@ -302,7 +302,7 @@ public abstract class Node {
     public Node join(List<String> paths) {
         Node result;
 
-        result = getRoot().node(getRoot().getFilesystem().join(getPath(), paths));
+        result = getRoot().node(getRoot().getFilesystem().join(getPath(), paths), null);
         result.setBase(getBase());
         return result;
     }

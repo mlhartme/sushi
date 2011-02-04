@@ -72,7 +72,7 @@ public class TimeMachineFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "file node expected:" + root);
         }
         try {
-            return TimeMachineRoot.create(this, (FileNode) dir).node(path);
+            return TimeMachineRoot.create(this, (FileNode) dir).node(path, null);
         } catch (FileNotFoundException e) {
             throw new NodeInstantiationException(uri, e.getMessage(), e);
         } catch (ExistsException e) {

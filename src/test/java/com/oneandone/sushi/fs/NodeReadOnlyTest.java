@@ -60,7 +60,7 @@ public abstract class NodeReadOnlyTest {
 
     @Test
     public void rootCreatesNodeWithoutBase() throws Exception {
-        assertNull(work.getRoot().node("foo").getBase());
+        assertNull(work.getRoot().node("foo", null).getBase());
     }
 
     @Test
@@ -88,7 +88,7 @@ public abstract class NodeReadOnlyTest {
     public void rootCreatedNodeWithoutBase() throws Exception {
         Node node;
 
-        node = work.getRoot().node("foo");
+        node = work.getRoot().node("foo", null);
         assertNull(node.getBase());
     }
 }

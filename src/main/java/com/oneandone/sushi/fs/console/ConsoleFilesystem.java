@@ -40,7 +40,7 @@ public class ConsoleFilesystem extends Filesystem implements Root {
 
     // TODO
     @Override
-    public ConsoleNode node(String path) {
+    public ConsoleNode node(String path, String encodedQuery) {
         return new ConsoleNode(this);
     }
 

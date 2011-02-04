@@ -52,9 +52,12 @@ public class MemoryRoot implements Root {
         return "//" + id + "/";
     }
 
-    public MemoryNode node(String path) {
+    public MemoryNode node(String path, String encodedQuery) {
         MemoryNode node;
         
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         node = nodes.get(path);
         if (node == null) {
             node = new MemoryNode(this, path, Type.NONE, null);

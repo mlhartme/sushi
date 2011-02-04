@@ -22,6 +22,7 @@ import com.oneandone.sushi.fs.NodeReadOnlyTest;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -39,6 +40,19 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
         assertEquals("//englishediting.de/", node.getRoot().getId());
         assertEquals("index.html", node.getPath());
         assertEquals("", node.getParent().getPath());
+    }
+
+    @Test
+    public void query() throws Exception {
+        URI uri;
+        WebdavNode node;
+        String str;
+
+        uri = URI.create("http://dict.tu-chemnitz.de:80/dings.cgi?lang=en&noframes=1&service=&query=foobarbaz&optword=1&optcase=1&opterrors=0&optpro=0&style=&dlink=self");
+        node = (WebdavNode) IO.node(uri);
+        assertEquals(uri, node.getURI());
+        str = node.readString();
+        assertTrue(str.contains("foobarbaz"));
     }
 
     @Test

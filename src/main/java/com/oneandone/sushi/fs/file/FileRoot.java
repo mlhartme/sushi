@@ -42,7 +42,10 @@ public class FileRoot implements Root {
         return id;
     }
     
-    public FileNode node(String path) {
+    public FileNode node(String path, String encodedQuery) {
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         return new FileNode(this, new File(id + path));
     }
 }

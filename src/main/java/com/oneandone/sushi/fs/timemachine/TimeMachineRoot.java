@@ -80,9 +80,12 @@ public class TimeMachineRoot implements Root {
         return node;
     }
 
-    public TimeMachineNode node(String path) {
+    public TimeMachineNode node(String path, String encodedQuery) {
         FileNode node;
 
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         node = root;
         for (String segment : filesystem.split(path)) {
             try {

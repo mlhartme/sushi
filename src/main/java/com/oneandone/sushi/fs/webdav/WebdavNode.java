@@ -63,14 +63,24 @@ public class WebdavNode extends Node {
      * Without type - never with tailing /. With special characters - will be encoded in http requests  
      */
     private final String path;
+
+    /**
+     * Null or never starts with ?
+     */
+    private final String encodedQuery;
+
     private boolean tryDir;
     
-    public WebdavNode(WebdavRoot root, String path, boolean tryDir) {
+    public WebdavNode(WebdavRoot root, String path, String encodedQuery, boolean tryDir) {
         if (path.startsWith("/")) {
+            throw new IllegalArgumentException(path);
+        }
+        if (encodedQuery != null && encodedQuery.startsWith("?")) {
             throw new IllegalArgumentException(path);
         }
         this.root = root;
         this.path = path;
+        this.encodedQuery = encodedQuery;
         this.tryDir = tryDir;
     }
 
@@ -79,7 +89,7 @@ public class WebdavNode extends Node {
 
         host = root.host;
         try {
-            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, null, null);
+            return new URI(host.getSchemeName(), null, host.getHostName(), host.getPort(), "/" + path, encodedQuery /* TODO: decoded */, null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }
@@ -204,6 +214,10 @@ public class WebdavNode extends Node {
     @Override
     public String getPath() {
         return path;
+    }
+
+    public String getEncodedQuery() {
+        return encodedQuery;
     }
 
     @Override
@@ -389,7 +403,7 @@ public class WebdavNode extends Node {
 		i = href.lastIndexOf("/");
 		href = href.substring(i + 1); // ok for i == -1
 		href = URLDecoder.decode(href, WebdavFilesystem.ENCODING);
-		result = new WebdavNode(root, path + '/' + href, dir);
+		result = new WebdavNode(root, path + '/' + href, null, dir);
 		result.setBase(getBase());
 		return result;
 	}

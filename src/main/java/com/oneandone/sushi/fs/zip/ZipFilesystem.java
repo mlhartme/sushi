@@ -65,7 +65,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "file node expected, got: " + jar.getURI());
         }
         try {
-            return root((FileNode) jar).node(path);
+            return root((FileNode) jar).node(path, null);
         } catch (IOException e) {
             throw new NodeInstantiationException(uri, "io exception", e);
         }
@@ -76,6 +76,6 @@ public class ZipFilesystem extends Filesystem {
     }
 
     public ZipNode node(FileNode jar, String path) throws IOException {
-        return root(jar).node(path);
+        return root(jar).node(path, null);
     }
 }

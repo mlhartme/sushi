@@ -117,8 +117,8 @@ public class WebdavRoot implements Root {
         return "//" + host.getHostName() + (port == 80 ? "" : ":" + port) + "/";
     }
 
-    public WebdavNode node(String path) {
-        return new WebdavNode(this, path, false);
+    public WebdavNode node(String path, String encodedQuery) {
+        return new WebdavNode(this, path, encodedQuery, false);
     }
 
     public String encodePath(String path) {

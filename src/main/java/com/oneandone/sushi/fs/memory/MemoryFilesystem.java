@@ -50,7 +50,7 @@ public class MemoryFilesystem extends Filesystem {
         } catch (NumberFormatException e) {
             throw new NodeInstantiationException(uri, "invalid root: " + uri.getAuthority(), e);
         }
-        return result.node(getCheckedPath(uri));
+        return result.node(getCheckedPath(uri), null);
     }
 
     public MemoryRoot root(int id) {

@@ -91,7 +91,7 @@ public class SshFilesystem extends Filesystem {
         }
         checkHierarchical(uri);
         try {
-            return root(uri.getAuthority(), credentials).node(getCheckedPath(uri));
+            return root(uri.getAuthority(), credentials).node(getCheckedPath(uri), null);
         } catch (JSchException e) {
             throw new NodeInstantiationException(uri, "cannot create root", e);
         } catch (IOException e) {

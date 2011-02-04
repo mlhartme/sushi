@@ -213,7 +213,7 @@ public class ZipNode extends Node {
                 name = (idx == -1 ? name : name.substring(0, idx));
                 if (!done.contains(name)) {
                     done.add(name);
-                    result.add(root.node(name));
+                    result.add(root.node(name, null));
                 }
             }
         }

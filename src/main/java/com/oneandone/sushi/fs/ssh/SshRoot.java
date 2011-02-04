@@ -68,7 +68,10 @@ public class SshRoot implements Root, UserInfo, Runnable {
         return "//" + session.getUserName() + "@" + session.getHost() + "/";
     }
 
-    public SshNode node(String path) {
+    public SshNode node(String path, String encodedQuery) {
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         return new SshNode(this, path);
     }
 

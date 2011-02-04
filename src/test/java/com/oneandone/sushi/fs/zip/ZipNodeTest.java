@@ -113,7 +113,7 @@ public class ZipNodeTest {
         Node node;
 
         jar = ioObj.locateClasspathItem(Object.class);
-        node = jar.openZip().getRoot().node("nosuchfile");
+        node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         try {
             node.createInputStream();

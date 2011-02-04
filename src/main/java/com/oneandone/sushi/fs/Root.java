@@ -32,5 +32,5 @@ public interface Root {
      * Never called with heading or tailing separator. The base of the resulting node must be null.
      * TODO: expect splitted path? 
      */
-    Node node(String path);
+    Node node(String path, String encodedQuery);
 }

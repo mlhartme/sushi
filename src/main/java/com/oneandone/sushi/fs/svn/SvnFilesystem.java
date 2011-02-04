@@ -88,7 +88,7 @@ public class SvnFilesystem extends Filesystem {
                 throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
             }
             repository = repository(encodedSchemeSpecific.substring(0, encodedSchemeSpecific.length() - encodedPath.length()));
-            return new SvnRoot(this, repository).node(SVNEncodingUtil.uriDecode(encodedPath));
+            return new SvnRoot(this, repository).node(SVNEncodingUtil.uriDecode(encodedPath), null);
         } catch (SVNException e) {
             throw new NodeInstantiationException(uri, e.getMessage(), e);
         }

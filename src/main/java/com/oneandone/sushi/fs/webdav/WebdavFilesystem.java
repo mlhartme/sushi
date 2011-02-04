@@ -82,8 +82,13 @@ public class WebdavFilesystem extends Filesystem {
         if (extra != null) {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
-        checkHierarchical(uri);
-        return root(uri).node(getCheckedPath(uri));
+        if (uri.getFragment() != null) {
+            throw new NodeInstantiationException(uri, "unexpected path fragment");
+        }
+        if (uri.isOpaque()) {
+            throw new NodeInstantiationException(uri, "uri is not hierarchical");
+        }
+        return root(uri).node(getCheckedPath(uri), uri.getRawQuery());
     }
 
     public WebdavRoot root(URI uri) {
@@ -92,9 +97,6 @@ public class WebdavFilesystem extends Filesystem {
         int port;
 
         if (uri.getFragment() != null) {
-            throw new IllegalArgumentException(uri.toString());
-        }
-        if (uri.getQuery() != null) {
             throw new IllegalArgumentException(uri.toString());
         }
         // ignores url.getPath()

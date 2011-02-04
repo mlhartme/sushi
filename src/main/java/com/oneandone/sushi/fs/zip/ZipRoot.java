@@ -67,7 +67,10 @@ public class ZipRoot implements Root {
         return new File(zip.getName()).toURI() + "!/";
     }
 
-    public ZipNode node(String path) {
+    public ZipNode node(String path, String encodedQuery) {
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         return new ZipNode(this, path);
     }
 
@@ -75,7 +78,7 @@ public class ZipRoot implements Root {
         InputStream src;
         Manifest result;
 
-        src = node(Archive.MANIFEST).createInputStream();
+        src = node(Archive.MANIFEST, null).createInputStream();
         result = new Manifest(src);
         src.close();
         return result;

@@ -67,7 +67,10 @@ public class SvnRoot implements Root {
         return clientManager.getWCClient().doInfo(node.getFile(), SVNRevision.WORKING);
     }
 
-    public SvnNode node(String path) {
+    public SvnNode node(String path, String encodedQuery) {
+        if (encodedQuery != null) {
+            throw new IllegalArgumentException(encodedQuery);
+        }
         return new SvnNode(this, path);
     }
 

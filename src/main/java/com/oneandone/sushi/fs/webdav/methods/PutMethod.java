@@ -20,14 +20,13 @@ package com.oneandone.sushi.fs.webdav.methods;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 
-public class PutMethod extends WebdavMethod<Void> {
+public class PutMethod extends Method<Void> {
     public PutMethod(WebdavNode resource) {
         super("PUT", resource);
     }

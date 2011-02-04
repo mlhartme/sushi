@@ -20,14 +20,13 @@ package com.oneandone.sushi.fs.webdav.methods;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 
 
-public class MkColMethod extends WebdavMethod<Void> {
+public class MkColMethod extends Method<Void> {
     public MkColMethod(WebdavNode resource) {
         super("MKCOL", resource);
     }

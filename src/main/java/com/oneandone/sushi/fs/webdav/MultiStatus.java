@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
+import com.oneandone.sushi.fs.webdav.methods.Method;
 import com.oneandone.sushi.xml.ChildElements;
 import com.oneandone.sushi.xml.Dom;
 import com.oneandone.sushi.xml.Xml;
@@ -49,9 +49,9 @@ public class MultiStatus {
         } finally {
             in.close();
         }
-   		Dom.require(root, "multistatus", WebdavMethod.DAV);
+   		Dom.require(root, "multistatus", Method.DAV);
 		result = new ArrayList<MultiStatus>();
-		iter = WebdavMethod.DAV.childElements(root, WebdavMethod.XML_RESPONSE);
+		iter = Method.DAV.childElements(root, Method.XML_RESPONSE);
 		while (iter.hasNext()) {
 			fromXml(iter.next(), result);
 		}
@@ -68,17 +68,17 @@ public class MultiStatus {
         int status;
         ChildElements propIter;
         
-        Dom.require(response, WebdavMethod.XML_RESPONSE, WebdavMethod.DAV);
-		href = Dom.getFirstChildElement(response, "href", WebdavMethod.DAV);
+        Dom.require(response, Method.XML_RESPONSE, Method.DAV);
+		href = Dom.getFirstChildElement(response, "href", Method.DAV);
         if (href == null) {
             throw new IOException("missing href");
         }
         str = Dom.getString(href).trim();
-        iter = WebdavMethod.DAV.childElements(response, XML_PROPSTAT);
+        iter = Method.DAV.childElements(response, XML_PROPSTAT);
         while (iter.hasNext()) {
             propstat = iter.next();
-            propstatStatus = Dom.getString(Dom.getFirstChildElement(propstat, XML_STATUS, WebdavMethod.DAV));
-            prop = Dom.getFirstChildElement(propstat, WebdavMethod.XML_PROP, WebdavMethod.DAV);
+            propstatStatus = Dom.getString(Dom.getFirstChildElement(propstat, XML_STATUS, Method.DAV));
+            prop = Dom.getFirstChildElement(propstat, Method.XML_PROP, Method.DAV);
             status = BasicLineParser.parseStatusLine(propstatStatus, BasicLineParser.DEFAULT).getStatusCode();
             propIter = new ChildElements(prop);
             while (propIter.hasNext()) {

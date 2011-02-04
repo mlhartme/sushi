@@ -35,7 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public abstract class WebdavMethod<T> {
+public abstract class Method<T> {
     public static final Namespace DAV = Namespace.getNamespace("D", "DAV:");
     public static final String XML_PROP = "prop";
     public static final String XML_RESPONSE = "response";
@@ -47,7 +47,7 @@ public abstract class WebdavMethod<T> {
 
     private BasicHttpEntityEnclosingRequest request;
     
-    public WebdavMethod(String method, WebdavNode resource) {
+    public Method(String method, WebdavNode resource) {
         this.root = resource.getRoot();
         this.request = new BasicHttpEntityEnclosingRequest(method, resource.getEncodedPath());
     }

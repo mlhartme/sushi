@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
+import com.oneandone.sushi.fs.webdav.methods.Method;
 import com.oneandone.sushi.xml.Builder;
 import com.oneandone.sushi.xml.Namespace;
 import org.w3c.dom.Element;
 
 public class Name {
-    public static final Name CREATIONDATE = new Name("creationdate", WebdavMethod.DAV);
-    public static final Name DISPLAYNAME = new Name("displayname", WebdavMethod.DAV);
-    public static final Name GETCONTENTLENGTH = new Name("getcontentlength", WebdavMethod.DAV);
-    public static final Name GETLASTMODIFIED = new Name("getlastmodified", WebdavMethod.DAV);
-    public static final Name RESOURCETYPE = new Name("resourcetype", WebdavMethod.DAV);
+    public static final Name CREATIONDATE = new Name("creationdate", Method.DAV);
+    public static final Name DISPLAYNAME = new Name("displayname", Method.DAV);
+    public static final Name GETCONTENTLENGTH = new Name("getcontentlength", Method.DAV);
+    public static final Name GETLASTMODIFIED = new Name("getlastmodified", Method.DAV);
+    public static final Name RESOURCETYPE = new Name("resourcetype", Method.DAV);
 
     public static Name fromXml(Element nameElement) {
         String ns;

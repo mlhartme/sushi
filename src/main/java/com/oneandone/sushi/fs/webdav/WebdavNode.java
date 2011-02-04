@@ -29,12 +29,12 @@ import com.oneandone.sushi.fs.SetLastModifiedException;
 import com.oneandone.sushi.fs.webdav.methods.DeleteMethod;
 import com.oneandone.sushi.fs.webdav.methods.GetMethod;
 import com.oneandone.sushi.fs.webdav.methods.HeadMethod;
+import com.oneandone.sushi.fs.webdav.methods.Method;
 import com.oneandone.sushi.fs.webdav.methods.MkColMethod;
 import com.oneandone.sushi.fs.webdav.methods.MoveMethod;
 import com.oneandone.sushi.fs.webdav.methods.PropFindMethod;
 import com.oneandone.sushi.fs.webdav.methods.PropPatchMethod;
 import com.oneandone.sushi.fs.webdav.methods.PutMethod;
-import com.oneandone.sushi.fs.webdav.methods.WebdavMethod;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
@@ -398,7 +398,7 @@ public class WebdavNode extends Node {
     	Property result;
     	Name n;
 
-    	n = new Name(name, WebdavMethod.DAV);
+    	n = new Name(name, Method.DAV);
         try {
         	try {
         		result = getPropertyOpt(n);
@@ -414,7 +414,7 @@ public class WebdavNode extends Node {
 
     public void setAttribute(String name, String value) throws WebdavException {
         try {
-        	setProperty(new Name(name, WebdavMethod.DAV), value);
+        	setProperty(new Name(name, Method.DAV), value);
 		} catch (IOException e) {
 			throw new WebdavException(this, e);
 		}

@@ -24,7 +24,6 @@ import com.oneandone.sushi.fs.webdav.Property;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
 import com.oneandone.sushi.xml.Builder;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -36,7 +35,7 @@ import org.w3c.dom.Element;
 import java.io.IOException;
 import java.util.List;
 
-public class PropPatchMethod extends WebdavMethod<Void> {
+public class PropPatchMethod extends Method<Void> {
     private final Name dest;
 
     public PropPatchMethod(WebdavNode resource, Property property) throws IOException {

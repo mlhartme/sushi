@@ -28,7 +28,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class GetMethod extends WebdavMethod<InputStream> {
+public class GetMethod extends Method<InputStream> {
     public GetMethod(WebdavNode resource) {
         super("GET", resource);
     }

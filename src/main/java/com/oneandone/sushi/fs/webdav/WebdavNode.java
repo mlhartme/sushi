@@ -474,6 +474,12 @@ public class WebdavNode extends Node {
         tryDir = tryTryDir;
         try {
             result = doTryDir();
+        } catch (MovedException e) {
+            tryDir = reset;
+            return false;
+        } catch (FileNotFoundException e) {
+            tryDir = reset;
+            return false;
         } catch (IOException e) {
             tryDir = reset;
             throw new ExistsException(this, e);
@@ -492,7 +498,10 @@ public class WebdavNode extends Node {
         try {
             property = getProperty(Name.RESOURCETYPE);
             node = (org.w3c.dom.Node) property.getValue();
-            return tryDir == node.getLocalName().equals("collection");
+            if (node == null) {
+                return tryDir == false;
+            }
+            return tryDir == "collection".equals(node.getLocalName());
         } catch (StatusException e) {
             code = e.getStatusLine().getStatusCode();
             if (code == HttpStatus.SC_METHOD_NOT_ALLOWED) {

@@ -115,7 +115,7 @@ public class IO {
         return this;
     }
 
-    /** current working directory */
+    /** Current working directory. May be null. Use during node creation to resolve relative URIs and in Node.toString(). */
     public Node getWorking() {
         return working;
     }
@@ -283,14 +283,10 @@ public class IO {
     public Node node(URI uri, Object extra) throws NodeInstantiationException {
         String scheme;
         Filesystem fs;
-        Node base;
         Node result;
 
-        if (uri.isAbsolute()) {
-            base = null;
-        } else {
+        if (!uri.isAbsolute()) {
             uri = working.getURI().resolve(uri);
-            base = working;
         }
         scheme = uri.getScheme();
         if (scheme == null) {
@@ -301,15 +297,10 @@ public class IO {
             throw new NodeInstantiationException(uri, "unknown scheme: " + scheme);
         }
         result = fs.node(uri, extra);
-        if (base != null) {
-            result.setBase(base);
-        }
         return result;
     }
 
     private MemoryNode memoryNode() {
-        // TODO: re-use root?
-        // TODO: when delete?
         return memoryFilesystem.root().node("tmp", null);
     }
 

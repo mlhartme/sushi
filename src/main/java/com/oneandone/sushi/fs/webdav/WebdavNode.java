@@ -60,9 +60,9 @@ import java.util.TimeZone;
 public class WebdavNode extends Node {
 	private final WebdavRoot root;
 
-	/** 
-     * Never starts with a slash. 
-     * Without type - never with tailing /. With special characters - will be encoded in http requests  
+	/**
+     * Never starts with a slash.
+     * Without type - never with tailing /. With special characters - will be encoded in http requests
      */
     private final String path;
 
@@ -72,7 +72,7 @@ public class WebdavNode extends Node {
     private final String encodedQuery;
 
     private boolean tryDir;
-    
+
     public WebdavNode(WebdavRoot root, String path, String encodedQuery, boolean tryDir) {
         if (path.startsWith("/")) {
             throw new IllegalArgumentException(path);
@@ -126,8 +126,8 @@ public class WebdavNode extends Node {
         return Long.parseLong((String) property.getValue());
     }
 
-    private static final SimpleDateFormat FMT;        
-    
+    private static final SimpleDateFormat FMT;
+
     static {
         Calendar calendar;
 
@@ -137,11 +137,11 @@ public class WebdavNode extends Node {
         FMT.setTimeZone(TimeZone.getTimeZone("GMT"));
         FMT.set2DigitYearStart(calendar.getTime());
     }
-    
+
     @Override
     public long getLastModified() throws GetLastModifiedException {
         Property property;
-        
+
         try {
         	try {
         		property = getProperty(Name.GETLASTMODIFIED);
@@ -164,8 +164,8 @@ public class WebdavNode extends Node {
         // no allowed by webdav standard
         throw new SetLastModifiedException(this);
     }
-    
-    @Override 
+
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -174,8 +174,8 @@ public class WebdavNode extends Node {
     public void setMode(int mode) {
         throw unsupported("setMode()");
     }
-    
-    @Override 
+
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -185,7 +185,7 @@ public class WebdavNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }
@@ -198,7 +198,7 @@ public class WebdavNode extends Node {
     private boolean sameUrl(String href) {
         String str;
         StringBuilder builder;
-        
+
         str = path;
         if (href.startsWith("/")) {
             href = href.substring(1);
@@ -328,7 +328,7 @@ public class WebdavNode extends Node {
     public boolean isDirectory() throws ExistsException {
         return tryDir(true);
     }
-    
+
     @Override
     public boolean isLink() {
     	return false;
@@ -382,7 +382,7 @@ public class WebdavNode extends Node {
         PropFind method;
         List<Node> result;
         String href;
-        
+
         try {
             tryDir = true;
             method = new PropFind(this, Name.DISPLAYNAME, 1);
@@ -413,7 +413,7 @@ public class WebdavNode extends Node {
 		int i;
 		boolean dir;
 		WebdavNode result;
-		
+
 		dir = href.endsWith("/");
 		if (dir) {
 		    href = href.substring(0, href.length() - 1);
@@ -422,7 +422,6 @@ public class WebdavNode extends Node {
 		href = href.substring(i + 1); // ok for i == -1
 		href = URLDecoder.decode(href, WebdavFilesystem.ENCODING);
 		result = new WebdavNode(root, path + '/' + href, null, dir);
-		result.setBase(getBase());
 		return result;
 	}
 
@@ -454,7 +453,7 @@ public class WebdavNode extends Node {
 
     private void setProperty(Name name, String value) throws IOException {
     	Property prop;
-    	
+
         prop = new Property(name, value);
        	try {
        		new PropPatch(this, prop).invoke();
@@ -467,7 +466,7 @@ public class WebdavNode extends Node {
     /** @return never null */
     private Property getProperty(Name name) throws IOException {
     	Property result;
-        
+
         result = getPropertyOpt(name);
         if (result == null) {
             throw new IllegalStateException();
@@ -478,7 +477,7 @@ public class WebdavNode extends Node {
     private Property getPropertyOpt(Name name) throws IOException {
         PropFind method;
         List<MultiStatus> response;
-        
+
         method = new PropFind(this, name, 0);
         response = method.invoke();
         return MultiStatus.lookupOne(response, name).property;
@@ -541,7 +540,7 @@ public class WebdavNode extends Node {
     }
 
     //--
-    
+
     /** see http://tools.ietf.org/html/rfc2616#section-5.1.2 */
     public String getAbsPath() {
         StringBuilder builder;

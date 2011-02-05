@@ -46,7 +46,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void work() throws IOException {
         List<?> children;
 
-        assertNull(work.getBase());
         assertTrue(work.exists());
         assertFalse(work.isFile());
         assertTrue(work.isDirectory());
@@ -80,12 +79,10 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void listAndBase() throws Exception {
         List<? extends Node> lst;
 
-        work.setBase(work);
         work.join("foo").mkdir();
         lst = work.list();
         assertEquals(1, lst.size());
         assertEquals("foo", lst.get(0).getName());
-        assertEquals(work, lst.get(0).getBase());
     }
 
     @Test
@@ -129,7 +126,8 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Node file;
 
         file = work.join("foo/bar");
-        assertFalse(file.hasAnchestor(file));
+        assertFalse(file.hasDifferentAnchestor(file));
+        assertTrue(file.hasAnchestor(file));
         assertTrue(file.hasAnchestor(file.getParent()));
         assertTrue(file.hasAnchestor(work));
     }
@@ -1017,10 +1015,14 @@ public abstract class NodeTest extends NodeReadOnlyTest {
 
     @Test
     public void toStr() throws IOException {
-        Node file;
+        Node node;
 
-        file = work.join("foo");
-        assertEquals(file.getRoot().getId() + file.getPath(), file.toString());
+        work.getIO().setWorking(work);
+        node = work.join("foo");
+        assertEquals(".", work.toString());
+        assertEquals("foo", node.toString());
+        work.getIO().setWorking(null);
+        assertEquals(node.getURI().toString(), node.toString());
     }
 
     //-- links

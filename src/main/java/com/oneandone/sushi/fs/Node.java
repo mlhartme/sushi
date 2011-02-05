@@ -78,13 +78,6 @@ import java.util.zip.GZIPOutputStream;
  * UnsupportedOperationException.</p>
  */
 public abstract class Node {
-    /** may be null */
-    private Node base;
-
-    public Node() {
-        this.base = null;
-    }
-
     protected UnsupportedOperationException unsupported(String op) {
         return new UnsupportedOperationException(getURI() + ":" + op);
     }
@@ -198,24 +191,6 @@ public abstract class Node {
 
     //-- path functionality
 
-    /**
-     * The node to which this node is relative to, aka kind of a working directory. Mostly affects
-     * toString(). There's currently no setBase, although it would generalize "base" handling to arbitrary
-     * node implementations ...
-     *
-     * @return null for absolute file
-     */
-    public Node getBase() {
-        return base;
-    }
-
-    public void setBase(Node base) {
-        if (base != null && !getRoot().equals(base.getRoot())) {
-            throw new IllegalArgumentException(getRoot() + " conflicts " + base.getRoot());
-        }
-        this.base = base;
-    }
-
     public abstract String getPath();
 
     /** @return a normalized URI, not necesarily the URI this node was created from */
@@ -248,17 +223,28 @@ public abstract class Node {
         }
     }
 
+    public boolean hasDifferentAnchestor(Node anchestor) {
+        Node parent;
+
+        parent = getParent();
+        if (parent == null) {
+            return false;
+        } else {
+            return parent.hasAnchestor(anchestor);
+        }
+    }
+
     public boolean hasAnchestor(Node anchestor) {
         Node current;
 
         current = this;
         while (true) {
+            if (current.equals(anchestor)) {
+                return true;
+            }
             current = current.getParent();
             if (current == null) {
                 return false;
-            }
-            if (current.equals(anchestor)) {
-                return true;
             }
         }
     }
@@ -303,7 +289,6 @@ public abstract class Node {
         Node result;
 
         result = getRoot().node(getRoot().getFilesystem().join(getPath(), paths), null);
-        result.setBase(getBase());
         return result;
     }
 
@@ -879,13 +864,17 @@ public abstract class Node {
      */
     @Override
     public final String toString() {
-        Node base;
+        Node working;
 
-        base = getBase();
-        if (base == null) {
-            return getAbsolute();
+        working = getIO().getWorking();
+        if (working == null || !getRoot().equals(working.getRoot())) {
+            return getURI().toString();
         } else {
-            return getRelative(base);
+            if (hasAnchestor(working)) {
+                return getRelative(working);
+            } else {
+                return getAbsolute();
+            }
         }
     }
 }

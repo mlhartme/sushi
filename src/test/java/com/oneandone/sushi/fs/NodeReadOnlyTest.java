@@ -58,21 +58,6 @@ public abstract class NodeReadOnlyTest {
         assertEquals(locator, again.getURI());
     }
 
-    @Test
-    public void rootCreatesNodeWithoutBase() throws Exception {
-        assertNull(work.getRoot().node("foo", null).getBase());
-    }
-
-    @Test
-    public void base() throws Exception {
-        Node node;
-
-        work.setBase(work);
-        assertEquals(work, work.getBase());
-        node = work.join("subdir");
-        assertEquals(work, node.getBase());
-    }
-
     //@Test(expected=NodeInstantiationException.class)
     @Ignore
     public void headingSlash() throws Exception {
@@ -82,13 +67,5 @@ public abstract class NodeReadOnlyTest {
         root = work.getRoot();
         fs = root.getFilesystem();
         fs.getIO().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
-    }
-
-    @Test
-    public void rootCreatedNodeWithoutBase() throws Exception {
-        Node node;
-
-        node = work.getRoot().node("foo", null);
-        assertNull(node.getBase());
     }
 }

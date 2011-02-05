@@ -94,7 +94,6 @@ public class SvnNode extends Node {
                 for (int i = 0; i < lst.size(); i++) {
                     entry = lst.get(i);
                     child = new SvnNode(root, doJoin(path, entry.getRelativePath()));
-                    child.setBase(getBase());
                     result.add(child);
                 }
                 return result;

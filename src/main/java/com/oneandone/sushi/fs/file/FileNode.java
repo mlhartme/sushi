@@ -171,7 +171,6 @@ public class FileNode extends Node {
         result = new ArrayList<FileNode>(children.length);
         for (int i = 0; i < children.length; i++) {
             child = new FileNode(root, children[i]);
-            child.setBase(getBase());
             result.add(child);
         }
         return result;

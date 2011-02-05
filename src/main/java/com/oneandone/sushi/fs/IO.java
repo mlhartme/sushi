@@ -286,7 +286,13 @@ public class IO {
         Node result;
 
         if (!uri.isAbsolute()) {
-            uri = working.getURI().resolve(uri);
+            if (working == null) {
+                throw new NodeInstantiationException(uri, "cannot resolve relative node: no working node");
+            } else {
+                // working.getURI().resolve cannot be used because some of the URIs are opaque
+                // TODO: encoding/decoding
+                return working.join(uri.toString());
+            }
         }
         scheme = uri.getScheme();
         if (scheme == null) {

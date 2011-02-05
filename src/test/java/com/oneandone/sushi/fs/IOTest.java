@@ -36,17 +36,12 @@ import java.net.URL;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+/** Note: IO.node methods are tested in NodeTest. */
 public class IOTest {
-    // TODO
-    private static Root fs(IO io) {
-        return io.getWorking().getRoot();
-    }
 
     //-- filesystems
 
@@ -115,79 +110,6 @@ public class IOTest {
 
     //--
 
-    @Test
-    public void nodeRoot() throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        node = io.node(fs(io).getId());
-        assertEquals("", node.getName());
-        assertEquals(fs(io).getId(), node.getAbsolute());
-        assertEquals(".", node.getRelative(node));
-        assertTrue(node.isDirectory());
-    }
-
-    @Ignore
-    public void nodeAbsolute() throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        node = io.node(fs(io).getId() + "a");
-        assertEquals("a", node.getName());
-        assertEquals("a", node.getPath());
-        assertEquals("", node.getParent().getPath());
-        assertEquals(fs(io).getId() + "a", node.toString());
-    }
-
-    @Ignore
-    public void nodeAbsoluteSubdir() throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        node = io.node(fs(io).getId() + "x" + fs(io).getFilesystem().getSeparator() + "y");
-        assertEquals("y", node.getName());
-        assertEquals("x" + fs(io).getFilesystem().getSeparator() + "y", node.getPath());
-        assertEquals("x", node.getParent().getPath());
-        assertEquals(fs(io).getId() + "x" + fs(io).getFilesystem().getSeparator() + "y", node.toString());
-    }
-
-
-    @Ignore
-    public void nodeRelative() throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        node = io.node("a");
-        assertTrue(node.getPath().endsWith(fs(io).getFilesystem().getSeparator() + "a"));
-        assertEquals(io.getWorking(), node.getParent());
-        assertEquals("a", node.toString());
-    }
-
-    @Ignore
-    public void nodeDot() throws Exception {
-        IO io;
-        Node dot;
-
-        io = new IO();
-        dot = io.node(".");
-        assertEquals(io.getWorking(), dot);
-        assertFalse(".".equals(dot.getName()));
-    }
-
-    @Ignore
-    public void nodeEmpty() throws Exception {
-        IO io;
-
-        io = new IO();
-        assertEquals(io.node(""), io.node("."));
-    }
-
-    //
-
     @Ignore
     public void path() throws Exception {
         IO io;
@@ -195,7 +117,7 @@ public class IOTest {
 
         io = new IO();
         assertEquals(0, io.path("").size());
-        path = io.path("foo" + io.os.listSeparator + fs(io).getId() + "bar");
+        path = io.path("foo" + io.os.listSeparator + io.getWorking().getRoot().getId() + "bar");
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).toString());
         assertEquals(io.getWorking().getRoot().getId() + "bar", path.get(1).toString());

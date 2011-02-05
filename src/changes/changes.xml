@@ -7,10 +7,19 @@
         Support webdav URIs with queries.
       </action>
       <action dev="mlhartme" type="update">
+        io.working may be null.
+      </action>
+      <action dev="mlhartme" type="update">
         Renames Node.hasAnchestor to Node.hasDifferenceAnchestor(). Added Node.hasAnchestor() that returns true for this.
       </action>
       <action dev="mlhartme" type="update">
         Improved node.toString().
+      </action>
+      <action dev="mlhartme" type="fix">
+        Fix relative URIs in io.node().
+      </action>
+      <action dev="mlhartme" type="add">
+        Node.getRootNode() added.
       </action>
       <action dev="mlhartme" type="delete">
         Dump node base, use io.getWorking() instead.

@@ -84,6 +84,10 @@ public abstract class Node {
 
     public abstract Root getRoot();
 
+    public Node getRootNode() {
+        return getRoot().node("", null);
+    }
+
     public IO getIO() {
         return getRoot().getFilesystem().getIO();
     }

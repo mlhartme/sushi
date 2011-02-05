@@ -54,6 +54,60 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(0, children.size());
     }
 
+    //-- create via io.node etc
+
+    @Test
+    public void createRoot() throws Exception {
+        Node root;
+
+        root = work.getRootNode();
+        assertEquals(root, work.getIO().node(root.getURI()));
+    }
+
+    private static Root fs(IO io) {
+        return io.getWorking().getRoot();
+    }
+
+    @Test
+    public void createAbsolute() throws Exception {
+        Node node;
+
+        assertEquals(work, work.getIO().node(work.getURI()));
+        node = work.join("foo/bar");
+        assertEquals(node, node.getIO().node(node.getURI()));
+    }
+
+    @Ignore
+    public void nodeRelative() throws Exception {
+        IO io;
+        Node node;
+
+        io = new IO();
+        node = io.node("a");
+        assertTrue(node.getPath().endsWith(fs(io).getFilesystem().getSeparator() + "a"));
+        assertEquals(io.getWorking(), node.getParent());
+        assertEquals("a", node.toString());
+    }
+
+    @Ignore
+    public void nodeDot() throws Exception {
+        IO io;
+        Node dot;
+
+        io = new IO();
+        dot = io.node(".");
+        assertEquals(io.getWorking(), dot);
+        assertFalse(".".equals(dot.getName()));
+    }
+
+    @Ignore
+    public void nodeEmpty() throws Exception {
+        IO io;
+
+        io = new IO();
+        assertEquals(io.node(""), io.node("."));
+    }
+
     @Ignore
     public void setWorking() throws Exception {
         final String FILE = "file";
@@ -67,10 +121,32 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertTrue(file.equals(io.node(FILE)));
     }
 
+    //--
+
     @Test
     public void root() {
         assertEquals(work.join("a").getRoot(), work.join("a").getRoot());
         assertEquals(work.join("a").getRoot(), work.join("ab").getRoot());
+    }
+
+    @Test
+    public void rootNode() throws Exception {
+        Node root;
+
+        root = work.getRootNode();
+        try {
+            assertTrue(root.isDirectory());
+        } catch (ExistsException e) {
+            // root node is not accessible (e.g. Webdav)
+            // -> continue
+        }
+        assertEquals("", root.getName());
+        assertEquals(".", root.getRelative(root));
+        if (work.equals(root)) {
+            assertEquals(".", work.getRelative(root));
+        } else {
+            assertEquals(work.getPath(), work.getRelative(root));
+        }
     }
 
     //--

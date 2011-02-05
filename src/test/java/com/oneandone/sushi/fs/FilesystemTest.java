@@ -65,6 +65,17 @@ public class FilesystemTest {
         check("a/b", "a/./b");
     }
 
+    @Test
+    public void normalizeDoubleDots() {
+        check("", "a/..");
+        check("", "a/../");
+        check("b", "a/../b");
+        check("b/", "a/../b/");
+        check("/b", "/a/../b");
+        check("A/B", "a/b/../../A/B");
+        check("a/x/Z", "a/b/../x/y/z/../../Z");
+    }
+
     private void check(String unchanged) {
         check(unchanged, unchanged);
     }

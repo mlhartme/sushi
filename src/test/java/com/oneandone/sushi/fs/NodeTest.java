@@ -17,7 +17,6 @@
 
 package com.oneandone.sushi.fs;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -78,7 +77,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         IO.setWorking(work);
         assertEquals(work, IO.node(""));
         assertEquals(work.join("a"), IO.node("a"));
-        IO.setWorking(work);
         assertEquals(work.join("x/y"), IO.node("x/y"));
     }
 
@@ -88,6 +86,14 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(work, IO.node("."));
         assertEquals(work.join("a"), IO.node("a/."));
         assertEquals(work.join("x/y"), IO.node("x/./y/."));
+    }
+
+    @Test
+    public void createRelativeDoubleDot() throws Exception {
+        IO.setWorking(work);
+        assertEquals(work, IO.node("foo/.."));
+        assertEquals(work.join("xyz"), IO.node("a/./../xyz"));
+        assertEquals(work.join("a/b"), IO.node("x/y/../../a/b"));
     }
 
     //--

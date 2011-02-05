@@ -110,23 +110,17 @@ public class IOTest {
 
     //--
 
-    @Ignore
+    @Test
     public void path() throws Exception {
         IO io;
         List<Node> path;
 
         io = new IO();
         assertEquals(0, io.path("").size());
-        path = io.path("foo" + io.os.listSeparator + io.getWorking().getRoot().getId() + "bar");
+        path = io.path("foo" + io.os.listSeparator + "bar");
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).toString());
-        assertEquals(io.getWorking().getRoot().getId() + "bar", path.get(1).toString());
-        try {
-            io.classpath("nosuchfile.jar");
-            fail();
-        } catch (IOException e) {
-            // ok
-        }
+        assertEquals("bar", path.get(1).toString());
     }
 
     //--

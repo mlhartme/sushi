@@ -64,61 +64,30 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(root, work.getIO().node(root.getURI()));
     }
 
-    private static Root fs(IO io) {
-        return io.getWorking().getRoot();
-    }
-
     @Test
     public void createAbsolute() throws Exception {
         Node node;
 
-        assertEquals(work, work.getIO().node(work.getURI()));
+        assertEquals(work, IO.node(work.getURI()));
         node = work.join("foo/bar");
-        assertEquals(node, node.getIO().node(node.getURI()));
+        assertEquals(node, IO.node(node.getURI()));
     }
 
-    @Ignore
-    public void nodeRelative() throws Exception {
-        IO io;
-        Node node;
-
-        io = new IO();
-        node = io.node("a");
-        assertTrue(node.getPath().endsWith(fs(io).getFilesystem().getSeparator() + "a"));
-        assertEquals(io.getWorking(), node.getParent());
-        assertEquals("a", node.toString());
+    @Test
+    public void createRelative() throws Exception {
+        IO.setWorking(work);
+        assertEquals(work, IO.node(""));
+        assertEquals(work.join("a"), IO.node("a"));
+        IO.setWorking(work);
+        assertEquals(work.join("x/y"), IO.node("x/y"));
     }
 
-    @Ignore
-    public void nodeDot() throws Exception {
-        IO io;
-        Node dot;
-
-        io = new IO();
-        dot = io.node(".");
-        assertEquals(io.getWorking(), dot);
-        assertFalse(".".equals(dot.getName()));
-    }
-
-    @Ignore
-    public void nodeEmpty() throws Exception {
-        IO io;
-
-        io = new IO();
-        assertEquals(io.node(""), io.node("."));
-    }
-
-    @Ignore
-    public void setWorking() throws Exception {
-        final String FILE = "file";
-        IO io;
-        Node file;
-
-        io = work.getIO();
-        file = work.join(FILE);
-        assertFalse(file.equals(io.node(FILE)));
-        io.setWorking(work);
-        assertTrue(file.equals(io.node(FILE)));
+    @Test
+    public void createRelativeDot() throws Exception {
+        IO.setWorking(work);
+        assertEquals(work, IO.node("."));
+        assertEquals(work.join("a"), IO.node("a/."));
+        assertEquals(work.join("x/y"), IO.node("x/./y/."));
     }
 
     //--

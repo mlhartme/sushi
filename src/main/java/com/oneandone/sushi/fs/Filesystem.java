@@ -117,20 +117,52 @@ public abstract class Filesystem {
     }
 
     public String join(String head, List<String> paths) {
-        StringBuilder buffer;
+        StringBuilder builder;
 
-        buffer = new StringBuilder(head);
+        builder = new StringBuilder(head);
         for (String path : paths) {
-            if (path.startsWith(separator)) {
-                throw new IllegalArgumentException(path);
+            if (path.length() > 0) {
+                if (path.startsWith(separator)) {
+                    throw new IllegalArgumentException(path);
+                }
+                if (builder.length() > 0) {
+                    builder.append(separatorChar);
+                }
+                builder.append(path);
             }
-            // TODO: Svn nodes ...
-            if (buffer.length() > 0) {
-                buffer.append(separatorChar);
-            }
-            buffer.append(path);
         }
-        return buffer.toString();
+        normalize(builder);
+        return builder.toString();
+    }
+
+    public void normalize(StringBuilder builder) {
+        int idx;
+
+        idx = 0;
+        while (true) {
+            idx = builder.indexOf(".", idx);
+            if (idx == -1) {
+                break;
+            }
+            if (idx == 0 || builder.charAt(idx - 1) == separatorChar) {
+                if (idx + 1 == builder.length() || builder.charAt(idx + 1) == separatorChar) {
+                    builder.deleteCharAt(idx);
+                    if (idx < builder.length() && builder.charAt(idx) == separatorChar) {
+                        builder.deleteCharAt(idx);
+                    } else if (idx > 0 && builder.charAt(idx - 1) == separatorChar) {
+                        builder.deleteCharAt(--idx);
+                    }
+                    continue;
+                }
+            }
+            idx++;
+        }
+        // TODO: this is not part of java.net.URI's normalization
+        for (int i = builder.length() - 1; i > 0; i--) {
+            if (builder.charAt(i) == separatorChar && builder.charAt(i - 1) == separatorChar) {
+                builder.deleteCharAt(i);
+            }
+        }
     }
 
     public List<String> split(String path) {

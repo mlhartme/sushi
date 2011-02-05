@@ -290,9 +290,11 @@ public abstract class Node {
     }
 
     public Node join(List<String> paths) {
+        Root root;
         Node result;
 
-        result = getRoot().node(getRoot().getFilesystem().join(getPath(), paths), null);
+        root = getRoot();
+        result = root.node(root.getFilesystem().join(getPath(), paths), null);
         return result;
     }
 

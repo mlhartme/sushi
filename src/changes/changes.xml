@@ -7,6 +7,9 @@
         Support webdav URIs with queries.
       </action>
       <action dev="mlhartme" type="update">
+        Support dots in Node.join.
+      </action>
+      <action dev="mlhartme" type="update">
         io.working may be null.
       </action>
       <action dev="mlhartme" type="update">

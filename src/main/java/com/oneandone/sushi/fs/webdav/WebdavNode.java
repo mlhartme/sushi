@@ -47,8 +47,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -195,32 +193,6 @@ public class WebdavNode extends Node {
         throw unsupported("setGid()");
     }
 
-    private boolean sameUrl(String href) {
-        String str;
-        StringBuilder builder;
-
-        str = path;
-        if (href.startsWith("/")) {
-            href = href.substring(1);
-        }
-        builder = new StringBuilder();
-        for (String segment : getRoot().getFilesystem().split(href)) {
-            if (builder.length() > 0) {
-                builder.append('/');
-            }
-            try {
-                builder.append(URLDecoder.decode(segment, WebdavFilesystem.ENCODING));
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(href, e);
-            }
-        }
-        href = builder.toString();
-        if (href.endsWith("/") && !str.endsWith("/")) {
-            str += "/";
-        }
-        return href.equals(str);
-    }
-
     @Override
     public String getPath() {
         return path;
@@ -229,9 +201,9 @@ public class WebdavNode extends Node {
     public String getQuery() {
         if (encodedQuery != null) {
             try {
-                return URLDecoder.decode(encodedQuery, WebdavFilesystem.ENCODING);
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(e);
+                return new URI("foo://bar/path?" + encodedQuery).getQuery();
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException();
             }
         } else {
             return null;
@@ -381,18 +353,22 @@ public class WebdavNode extends Node {
     public List<Node> list() throws ListException {
         PropFind method;
         List<Node> result;
-        String href;
+        URI href;
 
         try {
             tryDir = true;
             method = new PropFind(this, Name.DISPLAYNAME, 1);
             result = new ArrayList<Node>();
             for (MultiStatus response : method.invoke()) {
-            	href = response.href;
-                if (sameUrl(href)) {
+                try {
+                	href = new URI(response.href);
+                } catch (URISyntaxException e) {
+                    throw new ListException(this, e);
+                }
+                if (samePath(href)) {
                     // ignore "."
                 } else {
-                	result.add(createChild(href));
+                    result.add(createChild(href));
                 }
             }
             return result;
@@ -409,19 +385,40 @@ public class WebdavNode extends Node {
         }
     }
 
-	private WebdavNode createChild(String href) throws UnsupportedEncodingException {
-		int i;
+    private boolean samePath(URI uri) {
+        String cmp;
+        int idx;
+        int cl;
+        int pl;
+
+        cmp = uri.getPath();
+        idx = cmp.indexOf(path);
+        if (idx == 1 && cmp.charAt(0) == '/') {
+            cl = cmp.length();
+            pl = path.length();
+            if (cl == 1 + path.length() || cl == 1 + pl + 1 && cmp.charAt(cl - 1) == '/') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+	private WebdavNode createChild(URI href) throws UnsupportedEncodingException {
+		String childPath;
+        int i;
 		boolean dir;
 		WebdavNode result;
 
-		dir = href.endsWith("/");
+        childPath = href.getPath();
+		dir = childPath.endsWith("/");
 		if (dir) {
-		    href = href.substring(0, href.length() - 1);
+		    childPath = childPath.substring(0, childPath.length() - 1);
 		}
-		i = href.lastIndexOf("/");
-		href = href.substring(i + 1); // ok for i == -1
-		href = URLDecoder.decode(href, WebdavFilesystem.ENCODING);
-		result = new WebdavNode(root, path + '/' + href, null, dir);
+        childPath = Strings.removeStart(childPath, "/");
+        if (!childPath.startsWith(path)) {
+            throw new IllegalStateException();
+        }
+		result = new WebdavNode(root, childPath, null, dir);
 		return result;
 	}
 
@@ -546,16 +543,12 @@ public class WebdavNode extends Node {
         StringBuilder builder;
 
         builder = new StringBuilder(path.length() + 10);
-        if (path.isEmpty()) {
-            builder.append('/');
-        } else {
-            for (String segment : Strings.split("/", path)) {
-                builder.append('/');
-                try {
-                    builder.append(URLEncoder.encode(segment, WebdavFilesystem.ENCODING));
-                } catch (UnsupportedEncodingException e) {
-                    throw new IllegalStateException(e);
-                }
+        builder.append('/');
+        if (!path.isEmpty()) {
+            try {
+                builder.append(new URI(null, null, path, null).getRawPath());
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException();
             }
             if (tryDir) {
                 builder.append('/');

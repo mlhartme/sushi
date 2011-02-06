@@ -59,7 +59,7 @@ import java.util.Map;
  * <p>You can creates as many IO objects as you which, but using nodes from different IO objectes cannot interact
  * so you'll usually stick with a single IO instance.</p>
  *
- * <p>TODO: Multi-Threading. Currently, you need to know fs system internals to properly synchronized
+ * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized
  * multi-threaded applications.</p>
  */
 public class IO {
@@ -273,6 +273,10 @@ public class IO {
         }
     }
 
+    /**
+     * Make sure the uri is properly encoded, in particular when passing relative uris, the contained path needs to
+     * be encoded.
+     */
     public Node node(String uri) throws URISyntaxException, NodeInstantiationException {
         return node(new URI(uri));
     }
@@ -289,9 +293,20 @@ public class IO {
             if (working == null) {
                 throw new NodeInstantiationException(uri, "cannot resolve relative node: no working node");
             } else {
+                if (uri.isOpaque()) {
+                    throw new IllegalStateException(uri.toString());
+                }
                 // working.getURI().resolve cannot be used because some of the URIs are opaque
-                // TODO: encoding/decoding
-                return working.join(uri.toString());
+                if (uri.getAuthority() != null) {
+                    throw new NodeInstantiationException(uri, "cannot resolve relative node: authority not supported");
+                }
+                if (uri.getQuery() != null) {
+                    throw new NodeInstantiationException(uri, "cannot resolve relative node: query not supported");
+                }
+                if (uri.getFragment() != null) {
+                    throw new NodeInstantiationException(uri, "cannot resolve relative node: fragment not supported");
+                }
+                return working.join(uri.getPath());
             }
         }
         scheme = uri.getScheme();

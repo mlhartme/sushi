@@ -71,6 +71,21 @@ public class SvnNode extends Node {
     }
 
     @Override
+    public SvnNode getParent() {
+        return (SvnNode) doGetParent();
+    }
+
+    @Override
+    public SvnNode join(String ... paths) {
+        return (SvnNode) doJoin(paths);
+    }
+
+    @Override
+    public SvnNode join(List<String> paths) {
+        return (SvnNode) doJoin(paths);
+    }
+
+    @Override
     public String getPath() {
         return path;
     }

@@ -43,6 +43,21 @@ public class ConsoleNode extends Node {
     }
     
     @Override
+    public ConsoleNode getParent() {
+        return (ConsoleNode) doGetParent();
+    }
+
+    @Override
+    public ConsoleNode join(String ... paths) {
+        return (ConsoleNode) doJoin(paths);
+    }
+
+    @Override
+    public ConsoleNode join(List<String> paths) {
+        return (ConsoleNode) doJoin(paths);
+    }
+
+    @Override
     public List<ConsoleNode> list() {
         return null;
     }

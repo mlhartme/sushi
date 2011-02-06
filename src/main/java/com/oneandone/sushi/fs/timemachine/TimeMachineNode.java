@@ -55,6 +55,21 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
+    public TimeMachineNode getParent() {
+        return (TimeMachineNode) doGetParent();
+    }
+
+    @Override
+    public TimeMachineNode join(String ... paths) {
+        return (TimeMachineNode) doJoin(paths);
+    }
+
+    @Override
+    public TimeMachineNode join(List<String> paths) {
+        return (TimeMachineNode) doJoin(paths);
+    }
+
+    @Override
     public long length() throws LengthException {
         return node.length();
     }

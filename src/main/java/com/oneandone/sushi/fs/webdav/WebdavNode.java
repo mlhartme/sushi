@@ -109,6 +109,21 @@ public class WebdavNode extends Node {
     }
 
     @Override
+    public WebdavNode getParent() {
+        return (WebdavNode) doGetParent();
+    }
+
+    @Override
+    public WebdavNode join(String ... paths) {
+        return (WebdavNode) doJoin(paths);
+    }
+
+    @Override
+    public WebdavNode join(List<String> paths) {
+        return (WebdavNode) doJoin(paths);
+    }
+
+    @Override
     public long length() throws LengthException {
         boolean oldTryDir;
         Property property;

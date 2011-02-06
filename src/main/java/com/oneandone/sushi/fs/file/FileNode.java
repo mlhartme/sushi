@@ -73,6 +73,21 @@ public class FileNode extends Node {
     }
 
     @Override
+    public FileNode getParent() {
+        return (FileNode) doGetParent();
+    }
+
+    @Override
+    public FileNode join(String ... paths) {
+        return (FileNode) doJoin(paths);
+    }
+
+    @Override
+    public FileNode join(List<String> paths) {
+        return (FileNode) doJoin(paths);
+    }
+
+    @Override
     public URI getURI() {
         return file.toURI();
     }

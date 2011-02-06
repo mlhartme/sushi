@@ -73,6 +73,21 @@ public class SshNode extends Node {
         return root;
     }
 
+    @Override
+    public SshNode getParent() {
+        return (SshNode) doGetParent();
+    }
+
+    @Override
+    public SshNode join(String ... paths) {
+        return (SshNode) doJoin(paths);
+    }
+
+    @Override
+    public SshNode join(List<String> paths) {
+        return (SshNode) doJoin(paths);
+    }
+
     public ChannelSftp getChannel() throws JSchException {
         return root.getChannelFtp();
     }

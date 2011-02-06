@@ -211,7 +211,8 @@ public abstract class Node {
         return path.substring(path.lastIndexOf(getRoot().getFilesystem().getSeparatorChar()) + 1);
     }
 
-    public Node getParent() {
+    public abstract Node getParent();
+    protected Node doGetParent() {
         String path;
         int idx;
 
@@ -289,7 +290,9 @@ public abstract class Node {
         return getRoot().getId() + getPath();
     }
 
-    public Node join(List<String> paths) {
+    public abstract Node join(List<String> paths);
+
+    protected Node doJoin(List<String> paths) {
         Root root;
         Node result;
 
@@ -298,7 +301,9 @@ public abstract class Node {
         return result;
     }
 
-    public Node join(String... names) {
+    public abstract Node join(String... names);
+
+    public Node doJoin(String... names) {
         return join(Arrays.asList(names));
     }
 

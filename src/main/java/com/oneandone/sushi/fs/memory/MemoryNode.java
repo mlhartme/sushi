@@ -70,6 +70,21 @@ public class MemoryNode extends Node {
         return root;
     }
     
+    @Override
+    public MemoryNode getParent() {
+        return (MemoryNode) doGetParent();
+    }
+
+    @Override
+    public MemoryNode join(String ... paths) {
+        return (MemoryNode) doJoin(paths);
+    }
+
+    @Override
+    public MemoryNode join(List<String> paths) {
+        return (MemoryNode) doJoin(paths);
+    }
+
     public Type getType() {
         return type;
     }
@@ -152,11 +167,7 @@ public class MemoryNode extends Node {
         if (type != Type.NONE) {
             throw new MkdirException(this);
         }
-        try {
-            parentDir = getParent().isDirectory();
-        } catch (ExistsException e) {
-            throw new IllegalStateException(e);
-        }
+        parentDir = getParent().isDirectory();
         if (!parentDir) {
             throw new MkdirException(this);
         }

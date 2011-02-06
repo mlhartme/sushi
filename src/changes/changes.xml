@@ -4,6 +4,9 @@
   <body>
     <release version="2.1.0" date="2011-02-??">
       <action dev="mlhartme" type="update">
+        Precise return types for getParent and join in als Nodes.
+      </action>
+      <action dev="mlhartme" type="update">
         Support webdav URIs with queries.
       </action>
       <action dev="mlhartme" type="update">

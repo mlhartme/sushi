@@ -33,10 +33,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/** 
- * Use http networking properties to specify proxies:
- * http://java.sun.com/j2se/1.5.0/docs/guide/net/properties.html
- */
 public class ZipNode extends Node {
     private final ZipRoot root;
     private final String path;
@@ -52,6 +48,21 @@ public class ZipNode extends Node {
         return root;
     }
     
+    @Override
+    public ZipNode getParent() {
+        return (ZipNode) doGetParent();
+    }
+
+    @Override
+    public ZipNode join(String ... paths) {
+        return (ZipNode) doJoin(paths);
+    }
+
+    @Override
+    public ZipNode join(List<String> paths) {
+        return (ZipNode) doJoin(paths);
+    }
+
     @Override
     public long length() {
         return root.getZip().getEntry(path).getSize();

@@ -19,7 +19,6 @@ package com.oneandone.sushi.metadata.xml;
 
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.SimpleTypeException;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.Variable;
 import com.oneandone.sushi.metadata.listmodel.All;

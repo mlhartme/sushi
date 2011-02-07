@@ -26,7 +26,6 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class Property {

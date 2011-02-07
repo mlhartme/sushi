@@ -18,7 +18,6 @@
 package com.oneandone.sushi.cli;
 
 import com.oneandone.sushi.fs.IO;
-import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;

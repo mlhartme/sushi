@@ -17,7 +17,6 @@
 
 package com.oneandone.sushi.fs.ssh;
 
-import com.jcraft.jsch.JSchException;
 import com.oneandone.sushi.fs.NodeTest;
 import com.oneandone.sushi.fs.file.FileNode;
 import org.junit.After;

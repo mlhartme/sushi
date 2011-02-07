@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class SelectorTest {
     private static final Builder BUILDER = new Builder();

@@ -21,7 +21,6 @@ import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.io.InputLogStream;
 import com.oneandone.sushi.io.MultiOutputStream;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;

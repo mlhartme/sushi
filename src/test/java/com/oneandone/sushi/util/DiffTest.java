@@ -87,8 +87,8 @@ public class DiffTest {
     @Test
     public void files() throws IOException {
         World world;
-        Node dir;
-        Node right;
+        FileNode dir;
+        FileNode right;
         String expected;
         String actual;
         List<String> lines;
@@ -98,7 +98,7 @@ public class DiffTest {
         for (Node left : dir.find("*.left")) {
             right = dir.join(Strings.removeEnd(left.getName(), ".left") + ".right");
             try {
-                expected = new Program((FileNode) world.getHome(), "diff", "-u", left.getAbsolute(), right.getAbsolute()).exec();
+                expected = new Program((FileNode) world.getHome(), "diff", "-u", ((FileNode) left).getAbsolute(), right.getAbsolute()).exec();
             } catch (ExitCode e) {
                 expected = e.output;
             }

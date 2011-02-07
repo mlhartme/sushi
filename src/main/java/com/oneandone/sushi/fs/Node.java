@@ -285,11 +285,6 @@ public abstract class Node {
         return result.toString();
     }
 
-    /** @return root.id + getPath, but not the filesystem name. Note that it's not a path! */
-    public String getAbsolute() {
-        return getRoot().getId() + getPath();
-    }
-
     public abstract Node join(List<String> paths);
 
     protected Node doJoin(List<String> paths) {
@@ -884,7 +879,7 @@ public abstract class Node {
             if (hasAnchestor(working)) {
                 return getRelative(working);
             } else {
-                return getAbsolute();
+                return getRoot().getFilesystem().getSeparator() + getPath();
             }
         }
     }

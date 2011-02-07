@@ -39,11 +39,11 @@ public class SvnNodeFullTest extends NodeTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Node repo;
+        FileNode repo;
 
         repo = WORLD.guessProjectHome(SvnNodeFullTest.class).join("target/svnrepo");
         repo.deleteOpt();
-        URL = SVNRepositoryFactory.createLocalRepository(new File(repo.getAbsolute()), null, true, true, true);
+        URL = SVNRepositoryFactory.createLocalRepository(repo.getFile(), null, true, true, true);
     }
 
     @Override

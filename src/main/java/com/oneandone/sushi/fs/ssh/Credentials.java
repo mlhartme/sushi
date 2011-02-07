@@ -44,7 +44,7 @@ public class Credentials {
     }
 
     public static Credentials load(Node node, String passphrase) throws IOException {
-        return new Credentials(node.getAbsolute(), node.readBytes(), passphrase);
+        return new Credentials(node.toString(), node.readBytes(), passphrase);
     }
 
     public final String name;

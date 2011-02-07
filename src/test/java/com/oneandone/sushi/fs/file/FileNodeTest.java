@@ -42,8 +42,8 @@ public class FileNodeTest extends NodeTest {
     @Test
     public void fileConstructor() {
         assertEquals(WORLD.getHome(), WORLD.file(System.getProperty("user.home")));
-        assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
-        assertEquals(work.getPath(), WORLD.file(new File(work.getAbsolute() + "/")).getPath());
+        assertEquals(work.getPath(), WORLD.file(((FileNode) work).getAbsolute() + "/").getPath());
+        assertEquals(work.getPath(), WORLD.file(new File(((FileNode) work).getAbsolute() + "/")).getPath());
         assertEquals("", WORLD.file("/").getPath());
     }
 

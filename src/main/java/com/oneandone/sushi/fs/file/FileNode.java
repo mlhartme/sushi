@@ -102,6 +102,10 @@ public class FileNode extends Node {
         return file.getPath().substring(getRoot().getId().length());
     }
 
+    public String getAbsolute() {
+        return file.getAbsolutePath();
+    }
+    
     //--
 
     @Override

@@ -180,8 +180,10 @@ public class World {
 
         try {
             clazz = Class.forName(filesystemClass);
-        } catch (ClassNotFoundException e) {
+        } catch (NoClassDefFoundError e) {
             return null;
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("class not found: " + filesystemClass, e);
         }
         try {
             constructor = null;

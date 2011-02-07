@@ -119,7 +119,7 @@ public class Instance<T> {
     }
     
     public void toXml(Writer dest) throws IOException {
-        serialize(new WriterTree(dest), type.getName());
+        serialize(new WriterTree(dest, true), type.getName());
     }
 
     private void serialize(Tree tree, String name) throws IOException {

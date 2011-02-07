@@ -23,10 +23,12 @@ import java.io.Writer;
 public class WriterTree extends Tree {
     private final Writer dest;
     private int indent;
-    
-    public WriterTree(Writer dest) {
+    private boolean strict;
+
+    public WriterTree(Writer dest, boolean strict) {
         this.dest = dest;
         this.indent = 0;
+        this.strict = strict;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class WriterTree extends Tree {
         dest.write(name);
         type(typeAttribute);
         dest.write('>');
-        dest.write(com.oneandone.sushi.xml.Serializer.escapeEntities(text));
+        dest.write(com.oneandone.sushi.xml.Serializer.escapeEntities(text, strict));
         dest.write("</");
         dest.write(name);
         dest.write(">\n");

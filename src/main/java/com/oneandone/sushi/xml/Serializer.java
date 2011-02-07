@@ -142,16 +142,25 @@ public class Serializer {
 
     //--
     
-    // same method used for attributes and elements ...
-    public static String escapeEntities(String str) {
+    /**
+     * Same method used for attributes and elements ...
+     * See http://www.w3.org/TR/REC-xml/#charsets
+     */
+    public static String escapeEntities(String str, boolean strict) {
         StringBuilder buffer;
         char ch;
+        String msg;
         String entity;
 
         buffer = null;
         for (int i = 0; i < str.length(); i++) {
             ch = str.charAt(i);
             switch (ch) {
+                case '\t':
+                case '\n':
+                case '\r':
+                    entity = null;
+                    break;
                 case '<' :
                     entity = "&lt;";
                     break;
@@ -168,7 +177,17 @@ public class Serializer {
                     entity = "&amp;";
                     break;
                 default :
-                    entity = null;
+                    if (ch < 32) {
+                        msg = "illegal character code " + (int) ch;
+                        if (strict) {
+                            throw new IllegalArgumentException(msg);
+                        }
+                        entity = "[" + msg + "]";
+                    } else if (ch < 127) {
+                        entity = null;
+                    } else {
+                        entity = "&#" + (int) ch + ";";
+                    }
                     break;
             }
             if (buffer == null) {

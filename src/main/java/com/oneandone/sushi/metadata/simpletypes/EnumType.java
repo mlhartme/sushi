@@ -83,7 +83,7 @@ public class EnumType extends SimpleType {
         dest.append("  <xs:simpleType name='").append(getName()).append("'>\n");
         dest.append("    <xs:restriction base='xs:string' >\n");
         for (Enum e : values) {
-            dest.append("    <xs:enumeration value='").append(Serializer.escapeEntities(normalizeEnum(e.toString()))).append("'/>\n");
+            dest.append("    <xs:enumeration value='").append(Serializer.escapeEntities(normalizeEnum(e.toString()), true)).append("'/>\n");
         }
         dest.append("    </xs:restriction>\n");
         dest.append("  </xs:simpleType>\n");

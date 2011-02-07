@@ -47,19 +47,32 @@ public class SerializerTest {
         Document doc;
         String str;
         
-        assertEquals("", Serializer.escapeEntities(""));
-        assertEquals(" \t\r\n", Serializer.escapeEntities(" \t\r\n"));
-        assertEquals("abc", Serializer.escapeEntities("abc"));
-        assertEquals("&lt;", Serializer.escapeEntities("<"));
-        assertEquals("abc&lt;&gt;&amp;&apos;&quot;xyz", Serializer.escapeEntities("abc<>&'\"xyz"));
-        for (char c = ' '; c < 128; c++) {
+        assertEquals("", Serializer.escapeEntities("", true));
+        assertEquals(" \t\r\n", Serializer.escapeEntities(" \t\r\n", true));
+        assertEquals("abc", Serializer.escapeEntities("abc", true));
+        assertEquals("&lt;", Serializer.escapeEntities("<", true));
+        assertEquals("abc&lt;&gt;&amp;&apos;&quot;xyz", Serializer.escapeEntities("abc<>&'\"xyz", true));
+        for (char c = 1; c < 128; c++) {
             str = "<doc attr='" 
-                + Serializer.escapeEntities("" + c) + "'>" 
-                + Serializer.escapeEntities("" + c) + "</doc>";
+                + Serializer.escapeEntities("" + c, false) + "'>"
+                + Serializer.escapeEntities("" + c, false) + "</doc>";
             doc = BUILDER.parseString(str);
-            assertEquals("" + c, Dom.getString(SELECTOR.node(doc, "/doc")));
-            assertEquals("" + c, Dom.getString(SELECTOR.node(doc, "/doc/@attr")));
+            isChar(c, Dom.getString(SELECTOR.node(doc, "/doc")));
+            isChar(c, Dom.getString(SELECTOR.node(doc, "/doc/@attr")));
         }
+    }
+
+    private void isChar(char c, String str) {
+        if (str.equals(Character.toString(c))) {
+            return;
+        }
+        if (Character.isWhitespace(c) && str.trim().isEmpty()) {
+            return;
+        }
+        if (str.contains("illegal character") && str.contains(Integer.toString(c))) {
+            return;
+        }
+        fail("expected code " + (int) c + ", got: " + str);
     }
 
     @Test

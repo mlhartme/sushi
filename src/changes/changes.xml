@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Renamed IO to World.
       </action>
+      <action dev="mlhartme" type="fix">
+        Serializer.escapeEntities now properly reports illegal characters.
+      </action>
       <action dev="mlhartme" type="update">
         Move Node.getAbsolute() down to FileNode.
       </action>

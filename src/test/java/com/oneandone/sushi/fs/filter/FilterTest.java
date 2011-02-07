@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.io.OS;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class FilterTest {
 
     @Before
     public void setup() throws IOException {
-    	root = new IO().getTemp().createTempDirectory();
+    	root = new World().getTemp().createTempDirectory();
     }
 
     @Test

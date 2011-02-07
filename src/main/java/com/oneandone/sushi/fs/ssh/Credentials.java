@@ -3,7 +3,7 @@ package com.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 /** Private key with passphrase */
 public class Credentials {
-    public static Credentials loadDefault(IO io) throws IOException {
+    public static Credentials loadDefault(World io) throws IOException {
         Node dir;
         Node file;
         Node key;

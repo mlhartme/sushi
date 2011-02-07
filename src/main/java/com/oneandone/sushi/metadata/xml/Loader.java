@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.xml.Builder;
@@ -45,7 +45,7 @@ public class Loader extends DefaultHandler {
     private Map<String, Object> storage;
     private List<SAXException> exceptions;
 
-    public static Loader create(IO io, Type type) {
+    public static Loader create(World io, Type type) {
         // No validation - because it's generally impossible: the complete schema
         // is unknown because users my specify arbitrary types. Instead, the loader
         // performs proper validation - all unknown elements/attributes are rejected.

@@ -19,14 +19,14 @@ package com.oneandone.sushi.fs.console;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.fs.Root;
 
 import java.net.URI;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
-    public ConsoleFilesystem(IO io, String name) {
+    public ConsoleFilesystem(World io, String name) {
         super(io, '/', new Features(true, false, false, false, false, false), name);
     }
 

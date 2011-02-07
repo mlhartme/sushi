@@ -22,6 +22,6 @@ import com.oneandone.sushi.fs.NodeTest;
 public class MemoryNodeTest extends NodeTest {
     @Override
     protected MemoryNode createWork() {
-        return IO.getMemoryFilesystem().root().node("", null);
+        return WORLD.getMemoryFilesystem().root().node("", null);
     }
 }

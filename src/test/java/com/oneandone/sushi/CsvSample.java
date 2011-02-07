@@ -20,7 +20,7 @@ package com.oneandone.sushi;
 import com.oneandone.sushi.csv.Csv;
 import com.oneandone.sushi.csv.Format;
 import com.oneandone.sushi.csv.View;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
@@ -28,8 +28,8 @@ import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import java.util.Arrays;
 
 public class CsvSample {
-    private static final IO IO_OBJ = new IO();
-    private static final Type TYPE = new ReflectSchema(IO_OBJ).type(All.class);
+    private static final World WORLD = new World();
+    private static final Type TYPE = new ReflectSchema(WORLD).type(All.class);
     
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws Exception {
@@ -44,7 +44,7 @@ public class CsvSample {
         
         data = TYPE.instance(all);
         csv = new Csv(new Format());
-        view = View.fromXml(IO_OBJ.memoryNode("<view>" +
+        view = View.fromXml(WORLD.memoryNode("<view>" +
                 "  <scope>items</scope>" +
                 "  <field><name>Id</name><path>id</path></field>" +
                 "  <field><name>String</name><path>string</path></field>" +

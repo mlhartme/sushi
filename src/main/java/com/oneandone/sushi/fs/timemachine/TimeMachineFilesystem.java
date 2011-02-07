@@ -20,7 +20,7 @@ package com.oneandone.sushi.fs.timemachine;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.fs.file.FileNode;
@@ -37,7 +37,7 @@ import java.net.URISyntaxException;
  * does not work, see http://falsepositive.eu/archives/20080307-hfsplus-UIDGID-remapping/21  :(
  */
 public class TimeMachineFilesystem extends Filesystem {
-    public TimeMachineFilesystem(IO io, String name) {
+    public TimeMachineFilesystem(World io, String name) {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 

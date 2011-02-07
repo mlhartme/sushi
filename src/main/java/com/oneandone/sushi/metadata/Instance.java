@@ -19,7 +19,7 @@ package com.oneandone.sushi.metadata;
 
 import com.oneandone.sushi.csv.Csv;
 import com.oneandone.sushi.csv.View;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeWriter;
 import com.oneandone.sushi.metadata.store.PropertyStore;
@@ -59,14 +59,14 @@ public class Instance<T> {
     public Instance<T> clone() {
         Type type;
         StringWriter tmp;
-        IO io;
+        World world;
         
-        io = new IO(); // TODO
+        world = new World(); // TODO
         type = getType();
         tmp = new StringWriter();
         try {
             toXml(tmp);
-            return type.loadXml(io.memoryNode(tmp.getBuffer().toString()));
+            return type.loadXml(world.memoryNode(tmp.getBuffer().toString()));
         } catch (LoaderException e) {
             throw new RuntimeException("invalid!?", e);
         } catch (IOException e) {

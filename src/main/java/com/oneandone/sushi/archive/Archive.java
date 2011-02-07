@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.archive;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.io.Buffer;
 
@@ -38,7 +38,7 @@ public class Archive {
     public static final String META_INF = "META-INF";
     public static final String MANIFEST = META_INF + "/MANIFEST.MF";
 
-    public static Archive createZip(IO io) {
+    public static Archive createZip(World io) {
         return new Archive(io.getMemoryFilesystem().root().node("", null), null);
     }
 
@@ -46,7 +46,7 @@ public class Archive {
         return createZip(src.getIO()).read(src);
     }
 
-    public static Archive createJar(IO io) {
+    public static Archive createJar(World io) {
         return new Archive(io.getMemoryFilesystem().root().node("", null), new Manifest());
     }
 

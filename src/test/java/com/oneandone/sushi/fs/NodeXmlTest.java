@@ -27,7 +27,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class NodeXmlTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
 
     @Test
     public void xslt() throws IOException, TransformerException {
@@ -35,15 +35,15 @@ public class NodeXmlTest {
         MemoryNode src;
         MemoryNode dest;
         
-        t = IO_OBJ.memoryNode(
+        t = WORLD.memoryNode(
                 "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>" +
                 "  <xsl:output method='xml' indent='yes'/>" +
                 "  <xsl:template match='/' ><out/></xsl:template>" +
                 "</xsl:stylesheet>").readXsl();
-        src = IO_OBJ.memoryNode("<foo><bar/></foo>");
-        dest = IO_OBJ.memoryNode("");
+        src = WORLD.memoryNode("<foo><bar/></foo>");
+        dest = WORLD.memoryNode("");
         src.xslt(t, dest);
-        assertEquals(IO_OBJ.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""), 
+        assertEquals(WORLD.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""),
                 dest.readString());
     }
 }

@@ -1,6 +1,6 @@
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 
 import java.io.IOException;
@@ -60,14 +60,14 @@ public class TestProperties {
 
     public static Properties load() throws IOException {
         Properties result;
-        IO io;
+        World world;
         Node home;
         Node p;
         Reader src;
 
         result = new Properties();
-        io = new IO();
-        home = io.guessProjectHome(TestProperties.class);
+        world = new World();
+        home = world.guessProjectHome(TestProperties.class);
         src = home.join("test.properties").createReader();
         result.load(src);
         src.close();

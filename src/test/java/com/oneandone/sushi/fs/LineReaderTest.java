@@ -26,7 +26,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class LineReaderTest {
-    private final IO io = new IO();
+    private final World world = new World();
 
     @Test
     public void zero() {
@@ -86,7 +86,7 @@ public class LineReaderTest {
     //--
     
     private void check(String str, String ... expected) {
-        check(str, io.getSettings().lineFormat, expected.length, expected);
+        check(str, world.getSettings().lineFormat, expected.length, expected);
     }
 
     private void check(String str, LineFormat format, int lastLine, String ... expected) {
@@ -103,7 +103,7 @@ public class LineReaderTest {
         List<String> result;
 
         try {
-            node = io.memoryNode(str);
+            node = world.memoryNode(str);
             reader = new LineReader(node.createReader(), format, initialSize);
             result = reader.collect();
         } catch (IOException e) {

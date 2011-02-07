@@ -34,7 +34,7 @@ import static org.junit.Assert.fail;
 @RunWith(Parameterized.class)
 public class WebdavReadWriteFullTest extends NodeTest {
     static {
-        WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readwrite.log");
+        WebdavFilesystem.wireLog(WORLD.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readwrite.log");
     }
 
     @Parameterized.Parameters
@@ -50,7 +50,7 @@ public class WebdavReadWriteFullTest extends NodeTest {
 
     @Override
     protected Node createWork() throws IOException {
-        return IO.validNode(uri).deleteOpt().mkdir();
+        return WORLD.validNode(uri).deleteOpt().mkdir();
     }
 
     @Test

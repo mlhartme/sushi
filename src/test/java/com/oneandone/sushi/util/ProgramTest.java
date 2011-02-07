@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.util;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.io.OS;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ProgramTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
 
     @Test
     public void normal() throws IOException {
@@ -121,7 +121,7 @@ public class ProgramTest {
     private Program p(String ... args) {
         Program p;
         
-        p = new Program((FileNode) IO_OBJ.getHome());
+        p = new Program((FileNode) WORLD.getHome());
         if (OS.CURRENT == OS.WINDOWS) {
             p.add("cmd", "/C");
         }

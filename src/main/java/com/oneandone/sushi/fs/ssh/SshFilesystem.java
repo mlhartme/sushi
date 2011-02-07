@@ -21,7 +21,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class SshFilesystem extends Filesystem {
     private int defaultTimeout;
     private final JSch jsch;
 
-    public SshFilesystem(IO io, String name) {
+    public SshFilesystem(World io, String name) {
         super(io, '/', new Features(true, true, true, true, false, false), name);
 
         // initialized lazily

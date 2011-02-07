@@ -39,70 +39,71 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/** Note: IO.node methods are tested in NodeTest. */
-public class IOTest {
+/** Note: WORLD.node methods are tested in NodeTest. */
+public class WorldTest {
 
     //-- filesystems
 
     @Test
     public void getFilesystem() {
-        IO io;
+        World world;
 
-        io = new IO();
-        assertTrue(io.getFilesystem("zip") instanceof ZipFilesystem);
+        world = new World();
+        assertTrue(world.getFilesystem("zip") instanceof ZipFilesystem);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void filesystemDuplicate() {
-        IO io = new IO();
+        World world;
 
-        io.addFilesystem(new FileFilesystem(io, "file"));
+        world = new World();
+        world.addFilesystem(new FileFilesystem(world, "file"));
     }
 
     @Test
     public void filesystemParse() throws Exception {
         Node node;
-        IO io;
+        World world;
 
-        io = new IO();
-        node = io.node("file:/usr");
+        world = new World();
+        node = world.node("file:/usr");
         assertEquals("usr", node.getPath());
-        node = io.node("console:///");
+        node = world.node("console:///");
         assertTrue(node instanceof ConsoleNode);
-        node = io.node("mem://1/foo");
+        node = world.node("mem://1/foo");
         assertTrue(node instanceof MemoryNode);
     }
 
     @Test
     public void file() {
-        IO io;
+        World world;
 
-        io = new IO();
-        assertEquals("/foo", io.file("/foo").getFile().getPath());
-        assertEquals("/foo", io.file("/foo/").getFile().getPath());
-        assertEquals("/", io.file("/").getFile().getPath());
+        world = new World();
+        assertEquals("/foo", world.file("/foo").getFile().getPath());
+        assertEquals("/foo", world.file("/foo/").getFile().getPath());
+        assertEquals("/", world.file("/").getFile().getPath());
     }
 
     @Test
     public void nodeForUri() throws IOException, URISyntaxException {
         URI uri;
         Node node;
-        IO io;
+        World world;
 
-        io = new IO();
+        world = new World();
         uri = new URI("http://foo.bar:80/foo");
-        node = io.node(uri);
+        node = world.node(uri);
         assertTrue(node instanceof WebdavNode);
         assertEquals("foo", node.getPath());
         assertEquals(uri, node.getURI());
 
         uri = new URI("file:/home/mhm/bar.txt");
-        node = io.node(uri);
+        node = world.node(uri);
         assertTrue(node instanceof FileNode);
         assertEquals("home/mhm/bar.txt", node.getPath());
 
         uri = getClass().getClassLoader().getResource("java/lang/Object.class").toURI();
-        node = io.node(uri);
+        node = world.node(uri);
         assertTrue(node instanceof ZipNode);
         assertEquals("java/lang/Object.class", node.getPath());
     }
@@ -111,12 +112,12 @@ public class IOTest {
 
     @Test
     public void path() throws Exception {
-        IO io;
+        World world;
         List<FileNode> path;
 
-        io = new IO();
-        assertEquals(0, io.path("").size());
-        path = io.path("foo" + io.os.listSeparator + "bar");
+        world = new World();
+        assertEquals(0, world.path("").size());
+        path = world.path("foo" + world.os.listSeparator + "bar");
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).toString());
         assertEquals("bar", path.get(1).toString());
@@ -124,12 +125,12 @@ public class IOTest {
 
     @Test
     public void uripath() throws Exception {
-        IO io;
+        World world;
         List<FileNode> path;
 
-        io = new IO();
-        assertEquals(0, io.path("").size());
-        path = io.path(new File("foo").getAbsolutePath() + io.os.listSeparator + new File("bar").getAbsolutePath());
+        world = new World();
+        assertEquals(0, world.path("").size());
+        path = world.path(new File("foo").getAbsolutePath() + world.os.listSeparator + new File("bar").getAbsolutePath());
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).getName());
         assertEquals("bar", path.get(1).getName());
@@ -139,17 +140,17 @@ public class IOTest {
 
     @Test(expected=RuntimeException.class)
     public void locate() throws IOException {
-        IO io;
+        World world;
 
-        io = new IO();
-        io.locateClasspathItem(IO.class).checkDirectory();
-        io.locateClasspathItem(Reflect.resourceName(IOTest.class)).checkDirectory();
-        io.locateClasspathItem(Object.class).checkFile();
-        io.locateClasspathItem("/java/lang/Object.class").checkFile();
-        io.locateClasspathItem("/java/lang/Object.class").checkFile();
-        assertEquals("foo%20bar.jar", io.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        assertEquals("foo+bar.jar", io.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        io.locateClasspathItem("/nosuchresource");
+        world = new World();
+        world.locateClasspathItem(World.class).checkDirectory();
+        world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
+        world.locateClasspathItem(Object.class).checkFile();
+        world.locateClasspathItem("/java/lang/Object.class").checkFile();
+        world.locateClasspathItem("/java/lang/Object.class").checkFile();
+        assertEquals("foo%20bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        world.locateClasspathItem("/nosuchresource");
     }
 
     //--
@@ -158,7 +159,7 @@ public class IOTest {
     public void fileResource() throws Exception {
         Node node;
 
-        node = new IO().resource("testresource");
+        node = new World().resource("testresource");
         assertTrue(node instanceof FileNode);
         assertTrue(node.isFile());
         assertEquals("hello", node.readString());
@@ -168,7 +169,7 @@ public class IOTest {
     public void zipResource() throws Exception {
         Node node;
 
-        node = new IO().resource("org/junit/Assert.class");
+        node = new World().resource("org/junit/Assert.class");
         assertTrue(node instanceof ZipNode);
         assertTrue(node.isFile());
         assertEquals(node.length(), node.readBytes().length);
@@ -176,12 +177,12 @@ public class IOTest {
 
     @Test(expected=FileNotFoundException.class)
     public void noneExisting() throws Exception {
-        new IO().resource("nosuchresource");
+        new World().resource("nosuchresource");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void absolutePath() throws Exception {
-        new IO().resource("/absolute");
+        new World().resource("/absolute");
     }
 
 
@@ -189,32 +190,32 @@ public class IOTest {
 
     @Test
     public void locateRuntime() throws IOException {
-        IO io;
+        World world;
 
-        io = new IO();
-        io.locateClasspathItem("/java/lang/Object.class").checkExists();
+        world = new World();
+        world.locateClasspathItem("/java/lang/Object.class").checkExists();
     }
 
     @Test
     public void locateFromJar() throws IOException {
-        IO io;
+        World world;
 
-        io = new IO();
-        io.locateClasspathItem("/org/junit/Test.class").checkExists();
+        world = new World();
+        world.locateClasspathItem("/org/junit/Test.class").checkExists();
     }
 
     @Test
     public void projectHome() {
-        check(IO.class);
-        check(IOTest.class);
+        check(World.class);
+        check(WorldTest.class);
     }
 
     private void check(Class<?> clazz) {
-        IO io;
+        World world;
         FileNode home;
 
-        io = new IO();
-        home = io.guessProjectHome(clazz);
+        world = new World();
+        home = world.guessProjectHome(clazz);
         assertNotNull(home);
         assertTrue(home.join("pom.xml").isFile());
     }

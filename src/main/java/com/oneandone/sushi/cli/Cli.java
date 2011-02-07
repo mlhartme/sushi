@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.cli;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
@@ -41,10 +41,10 @@ public abstract class Cli {
     }
 
     public Cli() {
-        this(new IO());
+        this(new World());
     }
     
-    public Cli(IO io) {
+    public Cli(World io) {
         this(Console.create(io)); 
     }
     

@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.memory;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 
 import java.net.URI;
@@ -30,7 +30,7 @@ public class MemoryFilesystem extends Filesystem {
 
     public final int maxInMemorySize;
 
-    public MemoryFilesystem(IO io, String name) {
+    public MemoryFilesystem(World io, String name) {
         super(io, '/', new Features(true, false, false, false, false, false), name);
 
         this.roots = new WeakHashMap<Integer, MemoryRoot>();

@@ -38,7 +38,7 @@ import java.util.List;
 public class OnShutdown extends Thread {
     private static OnShutdown singleton;
 
-    /** a static singleton, because I don't want a shutdown hook for every IO instance */
+    /** a static singleton, because I don't want a shutdown hook for every WORLD instance */
     public static synchronized OnShutdown get() {
         if (singleton == null) {
             singleton = new OnShutdown();

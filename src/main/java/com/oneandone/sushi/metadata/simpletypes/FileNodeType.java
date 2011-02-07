@@ -17,15 +17,15 @@
 
 package com.oneandone.sushi.metadata.simpletypes;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 
 public class FileNodeType extends SimpleType {
-    private final IO io;
+    private final World io;
 
-    public FileNodeType(Schema schema, IO io) {
+    public FileNodeType(Schema schema, World io) {
         super(schema, FileNode.class, "node");
         this.io = io;
     }

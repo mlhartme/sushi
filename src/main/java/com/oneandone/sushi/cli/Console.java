@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.cli;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.io.InputLogStream;
 import com.oneandone.sushi.io.MultiOutputStream;
 
@@ -31,18 +31,18 @@ import java.util.Scanner;
  * TODO: name clash with java.io.Console in Java 6. 
  */
 public class Console {
-    public static Console create(IO io) {
+    public static Console create(World io) {
         return new Console(io, System.out, System.err, System.in);
     }
 
-    public static Console create(IO io, final OutputStream log) {
+    public static Console create(World io, final OutputStream log) {
         return new Console(io, 
                 new PrintStream(MultiOutputStream.createTeeStream(System.out, log), true), 
                 new PrintStream(MultiOutputStream.createTeeStream(System.err, log), true), 
                 new InputLogStream(System.in, log));
     }
     
-    public final IO io;
+    public final World io;
     public final PrintStream info;
     public final PrintStream verbose;
     public final PrintStream error;
@@ -50,7 +50,7 @@ public class Console {
     
     private final MultiOutputStream verboseSwitch;
     
-    public Console(IO io, PrintStream info, PrintStream error, InputStream in) {
+    public Console(World io, PrintStream info, PrintStream error, InputStream in) {
         this.io = io;
         this.info = info;
         this.verboseSwitch = MultiOutputStream.createNullStream();

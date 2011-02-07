@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Type;
@@ -30,13 +30,13 @@ public class ReflectSchemaTest {
     public void normal() {
         Type type;
         
-        type = new ReflectSchema().type(IO.class);
-        assertEquals("iO", type.getName());
+        type = new ReflectSchema().type(World.class);
+        assertEquals("world", type.getName());
     }
     
     @Test
     public void nodes() {
-        new ReflectSchema().type(IO.class);
+        new ReflectSchema().type(World.class);
         new ReflectSchema().type(Node.class);
         new ReflectSchema().type(FileNode.class);
     }

@@ -23,9 +23,8 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
-/** Note: IO.node methods are tested in NodeTest. */
 public class FilesystemTest {
-    private final Filesystem fs = new Filesystem(new IO(), '/', null, "foo") {
+    private final Filesystem fs = new Filesystem(new World(), '/', null, "foo") {
         @Override
         public Node node(URI uri, Object extra) throws NodeInstantiationException {
             return null;

@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.zip;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.fs.file.FileNode;
@@ -32,7 +32,7 @@ import java.util.zip.ZipFile;
 public class ZipFilesystem extends Filesystem {
     private static final String ZIP_SEPARATOR = "!/";
 
-    public ZipFilesystem(IO io, String name) {
+    public ZipFilesystem(World io, String name) {
         super(io, '/', new Features(false, false, false, false, false, false), name);
     }
 

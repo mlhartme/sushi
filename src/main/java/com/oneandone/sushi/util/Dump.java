@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.util;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
@@ -45,7 +45,7 @@ public class Dump {
         
         dest = new StringWriter();
         try {
-            dump(new IO(), obj, dest, maxDepth);
+            dump(new World(), obj, dest, maxDepth);
         } catch (IOException e) {
             throw new RuntimeException("unexected io exception from StringWriter: " + e.getMessage(), e);
         }
@@ -64,7 +64,7 @@ public class Dump {
         writer.close();
     }
 
-    public static void dump(IO io, Object obj, Writer dest, int maxDepth) throws IOException {
+    public static void dump(World io, Object obj, Writer dest, int maxDepth) throws IOException {
         new Dump(new ReflectSchema(io), dest, maxDepth).run(obj);
     }
 

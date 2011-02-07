@@ -36,15 +36,15 @@ import static org.junit.Assert.fail;
 public class FileNodeTest extends NodeTest {
     @Override
     protected Node createWork() throws IOException {
-        return IO.getTemp().createTempDirectory();
+        return WORLD.getTemp().createTempDirectory();
     }
 
     @Test
     public void fileConstructor() {
-        assertEquals(IO.getHome(), IO.file(System.getProperty("user.home")));
-        assertEquals(work.getPath(), IO.file(work.getAbsolute() + "/").getPath());
-        assertEquals(work.getPath(), IO.file(new File(work.getAbsolute() + "/")).getPath());
-        assertEquals("", IO.file("/").getPath());
+        assertEquals(WORLD.getHome(), WORLD.file(System.getProperty("user.home")));
+        assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
+        assertEquals(work.getPath(), WORLD.file(new File(work.getAbsolute() + "/")).getPath());
+        assertEquals("", WORLD.file("/").getPath());
     }
 
     @Test
@@ -111,12 +111,12 @@ public class FileNodeTest extends NodeTest {
 
     @Test
     public void modeFile() throws IOException {
-        checkMode(IO.getTemp().createTempFile());
+        checkMode(WORLD.getTemp().createTempFile());
     }
 
     @Test
     public void modeDir() throws IOException {
-        checkMode(IO.getTemp().createTempDirectory());
+        checkMode(WORLD.getTemp().createTempDirectory());
     }
 
     private void checkMode(FileNode node) throws IOException {

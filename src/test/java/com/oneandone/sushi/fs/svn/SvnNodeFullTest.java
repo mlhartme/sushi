@@ -41,7 +41,7 @@ public class SvnNodeFullTest extends NodeTest {
     public static void setUpClass() throws Exception {
         Node repo;
 
-        repo = IO.guessProjectHome(SvnNodeFullTest.class).join("target/svnrepo");
+        repo = WORLD.guessProjectHome(SvnNodeFullTest.class).join("target/svnrepo");
         repo.deleteOpt();
         URL = SVNRepositoryFactory.createLocalRepository(new File(repo.getAbsolute()), null, true, true, true);
     }
@@ -70,7 +70,7 @@ public class SvnNodeFullTest extends NodeTest {
     @Test
     public void path() throws IOException {
         assertEquals("", create(URL.toString()).getPath());
-        // assertEquals("test", SvnNode.create(IO, TEST).getPath());
+        // assertEquals("test", SvnNode.create(WORLD, TEST).getPath());
         assertEquals("work", work.getPath());
     }
 
@@ -97,7 +97,7 @@ public class SvnNodeFullTest extends NodeTest {
         List<Node> lst;
 
         root = create(URL.toString());
-        lst = IO.filter().include("*").collect(root);
+        lst = WORLD.filter().include("*").collect(root);
         assertEquals(1, lst.size());
     }
 
@@ -135,6 +135,6 @@ public class SvnNodeFullTest extends NodeTest {
     //--
 
     private SvnNode create(String path) throws NodeInstantiationException {
-        return (SvnNode) IO.validNode("svn:" + path);
+        return (SvnNode) WORLD.validNode("svn:" + path);
     }
 }

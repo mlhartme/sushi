@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.webdav;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.fs.Settings;
 
@@ -72,7 +72,7 @@ public class WebdavFilesystem extends Filesystem {
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
 
-    public WebdavFilesystem(IO io, String scheme, String internalScheme, boolean dav) {
+    public WebdavFilesystem(World io, String scheme, String internalScheme, boolean dav) {
         super(io, '/', new Features(dav, true, false, false, false, false), scheme);
 
         this.internalScheme = internalScheme;

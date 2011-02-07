@@ -17,16 +17,16 @@
 
 package com.oneandone.sushi.fs.timemachine;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        IO io;
+        World world;
         Node tm;
         
-        io = new IO();
-        tm = io.node("timemachine:/media/timemachine!harald/Latest/Platte/Users/mhm/Pictures");
+        world = new World();
+        tm = world.node("timemachine:/media/timemachine!harald/Latest/Platte/Users/mhm/Pictures");
         tm.checkDirectory();
         for (Node item : tm.list()) {
             System.out.println(item.getName());

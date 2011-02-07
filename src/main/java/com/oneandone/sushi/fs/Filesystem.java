@@ -23,13 +23,13 @@ import java.net.URI;
 import java.util.List;
 
 public abstract class Filesystem {
-    private final IO io;
+    private final World io;
     private final String separator;
     private final char separatorChar;
     private final Features features;
     private final String scheme;
 
-    public Filesystem(IO io, char separatorChar, Features features, String scheme) {
+    public Filesystem(World io, char separatorChar, Features features, String scheme) {
         this.io = io;
         this.separator = String.valueOf(separatorChar);
         this.separatorChar = separatorChar;
@@ -37,7 +37,7 @@ public abstract class Filesystem {
         this.scheme = scheme;
     }
 
-    public IO getIO() {
+    public World getIO() {
         return io;
     }
 

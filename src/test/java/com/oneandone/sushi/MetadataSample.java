@@ -17,25 +17,26 @@
 
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public class MetadataSample {
+    private static final World WORLD = new World();
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws Exception {
         Instance<Obj> data;
         Obj obj;
         
-        data = TYPE.loadXml(new IO().memoryNode("<obj><number>2</number><string>str</string></obj>"));
+        data = TYPE.loadXml(WORLD.memoryNode("<obj><number>2</number><string>str</string></obj>"));
         obj = data.get();
         System.out.println("object:\n" + obj);
         obj.number = 3;
         System.out.println("xml:\n" + data.toXml());
     }
     
-    private static final Type TYPE = new ReflectSchema(new IO()).type(Obj.class);
+    private static final Type TYPE = new ReflectSchema(WORLD).type(Obj.class);
     
     public static class Obj {
         public int number;

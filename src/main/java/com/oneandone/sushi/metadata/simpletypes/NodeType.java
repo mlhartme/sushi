@@ -18,7 +18,7 @@
 package com.oneandone.sushi.metadata.simpletypes;
 
 import com.oneandone.sushi.cli.ArgumentException;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.metadata.Schema;
@@ -27,9 +27,9 @@ import com.oneandone.sushi.metadata.SimpleType;
 import java.net.URISyntaxException;
 
 public class NodeType extends SimpleType {
-    private final IO io;
+    private final World io;
 
-    public NodeType(Schema schema, IO io) {
+    public NodeType(Schema schema, World io) {
         super(schema, Node.class, "node");
 
         this.io = io;

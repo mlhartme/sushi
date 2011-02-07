@@ -29,7 +29,7 @@ import java.net.URI;
 import static org.junit.Assert.assertEquals;
 
 public abstract class NodeReadOnlyTest {
-    protected static final IO IO = new IO(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*").addStandardFilesystems();
+    protected static final World WORLD = new World(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*").addStandardFilesystems();
 
     /** creates a new empty directory */
     protected abstract Node createWork() throws IOException;
@@ -52,7 +52,7 @@ public abstract class NodeReadOnlyTest {
         fs = work.getRoot().getFilesystem();
         locator = work.getURI();
         assertEquals(locator, work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
-        again = IO.node(locator);
+        again = WORLD.node(locator);
         assertEquals(work, again);
         assertEquals(locator, again.getURI());
     }

@@ -67,9 +67,9 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void createAbsolute() throws Exception {
         Node node;
 
-        assertEquals(work, IO.node(work.getURI()));
+        assertEquals(work, WORLD.node(work.getURI()));
         node = work.join("foo/bar");
-        assertEquals(node, IO.node(node.getURI()));
+        assertEquals(node, WORLD.node(node.getURI()));
     }
 
     //--
@@ -462,7 +462,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         file.writeString(content);
         assertEquals(content, file.readString());
         assertEquals(Collections.singletonList(file), file.getParent().list());
-        alias = IO.node(file.getURI());
+        alias = WORLD.node(file.getURI());
         assertEquals(file, alias);
         assertEquals(content, alias.readString());
         file.delete();
@@ -583,10 +583,10 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Document doc;
         Node file;
 
-        doc = IO.getXml().builder.literal("<a><b/></a>");
+        doc = WORLD.getXml().builder.literal("<a><b/></a>");
         file = work.join("foo");
         file.writeXml(doc);
-        assertEquals(IO.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>", ""), file.readString());
+        assertEquals(WORLD.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>", ""), file.readString());
         doc = file.readXml();
         assertEquals("a", doc.getDocumentElement().getLocalName());
     }

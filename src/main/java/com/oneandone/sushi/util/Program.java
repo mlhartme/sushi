@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.util;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 
 import java.io.ByteArrayOutputStream;
@@ -29,7 +29,7 @@ import java.util.List;
  * Wraps a Process builder to add some convenience methods
  */
 public class Program {
-    public final IO io;
+    public final World io;
     private final FileNode dir;
     public final ProcessBuilder builder;
     

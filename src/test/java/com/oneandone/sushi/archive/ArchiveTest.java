@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.archive;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ArchiveTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
 
     private List<String> directories;
     private List<String> fileNames;
@@ -79,7 +79,7 @@ public class ArchiveTest {
         Node file;
         Archive zip;
         
-        zip = Archive.createZip(IO_OBJ);
+        zip = Archive.createZip(WORLD);
         for (String dir : directories) {
             zip.data.join(dir).mkdir();
         }
@@ -87,7 +87,7 @@ public class ArchiveTest {
             zip.data.join(fileNames.get(i)).writeString(fileData.get(i));
         }
 
-        file = IO_OBJ.getTemp().createTempFile();
+        file = WORLD.getTemp().createTempFile();
         zip.save(file);
         zip = Archive.loadZip(file);
         assertEquals(directories.size() + fileNames.size(), zip.data.find("**/*").size());
@@ -106,7 +106,7 @@ public class ArchiveTest {
         Archive archive;
         Node reloaded;
         
-        archive = Archive.createJar(IO_OBJ);
+        archive = Archive.createJar(WORLD);
         for (String dir : directories) {
             archive.data.join(dir).mkdir();
         }
@@ -114,7 +114,7 @@ public class ArchiveTest {
             archive.data.join(fileNames.get(i)).writeString(fileData.get(i));
         }
 
-        file = IO_OBJ.getTemp().createTempFile();
+        file = WORLD.getTemp().createTempFile();
         archive.save(file);
         archive = Archive.loadJar(file);
         assertEquals(directories.size() + fileNames.size(), archive.data.find("**/*").size());
@@ -124,7 +124,7 @@ public class ArchiveTest {
         for (int i = 0; i < fileNames.size(); i++) {
             assertEquals(fileData.get(i), archive.data.join(fileNames.get(i)).readString());
         }
-        reloaded = IO_OBJ.getTemp().createTempFile();
+        reloaded = WORLD.getTemp().createTempFile();
         archive.save(reloaded);
         // TODO do not try "diff" on jar files, because they contain a timestamp that occasionally 
         // yields differences

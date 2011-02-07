@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.xml;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.io.OS;
 import org.junit.Test;
@@ -100,7 +100,7 @@ public class SerializerTest {
         FileNode file;
         
         doc = BUILDER.parseString("<a><b/></a>");        
-        file = new IO().getTemp().createTempFile();
+        file = new World().getTemp().createTempFile();
         SERIALIZER.serialize(doc, file);        
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<a>\n<b/>\n</a>\n", file.readString());
     }

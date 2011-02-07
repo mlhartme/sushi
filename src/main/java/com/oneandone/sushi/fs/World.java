@@ -46,21 +46,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>Configures and creates nodes. You'll usually create a single IO instance in your application, configure it and
- * afterwards use it through-out your application to create nodes via IO.node or IO.file. </p>
+ * <p>Configures and creates nodes. You'll usually create a single world instance in your application, configure it and
+ * afterwards use it through-out your application to create nodes via WORLD.node or WORLD.file. </p>
  *
- * <p>Sushi's FS subsystem forms a tree: An IO object is the root, having filesystems as it's children, roots as
- * grand-children and nodes as leaves. This tree is traversable from nodes up to the IO object via Node.getRoot(),
- * Root.getFilesystem() and Filesystem.getIO(), which is used internally e.g. to pick default encoding settings
- * from IO. (Traversing in reverse order is not implemented - to resource consuming)</p>
+ * <p>Sushi's FS subsystem forms a tree: An world object is the root, having filesystems as it's children, roots as
+ * grand-children and nodes as leaves. This tree is traversable from nodes up to the world object via Node.getRoot(),
+ * Root.getFilesystem() and Filesystem.getWorld(), which is used internally e.g. to pick default encoding settings
+ * from world. (Traversing in reverse order is not implemented, that too resource consuming)</p>
  *
- * <p>You can creates as many IO objects as you which, but using nodes from different IO objectes cannot interact
- * so you'll usually stick with a single IO instance.</p>
+ * <p>Technically, you can creates as many world objects as you which, but nodes from different world instances
+ * cannot interact, so you'll usually stick with a single WORLD instance. Note that there's no
+ * predefined static world instance in Sushi. You can either get the world from node instances, or,
+ * if you feel a single world instance should be available everywhere in your applicationm use dependency injection. </p>
  *
- * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized
- * multi-threaded applications.</p>
+ * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */
-public class IO {
+public class World {
     public final OS os;
 
     /** never null */
@@ -83,12 +84,12 @@ public class IO {
     private final FileFilesystem fileFilesystem;
     private final MemoryFilesystem memoryFilesystem;
 
-    public IO() {
+    public World() {
         this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
         addStandardFilesystems();
     }
 
-    public IO(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
+    public World(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
         this.os = os;
         this.settings = settings;
         this.buffer = buffer;
@@ -108,7 +109,7 @@ public class IO {
         return home;
     }
 
-    public IO setHome(Node home) {
+    public World setHome(Node home) {
         this.home = home;
         return this;
     }
@@ -119,7 +120,7 @@ public class IO {
     }
 
     /** current working directory */
-    public IO setWorking(Node working) {
+    public World setWorking(Node working) {
         this.working = working;
         return this;
     }
@@ -128,7 +129,7 @@ public class IO {
         return temp;
     }
 
-    public IO setTemp(FileNode temp) {
+    public World setTemp(FileNode temp) {
         this.temp = temp;
         return this;
     }
@@ -147,7 +148,7 @@ public class IO {
 
     //--  filesystems
 
-    public IO addStandardFilesystems() {
+    public World addStandardFilesystems() {
         addFilesystem(new ConsoleFilesystem(this, "console"));
         addFilesystem(new ZipFilesystem(this, "zip"));
         addFilesystem(new ZipFilesystem(this, "jar"));

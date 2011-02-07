@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.metadata.store.PropertyStore;
 import com.oneandone.sushi.metadata.xml.Loader;
@@ -92,7 +92,7 @@ public abstract class Type {
         return result;
     }
 
-    public <T> Instance<T> loadXml(IO io, String systemId, Reader src) throws IOException, LoaderException {
+    public <T> Instance<T> loadXml(World io, String systemId, Reader src) throws IOException, LoaderException {
         InputSource input;
         
         input = new InputSource(src);
@@ -100,7 +100,7 @@ public abstract class Type {
         return loadXml(io, input);
     }
 
-    public <T> Instance<T> loadXml(IO io, InputSource src) throws IOException, LoaderException {
+    public <T> Instance<T> loadXml(World io, InputSource src) throws IOException, LoaderException {
         Loader loader;
         T obj;
         

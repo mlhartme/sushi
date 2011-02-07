@@ -17,17 +17,17 @@
 
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 
 public class IOSample {
     /** print all Java files in your src/main/java directory */
     public static void main(String[] args) throws Exception {
-        IO io;
+        World world;
         Node dir;
 
-        io = new IO();
-        dir = io.node("src/main/java");
+        world = new World();
+        dir = world.file("src/main/java");
         for (Node node : dir.find("**/*.java")) {
             System.out.println(node.readString());
         }

@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
@@ -41,7 +41,7 @@ public class PropertiesSample {
         System.out.println("properties:\n" + data.toProperties("bar"));
     }
     
-    private static final Type TYPE = new ReflectSchema(new IO()).type(Obj.class);
+    private static final Type TYPE = new ReflectSchema(new World()).type(Obj.class);
     
     public static class Obj {
         public int number;

@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.ssh;
 
 import com.jcraft.jsch.JSchException;
 import com.oneandone.sushi.TestProperties;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.util.ExitCode;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ConnectionFullTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
 
     public static SshRoot open() throws JSchException, IOException {
         String host;
@@ -53,7 +53,7 @@ public class ConnectionFullTest {
         if (user.isEmpty()) {
             user = System.getProperty("user.name");
         }
-        return IO_OBJ.getFilesystem("ssh", SshFilesystem.class).root(host, user);
+        return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host, user);
     }
 
     private SshRoot root;

@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.cli;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class ArgumentFieldTest {
     private void check(String expected) {
         Argument arg;
         
-        arg = ArgumentField.create("fld", new ReflectSchema(new IO()), getField("fld"));
+        arg = ArgumentField.create("fld", new ReflectSchema(new World()), getField("fld"));
         arg.set(this, expected);
         assertEquals(expected, fld);
     }

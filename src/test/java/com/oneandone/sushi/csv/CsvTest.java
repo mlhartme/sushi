@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.csv;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ import static org.junit.Assert.fail;
 
 public class CsvTest {
     private static final Format FMT = new Format();
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
     
     @Test
     public void empty() throws IOException {
@@ -77,7 +77,7 @@ public class CsvTest {
     }
     
     private Node node(String str) {
-        return IO_OBJ.memoryNode(str);
+        return WORLD.memoryNode(str);
     }
     
     private void check(String orig, String ... lines) throws IOException {

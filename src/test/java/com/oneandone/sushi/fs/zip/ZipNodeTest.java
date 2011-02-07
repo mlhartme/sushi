@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.fs.zip;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
 import org.junit.Assert;
@@ -35,7 +35,7 @@ import static org.junit.Assert.fail;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {
-    private final IO ioObj = new IO();
+    private final World world = new World();
 
     @Test
     public void junit() throws Exception {
@@ -48,10 +48,10 @@ public class ZipNodeTest {
         List<? extends Node> list;
         List<? extends Node> tree;
 
-        jar = ioObj.locateClasspathItem(Assert.class);
+        jar = world.locateClasspathItem(Assert.class);
         rootPath = jar.getURI().toString() + "!/org/junit/Assert.class";
         locator = "jar:" + rootPath;
-        assrt = (ZipNode) ioObj.node(locator);
+        assrt = (ZipNode) world.node(locator);
         assertEquals(locator, assrt.getURI().toString());
         assertEquals("org/junit/Assert.class", assrt.getPath());
         assertTrue(assrt.exists());
@@ -96,14 +96,14 @@ public class ZipNodeTest {
         Node copy;
         ZipNode zip;
 
-        jar = ioObj.locateClasspathItem(Assert.class);
-        temp = ioObj.getTemp().createTempDirectory();
+        jar = world.locateClasspathItem(Assert.class);
+        temp = world.getTemp().createTempDirectory();
         copy = temp.join(dir).mkdir().join(name);
         jar.copyFile(copy);
         zip = ((FileNode) copy).openZip();
         assertEquals(1, zip.find(clazz).size());
-        assertNotNull(ioObj.validNode("zip:" + copy.getURI() + "!/" + clazz).readBytes());
-        assertNotNull(ioObj.validNode("jar:" + copy.getURI() + "!/" + clazz).readBytes());
+        assertNotNull(world.validNode("zip:" + copy.getURI() + "!/" + clazz).readBytes());
+        assertNotNull(world.validNode("jar:" + copy.getURI() + "!/" + clazz).readBytes());
         temp.delete();
     }
 
@@ -112,7 +112,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = ioObj.locateClasspathItem(Object.class);
+        jar = world.locateClasspathItem(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         try {
@@ -128,7 +128,7 @@ public class ZipNodeTest {
     public void manifest() throws IOException {
         FileNode jar;
 
-        jar = ioObj.locateClasspathItem(Object.class);
+        jar = world.locateClasspathItem(Object.class);
         assertNotNull(jar.openZip().getRoot().readManifest());
     }
 }

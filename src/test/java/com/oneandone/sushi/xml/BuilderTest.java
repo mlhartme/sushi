@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.xml;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class BuilderTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
     
     private Builder builder;
 
@@ -99,7 +99,7 @@ public class BuilderTest {
         Node file;
         Builder builder;
 
-        file = IO_OBJ.memoryNode(SCHEMA);
+        file = WORLD.memoryNode(SCHEMA);
         builder = new Builder(file);
         builder.parseString("<a><num>1</num><string/><string/></a>");
         try {
@@ -118,6 +118,6 @@ public class BuilderTest {
 
     @Test(expected=SAXParseException.class)
     public void invalidSchema() throws IOException, SAXException {
-        new Builder(IO_OBJ.memoryNode("xxx" + SCHEMA));
+        new Builder(WORLD.memoryNode("xxx" + SCHEMA));
     }
 }

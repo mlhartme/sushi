@@ -88,7 +88,7 @@ public abstract class Node {
         return getRoot().node("", null);
     }
 
-    public IO getIO() {
+    public World getIO() {
         return getRoot().getFilesystem().getIO();
     }
 

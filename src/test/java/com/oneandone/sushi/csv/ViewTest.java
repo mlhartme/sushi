@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.csv;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Path;
 import com.oneandone.sushi.metadata.model.ModelBase;
 import com.oneandone.sushi.metadata.xml.LoaderException;
@@ -188,7 +188,7 @@ public class ViewTest extends ModelBase {
     
     private View view(String str) {
         try {
-            return View.fromXml(new IO().memoryNode(str));
+            return View.fromXml(new World().memoryNode(str));
         } catch (LoaderException e) {
             throw new RuntimeException("TODO", e);
         } catch (IOException e) {

@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Instance;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.metadata.Variable;
@@ -309,11 +309,11 @@ public class LoaderTest extends ModelBase {
         return e.causes().get(0);
     }
 
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
     
     private static Instance<?> loadXml(Type type, String str) throws LoaderException {
         try {
-            return type.loadXml(IO_OBJ.memoryNode(str));
+            return type.loadXml(WORLD.memoryNode(str));
         } catch (LoaderException e) {
             throw e;
         } catch (IOException e) {
@@ -328,7 +328,7 @@ public class LoaderTest extends ModelBase {
         Object obj;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.memoryNode("<object/>");
+        node = WORLD.memoryNode("<object/>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertNotNull(obj);
     }
@@ -338,7 +338,7 @@ public class LoaderTest extends ModelBase {
         Object obj;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.memoryNode("<object type='java.lang.String'>foo</object>");
+        node = WORLD.memoryNode("<object type='java.lang.String'>foo</object>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertEquals("foo", obj);
     }
@@ -348,7 +348,7 @@ public class LoaderTest extends ModelBase {
         All all;
         com.oneandone.sushi.fs.Node node;
         
-        node = IO_OBJ.memoryNode(
+        node = WORLD.memoryNode(
                 "<all>" +
                 "  <objects type='java.lang.Integer'>2</objects>" +
                 "  <objects type='com.oneandone.sushi.metadata.listmodel.Empty'/>" +

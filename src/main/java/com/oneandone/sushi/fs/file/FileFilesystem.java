@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.file;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.io.OS;
@@ -30,7 +30,7 @@ import java.net.URI;
 public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
-    public FileFilesystem(IO io, String name) {
+    public FileFilesystem(World io, String name) {
         super(io, File.separatorChar, new Features(true, true, io.os != OS.WINDOWS, io.os != OS.WINDOWS, true, false), name);
 
         File[] rootFiles;

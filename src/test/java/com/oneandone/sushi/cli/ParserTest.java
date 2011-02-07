@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.cli;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
@@ -35,8 +35,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ParserTest {
-    private static final IO IO_OBJ = new IO();
-    private static final Schema METADATA = new ReflectSchema(IO_OBJ);
+    private static final World WORLD = new World();
+    private static final Schema METADATA = new ReflectSchema(WORLD);
 
     @Test
     public void empty() {
@@ -100,15 +100,15 @@ public class ParserTest {
         assertEquals("first", values.first.getName());
         assertEquals("second", values.second);
         assertEquals(2, values.remaining.size());
-        assertEquals(IO_OBJ.file("third"), values.remaining.get(0));
-        assertEquals(IO_OBJ.file("forth"), values.remaining.get(1));
+        assertEquals(WORLD.file("third"), values.remaining.get(0));
+        assertEquals(WORLD.file("forth"), values.remaining.get(1));
 
         values = new Values();
         parser.run(values, "first", "second", "-");
         assertEquals("first", values.first.getName());
         assertEquals("second", values.second);
         assertEquals(1, values.remaining.size());
-        assertEquals(IO_OBJ.file("-"), values.remaining.get(0));
+        assertEquals(WORLD.file("-"), values.remaining.get(0));
     }
 
     @Test

@@ -20,7 +20,7 @@ package com.oneandone.sushi.fs.file;
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.GetLastModifiedException;
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.LengthException;
 import com.oneandone.sushi.fs.LinkException;
 import com.oneandone.sushi.fs.ListException;
@@ -369,7 +369,7 @@ public class FileNode extends Node {
         return this;
     }
 
-    protected static void delete(IO io, File file) throws IOException {
+    protected static void delete(World io, File file) throws IOException {
         File[] files;
 
         if (isLink(file)) {
@@ -389,7 +389,7 @@ public class FileNode extends Node {
         }
     }
 
-    private static void deleteLink(IO io, File link) throws IOException {
+    private static void deleteLink(World io, File link) throws IOException {
         File target; // where the link point to
         File dir;
         File renamed;

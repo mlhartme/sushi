@@ -31,14 +31,14 @@ import static org.junit.Assert.assertTrue;
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     static {
-        WebdavFilesystem.wireLog(IO.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readonly.log");
+        WebdavFilesystem.wireLog(WORLD.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readonly.log");
     }
 
     @Test
     public void normal() throws Exception {
         WebdavNode node;
 
-        node = (WebdavNode) IO.node("http://englishediting.de/index.html");
+        node = (WebdavNode) WORLD.node("http://englishediting.de/index.html");
         assertTrue(node.isFile());
         assertTrue(node.exists());
         assertTrue(node.readString().length() > 1);
@@ -51,7 +51,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
     public void uriWithEmptyPath() throws Exception {
         Node node;
     
-        node = IO.node("http://www.heise.de");
+        node = WORLD.node("http://www.heise.de");
         assertTrue(node instanceof WebdavNode);
         assertEquals("http://www.heise.de:80/", node.getURI().toString());
         assertNotNull(node.readBytes());
@@ -64,7 +64,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
         String str;
 
         uri = URI.create("http://dict.tu-chemnitz.de:80/dings.cgi?lang=en&noframes=1&service=&query=foobarbaz&optword=1&optcase=1&opterrors=0&optpro=0&style=&dlink=self");
-        node = (WebdavNode) IO.node(uri);
+        node = (WebdavNode) WORLD.node(uri);
         assertEquals(uri, node.getURI());
         assertTrue(node.isFile());
         str = node.readString();
@@ -77,14 +77,14 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
         WebdavNode node;
 
         uri = new URI("http://englishediting.de:80/index.html");
-        node = (WebdavNode) IO.node(uri);
+        node = (WebdavNode) WORLD.node(uri);
         assertEquals("index.html", node.getPath());
         assertEquals(uri, node.getURI());
     }
 
     @Override
     protected Node createWork() throws IOException {
-        return IO.validNode("http://englishediting.de/foo");
+        return WORLD.validNode("http://englishediting.de/foo");
     }
 }
 

@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.cli;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class ArgumentMethodTest {
     private void check(int expected) {
         Argument arg;
         
-        arg = ArgumentMethod.create("setInt", new ReflectSchema(new IO()), getMethod());
+        arg = ArgumentMethod.create("setInt", new ReflectSchema(new World()), getMethod());
         arg.set(this, expected);
         assertEquals(expected, i);
     }

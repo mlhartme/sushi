@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.util;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.file.FileNode;
 import org.junit.Test;
@@ -86,19 +86,19 @@ public class DiffTest {
 
     @Test
     public void files() throws IOException {
-        IO io;
+        World world;
         Node dir;
         Node right;
         String expected;
         String actual;
         List<String> lines;
 
-        io = new IO();
-        dir = io.guessProjectHome(getClass()).join("src/test/resources/diff");
+        world = new World();
+        dir = world.guessProjectHome(getClass()).join("src/test/resources/diff");
         for (Node left : dir.find("*.left")) {
             right = dir.join(Strings.removeEnd(left.getName(), ".left") + ".right");
             try {
-                expected = new Program((FileNode) io.getHome(), "diff", "-u", left.getAbsolute(), right.getAbsolute()).exec();
+                expected = new Program((FileNode) world.getHome(), "diff", "-u", left.getAbsolute(), right.getAbsolute()).exec();
             } catch (ExitCode e) {
                 expected = e.output;
             }

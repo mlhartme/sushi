@@ -30,15 +30,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CopyDiffTest {
-	private final IO io;
+	private final World world;
 	private final Map<String, String> variables;
 	private final Copy copy;
 	
 	public CopyDiffTest() throws IOException {
-		io = new IO();
+		world = new World();
 		variables = new HashMap<String, String>();
-        copy = new Copy(io.getTemp().createTempDirectory(),
-                io.filter().includeAll(), true, 
+        copy = new Copy(world.getTemp().createTempDirectory(),
+                world.filter().includeAll(), true,
                 variables, Substitution.path(), Substitution.ant(), Copy.DEFAULT_CONTEXT_DELIMITER, Copy.DEFAULT_CALL_PREFIX);
 	}
 
@@ -66,8 +66,8 @@ public class CopyDiffTest {
 		Node left;
 		Node right;
 		
-		left = io.getTemp().createTempDirectory();
-		right = io.getTemp().createTempDirectory();
+		left = world.getTemp().createTempDirectory();
+		right = world.getTemp().createTempDirectory();
 		left.join("left").writeString("1");
 		right.join("right").writeString("2");
 		assertEquals("R left\nA right\n", left.diffDirectory(right, true));
@@ -136,14 +136,14 @@ public class CopyDiffTest {
     @Test
     public void templateExt() throws Exception {
         CopyExt foo;
-        IO io;
+        World world;
         Node src;
         Node dest;
         Map<String, String> context;
         
-        io = new IO();
-        src = io.guessProjectHome(getClass()).join("src/test/template");
-        dest = io.getTemp().createTempDirectory().join("dest").mkdir();
+        world = new World();
+        src = world.guessProjectHome(getClass()).join("src/test/template");
+        dest = world.getTemp().createTempDirectory().join("dest").mkdir();
         context = new HashMap<String, String>();
         context.put("var", "value");
         context.put("name", "foo");
@@ -174,7 +174,7 @@ public class CopyDiffTest {
     }
     
     private String doDiff(Node destdir, boolean brief) throws IOException {
-        Node tmp = io.getTemp().createTempDirectory();
+        Node tmp = world.getTemp().createTempDirectory();
         copy.directory(tmp);
         return destdir.diffDirectory(tmp, brief);
     }

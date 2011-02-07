@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Schema;
@@ -31,7 +31,7 @@ public class ReflectSchema extends Schema {
     public ReflectSchema() {
     }
 
-    public ReflectSchema(IO io) {
+    public ReflectSchema(World io) {
         this();
         add(new FileNodeType(this, io));
     }

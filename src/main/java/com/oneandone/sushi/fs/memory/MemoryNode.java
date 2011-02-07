@@ -34,7 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-/** You'll normally use IO.stringNode() to create instances */
+/** You'll normally use WORLD.stringNode() to create instances */
 public class MemoryNode extends Node {
     /** never null */
     private final MemoryRoot root;

@@ -17,7 +17,7 @@
 
 package com.oneandone.sushi.metadata;
 
-import com.oneandone.sushi.fs.IO;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
 import com.oneandone.sushi.metadata.model.Engine;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SchemaTest {
-    private static final IO IO_OBJ = new IO();
+    private static final World WORLD = new World();
 
     @Test
     public void simple() throws SAXException, IOException {
@@ -77,7 +77,7 @@ public class SchemaTest {
         FileNode schemaFile;
         Builder builder;
 
-        schemaFile = IO_OBJ.getTemp().createTempFile();
+        schemaFile = WORLD.getTemp().createTempFile();
         schemaFile.writeString(schema);
         builder = new Builder(schemaFile);
         builder.parseString(content);

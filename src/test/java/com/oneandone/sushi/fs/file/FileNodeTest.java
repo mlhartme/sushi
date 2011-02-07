@@ -33,17 +33,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /** TODO: move more tests into NodeTest */
-public class FileNodeTest extends NodeTest {
+public class FileNodeTest extends NodeTest<FileNode> {
     @Override
-    protected Node createWork() throws IOException {
+    protected FileNode createWork() throws IOException {
         return WORLD.getTemp().createTempDirectory();
     }
 
     @Test
     public void fileConstructor() {
         assertEquals(WORLD.getHome(), WORLD.file(System.getProperty("user.home")));
-        assertEquals(work.getPath(), WORLD.file(((FileNode) work).getAbsolute() + "/").getPath());
-        assertEquals(work.getPath(), WORLD.file(new File(((FileNode) work).getAbsolute() + "/")).getPath());
+        assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
+        assertEquals(work.getPath(), WORLD.file(new File(work.getAbsolute() + "/")).getPath());
         assertEquals("", WORLD.file("/").getPath());
     }
 
@@ -64,8 +64,8 @@ public class FileNodeTest extends NodeTest {
         FileNode src;
         FileNode dest;
 
-        src = (FileNode) work.join("src");
-        dest = (FileNode) work.join("dest");
+        src = work.join("src");
+        dest = work.join("dest");
         try {
             src.rename(dest);
             fail();
@@ -89,7 +89,7 @@ public class FileNodeTest extends NodeTest {
     public void mkfile() throws IOException {
         FileNode file;
 
-        file = (FileNode) work.join("mkfile");
+        file = work.join("mkfile");
         assertFalse(file.exists());
         file.mkfile();
         assertTrue(file.exists());
@@ -152,9 +152,9 @@ public class FileNodeTest extends NodeTest {
     public void temp() throws IOException {
         FileNode tmp;
 
-        tmp = ((FileNode) work).createTempFile();
+        tmp = work.createTempFile();
         assertEquals("", tmp.readString());
-        tmp = ((FileNode) work).createTempDirectory();
+        tmp = work.createTempDirectory();
         assertEquals(0, tmp.list().size());
     }
 }

@@ -26,12 +26,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-public abstract class WebdavNodeFullBase extends NodeTest {
+public abstract class WebdavNodeFullBase extends NodeTest<WebdavNode> {
 	@Test
 	public void attributeFile() throws IOException {
 		WebdavNode node;
 
-		node = (WebdavNode) work.join("file");
+		node = work.join("file");
 		try {
 			node.getAttribute("foo");
 			fail();
@@ -46,7 +46,7 @@ public abstract class WebdavNodeFullBase extends NodeTest {
 	public void attributeDir() throws IOException {
 		WebdavNode node;
 
-		node = (WebdavNode) work.join("dir");
+		node = work.join("dir");
 		node.mkdir();
 		attrib(node, "foo");
 	}

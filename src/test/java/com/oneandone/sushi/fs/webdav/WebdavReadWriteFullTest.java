@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
-public class WebdavReadWriteFullTest extends NodeTest {
+public class WebdavReadWriteFullTest extends NodeTest<WebdavNode> {
     static {
         WebdavFilesystem.wireLog(WORLD.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readwrite.log");
     }
@@ -49,15 +49,15 @@ public class WebdavReadWriteFullTest extends NodeTest {
     }
 
     @Override
-    protected Node createWork() throws IOException {
-        return WORLD.validNode(uri).deleteOpt().mkdir();
+    protected WebdavNode createWork() throws IOException {
+        return (WebdavNode) WORLD.validNode(uri).deleteOpt().mkdir();
     }
 
     @Test
     public void attributeFile() throws IOException {
         WebdavNode node;
 
-        node = (WebdavNode) work.join("file");
+        node = work.join("file");
         try {
             node.getAttribute("foo");
             fail();
@@ -72,7 +72,7 @@ public class WebdavReadWriteFullTest extends NodeTest {
     public void attributeDir() throws IOException {
         WebdavNode node;
 
-        node = (WebdavNode) work.join("dir");
+        node = work.join("dir");
         node.mkdir();
         attrib(node, "foo");
     }

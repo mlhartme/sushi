@@ -31,7 +31,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SshNodeFullTest extends NodeTest {
+public class SshNodeFullTest extends NodeTest<SshNode> {
     private static SshRoot root;
 
     @BeforeClass

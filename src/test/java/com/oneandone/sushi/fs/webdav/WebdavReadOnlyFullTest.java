@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
-public class WebdavReadOnlyFullTest extends NodeReadOnlyTest {
+public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
     static {
         WebdavFilesystem.wireLog(WORLD.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readonly.log");
     }

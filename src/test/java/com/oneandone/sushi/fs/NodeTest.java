@@ -40,7 +40,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public abstract class NodeTest extends NodeReadOnlyTest {
+public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void work() throws IOException {
         List<?> children;

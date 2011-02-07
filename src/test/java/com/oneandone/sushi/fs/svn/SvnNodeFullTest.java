@@ -34,7 +34,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SvnNodeFullTest extends NodeTest {
+public class SvnNodeFullTest extends NodeTest<SvnNode> {
     private static SVNURL URL;
 
     @BeforeClass
@@ -47,7 +47,7 @@ public class SvnNodeFullTest extends NodeTest {
     }
 
     @Override
-    public Node createWork() throws IOException {
+    public SvnNode createWork() throws IOException {
         SvnNode node;
 
         node = create(URL + "/work");
@@ -106,7 +106,7 @@ public class SvnNodeFullTest extends NodeTest {
         SvnNode root;
         FileNode dir;
 
-        root = (SvnNode) work;
+        root = work;
         root.join("file").writeString("foo");
         root.join("dir").mkdir().join("sub").writeString("bar");
         root.join("dir/dir1/dir2").mkdirs();
@@ -129,7 +129,7 @@ public class SvnNodeFullTest extends NodeTest {
 
     @Test
     public void svnurl() {
-        assertEquals(URL + "/work/a", ((SvnNode) work.join("a")).getSvnurl().toString());
+        assertEquals(URL + "/work/a", work.join("a").getSvnurl().toString());
     }
 
     //--

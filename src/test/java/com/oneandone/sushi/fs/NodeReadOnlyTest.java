@@ -28,13 +28,13 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
-public abstract class NodeReadOnlyTest {
+public abstract class NodeReadOnlyTest<T extends Node> {
     protected static final World WORLD = new World(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*").addStandardFilesystems();
 
     /** creates a new empty directory */
-    protected abstract Node createWork() throws IOException;
+    protected abstract T createWork() throws IOException;
 
-    protected Node work;
+    protected T work;
     protected String sep;
 
     @Before

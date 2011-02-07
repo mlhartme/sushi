@@ -19,7 +19,7 @@ package com.oneandone.sushi.fs.memory;
 
 import com.oneandone.sushi.fs.NodeTest;
 
-public class MemoryNodeTest extends NodeTest {
+public class MemoryNodeTest extends NodeTest<MemoryNode> {
     @Override
     protected MemoryNode createWork() {
         return WORLD.getMemoryFilesystem().root().node("", null);

@@ -19,6 +19,8 @@ package com.oneandone.sushi.fs;
 
 import com.oneandone.sushi.archive.Archive;
 import com.oneandone.sushi.fs.filter.Filter;
+import com.oneandone.sushi.fs.zip.ZipFilesystem;
+import com.oneandone.sushi.fs.zip.ZipNode;
 import com.oneandone.sushi.io.Buffer;
 import com.oneandone.sushi.util.Strings;
 import com.oneandone.sushi.xml.Serializer;
@@ -829,16 +831,6 @@ public abstract class Node {
 
     public String digest(String name) throws IOException, NoSuchAlgorithmException {
         return Strings.toHex(digestBytes(name));
-    }
-
-    //-- archives
-    // TODO: archive loaded completely into memory ...
-
-    public void unzip(Node dest) throws IOException {
-        Archive.loadZip(this).data.copyDirectory(dest);
-    }
-    public void unjar(Node dest) throws IOException {
-        Archive.loadJar(this).data.copyDirectory(dest);
     }
 
     //-- Object functionality

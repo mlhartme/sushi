@@ -17,6 +17,7 @@
 
 package com.oneandone.sushi.fs.file;
 
+import com.oneandone.sushi.archive.Archive;
 import com.oneandone.sushi.fs.DeleteException;
 import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.GetLastModifiedException;
@@ -131,9 +132,27 @@ public class FileNode extends Node {
         return file.canRead();
     }
 
+    //--
+
     public ZipNode openZip() throws IOException {
         return ((ZipFilesystem) getWorld().getFilesystem("zip")).node(this, "");
     }
+
+    public ZipNode openJar() throws IOException {
+        return ((ZipFilesystem) getWorld().getFilesystem("jar")).node(this, "");
+    }
+
+    /** @return dest */
+    public Node unzip(Node dest) throws IOException {
+        openZip().copyDirectory(dest);
+        return this;
+    }
+
+    public Node unjar(Node dest) throws IOException {
+        openJar().copyDirectory(dest);
+        return this;
+    }
+
 
     @Override
     public long length() throws LengthException {

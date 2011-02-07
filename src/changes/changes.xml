@@ -61,7 +61,7 @@
         SshNodes: native append, no longer read old content before appending.
       </action>
       <action dev="mlhartme" type="update">
-        Move Archive.unzip/unjar to Node.unzip/unjar.
+        Move Archive.unzip/unjar to FileNode.unzip/unjar.
       </action>
       <action dev="mlhartme" type="fix">
         Fix URI encoding/decoding problems in MemoryNode, WebdavNode, ZipNode, SshNode and SvnNode. In particular, you

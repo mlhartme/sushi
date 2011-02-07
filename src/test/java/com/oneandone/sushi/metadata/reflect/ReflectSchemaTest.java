@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.metadata.reflect;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Type;
 import org.junit.Test;

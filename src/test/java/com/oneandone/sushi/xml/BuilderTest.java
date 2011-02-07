@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.xml;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

@@ -19,9 +19,9 @@ package com.oneandone.sushi.fs.file;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.io.OS;
 
 import java.io.File;

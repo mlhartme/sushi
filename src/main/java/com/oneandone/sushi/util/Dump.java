@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.util;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Schema;

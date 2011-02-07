@@ -1,7 +1,7 @@
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.io.Reader;

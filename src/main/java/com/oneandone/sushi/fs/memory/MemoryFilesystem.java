@@ -19,8 +19,8 @@ package com.oneandone.sushi.fs.memory;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.World;
 
 import java.net.URI;
 import java.util.WeakHashMap;

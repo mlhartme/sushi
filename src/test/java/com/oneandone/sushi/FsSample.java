@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 
 public class FsSample {
     /** print all Java files in your src/main/java directory */

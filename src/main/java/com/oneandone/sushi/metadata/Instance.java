@@ -19,9 +19,9 @@ package com.oneandone.sushi.metadata;
 
 import com.oneandone.sushi.csv.Csv;
 import com.oneandone.sushi.csv.View;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeWriter;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.store.PropertyStore;
 import com.oneandone.sushi.metadata.xml.DomTree;
 import com.oneandone.sushi.metadata.xml.LoaderException;

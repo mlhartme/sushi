@@ -19,9 +19,9 @@ package com.oneandone.sushi.fs.webdav;
 
 import com.oneandone.sushi.fs.Features;
 import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.NodeInstantiationException;
 import com.oneandone.sushi.fs.Settings;
+import com.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.net.URI;

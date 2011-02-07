@@ -17,7 +17,6 @@
 
 package com.oneandone.sushi.metadata.xml;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Type;
 import com.oneandone.sushi.xml.Builder;

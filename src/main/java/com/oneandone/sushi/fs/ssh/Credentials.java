@@ -3,8 +3,8 @@ package com.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.csv;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;

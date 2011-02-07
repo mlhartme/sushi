@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.fs.filter;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.io.OS;
 import org.junit.Before;
 import org.junit.Test;

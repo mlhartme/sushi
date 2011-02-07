@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.fs.timemachine;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 
 public class Main {
     public static void main(String[] args) throws Exception {

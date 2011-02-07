@@ -18,9 +18,9 @@
 package com.oneandone.sushi.metadata.simpletypes;
 
 import com.oneandone.sushi.cli.ArgumentException;
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
 import com.oneandone.sushi.fs.NodeInstantiationException;
+import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 

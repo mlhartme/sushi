@@ -17,8 +17,8 @@
 
 package com.oneandone.sushi.archive;
 
-import com.oneandone.sushi.fs.World;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.World;
 import org.junit.Before;
 import org.junit.Test;
 

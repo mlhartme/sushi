@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MemoryRoot implements Root {
+public class MemoryRoot implements Root<MemoryNode> {
     public final MemoryFilesystem filesystem;
     public final int id;
     private final Map<String, MemoryNode> nodes;

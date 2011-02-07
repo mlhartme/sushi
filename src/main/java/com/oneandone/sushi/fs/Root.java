@@ -21,7 +21,7 @@ package com.oneandone.sushi.fs;
  * A file system root like the drive letter on Windows or the Host Name for HttpFilesystem. 
  * The root is not a node. A root node is a node with an empty path. 
  */
-public interface Root {
+public interface Root<T extends Node> {
     /** Backlink */
     Filesystem getFilesystem();
     
@@ -32,5 +32,5 @@ public interface Root {
      * Never called with heading or tailing separator. The base of the resulting node must be null.
      * TODO: expect splitted path? 
      */
-    Node node(String path, String encodedQuery);
+    T node(String path, String encodedQuery);
 }

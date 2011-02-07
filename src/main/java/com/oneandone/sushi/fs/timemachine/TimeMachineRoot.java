@@ -24,7 +24,7 @@ import com.oneandone.sushi.fs.file.FileNode;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class TimeMachineRoot implements Root {
+public class TimeMachineRoot implements Root<TimeMachineNode> {
     public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {
         return new TimeMachineRoot(fs,
                 root.join("Backups.backupdb"), root.join(".HFS+ Private Directory Data\r"));

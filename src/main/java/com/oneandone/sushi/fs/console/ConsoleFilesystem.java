@@ -25,7 +25,7 @@ import com.oneandone.sushi.fs.World;
 
 import java.net.URI;
 
-public class ConsoleFilesystem extends Filesystem implements Root {
+public class ConsoleFilesystem extends Filesystem implements Root<ConsoleNode> {
     public ConsoleFilesystem(World world, String name) {
         super(world, '/', new Features(true, false, false, false, false, false), name);
     }

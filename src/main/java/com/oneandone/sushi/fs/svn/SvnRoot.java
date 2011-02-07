@@ -26,7 +26,7 @@ import org.tmatesoft.svn.core.wc.SVNInfo;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class SvnRoot implements Root {
+public class SvnRoot implements Root<SvnNode> {
     private final SvnFilesystem filesystem;
     private final SVNRepository repository;
     private final SVNClientManager clientManager;

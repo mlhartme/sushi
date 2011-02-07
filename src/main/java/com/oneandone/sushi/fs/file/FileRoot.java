@@ -22,7 +22,7 @@ import com.oneandone.sushi.fs.Root;
 import java.io.File;
 
 
-public class FileRoot implements Root {
+public class FileRoot implements Root<FileNode> {
     private final FileFilesystem filesystem;
     private final String id;
     

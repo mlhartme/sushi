@@ -40,7 +40,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WebdavRoot implements Root {
+public class WebdavRoot implements Root<WebdavNode> {
     private final WebdavFilesystem filesystem;
     public final HttpHost host;
     private final HttpParams params;

@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipFile;
 
-public class ZipRoot implements Root {
+public class ZipRoot implements Root<ZipNode> {
     private final ZipFilesystem filesystem;
     private final ZipFile zip;
 

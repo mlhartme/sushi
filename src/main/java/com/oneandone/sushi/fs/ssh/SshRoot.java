@@ -32,7 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 // TODO: dump UserInfo interface?
-public class SshRoot implements Root, UserInfo, Runnable {
+public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 

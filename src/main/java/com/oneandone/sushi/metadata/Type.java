@@ -87,24 +87,24 @@ public abstract class Type {
         Instance<T> result;
         
         src = node.createReader();
-        result = loadXml(node.getWorld(), node.getURI().toString(), src);
+        result = loadXml(node.getURI().toString(), src);
         src.close();
         return result;
     }
 
-    public <T> Instance<T> loadXml(World world, String systemId, Reader src) throws IOException, LoaderException {
+    public <T> Instance<T> loadXml(String systemId, Reader src) throws IOException, LoaderException {
         InputSource input;
         
         input = new InputSource(src);
         input.setSystemId(systemId);
-        return loadXml(world, input);
+        return loadXml(input);
     }
 
-    public <T> Instance<T> loadXml(World world, InputSource src) throws IOException, LoaderException {
+    public <T> Instance<T> loadXml(InputSource src) throws IOException, LoaderException {
         Loader loader;
         T obj;
         
-        loader = Loader.create(world, this);
+        loader = Loader.create(this);
         obj = (T) loader.run(src);
         return instance(obj);
     }

@@ -27,17 +27,17 @@ import com.oneandone.sushi.metadata.SimpleType;
 import java.net.URISyntaxException;
 
 public class NodeType extends SimpleType {
-    private final World io;
+    private final World world;
 
-    public NodeType(Schema schema, World io) {
+    public NodeType(Schema schema, World world) {
         super(schema, Node.class, "node");
 
-        this.io = io;
+        this.world = world;
     }
 
     @Override
     public Object newInstance() {
-        return io.getWorking();
+        return world.getWorking();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class NodeType extends SimpleType {
     @Override
     public Object stringToValue(String str) {
         try {
-            return io.node(str);
+            return world.node(str);
         } catch (NodeInstantiationException e) {
             throw new ArgumentException(str, e);
         } catch (URISyntaxException e) {

@@ -26,8 +26,8 @@ import com.oneandone.sushi.fs.Root;
 import java.net.URI;
 
 public class ConsoleFilesystem extends Filesystem implements Root {
-    public ConsoleFilesystem(World io, String name) {
-        super(io, '/', new Features(true, false, false, false, false, false), name);
+    public ConsoleFilesystem(World world, String name) {
+        super(world, '/', new Features(true, false, false, false, false, false), name);
     }
 
     public Filesystem getFilesystem() {

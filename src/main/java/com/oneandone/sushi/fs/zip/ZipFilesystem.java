@@ -32,8 +32,8 @@ import java.util.zip.ZipFile;
 public class ZipFilesystem extends Filesystem {
     private static final String ZIP_SEPARATOR = "!/";
 
-    public ZipFilesystem(World io, String name) {
-        super(io, '/', new Features(false, false, false, false, false, false), name);
+    public ZipFilesystem(World world, String name) {
+        super(world, '/', new Features(false, false, false, false, false, false), name);
     }
 
     public ZipNode node(URI uri, Object extra) throws NodeInstantiationException {
@@ -67,7 +67,7 @@ public class ZipFilesystem extends Filesystem {
         try {
             return root((FileNode) jar).node(path, null);
         } catch (IOException e) {
-            throw new NodeInstantiationException(uri, "io exception", e);
+            throw new NodeInstantiationException(uri, "world exception", e);
         }
     }
 

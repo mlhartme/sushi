@@ -4,10 +4,16 @@
   <body>
     <release version="2.1.0" date="2011-02-??">
       <action dev="mlhartme" type="update">
+        Renamed IO to World.
+      </action>
+      <action dev="mlhartme" type="update">
+        Simplified World creation, dump META-INF filesystem descriptor.
+      </action>
+      <action dev="mlhartme" type="update">
         Precise return types for getParent and join in als Nodes.
       </action>
       <action dev="mlhartme" type="update">
-        IO.node now rejects relative uris.
+        World.node now rejects relative uris.
       </action>
       <action dev="mlhartme" type="update">
         Support webdav URIs with queries.
@@ -16,7 +22,7 @@
         Support dots and double dots in Node.join.
       </action>
       <action dev="mlhartme" type="update">
-        io.working may be null.
+        world.working may be null.
       </action>
       <action dev="mlhartme" type="update">
         Renames Node.hasAnchestor to Node.hasDifferenceAnchestor(). Added Node.hasAnchestor() that returns true for this.
@@ -24,20 +30,14 @@
       <action dev="mlhartme" type="update">
         Improved node.toString().
       </action>
-      <action dev="mlhartme" type="fix">
-        Fix relative URIs in io.node().
-      </action>
       <action dev="mlhartme" type="add">
         Node.getRootNode() added.
       </action>
       <action dev="mlhartme" type="delete">
-        Dump node base, use io.getWorking() instead.
+        Dump node base, use World.getWorking() instead.
       </action>
       <action dev="mlhartme" type="update">
-        Rename IO.stringNode to IO.memoryNode, add method for bytes.
-      </action>
-      <action dev="mlhartme" type="update">
-        Simplified IO creation, dump META-INF filesystem descriptor.
+        Rename World.stringNode to World.memoryNode, add method for bytes.
       </action>
       <action dev="mlhartme" type="update">
         Distinguish dav(s) and http(s) schemes.

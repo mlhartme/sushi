@@ -38,16 +38,16 @@ public class Archive {
     public static final String META_INF = "META-INF";
     public static final String MANIFEST = META_INF + "/MANIFEST.MF";
 
-    public static Archive createZip(World io) {
-        return new Archive(io.getMemoryFilesystem().root().node("", null), null);
+    public static Archive createZip(World world) {
+        return new Archive(world.getMemoryFilesystem().root().node("", null), null);
     }
 
     public static Archive loadZip(Node src) throws IOException {
         return createZip(src.getWorld()).read(src);
     }
 
-    public static Archive createJar(World io) {
-        return new Archive(io.getMemoryFilesystem().root().node("", null), new Manifest());
+    public static Archive createJar(World world) {
+        return new Archive(world.getMemoryFilesystem().root().node("", null), new Manifest());
     }
 
     public static Archive loadJar(Node src) throws IOException {

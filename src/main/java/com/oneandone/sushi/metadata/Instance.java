@@ -70,7 +70,7 @@ public class Instance<T> {
         } catch (LoaderException e) {
             throw new RuntimeException("invalid!?", e);
         } catch (IOException e) {
-            throw new RuntimeException("io exception from memory!?", e);
+            throw new RuntimeException("world exception from memory!?", e);
         }
     }
 

@@ -6,7 +6,7 @@
     <section name="Sushi">
       <p>Examples:</p>
       <p>
-        <a href="xref-test/com/oneandone/sushi/IOSample.html">IO</a>,
+        <a href="xref-test/com/oneandone/sushi/FsSample.html">Filesystem</a>,
         <a href="xref-test/com/oneandone/sushi/XmlSample.html">Xml</a>,
         <a href="xref-test/com/oneandone/sushi/CliSample.html">Cli</a>,
         <a href="xref-test/com/oneandone/sushi/MetadataSample.html">Metadata</a>,

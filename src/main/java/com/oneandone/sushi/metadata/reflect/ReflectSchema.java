@@ -31,9 +31,9 @@ public class ReflectSchema extends Schema {
     public ReflectSchema() {
     }
 
-    public ReflectSchema(World io) {
+    public ReflectSchema(World world) {
         this();
-        add(new FileNodeType(this, io));
+        add(new FileNodeType(this, world));
     }
 
     @Override

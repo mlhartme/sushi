@@ -13,13 +13,13 @@ import java.util.Arrays;
 
 /** Private key with passphrase */
 public class Credentials {
-    public static Credentials loadDefault(World io) throws IOException {
+    public static Credentials loadDefault(World world) throws IOException {
         Node dir;
         Node file;
         Node key;
         String passphrase;
 
-        dir = io.getHome().join(".ssh");
+        dir = world.getHome().join(".ssh");
         file = dir.join("passphrase");
         if (file.exists()) {
             passphrase = file.readString().trim();

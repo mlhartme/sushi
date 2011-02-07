@@ -56,7 +56,7 @@ public class Builder {
         try {
             return parse(new InputSource(new StringReader(text)));
         } catch (IOException e) {
-            throw new RuntimeException("unexpected io exception while reading memory stream", e);
+            throw new RuntimeException("unexpected world exception while reading memory stream", e);
         }
     }
 

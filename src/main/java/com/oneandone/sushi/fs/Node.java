@@ -51,7 +51,7 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * <p>Abstraction from a file: something stored under a path that you can get an input stream from or output stream to.
- * FileNode is the most prominent example of a node. The api is similar to java.io.File. It provides the
+ * FileNode is the most prominent example of a node. The api is similar to java.world.File. It provides the
  * same functionality, adds some methods useful for scripting, and removes some redundant methods to simplify
  * api (in particular the constructors). </p>
  *
@@ -65,7 +65,7 @@ import java.util.zip.GZIPOutputStream;
  * <p>The base is a node this node is relative to. It's optional, a node without base is called absolute.
  * It's use to simplify (shorten!) toString output.</p>
  *
- * <p>Your application usually creates some "working-directory" nodes with <code>io.node(URI)</code>.
+ * <p>Your application usually creates some "working-directory" nodes with <code>world.node(URI)</code>.
  * They will be used to create actual working nodes with <code>node.join(path)</code>. The constructor
  * of the respective node class is rarely used directly, it's used indirectly by the filesystem. </p>
  *

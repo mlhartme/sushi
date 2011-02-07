@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * <p>Similar to java.io.FileFilter or Ant File/Directory sets. A filter is basically a list of paths to 
+ * <p>Similar to java.world.FileFilter or Ant File/Directory sets. A filter is basically a list of paths to
  * include or exclude. Predicates can be used to further restrict the collected nodes. Paths always use
  * slashes (/) - even on Windows - because a) it simplifies writings constants and b) a filter can be
  * applied to any file system.

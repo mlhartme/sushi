@@ -23,16 +23,16 @@ import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.SimpleType;
 
 public class FileNodeType extends SimpleType {
-    private final World io;
+    private final World world;
 
-    public FileNodeType(Schema schema, World io) {
+    public FileNodeType(Schema schema, World world) {
         super(schema, FileNode.class, "node");
-        this.io = io;
+        this.world = world;
     }
 
     @Override
     public Object newInstance() {
-        return io.getWorking();
+        return world.getWorking();
     }
 
     @Override
@@ -42,6 +42,6 @@ public class FileNodeType extends SimpleType {
 
     @Override
     public Object stringToValue(String str) {
-        return io.file(str);
+        return world.file(str);
     }
 }

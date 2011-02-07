@@ -45,7 +45,7 @@ public class Loader extends DefaultHandler {
     private Map<String, Object> storage;
     private List<SAXException> exceptions;
 
-    public static Loader create(World io, Type type) {
+    public static Loader create(World world, Type type) {
         // No validation - because it's generally impossible: the complete schema
         // is unknown because users my specify arbitrary types. Instead, the loader
         // performs proper validation - all unknown elements/attributes are rejected.

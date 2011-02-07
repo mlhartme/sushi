@@ -44,12 +44,12 @@ public abstract class Cli {
         this(new World());
     }
     
-    public Cli(World io) {
-        this(Console.create(io)); 
+    public Cli(World world) {
+        this(Console.create(world));
     }
     
     public Cli(Console console) {
-        this(console, new ReflectSchema(console.io)); 
+        this(console, new ReflectSchema(console.world));
     }
     
     public Cli(Console console, Schema schema) {

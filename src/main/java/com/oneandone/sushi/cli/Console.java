@@ -28,21 +28,21 @@ import java.util.Scanner;
 
 /**
  * Configurable replacement for System.out, System.err and System.in. 
- * TODO: name clash with java.io.Console in Java 6. 
+ * TODO: name clash with java.world.Console in Java 6.
  */
 public class Console {
-    public static Console create(World io) {
-        return new Console(io, System.out, System.err, System.in);
+    public static Console create(World world) {
+        return new Console(world, System.out, System.err, System.in);
     }
 
-    public static Console create(World io, final OutputStream log) {
-        return new Console(io, 
+    public static Console create(World world, final OutputStream log) {
+        return new Console(world,
                 new PrintStream(MultiOutputStream.createTeeStream(System.out, log), true), 
                 new PrintStream(MultiOutputStream.createTeeStream(System.err, log), true), 
                 new InputLogStream(System.in, log));
     }
     
-    public final World io;
+    public final World world;
     public final PrintStream info;
     public final PrintStream verbose;
     public final PrintStream error;
@@ -50,8 +50,8 @@ public class Console {
     
     private final MultiOutputStream verboseSwitch;
     
-    public Console(World io, PrintStream info, PrintStream error, InputStream in) {
-        this.io = io;
+    public Console(World world, PrintStream info, PrintStream error, InputStream in) {
+        this.world = world;
         this.info = info;
         this.verboseSwitch = MultiOutputStream.createNullStream();
         this.verbose = new PrintStream(verboseSwitch);

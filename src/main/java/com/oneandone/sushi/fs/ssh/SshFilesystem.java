@@ -37,8 +37,8 @@ public class SshFilesystem extends Filesystem {
     private int defaultTimeout;
     private final JSch jsch;
 
-    public SshFilesystem(World io, String name) {
-        super(io, '/', new Features(true, true, true, true, false, false), name);
+    public SshFilesystem(World world, String name) {
+        super(world, '/', new Features(true, true, true, true, false, false), name);
 
         // initialized lazily
         defaultCredentials = null;

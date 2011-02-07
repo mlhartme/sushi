@@ -42,8 +42,8 @@ public class SvnFilesystem extends Filesystem {
     private String defaultUsername;
     private String defaultPassword;
 
-    public SvnFilesystem(World io, String name) {
-        super(io, '/', new Features(true, false, false, false, false, false), name);
+    public SvnFilesystem(World world, String name) {
+        super(world, '/', new Features(true, false, false, false, false, false), name);
 
         this.defaultUsername = null;
         this.defaultPassword = null;

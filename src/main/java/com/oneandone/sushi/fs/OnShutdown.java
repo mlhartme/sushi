@@ -33,7 +33,7 @@ import java.util.List;
  * The implementation is intentionally tied to FileNode, it doesn't support Nodes in general because:
  * 1) I create temp file on disk only - I can't see a use case for other node implementations.   
  * 2) node.delete() is might fail because server connections might already be closed
- * 3) only java.io.File can create a temp file atomically 
+ * 3) only java.world.File can create a temp file atomically
  */
 public class OnShutdown extends Thread {
     private static OnShutdown singleton;

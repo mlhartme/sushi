@@ -53,7 +53,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(0, children.size());
     }
 
-    //-- create via io.node etc
+    //-- create via world.node etc
 
     @Test
     public void createRoot() throws Exception {

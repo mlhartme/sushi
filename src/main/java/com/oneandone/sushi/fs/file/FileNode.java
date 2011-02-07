@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>File, directory, symlink or something not yet created. Replacement for java.io.File.</p>
+ * <p>File, directory, symlink or something not yet created. Replacement for java.world.File.</p>
  */
 public class FileNode extends Node {
     private final FileRoot root;
@@ -61,7 +61,7 @@ public class FileNode extends Node {
             throw new IllegalArgumentException(file.toString());
         }
         if (file.getPath().endsWith(File.separator) && file.getParent() != null) {
-            throw new IllegalArgumentException("should not happen because java.io.File normalizes paths: " + file.getPath());
+            throw new IllegalArgumentException("should not happen because java.world.File normalizes paths: " + file.getPath());
         }
         this.root = root;
         this.file = file;
@@ -369,17 +369,17 @@ public class FileNode extends Node {
         return this;
     }
 
-    protected static void delete(World io, File file) throws IOException {
+    protected static void delete(World world, File file) throws IOException {
         File[] files;
 
         if (isLink(file)) {
-            deleteLink(io, file);
+            deleteLink(world, file);
             return;
         }
         files = file.listFiles();
         if (files != null) {
             for (File child : files) {
-                delete(io, child);
+                delete(world, child);
             }
         } else {
             // not a directory

@@ -30,8 +30,8 @@ import java.net.URI;
 public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
-    public FileFilesystem(World io, String name) {
-        super(io, File.separatorChar, new Features(true, true, io.os != OS.WINDOWS, io.os != OS.WINDOWS, true, false), name);
+    public FileFilesystem(World world, String name) {
+        super(world, File.separatorChar, new Features(true, true, world.os != OS.WINDOWS, world.os != OS.WINDOWS, true, false), name);
 
         File[] rootFiles;
 

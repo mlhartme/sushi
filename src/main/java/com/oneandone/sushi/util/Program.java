@@ -29,12 +29,12 @@ import java.util.List;
  * Wraps a Process builder to add some convenience methods
  */
 public class Program {
-    public final World io;
+    public final World world;
     private final FileNode dir;
     public final ProcessBuilder builder;
     
     public Program(FileNode dir, String ... args) {
-        this.io = dir.getWorld();
+        this.world = dir.getWorld();
         this.dir = dir;
         this.builder = new ProcessBuilder();
         this.builder.directory(dir.getFile());
@@ -67,7 +67,7 @@ public class Program {
         
         result = new ByteArrayOutputStream();
         exec(result);
-        return io.getSettings().string(result.toByteArray());
+        return world.getSettings().string(result.toByteArray());
     }
     
     /** executes a command in this directory, returns the output */
@@ -79,7 +79,7 @@ public class Program {
         builder.redirectErrorStream(true);
         process = builder.start();
         // this looks like a busy wait to me, but it's what all the examples suggest:
-        io.getBuffer().copy(process.getInputStream(), dest);
+        world.getBuffer().copy(process.getInputStream(), dest);
         try {
             exit = process.waitFor();
         } catch (InterruptedException e) {
@@ -87,7 +87,7 @@ public class Program {
         }
         if (exit != 0) {
             if (dest instanceof ByteArrayOutputStream) {
-                output = io.getSettings().string(((ByteArrayOutputStream) dest));
+                output = world.getSettings().string(((ByteArrayOutputStream) dest));
             } else {
                 output = "";
             }

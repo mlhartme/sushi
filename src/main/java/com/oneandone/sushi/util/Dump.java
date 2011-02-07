@@ -47,7 +47,7 @@ public class Dump {
         try {
             dump(new World(), obj, dest, maxDepth);
         } catch (IOException e) {
-            throw new RuntimeException("unexected io exception from StringWriter: " + e.getMessage(), e);
+            throw new RuntimeException("unexected world exception from StringWriter: " + e.getMessage(), e);
         }
         return dest.toString();
     }
@@ -64,8 +64,8 @@ public class Dump {
         writer.close();
     }
 
-    public static void dump(World io, Object obj, Writer dest, int maxDepth) throws IOException {
-        new Dump(new ReflectSchema(io), dest, maxDepth).run(obj);
+    public static void dump(World world, Object obj, Writer dest, int maxDepth) throws IOException {
+        new Dump(new ReflectSchema(world), dest, maxDepth).run(obj);
     }
 
     private final Schema metadata;

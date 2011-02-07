@@ -37,8 +37,8 @@ import java.net.URISyntaxException;
  * does not work, see http://falsepositive.eu/archives/20080307-hfsplus-UIDGID-remapping/21  :(
  */
 public class TimeMachineFilesystem extends Filesystem {
-    public TimeMachineFilesystem(World io, String name) {
-        super(io, '/', new Features(false, false, false, false, false, false), name);
+    public TimeMachineFilesystem(World world, String name) {
+        super(world, '/', new Features(false, false, false, false, false, false), name);
     }
 
     public TimeMachineNode node(URI uri, Object extra) throws NodeInstantiationException {

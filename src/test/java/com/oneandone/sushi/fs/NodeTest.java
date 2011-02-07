@@ -1082,7 +1082,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
-    public void linkNormal() throws IOException {
+    public void linkAbsolute() throws IOException {
         Node orig;
         Node link;
 
@@ -1102,6 +1102,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         orig.link(link);
         assertTrue(link.exists());
         assertTrue(link.isLink());
+        assertEquals(orig, link.resolveLink());
         assertEquals("/" + work.getPath() + "/orig", link.readLink());
 
         assertEquals("first", link.readString());
@@ -1109,6 +1110,36 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("second", link.readString());
         link.writeString("third");
         assertEquals("third", orig.readString());
+
+        link.delete();
+        assertTrue(orig.exists());
+        assertFalse(link.exists());
+        assertFalse(link.isLink());
+    }
+
+    @Test
+    public void linkRelative() throws IOException {
+        Node orig;
+        Node link;
+
+        if (!canLink()) {
+            return;
+        }
+
+        orig = work.join("orig").writeString("first");
+        link = work.join("link");
+
+        assertTrue(orig.isFile());
+        // TODO http://bugs.sun.com/view_bug.do?bug_id=5085227
+        //assertFalse(orig.isLink());
+        assertFalse(link.exists());
+        //assertFalse(link.isLink());
+
+        link.mklink(orig.getName());
+        assertEquals(orig.getName(), link.readLink());
+        assertTrue(link.exists());
+        assertTrue(link.isLink());
+        assertEquals(orig, link.resolveLink());
 
         link.delete();
         assertTrue(orig.exists());

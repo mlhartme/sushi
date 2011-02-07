@@ -147,7 +147,7 @@ public abstract class Node {
 
 
     /**
-     * Deletes this node, no matter if it's a file, a directory or a link. Deletes links, not the link target.
+     * Deletes this node, no matter if it's a file or a directory. If this is a link, the link is deleted, not the link target.
      *
      * @return this
      */
@@ -432,7 +432,7 @@ public abstract class Node {
     //--
 
     /**
-     * Creates an relative link. The signature of this method resembles the copy method.
+     * Creates an absolute link. The signature of this method resembles the copy method.
      *
      * @return dest;
      */
@@ -460,6 +460,22 @@ public abstract class Node {
      * Returns the link target of this file or throws an exception.
      */
     public abstract String readLink() throws ReadLinkException;
+
+    /**
+     * Throws an exception if this is not a link.
+     */
+    public Node resolveLink() throws ReadLinkException {
+        String path;
+        String separator;
+
+        path = readLink();
+        separator = getRoot().getFilesystem().getSeparator();
+        if (path.startsWith(separator)) {
+            return getRoot().node(path.substring(separator.length()), null);
+        } else {
+            return getParent().join(path);
+        }
+    }
 
     public void copy(Node dest) throws CopyException {
         try {

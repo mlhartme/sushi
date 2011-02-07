@@ -130,7 +130,7 @@ public class FilterTest {
     	if (OS.CURRENT != OS.LINUX) {
     		throw new IOException();
     	}
-        assertEquals(0, root.getIO().node("/").find("lost+found/*").size());
+        assertEquals(0, root.getIO().file("/").find("lost+found/*").size());
     }
 
     @Test

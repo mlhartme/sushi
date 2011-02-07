@@ -87,7 +87,7 @@ public class OnShutdown extends Thread {
     
         dir.checkDirectory();
         for (; true; dirNo++) {
-            file = (FileNode) dir.join(prefix + dirNo + suffix);
+            file = dir.join(prefix + dirNo + suffix);
             if (!file.exists()) {
                 file.mkdir(); // do not catch IOExceptios here -- it might be "disk full" ...
                 deleteAtExit(file);

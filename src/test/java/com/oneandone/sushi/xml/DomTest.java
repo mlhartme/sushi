@@ -32,7 +32,7 @@ public class DomTest {
     private static final Builder BUILDER = new Builder();
     
     @Test
-    public void getElements() throws XmlException {
+    public void getElements() {
         Document doc;
         List<Element> lst;
         

@@ -152,7 +152,7 @@ public abstract class Type {
         schema = new StringBuilder();
 
         schema.append(SCHEMA_HEAD);
-        schema.append("  <xs:element name='" + getName() + "' type='" + getSchemaTypeName() + "'/>\n");
+        schema.append("  <xs:element name='").append(getName()).append("' type='").append(getSchemaTypeName()).append("'/>\n");
 
         types = new HashSet<Type>();
         addSchemaType(types, schema);

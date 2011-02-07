@@ -18,7 +18,6 @@
 package com.oneandone.sushi.fs.memory;
 
 import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.ExistsException;
 import com.oneandone.sushi.fs.GetLastModifiedException;
 import com.oneandone.sushi.fs.LengthException;
 import com.oneandone.sushi.fs.ListException;
@@ -195,7 +194,7 @@ public class MemoryNode extends Node {
         if (type == Type.DIRECTORY) {
             try {
                 for (MemoryNode obj : list()) {
-                    ((MemoryNode) obj).delete();
+                    obj.delete();
                 }
             } catch (ListException e) {
                 throw new DeleteException(this, e);
@@ -213,11 +212,7 @@ public class MemoryNode extends Node {
             case FILE:
                 return null;
             case DIRECTORY:
-                try {
-                    return root.list(path);
-                } catch (IOException e) {
-                    throw new ListException(this, e);
-                }
+                return root.list(path);
             default:
                 throw new IllegalStateException();
         }

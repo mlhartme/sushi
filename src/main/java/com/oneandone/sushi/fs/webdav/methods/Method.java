@@ -45,7 +45,7 @@ public abstract class Method<T> {
     
     protected final WebdavRoot root;
 
-    private BasicHttpEntityEnclosingRequest request;
+    private final BasicHttpEntityEnclosingRequest request;
     
     public Method(String method, WebdavNode resource) {
         this.root = resource.getRoot();
@@ -111,7 +111,7 @@ public abstract class Method<T> {
     protected void setContentHeader() {
         HttpEntity entity;
         
-        entity = ((HttpEntityEnclosingRequest)request).getEntity();
+        entity = request.getEntity();
         if (entity == null) {
             request.addHeader(HTTP.CONTENT_LEN, "0");
             return;

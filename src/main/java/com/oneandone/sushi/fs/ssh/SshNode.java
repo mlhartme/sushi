@@ -176,7 +176,7 @@ public class SshNode extends Node {
                     if (".".equals(name) || "..".equals(name)) {
                         dir = true;
                     } else {
-                        nodes.add((SshNode) join(name));
+                        nodes.add(join(name));
                     }
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException("illegal name: " + obj, e);
@@ -526,11 +526,11 @@ public class SshNode extends Node {
         }
     }
 
-    public void put(final byte[] data) throws JSchException, IOException, SftpException {
+    public void put(final byte[] data) throws JSchException, SftpException {
         put(data, false);
     }
 
-    public void put(final byte[] data, boolean append) throws JSchException, IOException, SftpException {
+    public void put(final byte[] data, boolean append) throws JSchException, SftpException {
         getChannel().put(new ByteArrayInputStream(data), escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
     }
 }

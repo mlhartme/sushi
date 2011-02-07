@@ -52,12 +52,12 @@ public class SerializeTest extends ModelBase {
     }
     
     @Test
-    public void engine() throws IOException {
+    public void engine() {
         assertEquals("<engine>\n  <turbo>true</turbo>\n  <ps>1</ps>\n</engine>\n", run(new Engine(true, 1)));
     }
 
     @Test
-    public void car() throws IOException {
+    public void car() {
         assertEquals(
                 "<car>\n  <name></name>\n  <kind>normal</kind>\n  <seats>0</seats>\n" +
                 "  <engine>\n    <turbo>false</turbo>\n    <ps>0</ps>\n  </engine>\n" +
@@ -65,7 +65,7 @@ public class SerializeTest extends ModelBase {
     }
 
     @Test
-    public void alias() throws IOException {
+    public void alias() {
         Vendor vendor;
         
         vendor = new Vendor();
@@ -122,12 +122,12 @@ public class SerializeTest extends ModelBase {
     
 
     @Test
-    public void empty() throws IOException {
+    public void empty() {
         assertEquals("<empty/>" + LF, LISTMODEL.instance(new Empty()).toXml());
     }
     
     @Test
-    public void list() throws IOException {
+    public void list() {
         All all;
         
         all = new All();

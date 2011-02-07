@@ -46,11 +46,11 @@ public class SshNodeFullTest extends NodeTest {
     }
 
     @After
-    public void after() throws Exception {
+    public void after() {
     }
 
     @AfterClass
-    public static void afterClass() throws Exception {
+    public static void afterClass() {
         if (root != null) {
             root.close();
         }
@@ -69,7 +69,7 @@ public class SshNodeFullTest extends NodeTest {
         }
     }
 
-    private SshNode create(String path) throws IOException, JSchException {
+    private SshNode create(String path) {
         return new SshNode(root, path);
     }
 
@@ -77,14 +77,10 @@ public class SshNodeFullTest extends NodeTest {
     protected SshNode createWork() throws IOException {
         SshNode node;
 
-        try {
-            node = create("tmp/sushisshworkdir");
-            node.deleteOpt();
-            node.mkdir();
-            return node;
-        } catch (JSchException e) {
-            throw new RuntimeException(e);
-        }
+        node = create("tmp/sushisshworkdir");
+        node.deleteOpt();
+        node.mkdir();
+        return node;
     }
 
     @Test

@@ -79,12 +79,10 @@ public class ComplexType extends Type {
         }
         done.add(this);
 
-        dest.append("  <xs:complexType name='" + getName() + "'>\n");
+        dest.append("  <xs:complexType name='").append(getName()).append("'>\n");
         dest.append("    <xs:sequence minOccurs='0'>\n");
         for (Item<?> item : items) {
-            dest.append("      <xs:element name='" + item.getXmlName()
-                    + "' type='" + item.getType().getSchemaTypeName()
-                    + "'" + item.getCardinality().forSchema() + "/>\n");
+            dest.append("      <xs:element name='").append(item.getXmlName()).append("' type='").append(item.getType().getSchemaTypeName()).append("'").append(item.getCardinality().forSchema()).append("/>\n");
         }
         dest.append("    </xs:sequence>\n");
         dest.append("    <xs:attributeGroup ref='ids'/>\n");

@@ -116,9 +116,7 @@ public class Property {
                     elem.appendChild(n);
                 }
             } else if (value instanceof Collection<?>) {
-                Iterator<?> it = ((Collection<?>)value).iterator();
-                while (it.hasNext()) {
-                    Object entry = it.next();
+                for (Object entry : (Collection<?>) value) {
                     if (entry instanceof Node) {
                         Node n = document.importNode((Node)entry, true);
                         elem.appendChild(n);

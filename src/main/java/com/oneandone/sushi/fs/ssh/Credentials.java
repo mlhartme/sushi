@@ -71,9 +71,9 @@ public class Credentials {
 
         try {
             clz = Class.forName("com.jcraft.jsch.IdentityFile");
-            m = clz.getDeclaredMethod("newInstance", new Class<?>[] { String.class, byte[].class, byte[].class, JSch.class });
+            m = clz.getDeclaredMethod("newInstance", String.class, byte[].class, byte[].class, JSch.class);
             m.setAccessible(true);
-            return (Identity) m.invoke(null, new Object[] { name, Arrays.copyOf(privateKey, privateKey.length), null, jsch });
+            return (Identity) m.invoke(null, name, Arrays.copyOf(privateKey, privateKey.length), null, jsch);
         } catch (InvocationTargetException e) {
             te = e.getTargetException();
             if (te instanceof JSchException) {

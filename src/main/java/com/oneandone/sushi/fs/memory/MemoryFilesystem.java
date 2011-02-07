@@ -28,7 +28,7 @@ import java.util.WeakHashMap;
 public class MemoryFilesystem extends Filesystem {
     private final WeakHashMap<Integer, MemoryRoot> roots;
 
-    public int maxInMemorySize;
+    public final int maxInMemorySize;
 
     public MemoryFilesystem(IO io, String name) {
         super(io, '/', new Features(true, false, false, false, false, false), name);

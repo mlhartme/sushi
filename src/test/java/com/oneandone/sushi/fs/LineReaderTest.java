@@ -26,30 +26,30 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class LineReaderTest {
-    IO io = new IO();
+    private final IO io = new IO();
 
     @Test
-    public void zero() throws IOException {
+    public void zero() {
         check("");
     }
 
     @Test
-    public void one() throws IOException {
+    public void one() {
         check("abc\n", "abc");
     }
 
     @Test
-    public void oneWithoutNewline() throws IOException {
+    public void oneWithoutNewline() {
         check("ab", "ab");
     }
 
     @Test
-    public void two() throws IOException {
+    public void two() {
         check("abc\n\n123\n", "abc", "", "123");
     }
 
     @Test
-    public void longline() throws IOException {
+    public void longline() {
         String ll = "1234567890abcdefghijklmnopqrstuvwxyz";
         
         ll = ll + ll + ll;

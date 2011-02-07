@@ -139,7 +139,7 @@ public class Diff {
     }
 
     private void header(char name, String relative, StringBuilder result) {
-        header(new String("" + name), relative, result);
+        header(Character.toString(name), relative, result);
     }
 
     private void header(String name, String relative, StringBuilder result) {

@@ -18,9 +18,10 @@
 package com.oneandone.sushi.metadata.listmodel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class All {
-    public java.util.List<Object> objects;
+    public final List<Object> objects;
     
     public All() {
         objects = new ArrayList<Object>();

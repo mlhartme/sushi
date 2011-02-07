@@ -53,7 +53,7 @@ public class Csv implements Iterable<Line> {
                 if (msg.length() > 0) {
                     msg.append('\n');
                 }
-                msg.append(src.toString() + ":" + no + ": " + e.getMessage());
+                msg.append(src.toString()).append(":").append(no).append(": ").append(e.getMessage());
             }
             no++;
         }

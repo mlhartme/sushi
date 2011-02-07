@@ -32,7 +32,7 @@ public class CharacterType extends SimpleType {
 
     @Override
     public String valueToString(Object obj) {
-        return ((Character) obj).toString();
+        return obj.toString();
     }
     
     @Override

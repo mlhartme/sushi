@@ -279,7 +279,7 @@ public abstract class Node {
         result = new StringBuilder();
         ups = Strings.count(startfilepath, fs.getSeparator());
         for (i = 0; i < ups; i++) {
-            result.append(".." + fs.getSeparator());
+            result.append("..").append(fs.getSeparator());
         }
         result.append(Strings.replace(destpath, getIO().os.lineSeparator, "" + getIO().os.lineSeparator));
         return result.toString();

@@ -117,7 +117,7 @@ public class Dump {
         if (type == String.class) {
             return '"' + ((String) obj) + '"'; 
         } else if (type == Character.class) {
-            return "'" + ((Character) obj) + "'"; 
+            return "'" + obj + "'";
         } else {
             return simpleType.valueToString(obj);
         }

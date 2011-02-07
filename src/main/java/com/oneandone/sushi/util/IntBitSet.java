@@ -454,15 +454,15 @@ public class IntBitSet implements IntCollection, Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder buf;
+        StringBuilder buffer;
         int ele;
 
-        buf = new StringBuilder("{");
+        buffer = new StringBuilder("{");
         for (ele = first(); ele != -1; ele = next(ele)) {
-            buf.append(" " + ele);
+            buffer.append(' ').append(ele);
         }
-        buf.append(" }");
-        return buf.toString();
+        buffer.append(" }");
+        return buffer.toString();
     }
 
     /**

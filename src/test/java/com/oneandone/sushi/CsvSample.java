@@ -67,8 +67,8 @@ public class CsvSample {
     }
     
     public static class Item {
-        public int id;
-        public String string;
+        public final int id;
+        public final String string;
         
         public Item() {
             this(0, "");

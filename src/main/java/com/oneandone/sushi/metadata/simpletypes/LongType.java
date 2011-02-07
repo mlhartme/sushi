@@ -33,7 +33,7 @@ public class LongType extends SimpleType {
 
     @Override
     public String valueToString(Object obj) {
-        return ((Long) obj).toString();
+        return obj.toString();
     }
     
     @Override

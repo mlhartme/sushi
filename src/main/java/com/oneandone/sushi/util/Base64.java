@@ -196,8 +196,8 @@ public class Base64 {
     
     // Create arrays to hold the base64 characters and a 
     // lookup for base64 chars
-    private static byte[] base64Alphabet = new byte[BASELENGTH];
-    private static byte[] lookUpBase64Alphabet = new byte[LOOKUPLENGTH];
+    private static final byte[] base64Alphabet = new byte[BASELENGTH];
+    private static final byte[] lookUpBase64Alphabet = new byte[LOOKUPLENGTH];
 
     // Populating the lookup and character arrays
     static {
@@ -234,11 +234,7 @@ public class Base64 {
     }
 
     private static boolean isBase64(byte octect) {
-        if (octect == PAD) {
-            return true;
-        } else {
-            return base64Alphabet[octect] != -1;
-        }
+        return octect == PAD || base64Alphabet[octect] != -1;
     }
 
     /**

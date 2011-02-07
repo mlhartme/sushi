@@ -33,7 +33,7 @@ public class FloatType extends SimpleType {
 
     @Override
     public String valueToString(Object obj) {
-        return ((Float) obj).toString();
+        return obj.toString();
     }
     
     @Override

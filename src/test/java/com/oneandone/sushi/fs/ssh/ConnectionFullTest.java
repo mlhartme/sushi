@@ -64,7 +64,7 @@ public class ConnectionFullTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         if (root != null) {
             root.close();
         }

@@ -165,7 +165,7 @@ public class Dom {
         for (i = 0; i < max; i++) {
             node = nodes.item(i);
             if (node instanceof Text) {
-                buffer.append(((Text) node).getNodeValue());
+                buffer.append(node.getNodeValue());
             } else {
           		throw new IllegalArgumentException(node.getClass().getName());
             }
@@ -213,7 +213,7 @@ public class Dom {
         }
     }
     
-    public static void require(Node node, String local, Namespace namespace) throws IOException {
+    public static void require(Node node, String local, Namespace namespace) {
         if (!Dom.matches(node, local, namespace)) {
         	throw new DomException("no such node in namespace " + namespace + ": " + local);
         }
@@ -226,11 +226,7 @@ public class Dom {
     }
 
     private static boolean hasNamespace(Node node, Namespace requiredNamespace) {
-        if (requiredNamespace == null) {
-            return true;
-        } else {
-            return requiredNamespace.hasUri(node.getNamespaceURI());
-        }
+        return requiredNamespace == null || requiredNamespace.hasUri(node.getNamespaceURI());
     }
 
     private static boolean matchingLocalName(Node node, String requiredLocalName) {

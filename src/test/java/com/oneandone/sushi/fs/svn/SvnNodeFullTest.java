@@ -57,13 +57,13 @@ public class SvnNodeFullTest extends NodeTest {
     }
 
     @Test
-    public void rootLocator() throws SVNException {
+    public void rootLocator() {
         assertEquals("svn:" + URL.toString() + "/work", work.getURI().toString());
     }
 
 
     @Test
-    public void rootWithUrl() throws SVNException {
+    public void rootWithUrl() {
         assertEquals(URL.toString() + "/", work.getRoot().getId());
     }
 
@@ -87,12 +87,12 @@ public class SvnNodeFullTest extends NodeTest {
 
         root = create(URL.toString());
         rootRevision = root.getLatestRevision();
-        fileRevision = ((SvnNode) root.join("work")).getLatestRevision();
+        fileRevision = root.join("work").getLatestRevision();
         assertTrue(fileRevision <= rootRevision);
     }
 
     @Test
-    public void find() throws SVNException, IOException {
+    public void find() throws IOException {
         SvnNode root;
         List<Node> lst;
 
@@ -119,16 +119,16 @@ public class SvnNodeFullTest extends NodeTest {
         assertEquals("baz", dir.join("dir/dir1/dir2/sub1").readString());
 
         dir = work.getIO().getTemp().createTempDirectory();
-        ((SvnNode) root.join("dir")).export(dir);
+        root.join("dir").export(dir);
         assertEquals("bar", dir.join("sub").readString());
 
         dir = work.getIO().getTemp().createTempDirectory();
-        ((SvnNode) root.join("dir/dir1/dir2")).export(dir);
+        root.join("dir/dir1/dir2").export(dir);
         assertEquals("baz", dir.join("sub1").readString());
     }
 
     @Test
-    public void svnurl() throws SVNException {
+    public void svnurl() {
         assertEquals(URL + "/work/a", ((SvnNode) work.join("a")).getSvnurl().toString());
     }
 

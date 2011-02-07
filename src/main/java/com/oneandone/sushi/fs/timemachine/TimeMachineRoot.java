@@ -27,8 +27,7 @@ import java.io.IOException;
 public class TimeMachineRoot implements Root {
     public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {
         return new TimeMachineRoot(fs,
-                (FileNode) root.join("Backups.backupdb"),
-                (FileNode) root.join(".HFS+ Private Directory Data\r"));
+                root.join("Backups.backupdb"), root.join(".HFS+ Private Directory Data\r"));
     }
 
     private final TimeMachineFilesystem filesystem;
@@ -74,7 +73,7 @@ public class TimeMachineRoot implements Root {
         if (node.isFile() && node.length() == 0) {
             str = root.exec("stat", "-c", "%h", node.getFile().getAbsolutePath()).trim();
             if (str.length() > 1) {
-                return (FileNode) shared.join("dir_" + str);
+                return shared.join("dir_" + str);
             }
         }
         return node;
@@ -89,7 +88,7 @@ public class TimeMachineRoot implements Root {
         node = root;
         for (String segment : filesystem.split(path)) {
             try {
-                node = resolve((FileNode) node.join(segment));
+                node = resolve(node.join(segment));
             } catch (IOException e) {
                 throw new IllegalStateException("TODO", e);
             }

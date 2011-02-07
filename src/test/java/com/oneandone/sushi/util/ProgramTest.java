@@ -107,7 +107,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void notfoundexecFailure() throws IOException {
+    public void notfoundexecFailure() {
         try {
             p("nosuchcommand").exec();
             fail();

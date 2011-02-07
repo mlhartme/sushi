@@ -92,7 +92,7 @@ public class DumpTest {
     }
     
     @Test
-    public void clazz() throws Exception {
+    public void clazz() {
         check("com.oneandone.sushi.util.DumpTest\n", getClass());
     }
 

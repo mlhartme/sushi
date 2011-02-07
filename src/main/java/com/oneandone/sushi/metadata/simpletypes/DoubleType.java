@@ -33,7 +33,7 @@ public class DoubleType extends SimpleType {
 
     @Override
     public String valueToString(Object obj) {
-        return ((Double) obj).toString();
+        return obj.toString();
     }
     
     @Override

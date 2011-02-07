@@ -81,7 +81,7 @@ public class MemoryRoot implements Root {
         }
     }
     
-    public List<MemoryNode> list(String path) throws IOException {
+    public List<MemoryNode> list(String path) {
         String child;
         int idx;
         List<MemoryNode> result;

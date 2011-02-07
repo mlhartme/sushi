@@ -35,7 +35,7 @@ import java.net.URI;
 public class SshFilesystem extends Filesystem {
     private Credentials defaultCredentials;
     private int defaultTimeout;
-    private JSch jsch;
+    private final JSch jsch;
 
     public SshFilesystem(IO io, String name) {
         super(io, '/', new Features(true, true, true, true, false, false), name);
@@ -103,11 +103,11 @@ public class SshFilesystem extends Filesystem {
         return root("localhost", getIO().getWorking().getName(), getDefaultCredentials());
     }
 
-    public SshRoot root(String root, Credentials credentials) throws JSchException, IOException {
+    public SshRoot root(String root, Credentials credentials) throws JSchException {
         return root(root, credentials, defaultTimeout);
     }
 
-    public SshRoot root(String root, Credentials credentials, int timeout) throws JSchException, IOException {
+    public SshRoot root(String root, Credentials credentials, int timeout) throws JSchException {
         int idx;
         String host;
         String user;
@@ -127,12 +127,12 @@ public class SshFilesystem extends Filesystem {
         return root(host, user, getDefaultCredentials());
     }
 
-    public SshRoot root(String host, String user, Credentials credentials) throws JSchException, IOException {
+    public SshRoot root(String host, String user, Credentials credentials) throws JSchException {
         return root(host, user, credentials, defaultTimeout);
     }
 
     /** @user null to use current user */
-    public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException, IOException {
+    public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException {
         if (credentials == null) {
             throw new IllegalArgumentException();
         }

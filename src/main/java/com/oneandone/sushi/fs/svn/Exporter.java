@@ -38,7 +38,7 @@ import java.io.OutputStream;
 public class Exporter implements ISVNReporterBaton, ISVNEditor {
     private final long revision;
     private final Node dest;
-    private SVNDeltaProcessor working;
+    private final SVNDeltaProcessor working;
     
     public Exporter(long revision, Node dest) {
         this.revision = revision;
@@ -65,10 +65,10 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
         }
     }
 
-    public void openDir(String path, long revision) throws SVNException {
+    public void openDir(String path, long revision) {
     }
 
-    public void changeDirProperty(String name, String value) throws SVNException {
+    public void changeDirProperty(String name, String value) {
     }
 
     public void addFile(String path, String copyFromPath, long copyFromRevision) throws SVNException {
@@ -83,10 +83,10 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
         }
     }
     
-    public void openFile(String path, long revision) throws SVNException {
+    public void openFile(String path, long revision) {
     }
 
-    public void changeFileProperty(String path, String name, String value) throws SVNException {
+    public void changeFileProperty(String path, String name, String value) {
     }
 
     public void applyTextDelta(String path, String baseChecksum) throws SVNException {

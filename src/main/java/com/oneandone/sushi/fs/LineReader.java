@@ -35,7 +35,7 @@ public class LineReader {
     /** current line number */
     private int line;
 
-    private CharArraySequence buffer;
+    private final CharArraySequence buffer;
 
     public LineReader(Reader reader, LineFormat format) {
         this(reader, format, INITIAL_BUFFER_SIZE);

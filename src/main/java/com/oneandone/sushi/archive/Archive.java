@@ -113,7 +113,7 @@ public class Archive {
         return manifest != null && MANIFEST.equals(node.getPath());        
     }
     
-    public void mergeManifest(Manifest rightManifest) throws IOException {
+    public void mergeManifest(Manifest rightManifest) {
         Map<String, Attributes> rightSections;
         Attributes left;
         

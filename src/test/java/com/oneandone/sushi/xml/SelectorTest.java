@@ -42,14 +42,9 @@ public class SelectorTest {
         assertEquals(Integer.MAX_VALUE, getInt("" + Integer.MAX_VALUE));
     }
     
-    @Test
+    @Test(expected=XmlException.class)
     public void getOverflow() throws XmlException {
-        try {
-            getInt("" + (((long) Integer.MAX_VALUE) + 1));
-            fail();
-        } catch (XmlException e) {
-            // ok
-        }
+        getInt("" + (((long) Integer.MAX_VALUE) + 1));
     }
 
     @Test

@@ -106,7 +106,7 @@ public class FileNode extends Node {
 
     @Override
     public boolean exists() {
-        return file.exists() ? true : isNoneExistingBrokenLink(file);
+        return file.exists() || isNoneExistingBrokenLink(file);
     }
 
     @Override
@@ -165,7 +165,6 @@ public class FileNode extends Node {
     public List<FileNode> list() throws ListException {
         File[] children;
         List<FileNode> result;
-        FileNode child;
 
         children = file.listFiles();
         if (children == null) {
@@ -184,9 +183,8 @@ public class FileNode extends Node {
             }
         }
         result = new ArrayList<FileNode>(children.length);
-        for (int i = 0; i < children.length; i++) {
-            child = new FileNode(root, children[i]);
-            result.add(child);
+        for (File child : children) {
+            result.add(new FileNode(root, child));
         }
         return result;
     }
@@ -232,7 +230,7 @@ public class FileNode extends Node {
 
         try {
             checkNotExists();
-            parent = (FileNode) getParent();
+            parent = getParent();
             parent.checkDirectory();
             new Program(parent, "ln", "-s", target, getName()).execNoOutput();
         } catch (IOException e) {
@@ -270,11 +268,7 @@ public class FileNode extends Node {
             return false;
         }
         canonical = new File(parent.getCanonicalPath(), name);
-        if (!canonical.getAbsolutePath().equals(canonical.getCanonicalPath())) {
-        	return true;
-        } else {
-        	return isBrokenLink(file);
-        }
+        return !canonical.getAbsolutePath().equals(canonical.getCanonicalPath()) ||  isBrokenLink(file);
     }
 
     private static boolean isBrokenLink(File link) {
@@ -319,9 +313,9 @@ public class FileNode extends Node {
       		throw new MoveException(this, dest, "dest exists", e);
       	}
         if (getIO().os == OS.WINDOWS) {
-            p = new Program((FileNode) dest.getParent(), "cmd", "/C", "move");
+            p = new Program(dest.getParent(), "cmd", "/C", "move");
         } else {
-            p = new Program((FileNode) dest.getParent(), "mv");
+            p = new Program(dest.getParent(), "mv");
         }
         p.add(getAbsolute(), dest.getName());
         try {
@@ -433,7 +427,7 @@ public class FileNode extends Node {
     @Override
     public boolean diff(Node right, Buffer rightBuffer) throws IOException {
         if (right instanceof FileNode) {
-            if (length() != ((FileNode) right).length()) {
+            if (length() != right.length()) {
                 return true;
             }
         }
@@ -484,20 +478,16 @@ public class FileNode extends Node {
     }
 
     private void ch(String cmd, String n) throws IOException {
-        new Program(dir(), cmd, n, getAbsolute()).execNoOutput();
+        new Program(getParent(), cmd, n, getAbsolute()).execNoOutput();
     }
 
     private int stat(String[] args, int radix) throws IOException {
         Program stat;
 
-        stat = new Program(dir(), "stat");
+        stat = new Program(getParent(), "stat");
         stat.add(args);
         stat.add(getAbsolute());
         return Integer.parseInt(stat.exec().trim(), radix);
-    }
-
-    private FileNode dir() {
-        return (FileNode) getParent();
     }
 
     //--

@@ -75,12 +75,12 @@ public class Base64Test {
     }
     
     @Test
-    public void complex() throws Exception {
+    public void complex() {
         check("sch??ne schei??e".getBytes());
     }
     
     @Test
-    public void string() throws Exception {
+    public void string() {
         Base64 encoder;
         Base64 decoder;
         StringBuilder builder;

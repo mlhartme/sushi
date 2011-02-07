@@ -294,11 +294,11 @@ public class Strings {
         }
     }
 
-    public static final String block(String prefix, String body, int width, String suffix) {
+    public static String block(String prefix, String body, int width, String suffix) {
         return block(prefix, prefix, body, width, suffix, suffix);
     }
 
-    public static final String block(String first, String prefix, String body, int width, String suffix, String last) {
+    public static String block(String first, String prefix, String body, int width, String suffix, String last) {
         String currentPrefix;
         StringBuilder buffer;
         int space;
@@ -337,7 +337,7 @@ public class Strings {
         }
     }
 
-    public static final int skip(String str, int start, boolean ws) {
+    public static int skip(String str, int start, boolean ws) {
         int i;
         int max;
 
@@ -432,13 +432,7 @@ public class Strings {
     }
 
     public static ArrayList<String> toList(String ... elements) {
-        ArrayList<String> result;
-
-        result = new ArrayList<String>();
-        for (String e : elements) {
-            result.add(e);
-        }
-        return result;
+        return new ArrayList<String>(Arrays.asList(elements));
     }
 
 

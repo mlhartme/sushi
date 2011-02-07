@@ -21,12 +21,10 @@ import com.oneandone.sushi.fs.webdav.MovedException;
 import com.oneandone.sushi.fs.webdav.StatusException;
 import com.oneandone.sushi.fs.webdav.WebdavConnection;
 import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.util.Strings;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class Move extends Method<Void> {
     public Move(WebdavNode source, WebdavNode destination) {

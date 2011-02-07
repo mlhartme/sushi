@@ -221,11 +221,11 @@ public class Builder {
         return builder;
     }
 
-    public static SAXParser createValidatingSAXParser(com.oneandone.sushi.fs.Node schema) throws IOException, SAXException {
+    public static SAXParser createValidatingSAXParser(com.oneandone.sushi.fs.Node schema) throws IOException {
         return Factories.saxParser(schema);
     }
 
-    public static SAXParser createSAXParser() throws IOException, SAXException {
+    public static SAXParser createSAXParser() {
         return Factories.saxParser();
     }
 

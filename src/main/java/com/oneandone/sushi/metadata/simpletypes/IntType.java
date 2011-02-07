@@ -33,7 +33,7 @@ public class IntType extends SimpleType {
 
     @Override
     public String valueToString(Object obj) {
-        return ((Integer) obj).toString();
+        return obj.toString();
     }
     
     @Override

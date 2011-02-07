@@ -94,7 +94,6 @@ public class SvnNode extends Node {
     public List<SvnNode> list() throws ListException {
         List<SVNDirEntry> lst;
         List<SvnNode> result;
-        SVNDirEntry entry;
         SVNRepository repository;
         SvnNode child;
         SVNNodeKind kind;
@@ -106,8 +105,7 @@ public class SvnNode extends Node {
                 lst = new ArrayList<SVNDirEntry>();
                 repository.getDir(path, -1, false, lst);
                 result = new ArrayList<SvnNode>(lst.size());
-                for (int i = 0; i < lst.size(); i++) {
-                    entry = lst.get(i);
+                for (SVNDirEntry entry : lst) {
                     child = new SvnNode(root, doJoin(path, entry.getRelativePath()));
                     result.add(child);
                 }

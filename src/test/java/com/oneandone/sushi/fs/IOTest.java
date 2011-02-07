@@ -25,7 +25,6 @@ import com.oneandone.sushi.fs.webdav.WebdavNode;
 import com.oneandone.sushi.fs.zip.ZipFilesystem;
 import com.oneandone.sushi.fs.zip.ZipNode;
 import com.oneandone.sushi.util.Reflect;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -38,7 +37,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /** Note: IO.node methods are tested in NodeTest. */
 public class IOTest {
@@ -54,7 +52,7 @@ public class IOTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void filesystemDuplicate() throws IOException {
+    public void filesystemDuplicate() {
         IO io = new IO();
 
         io.addFilesystem(new FileFilesystem(io, "file"));
@@ -75,7 +73,7 @@ public class IOTest {
     }
 
     @Test
-    public void file() throws IOException {
+    public void file() {
         IO io;
 
         io = new IO();
@@ -95,7 +93,7 @@ public class IOTest {
         node = io.node(uri);
         assertTrue(node instanceof WebdavNode);
         assertEquals("foo", node.getPath());
-        assertEquals(uri, ((WebdavNode) node).getURI());
+        assertEquals(uri, node.getURI());
 
         uri = new URI("file:/home/mhm/bar.txt");
         node = io.node(uri);
@@ -192,15 +190,14 @@ public class IOTest {
     }
 
     @Test
-    public void projectHome() throws IOException {
+    public void projectHome() {
         check(IO.class);
         check(IOTest.class);
     }
 
-    private void check(Class<?> clazz) throws IOException {
+    private void check(Class<?> clazz) {
         IO io;
         FileNode home;
-        String name;
 
         io = new IO();
         home = io.guessProjectHome(clazz);

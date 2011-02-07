@@ -57,7 +57,7 @@ public class PropertyStoreTest extends ModelBase {
     }
     
     @Test
-    public void vendor() throws Exception {
+    public void vendor() {
         Instance<Vendor> i;
         Instance<Vendor> clone;
         Properties p;

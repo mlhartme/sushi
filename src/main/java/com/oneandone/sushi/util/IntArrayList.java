@@ -230,14 +230,15 @@ public class IntArrayList implements IntCollection, Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder buf;
+        StringBuilder buffer;
         int i, max;
 
         max = size();
-        buf = new StringBuilder();
+        buffer = new StringBuilder();
         for (i = 0; i < max; i++) {
-            buf.append(" " + get(i));
+            buffer.append(' ');
+            buffer.append(get(i));
         }
-        return buf.toString();
+        return buffer.toString();
     }
 }

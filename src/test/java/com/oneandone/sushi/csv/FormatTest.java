@@ -25,7 +25,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class FormatTest {
-    private Format format = new Format(false, '/', '\'');
+    private final Format format = new Format(false, '/', '\'');
 
     @Test
     public void empty() throws CsvLineException {

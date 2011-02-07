@@ -26,7 +26,7 @@ import java.util.Properties;
 
 public class PropertiesSample {
     /** Serialize object to xml and load the result back into an object */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Properties props;
         Instance<Obj> data;
         Obj obj;

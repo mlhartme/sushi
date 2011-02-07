@@ -46,16 +46,10 @@ public class Loader extends DefaultHandler {
     private List<SAXException> exceptions;
 
     public static Loader create(IO io, Type type) {
-        try {
-            // No validation - because it's generally impossible: the complete schema 
-            // is unknown because users my specify arbitrary types. Instead, the loader
-            // performs proper validation - all unknown elements/attributes are rejected. 
-            return new Loader(type, Builder.createSAXParser());
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // No validation - because it's generally impossible: the complete schema
+        // is unknown because users my specify arbitrary types. Instead, the loader
+        // performs proper validation - all unknown elements/attributes are rejected.
+        return new Loader(type, Builder.createSAXParser());
     }
 
     public Loader(Type type, SAXParser parser) {
@@ -65,7 +59,7 @@ public class Loader extends DefaultHandler {
         this.result = null;
     }
 
-    public Object run(InputSource src) throws IOException, LoaderException {
+    public Object run(InputSource src) throws LoaderException, IOException {
         elements.clear();
 
         locator = null;

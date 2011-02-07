@@ -22,6 +22,7 @@ import com.oneandone.sushi.metadata.annotation.Type;
 import com.oneandone.sushi.metadata.annotation.Value;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Type
@@ -34,10 +35,7 @@ public class Vendor {
     }
     
     public Vendor(Car ... cars) {
-        this.cars = new ArrayList<Car>();
-        for (Car c : cars) {
-            this.cars.add(c);
-        }
+        this.cars = new ArrayList<Car>(Arrays.asList(cars));
     }
 
     public void setId(long id) {

@@ -95,12 +95,12 @@ public class FilterTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void rejectDoubleStarOnly() throws IOException {
+    public void rejectDoubleStarOnly() {
         root.getIO().filter().include("**");
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void rejectDoubleDoubleStar() throws IOException {
+    public void rejectDoubleDoubleStar() {
         root.getIO().filter().include("**/**");
     }
 

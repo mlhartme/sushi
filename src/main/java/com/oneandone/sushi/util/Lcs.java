@@ -20,7 +20,7 @@ package com.oneandone.sushi.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lcs<T extends Object> {
+public class Lcs<T> {
     public static <T> List<T> compute(List<T> vert, List<T> hor) {
         List<T>[] previous;
         List<T>[] current;

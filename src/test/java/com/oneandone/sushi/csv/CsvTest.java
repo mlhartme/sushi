@@ -76,7 +76,7 @@ public class CsvTest {
         return Csv.read(FMT, node(str));
     }
     
-    private Node node(String str) throws IOException {
+    private Node node(String str) {
         return IO_OBJ.memoryNode(str);
     }
     

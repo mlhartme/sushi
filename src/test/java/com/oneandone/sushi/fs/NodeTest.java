@@ -109,7 +109,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void rootNode() throws Exception {
+    public void rootNode() {
         Node root;
 
         root = work.getRootNode();
@@ -567,7 +567,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void readWriteObject() throws IOException, ClassNotFoundException {
+    public void readWriteObject() throws IOException {
         final String obj = "hello";
         Node file;
 
@@ -602,7 +602,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void writeToNonexistingDirectory() throws IOException {
+    public void writeToNonexistingDirectory() {
         try {
             work.join("nosuchdir/file").writeString("");
             fail();
@@ -945,7 +945,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         // string was computed my md5sum:
         assertEquals("d41d8cd98f00b204e9800998ecf8427e", digest);
         a.writeBytes((byte) 0);
-        assertFalse(a.equals(a.md5()));
+        assertFalse(digest.equals(a.md5()));
     }
 
     @Test
@@ -1064,7 +1064,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     //-- Object methods
 
     @Test
-    public void equal() throws IOException {
+    public void equal() {
         assertEquals(work, work.join());
         assertEquals(work.join("a"), work.join("a"));
         assertEquals(work.join("no/such/file"), work.join("no/such/file"));
@@ -1073,7 +1073,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     @Test
-    public void toStr() throws IOException {
+    public void toStr() {
         Node node;
 
         work.getIO().setWorking(work);

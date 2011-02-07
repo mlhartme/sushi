@@ -315,7 +315,7 @@ public class Filter {
         
         max = excludes.size();
         for (i = 0; i < max; i++) {
-            pair = (Object[]) excludes.get(i);
+            pair = excludes.get(i);
             tail = (Object[]) pair[1];
             if (pair[0] == Glob.STARSTAR && tail[0] == Glob.STAR) {
                 return true;
@@ -335,7 +335,7 @@ public class Filter {
         found = false;
         max = paths.size();
         for (i = 0; i < max; i++) {
-            path = (Object[]) paths.get(i);
+            path = paths.get(i);
             if (path == null) {
                 throw new IllegalStateException("unexpected empty path");
             }

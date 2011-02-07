@@ -33,7 +33,7 @@ public class BooleanType extends SimpleType {
     
     @Override
     public String valueToString(Object obj) {
-        return ((Boolean) obj).toString();
+        return obj.toString();
     }
     
     @Override

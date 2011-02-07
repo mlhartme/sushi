@@ -58,7 +58,7 @@ public class ArgumentMethod extends Argument {
         Throwable cause;
         
         try {
-            method.invoke(obj, new Object[] { value });
+            method.invoke(obj, value);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(getName() + ": " + value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {

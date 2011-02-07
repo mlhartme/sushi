@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class TimedOutputStream extends FilterOutputStream {
-    private long started;
+    private final long started;
     public long duration;
 
     public TimedOutputStream(OutputStream out) {

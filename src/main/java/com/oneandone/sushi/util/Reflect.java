@@ -34,13 +34,13 @@ public class Reflect {
         return name.replace('$', '.');
     }
 
-    private static final List<?> PRIMITIVE_TYPES = Arrays.asList(new Class[] {
-        Void.TYPE, Boolean.TYPE, Byte.TYPE, Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE,
-    });
+    private static final List<?> PRIMITIVE_TYPES = Arrays.asList(
+        Void.TYPE, Boolean.TYPE, Byte.TYPE, Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE
+    );
     
-    private static final List<?> WRAPPER_TYPES = Arrays.asList(new Class[] {
+    private static final List<?> WRAPPER_TYPES = Arrays.asList(
         Void.class, Boolean.class, Byte.class, Character.class, Integer.class, Long.class, Float.class, Double.class
-    });
+    );
     
     public static Class<?> getWrapper(Class<?> primitive) {
         int idx;

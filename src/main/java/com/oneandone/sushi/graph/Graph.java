@@ -286,7 +286,7 @@ public class Graph<T> {
         while (iter.step()) {
             if (!first) {
                 result.append(", ");
-                first = false;
+                first = true;
             }
             result.append('(');
             result.append(iter.left().toString());

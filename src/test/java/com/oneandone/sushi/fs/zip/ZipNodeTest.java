@@ -35,7 +35,7 @@ import static org.junit.Assert.fail;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {
-    private IO ioObj = new IO();
+    private final IO ioObj = new IO();
 
     @Test
     public void junit() throws Exception {
@@ -57,7 +57,7 @@ public class ZipNodeTest {
         assertTrue(assrt.exists());
         assertTrue(assrt.isFile());
         assertTrue(assrt.readString().length() > 100);
-        junit = (ZipNode) assrt.getParent();
+        junit = assrt.getParent();
         assertEquals("org/junit", junit.getPath());
         assertTrue(junit.isDirectory());
         list = junit.list();
@@ -74,7 +74,7 @@ public class ZipNodeTest {
         assertTrue(tree.contains(assrt));
         assertFalse(tree.contains(list));
         assertTrue(tree.containsAll(list));
-        assrt = (ZipNode) junit.join("Assert.class");
+        assrt = junit.join("Assert.class");
         assertTrue(assrt.exists());
         assertTrue(assrt.isFile());
     }

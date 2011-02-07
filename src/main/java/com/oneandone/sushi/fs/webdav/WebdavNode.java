@@ -418,9 +418,8 @@ public class WebdavNode extends Node {
         return false;
     }
 
-	private WebdavNode createChild(URI href) throws UnsupportedEncodingException {
+	private WebdavNode createChild(URI href) {
 		String childPath;
-        int i;
 		boolean dir;
 		WebdavNode result;
 

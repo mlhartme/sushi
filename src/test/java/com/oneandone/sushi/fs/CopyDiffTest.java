@@ -30,9 +30,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CopyDiffTest {
-	private IO io;
-	private Map<String, String> variables;
-	private Copy copy;
+	private final IO io;
+	private final Map<String, String> variables;
+	private final Copy copy;
 	
 	public CopyDiffTest() throws IOException {
 		io = new IO();

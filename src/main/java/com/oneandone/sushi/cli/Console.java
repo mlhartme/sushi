@@ -71,15 +71,15 @@ public class Console {
         }
     }
     
-    public void pressReturn() throws IOException {
+    public void pressReturn() {
         readline("Press return to continue, ctrl-C to abort.\n");
     }
 
-    public String readline(String message) throws IOException {
+    public String readline(String message) {
         return readline(message, "");
     }
 
-    public String readline(String message, String dflt) throws IOException {
+    public String readline(String message, String dflt) {
         String str;
         
         info.print(message);

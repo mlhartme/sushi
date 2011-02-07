@@ -34,9 +34,7 @@ import com.oneandone.sushi.xml.Xml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -479,15 +477,15 @@ public class IO {
         node = locateClasspathItem(c);
         if (node.isDirectory()) {
             if (node.getName().endsWith("classes")) {
-                node = (FileNode) node.getParent();
+                node = node.getParent();
             }
         } else {
             if (node.getName().endsWith(".jar")) {
-                node = (FileNode) node.getParent();
+                node = node.getParent();
             }
         }
         if (node.getName().endsWith("target")) {
-            node = (FileNode) node.getParent();
+            node = node.getParent();
         }
         return node;
     }

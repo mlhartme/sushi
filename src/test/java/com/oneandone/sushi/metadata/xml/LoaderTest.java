@@ -205,7 +205,7 @@ public class LoaderTest extends ModelBase {
     //--
     
     @Test
-    public void malformed() throws LoaderException {
+    public void malformed() {
         try {
             str("<string>");
         } catch (LoaderException e) {
@@ -214,7 +214,7 @@ public class LoaderTest extends ModelBase {
     }
 
     @Test
-    public void errorPosition() throws LoaderException {
+    public void errorPosition() {
         try {
             engine("<engine>\n<turbo>\n");
             fail();
@@ -254,7 +254,7 @@ public class LoaderTest extends ModelBase {
     }
     
     @Test
-    public void missingField() throws SimpleTypeException {
+    public void missingField() {
         Variable<Boolean> v;
         Engine engine;
         
@@ -331,7 +331,7 @@ public class LoaderTest extends ModelBase {
         
         node = IO_OBJ.memoryNode("<object/>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
-        assertTrue(obj instanceof Object);
+        assertNotNull(obj);
     }
     
     @Test

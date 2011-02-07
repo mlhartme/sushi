@@ -27,9 +27,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class SubstitutionTest {
-    private Map<String, String> props;
+    private final Map<String, String> props;
 
-    public SubstitutionTest() throws IOException {
+    public SubstitutionTest() {
         props = new HashMap<String, String>();
         props.put("1", "one");
         props.put("2", "two");

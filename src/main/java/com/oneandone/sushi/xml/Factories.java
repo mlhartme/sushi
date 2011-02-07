@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 public class Factories {
     private static final Logger LOG = Logger.getLogger(Factories.class.getName());
     
-    public static SAXParser saxParser(Node schema) throws IOException, SAXException {
+    public static SAXParser saxParser(Node schema) throws IOException {
         SAXParserFactory factory;
         SAXParser parser;
         
@@ -64,7 +64,7 @@ public class Factories {
         }
     }
 
-    public static SAXParser saxParser() throws IOException, SAXException {
+    public static SAXParser saxParser() {
         SAXParserFactory factory;
         
         factory = sax();

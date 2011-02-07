@@ -59,11 +59,11 @@ public abstract class WebdavNodeFullBase extends NodeTest {
 		assertEquals("bar", node.getAttribute(name));
 		node.setAttribute(name, "baz");
 		assertEquals("baz", node.getAttribute(name));
-		second = (WebdavNode) node.getParent().join("copy");
+		second = node.getParent().join("copy");
 		node.copy(second);
 		assertEquals("baz", node.getAttribute(name));
 		assertNull(second.getAttribute(name));
-		second = (WebdavNode) node.getParent().join("moved");
+		second = node.getParent().join("moved");
 		node.move(second);
 		assertEquals("baz", second.getAttribute(name));
 	}

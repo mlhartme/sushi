@@ -27,7 +27,7 @@ package com.oneandone.sushi.util;
 
 public class IntBitRelation {
     /** storage. */
-    private IntBitSet[] line;
+    private final IntBitSet[] line;
 
     /**
      * Create a new empty releation.
@@ -174,7 +174,7 @@ public class IntBitRelation {
         IntBitRelation rel;
         int i;
 
-        if (!(obj instanceof IntBitRelation) || obj == null) {
+        if (!(obj instanceof IntBitRelation)) {
             return false;
         }
         rel = (IntBitRelation) obj;
@@ -255,7 +255,7 @@ public class IntBitRelation {
         buf = new StringBuilder();
         for (i = 0; i < line.length; i++) {
             if (line[i] != null) {
-                buf.append(i + ": " + line[i].toString() + "\n");
+                buf.append(i).append(": ").append(line[i].toString()).append('\n');
             }
         }
         return buf.toString();

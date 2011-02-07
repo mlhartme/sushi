@@ -27,6 +27,7 @@ import com.oneandone.sushi.fs.zip.ZipNode;
 import com.oneandone.sushi.util.Reflect;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -111,7 +112,7 @@ public class IOTest {
     @Test
     public void path() throws Exception {
         IO io;
-        List<Node> path;
+        List<FileNode> path;
 
         io = new IO();
         assertEquals(0, io.path("").size());
@@ -119,6 +120,19 @@ public class IOTest {
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).toString());
         assertEquals("bar", path.get(1).toString());
+    }
+
+    @Test
+    public void uripath() throws Exception {
+        IO io;
+        List<FileNode> path;
+
+        io = new IO();
+        assertEquals(0, io.path("").size());
+        path = io.path(new File("foo").getAbsolutePath() + io.os.listSeparator + new File("bar").getAbsolutePath());
+        assertEquals(2, path.size());
+        assertEquals("foo", path.get(0).getName());
+        assertEquals("bar", path.get(1).getName());
     }
 
     //--

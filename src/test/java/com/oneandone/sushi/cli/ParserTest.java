@@ -19,6 +19,7 @@ package com.oneandone.sushi.cli;
 
 import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.fs.Node;
+import com.oneandone.sushi.fs.file.FileNode;
 import com.oneandone.sushi.metadata.Schema;
 import com.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
@@ -100,15 +101,15 @@ public class ParserTest {
         assertEquals("first", values.first.getName());
         assertEquals("second", values.second);
         assertEquals(2, values.remaining.size());
-        assertEquals(IO_OBJ.node("third"), values.remaining.get(0));
-        assertEquals(IO_OBJ.node("forth"), values.remaining.get(1));
+        assertEquals(IO_OBJ.file("third"), values.remaining.get(0));
+        assertEquals(IO_OBJ.file("forth"), values.remaining.get(1));
 
         values = new Values();
         parser.run(values, "first", "second", "-");
         assertEquals("first", values.first.getName());
         assertEquals("second", values.second);
         assertEquals(1, values.remaining.size());
-        assertEquals(IO_OBJ.node("-"), values.remaining.get(0));
+        assertEquals(IO_OBJ.file("-"), values.remaining.get(0));
     }
 
     @Test
@@ -229,18 +230,18 @@ public class ParserTest {
     }
 
     public static class Values {
-        public Node first;
+        public FileNode first;
         @Value(name = "second", position = 2)
         public String second;
-        public List<Node> remaining = new ArrayList<Node>();
+        public List<FileNode> remaining = new ArrayList<FileNode>();
 
         @Value(name = "first", position = 1)
-        public void first(Node first) {
+        public void first(FileNode first) {
             this.first = first;
         }
 
         @Remaining(name = "remaining")
-        public void remaining(Node str) {
+        public void remaining(FileNode str) {
             remaining.add(str);
         }
     }

@@ -288,24 +288,8 @@ public class IO {
         Node result;
 
         if (!uri.isAbsolute()) {
-            if (working == null) {
-                throw new NodeInstantiationException(uri, "cannot resolve relative node: no working node");
-            } else {
-                if (uri.isOpaque()) {
-                    throw new IllegalStateException(uri.toString());
-                }
-                // working.getURI().resolve cannot be used because some of the URIs are opaque
-                if (uri.getAuthority() != null) {
-                    throw new NodeInstantiationException(uri, "cannot resolve relative node: authority not supported");
-                }
-                if (uri.getQuery() != null) {
-                    throw new NodeInstantiationException(uri, "cannot resolve relative node: query not supported");
-                }
-                if (uri.getFragment() != null) {
-                    throw new NodeInstantiationException(uri, "cannot resolve relative node: fragment not supported");
-                }
-                return working.join(uri.getPath());
-            }
+            // because I cannot reliably create relative URIs. E.g. paths with ':' will always result a URI with scheme
+            throw new IllegalStateException("cannot create node for relative URI, use getWorking().join instead: " + uri);
         }
         scheme = uri.getScheme();
         if (scheme == null) {
@@ -411,22 +395,32 @@ public class IO {
 
     //--
 
-    public List<Node> path(String path) throws URISyntaxException, NodeInstantiationException {
+    public List<FileNode> path(String path) throws URISyntaxException, NodeInstantiationException {
+        List<FileNode> result;
+
+        result = new ArrayList<FileNode>();
+        for (String str: Strings.split(os.listSeparator, path)) {
+            result.add(file(str));
+        }
+        return result;
+    }
+
+    public List<FileNode> classpath(String path) throws URISyntaxException, IOException {
+        List<FileNode> result;
+
+        result = path(path);
+        for (Node node : result) {
+            node.checkExists();
+        }
+        return result;
+    }
+
+    public List<Node> uripath(String path) throws URISyntaxException, NodeInstantiationException {
         List<Node> result;
 
         result = new ArrayList<Node>();
         for (String str: Strings.split(os.listSeparator, path)) {
             result.add(node(str));
-        }
-        return result;
-    }
-
-    public List<Node> classpath(String path) throws URISyntaxException, IOException {
-        List<Node> result;
-
-        result = path(path);
-        for (Node node : result) {
-            node.checkExists();
         }
         return result;
     }

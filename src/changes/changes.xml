@@ -7,6 +7,9 @@
         Precise return types for getParent and join in als Nodes.
       </action>
       <action dev="mlhartme" type="update">
+        IO.node now rejects relative uris.
+      </action>
+      <action dev="mlhartme" type="update">
         Support webdav URIs with queries.
       </action>
       <action dev="mlhartme" type="update">

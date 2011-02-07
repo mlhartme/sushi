@@ -21,7 +21,7 @@ import com.oneandone.sushi.fs.IO;
 import com.oneandone.sushi.metadata.ComplexType;
 import com.oneandone.sushi.metadata.Item;
 import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.simpletypes.NodeType;
+import com.oneandone.sushi.metadata.simpletypes.FileNodeType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -33,7 +33,7 @@ public class ReflectSchema extends Schema {
 
     public ReflectSchema(IO io) {
         this();
-        add(new NodeType(this, io));
+        add(new FileNodeType(this, io));
     }
 
     @Override

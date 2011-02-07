@@ -73,33 +73,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(node, IO.node(node.getURI()));
     }
 
-    @Test
-    public void createRelative() throws Exception {
-        IO.setWorking(work);
-        assertEquals(work, IO.node(""));
-        assertEquals(work.join("a"), IO.node("a"));
-        assertEquals(work.join("x/y"), IO.node("x/y"));
-    }
-
-    @Test
-    public void createRelativeDot() throws Exception {
-        IO.setWorking(work);
-        assertEquals(work, IO.node("."));
-        assertEquals(work.join("a"), IO.node("a/."));
-        assertEquals(work.join("x/y"), IO.node("x/./y/."));
-    }
-
-    @Test
-    public void createRelativeDoubleDot() throws Exception {
-        IO.setWorking(work);
-        assertEquals(work, IO.node("foo/.."));
-        assertEquals(work.join("xyz"), IO.node("a/./../xyz"));
-        assertEquals(work.join("a/b"), IO.node("x/y/../../a/b"));
-    }
-
-
-    // more create tests: see special char tests below
-
     //--
 
     @Test
@@ -159,6 +132,30 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     }
 
     //--
+
+    @Test
+    public void join() throws Exception {
+        assertEquals(work, work.join(""));
+        assertEquals(work, work.join("a").getParent());
+        assertEquals(work, work.join("x/y").getParent().getParent());
+    }
+
+    @Test
+    public void joinDot() throws Exception {
+        assertEquals(work, work.join("."));
+        assertEquals(work.join("a"), work.join("a/."));
+        assertEquals(work.join("x/y"), work.join("x/./y/."));
+    }
+
+    @Test
+    public void joinDoubleDot() throws Exception {
+        assertEquals(work, work.join("foo/.."));
+        assertEquals(work.join("xyz"), work.join("a/./../xyz"));
+        assertEquals(work.join("a/b"), work.join("x/y/../../a/b"));
+    }
+
+
+    // more create tests: see special char tests below
 
     @Test
     public void joinWithSlash() {
@@ -469,10 +466,6 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         assertEquals(content, file.readString());
         assertEquals(Collections.singletonList(file), file.getParent().list());
         alias = IO.node(file.getURI());
-        assertEquals(file, alias);
-        assertEquals(content, alias.readString());
-        IO.setWorking(work);
-        alias = IO.node(new URI(null, null, name, null).getRawPath());
         assertEquals(file, alias);
         assertEquals(content, alias.readString());
         file.delete();

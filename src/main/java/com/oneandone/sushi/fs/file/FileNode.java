@@ -128,7 +128,7 @@ public class FileNode extends Node {
     }
 
     public ZipNode openZip() throws IOException {
-        return ((ZipFilesystem) getIO().getFilesystem("zip")).node(this, "");
+        return ((ZipFilesystem) getWorld().getFilesystem("zip")).node(this, "");
     }
 
     @Override
@@ -241,7 +241,7 @@ public class FileNode extends Node {
     @Override
     public String readLink() throws ReadLinkException {
     	try {
-		    return getIO().getTemp().exec("readlink", file.getAbsolutePath()).trim();
+		    return getWorld().getTemp().exec("readlink", file.getAbsolutePath()).trim();
 		} catch (IOException e) {
 			throw new ReadLinkException(this, e);
 		}
@@ -312,7 +312,7 @@ public class FileNode extends Node {
       	} catch (IOException e) {
       		throw new MoveException(this, dest, "dest exists", e);
       	}
-        if (getIO().os == OS.WINDOWS) {
+        if (getWorld().os == OS.WINDOWS) {
             p = new Program(dest.getParent(), "cmd", "/C", "move");
         } else {
             p = new Program(dest.getParent(), "mv");
@@ -323,7 +323,7 @@ public class FileNode extends Node {
 		} catch (IOException e) {
 			throw new MoveException(this, dest, "os command failed", e);
 		}
-        if (output.length() > 0 && getIO().os != OS.WINDOWS) {
+        if (output.length() > 0 && getWorld().os != OS.WINDOWS) {
             throw new MoveException(this, dest, "unexpected output: " + output);
         }
         return dest;
@@ -362,7 +362,7 @@ public class FileNode extends Node {
     @Override
     public FileNode delete() throws DeleteException {
         try {
-            delete(getIO(), file);
+            delete(getWorld(), file);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }

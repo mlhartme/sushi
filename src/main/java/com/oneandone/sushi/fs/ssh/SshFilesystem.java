@@ -53,7 +53,7 @@ public class SshFilesystem extends Filesystem {
     /** @return never null */
     public Credentials getDefaultCredentials() throws IOException {
         if (defaultCredentials == null) {
-            defaultCredentials = Credentials.loadDefault(getIO());
+            defaultCredentials = Credentials.loadDefault(getWorld());
         }
         return defaultCredentials;
     }
@@ -100,7 +100,7 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getIO().getWorking().getName(), getDefaultCredentials());
+        return root("localhost", getWorld().getWorking().getName(), getDefaultCredentials());
     }
 
     public SshRoot root(String root, Credentials credentials) throws JSchException {
@@ -137,7 +137,7 @@ public class SshFilesystem extends Filesystem {
             throw new IllegalArgumentException();
         }
         if (user == null) {
-            user = getIO().getHome().getName();
+            user = getWorld().getHome().getName();
         }
         return new SshRoot(this, host, user, credentials, timeout);
     }

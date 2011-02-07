@@ -64,7 +64,7 @@ public class TimeMachineFilesystem extends Filesystem {
         }
         root = schemeSpecific.substring(0, schemeSpecific.length() - path.length());
         try {
-            dir = getIO().node(root);
+            dir = getWorld().node(root);
         } catch (URISyntaxException e) {
             throw new NodeInstantiationException(uri, "invalid root '" + root + "'", e);
         }

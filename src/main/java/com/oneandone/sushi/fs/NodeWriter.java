@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 public class NodeWriter extends OutputStreamWriter {
     public static NodeWriter create(Node node, boolean append) throws IOException {
-        return new NodeWriter(node, node.createOutputStream(append), node.getIO().getSettings().encoding);
+        return new NodeWriter(node, node.createOutputStream(append), node.getWorld().getSettings().encoding);
     }
 
     //--

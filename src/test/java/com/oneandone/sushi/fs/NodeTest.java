@@ -60,7 +60,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         Node root;
 
         root = work.getRootNode();
-        assertEquals(root, work.getIO().node(root.getURI()));
+        assertEquals(root, work.getWorld().node(root.getURI()));
     }
 
     @Test
@@ -501,7 +501,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         int right;
 
         file = work.join("foo");
-        file.writeBytes(ALL_CHARS.getBytes(file.getIO().getSettings().encoding));
+        file.writeBytes(ALL_CHARS.getBytes(file.getWorld().getSettings().encoding));
         src = file.createReader();
         str = new StringBuilder();
         while (true) {
@@ -528,7 +528,7 @@ public abstract class NodeTest extends NodeReadOnlyTest {
         dest = file.createWriter();
         dest.write(ALL_CHARS);
         dest.close();
-        assertTrue(Arrays.equals(ALL_CHARS.getBytes(file.getIO().getSettings().encoding), file.readBytes()));
+        assertTrue(Arrays.equals(ALL_CHARS.getBytes(file.getWorld().getSettings().encoding), file.readBytes()));
     }
 
     @Test
@@ -1066,11 +1066,11 @@ public abstract class NodeTest extends NodeReadOnlyTest {
     public void toStr() {
         Node node;
 
-        work.getIO().setWorking(work);
+        work.getWorld().setWorking(work);
         node = work.join("foo");
         assertEquals(".", work.toString());
         assertEquals("foo", node.toString());
-        work.getIO().setWorking(null);
+        work.getWorld().setWorking(null);
         assertEquals(node.getURI().toString(), node.toString());
     }
 

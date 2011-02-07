@@ -477,7 +477,7 @@ public class SshNode extends Node {
         final FileNode tmp;
         OutputStream out;
 
-        tmp = getIO().getTemp().createTempFile();
+        tmp = getWorld().getTemp().createTempFile();
         out = tmp.createOutputStream();
         get(out);
         out.close();

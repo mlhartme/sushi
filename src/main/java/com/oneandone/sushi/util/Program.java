@@ -34,7 +34,7 @@ public class Program {
     public final ProcessBuilder builder;
     
     public Program(FileNode dir, String ... args) {
-        this.io = dir.getIO();
+        this.io = dir.getWorld();
         this.dir = dir;
         this.builder = new ProcessBuilder();
         this.builder.directory(dir.getFile());

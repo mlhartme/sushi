@@ -33,7 +33,7 @@ public class Feed {
     private final List<Channel> channels;
     
     public static Feed read(Node src) throws XmlException, IOException, SAXException {
-        return fromXml(src.getIO().getXml().selector, src.readXml());
+        return fromXml(src.getWorld().getXml().selector, src.readXml());
     }
 
     public static Feed fromXml(Selector selector, Document doc) throws XmlException {
@@ -57,7 +57,7 @@ public class Feed {
     //-
 
     public void write(Node dest) throws IOException {
-        dest.writeXml(toXml(dest.getIO().getXml().builder));
+        dest.writeXml(toXml(dest.getWorld().getXml().builder));
     }        
 
     public Document toXml(Builder builder) {

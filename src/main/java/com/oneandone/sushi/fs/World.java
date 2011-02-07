@@ -47,7 +47,7 @@ import java.util.Map;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single world instance in your application, configure it and
- * afterwards use it through-out your application to create nodes via WORLD.node or WORLD.file. </p>
+ * afterwards use it through-out your application to create nodes via World.node or World.file. </p>
  *
  * <p>Sushi's FS subsystem forms a tree: An world object is the root, having filesystems as it's children, roots as
  * grand-children and nodes as leaves. This tree is traversable from nodes up to the world object via Node.getRoot(),
@@ -55,9 +55,9 @@ import java.util.Map;
  * from world. (Traversing in reverse order is not implemented, that too resource consuming)</p>
  *
  * <p>Technically, you can creates as many world objects as you which, but nodes from different world instances
- * cannot interact, so you'll usually stick with a single WORLD instance. Note that there's no
+ * cannot interact, so you'll usually stick with a single world instance. Note that there's no
  * predefined static world instance in Sushi. You can either get the world from node instances, or,
- * if you feel a single world instance should be available everywhere in your applicationm use dependency injection. </p>
+ * if you feel a single world instance should be available everywhere in your application use dependency injection. </p>
  *
  * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */

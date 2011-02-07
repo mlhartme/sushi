@@ -51,7 +51,7 @@ public abstract class NodeReadOnlyTest {
 
         fs = work.getRoot().getFilesystem();
         locator = work.getURI();
-        assertEquals(locator, work.getIO().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
+        assertEquals(locator, work.getWorld().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
         again = WORLD.node(locator);
         assertEquals(work, again);
         assertEquals(locator, again.getURI());
@@ -65,6 +65,6 @@ public abstract class NodeReadOnlyTest {
 
         root = work.getRoot();
         fs = root.getFilesystem();
-        fs.getIO().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
+        fs.getWorld().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
     }
 }

@@ -133,9 +133,9 @@ public class SshRoot implements Root, UserInfo, Runnable {
         try {
             start(tty, out, command).waitFor();
         } catch (ExitCode e) {
-            throw new ExitCode(e.call, e.code, filesystem.getIO().getSettings().string(out));
+            throw new ExitCode(e.call, e.code, filesystem.getWorld().getSettings().string(out));
         }
-        return filesystem.getIO().getSettings().string(out);
+        return filesystem.getWorld().getSettings().string(out);
     }
 
     public String getUser() {

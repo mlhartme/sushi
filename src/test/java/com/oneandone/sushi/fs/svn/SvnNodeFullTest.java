@@ -112,17 +112,17 @@ public class SvnNodeFullTest extends NodeTest {
         root.join("dir/dir1/dir2").mkdirs();
         root.join("dir/dir1/dir2").join("sub1").writeString("baz");
 
-        dir = work.getIO().getTemp().createTempDirectory();
+        dir = work.getWorld().getTemp().createTempDirectory();
         root.export(dir);
         assertEquals("foo", dir.join("file").readString());
         assertEquals("bar", dir.join("dir/sub").readString());
         assertEquals("baz", dir.join("dir/dir1/dir2/sub1").readString());
 
-        dir = work.getIO().getTemp().createTempDirectory();
+        dir = work.getWorld().getTemp().createTempDirectory();
         root.join("dir").export(dir);
         assertEquals("bar", dir.join("sub").readString());
 
-        dir = work.getIO().getTemp().createTempDirectory();
+        dir = work.getWorld().getTemp().createTempDirectory();
         root.join("dir/dir1/dir2").export(dir);
         assertEquals("baz", dir.join("sub1").readString());
     }

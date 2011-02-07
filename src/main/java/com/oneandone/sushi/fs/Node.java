@@ -88,8 +88,8 @@ public abstract class Node {
         return getRoot().node("", null);
     }
 
-    public World getIO() {
-        return getRoot().getFilesystem().getIO();
+    public World getWorld() {
+        return getRoot().getFilesystem().getWorld();
     }
 
     /**
@@ -281,7 +281,7 @@ public abstract class Node {
         for (i = 0; i < ups; i++) {
             result.append("..").append(fs.getSeparator());
         }
-        result.append(Strings.replace(destpath, getIO().os.lineSeparator, "" + getIO().os.lineSeparator));
+        result.append(Strings.replace(destpath, getWorld().os.lineSeparator, "" + getWorld().os.lineSeparator));
         return result.toString();
     }
 
@@ -332,7 +332,7 @@ public abstract class Node {
         byte[] result;
 
         src = createInputStream();
-        result = getIO().getBuffer().readBytes(src);
+        result = getWorld().getBuffer().readBytes(src);
         src.close();
         return result;
     }
@@ -342,12 +342,12 @@ public abstract class Node {
      * is created from the byte array returned by readBytes.
      */
     public String readString() throws IOException {
-        return getIO().getSettings().string(readBytes());
+        return getWorld().getSettings().string(readBytes());
     }
 
     /** @return lines without tailing line separator */
     public List<String> readLines() throws IOException {
-        return readLines(getIO().getSettings().lineFormat);
+        return readLines(getWorld().getSettings().lineFormat);
     }
 
     /** @return lines without tailing line separator */
@@ -370,7 +370,7 @@ public abstract class Node {
     }
 
     public Document readXml() throws IOException, SAXException {
-        return getIO().getXml().builder.parse(this);
+        return getWorld().getXml().builder.parse(this);
     }
 
     public Transformer readXsl() throws IOException, TransformerConfigurationException {
@@ -488,7 +488,7 @@ public abstract class Node {
 
         try {
             in = createInputStream();
-            getIO().getBuffer().copy(in, dest);
+            getWorld().getBuffer().copy(in, dest);
             in.close();
             return dest;
         } catch (IOException e) {
@@ -501,7 +501,7 @@ public abstract class Node {
      * @return list of files and directories created
      */
     public List<Node> copyDirectory(Node dest) throws CopyException {
-        return copyDirectory(dest, getIO().filter().includeAll());
+        return copyDirectory(dest, getWorld().filter().includeAll());
     }
 
     /**
@@ -519,12 +519,12 @@ public abstract class Node {
     }
 
     public String diffDirectory(Node rightdir, boolean brief) throws IOException {
-        return new Diff(brief).directory(this, rightdir, getIO().filter().includeAll());
+        return new Diff(brief).directory(this, rightdir, getWorld().filter().includeAll());
     }
 
     /** cheap diff if you only need a yes/no answer */
     public boolean diff(Node right) throws IOException {
-        return diff(right, new Buffer(getIO().getBuffer()));
+        return diff(right, new Buffer(getWorld().getBuffer()));
     }
 
     /** cheap diff if you only need a yes/no answer */
@@ -538,7 +538,7 @@ public abstract class Node {
         boolean[] rightEof;
         boolean result;
 
-        leftBuffer = getIO().getBuffer();
+        leftBuffer = getWorld().getBuffer();
         leftSrc = createInputStream();
         leftEof = new boolean[] { false };
         rightSrc = right.createInputStream();
@@ -561,7 +561,7 @@ public abstract class Node {
 
     /** uses default excludes */
     public List<Node> find(String... includes) throws IOException {
-        return find(getIO().filter().include(includes));
+        return find(getWorld().filter().include(includes));
     }
 
     public Node findOne(String include) throws IOException {
@@ -758,7 +758,7 @@ public abstract class Node {
     private Node lines(Writer dest, List<String> lines) throws IOException {
         String separator;
 
-        separator = getIO().getSettings().lineSeparator;
+        separator = getWorld().getSettings().lineSeparator;
         for (String line : lines) {
             dest.write(line);
             dest.write(separator);
@@ -777,7 +777,7 @@ public abstract class Node {
     }
 
     public Node writeXml(org.w3c.dom.Node node) throws IOException {
-        getIO().getXml().serializer.serialize(node, this);
+        getWorld().getXml().serializer.serialize(node, this);
         return this;
     }
 
@@ -789,7 +789,7 @@ public abstract class Node {
 
         in = createInputStream();
         out = new GZIPOutputStream(dest.createOutputStream());
-        getIO().getBuffer().copy(in, out);
+        getWorld().getBuffer().copy(in, out);
         in.close();
         out.close();
     }
@@ -800,7 +800,7 @@ public abstract class Node {
 
         in = new GZIPInputStream(createInputStream());
         out = dest.createOutputStream();
-        getIO().getBuffer().copy(in, out);
+        getWorld().getBuffer().copy(in, out);
         in.close();
         out.close();
     }
@@ -827,7 +827,7 @@ public abstract class Node {
 
         src =  createInputStream();
         complete = MessageDigest.getInstance(name);
-        getIO().getBuffer().digest(src, complete);
+        getWorld().getBuffer().digest(src, complete);
         src.close();
         return complete.digest();
     }
@@ -877,7 +877,7 @@ public abstract class Node {
     public final String toString() {
         Node working;
 
-        working = getIO().getWorking();
+        working = getWorld().getWorking();
         if (working == null || !getRoot().equals(working.getRoot())) {
             return getURI().toString();
         } else {

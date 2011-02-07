@@ -188,7 +188,7 @@ public class SvnNode extends Node {
         FileNode tmp;
         OutputStream dest;
 
-        tmp = getIO().getTemp().createTempFile();
+        tmp = getWorld().getTemp().createTempFile();
         dest = tmp.createOutputStream();
         try {
             load(dest);
@@ -453,7 +453,7 @@ public class SvnNode extends Node {
     }
 
     public static SvnNode fromWorkspace(FileNode workspace) throws IOException {
-        return (SvnNode) workspace.getIO().validNode("svn:" + urlFromWorkspace(workspace));
+        return (SvnNode) workspace.getWorld().validNode("svn:" + urlFromWorkspace(workspace));
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {

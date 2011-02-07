@@ -72,7 +72,7 @@ public abstract class Method<T> {
     }
     
     public Xml getXml() {
-        return root.getFilesystem().getIO().getXml();
+        return root.getFilesystem().getWorld().getXml();
     }
     
     //--

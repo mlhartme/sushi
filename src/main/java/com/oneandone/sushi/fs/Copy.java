@@ -56,7 +56,7 @@ public class Copy {
     private final Map<String, Method> calls;
     
 	public Copy(Node srcdir) {
-		this(srcdir, srcdir.getIO().filter().includeAll());
+		this(srcdir, srcdir.getWorld().filter().includeAll());
 	}
 	
     public Copy(Node srcdir, Filter filter) {

@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 public class NodeReader extends InputStreamReader {
     public static NodeReader create(Node node) throws IOException {
-        return new NodeReader(node, node.createInputStream(), node.getIO().getSettings().encoding);
+        return new NodeReader(node, node.createInputStream(), node.getWorld().getSettings().encoding);
     }
 
     //--

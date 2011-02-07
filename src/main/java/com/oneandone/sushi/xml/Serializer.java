@@ -51,7 +51,7 @@ public class Serializer {
         
         // don't use Writer to allow transformer to decide about encoding */
         out = dest.createOutputStream();
-        serialize(new DOMSource(src), new StreamResult(out), dest.getIO().getSettings().encoding);
+        serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding);
         out.close();
     }
 

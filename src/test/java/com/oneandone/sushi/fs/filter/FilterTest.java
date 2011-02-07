@@ -96,12 +96,12 @@ public class FilterTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void rejectDoubleStarOnly() {
-        root.getIO().filter().include("**");
+        root.getWorld().filter().include("**");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void rejectDoubleDoubleStar() {
-        root.getIO().filter().include("**/**");
+        root.getWorld().filter().include("**/**");
     }
 
     @Test
@@ -109,7 +109,7 @@ public class FilterTest {
         List<Node> nodes;
 
         create("a", "b/c", "b/d");
-        nodes = root.find(root.getIO().filter().include("**/*").predicate(Predicate.DIRECTORY));
+        nodes = root.find(root.getWorld().filter().include("**/*").predicate(Predicate.DIRECTORY));
         assertEquals(1, nodes.size());
         assertEquals(root.join("b"), nodes.get(0));
     }
@@ -130,7 +130,7 @@ public class FilterTest {
     	if (OS.CURRENT != OS.LINUX) {
     		throw new IOException();
     	}
-        assertEquals(0, root.getIO().file("/").find("lost+found/*").size());
+        assertEquals(0, root.getWorld().file("/").find("lost+found/*").size());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class FilterTest {
     //--
 
     private Filter filter() {
-    	return root.getIO().filter();
+    	return root.getWorld().filter();
     }
 
     private void create(String... paths) {

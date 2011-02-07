@@ -23,22 +23,22 @@ import java.net.URI;
 import java.util.List;
 
 public abstract class Filesystem {
-    private final World io;
+    private final World world;
     private final String separator;
     private final char separatorChar;
     private final Features features;
     private final String scheme;
 
-    public Filesystem(World io, char separatorChar, Features features, String scheme) {
-        this.io = io;
+    public Filesystem(World world, char separatorChar, Features features, String scheme) {
+        this.world = world;
         this.separator = String.valueOf(separatorChar);
         this.separatorChar = separatorChar;
         this.features = features;
         this.scheme = scheme;
     }
 
-    public World getIO() {
-        return io;
+    public World getWorld() {
+        return world;
     }
 
     public String getSeparator() {

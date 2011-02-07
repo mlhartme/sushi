@@ -57,7 +57,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
         }
         try {
-            jar = getIO().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
+            jar = getWorld().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
         } catch (URISyntaxException e) {
             throw new NodeInstantiationException(uri, "invalid jar file in jar url", e);
         }

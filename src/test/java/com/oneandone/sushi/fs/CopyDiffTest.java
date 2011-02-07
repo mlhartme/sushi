@@ -47,7 +47,7 @@ public class CopyDiffTest {
         Node destdir;
         Node file;
         
-        destdir = copy.getSourceDir().getIO().getTemp().createTempDirectory();
+        destdir = copy.getSourceDir().getWorld().getTemp().createTempDirectory();
 
         file = copy.getSourceDir().join("file");
         file.writeString("foo");
@@ -80,7 +80,7 @@ public class CopyDiffTest {
         String brief;
         String normal;
         
-        destdir = copy.getSourceDir().getIO().getTemp().createTempDirectory();
+        destdir = copy.getSourceDir().getWorld().getTemp().createTempDirectory();
         variables.put("home", "mhm");
         variables.put("machine", "walter");
         
@@ -183,7 +183,7 @@ public class CopyDiffTest {
         public String called = null;
         
         public CopyExt(Node srcdir, Map<String, String> variables) {
-            super(srcdir, srcdir.getIO().filter().includeAll(), false, variables, Copy.DEFAULT_SUBST, Copy.DEFAULT_SUBST, '-', '@');
+            super(srcdir, srcdir.getWorld().filter().includeAll(), false, variables, Copy.DEFAULT_SUBST, Copy.DEFAULT_SUBST, '-', '@');
         }
         
         public List<Map<String, String>> contextN(Map<String, String> parent) {

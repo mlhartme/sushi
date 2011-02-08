@@ -238,8 +238,8 @@
       <url>scpexe://pustefix@pustefix-hp.schlund.de/home/pustefix/repository/maven</url>
     </snapshotRepository>
     <site>
-      <id>sourceforce</id>
-      <url>scpexe://shell.sourceforge.net/home/groups/b/be/beezle/htdocs/sushi/site</url>
+      <id>sourceforge</id>
+      <url>scp://shell.sourceforge.net/home/groups/b/be/beezle/htdocs/sushi/site</url>
     </site>
   </distributionManagement>
   <profiles>

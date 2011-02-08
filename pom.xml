@@ -2,7 +2,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <name>Sushi</name>
+  <description>Sushi is a collection of general purpose code like Apache Commons. A good part of it is for scripting tasks 
+    like copying files or file sets where others would prefer scripting languages or Ant. Another part is a file system 
+    abstraction with ssh, svn and webdav support.</description>
   <url>https://sourceforge.net/apps/trac/beezle/wiki/Sushi</url>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 2.1</name>
+      <url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <groupId>com.oneandone.sushi</groupId>
   <artifactId>sushi</artifactId>
@@ -32,16 +42,6 @@
       <name>Martin Leidig</name>
       <id>mtld</id>
       <email>mtld@sourceforge.net</email>
-      <organization>1&amp;1</organization>
-      <roles>
-        <role>Java Development</role>
-      </roles>
-      <timezone>+1</timezone>
-    </developer>
-    <developer>
-      <name>Andreas Kurth</name>
-      <id>akurth</id>
-      <email>akurth@sourceforge.net</email>
       <organization>1&amp;1</organization>
       <roles>
         <role>Java Development</role>
@@ -228,13 +228,13 @@
 
   <distributionManagement>
     <repository>
-      <id>pustefix</id>
-      <name>Pustefix Maven Repository</name>
-      <url>scpexe://pustefix@pustefix-hp.schlund.de/home/pustefix/repository/maven</url>
+      <id>sonatype-staging</id>
+      <name>Sonatype Staging</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
     <snapshotRepository>
       <id>pustefix-snapshots</id>
-      <name>Pustefix Maven Snapshot Repository</name>
+      <name>Pustefix Maven Repository</name>
       <url>scpexe://pustefix@pustefix-hp.schlund.de/home/pustefix/repository/maven</url>
     </snapshotRepository>
     <site>
@@ -244,17 +244,31 @@
   </distributionManagement>
   <profiles>
     <profile>
-      <id>oneandone</id>
-      <distributionManagement>
-        <repository>
-          <id>1und1-releases</id>
-          <url>http://mavenrepo.united.domain:8081/nexus/content/repositories/1und1-stable</url>
-        </repository>
-        <snapshotRepository>
-          <id>1und1-snapshots</id>
-          <url>http://mavenrepo.united.domain:8081/nexus/content/repositories/1und1-snapshots</url>
-        </snapshotRepository>
-      </distributionManagement>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>all</id>

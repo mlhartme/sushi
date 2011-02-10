@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.ssh;
+package net.sf.beezle.sushi.fs.ssh;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
@@ -23,10 +23,10 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
-import com.oneandone.sushi.fs.OnShutdown;
-import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.io.MultiOutputStream;
-import com.oneandone.sushi.util.ExitCode;
+import net.sf.beezle.sushi.fs.OnShutdown;
+import net.sf.beezle.sushi.fs.Root;
+import net.sf.beezle.sushi.io.MultiOutputStream;
+import net.sf.beezle.sushi.util.ExitCode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;

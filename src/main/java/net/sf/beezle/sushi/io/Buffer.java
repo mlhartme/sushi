@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.io;
+package net.sf.beezle.sushi.io;
 
-import com.oneandone.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;

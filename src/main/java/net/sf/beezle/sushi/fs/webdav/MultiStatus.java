@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.webdav.methods.Method;
-import com.oneandone.sushi.xml.ChildElements;
-import com.oneandone.sushi.xml.Dom;
-import com.oneandone.sushi.xml.Xml;
+import net.sf.beezle.sushi.fs.webdav.methods.Method;
+import net.sf.beezle.sushi.xml.ChildElements;
+import net.sf.beezle.sushi.xml.Dom;
+import net.sf.beezle.sushi.xml.Xml;
 import org.apache.http.HttpResponse;
 import org.apache.http.message.BasicLineParser;
 import org.w3c.dom.Element;

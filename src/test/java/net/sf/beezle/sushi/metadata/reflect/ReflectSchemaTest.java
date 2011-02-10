@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.reflect;
+package net.sf.beezle.sushi.metadata.reflect;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.metadata.Type;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.metadata.Type;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.annotation;
+package net.sf.beezle.sushi.metadata.annotation;
 
-import com.oneandone.sushi.metadata.Cardinality;
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.ItemException;
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.Cardinality;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.ItemException;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.Type;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;

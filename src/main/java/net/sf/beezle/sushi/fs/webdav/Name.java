@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.webdav.methods.Method;
-import com.oneandone.sushi.xml.Builder;
-import com.oneandone.sushi.xml.Namespace;
+import net.sf.beezle.sushi.fs.webdav.methods.Method;
+import net.sf.beezle.sushi.xml.Builder;
+import net.sf.beezle.sushi.xml.Namespace;
 import org.w3c.dom.Element;
 
 public class Name {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.archive;
+package net.sf.beezle.sushi.archive;
 
 import java.io.IOException;
 

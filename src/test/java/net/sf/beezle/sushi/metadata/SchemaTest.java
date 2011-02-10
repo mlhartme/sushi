@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
-import com.oneandone.sushi.metadata.model.Engine;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
-import com.oneandone.sushi.xml.Builder;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.xml.Builder;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
 /** 
  * A file system root like the drive letter on Windows or the Host Name for HttpFilesystem. 

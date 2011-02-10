@@ -15,28 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.file;
+package net.sf.beezle.sushi.fs.file;
 
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.ExistsException;
-import com.oneandone.sushi.fs.GetLastModifiedException;
-import com.oneandone.sushi.fs.LengthException;
-import com.oneandone.sushi.fs.LinkException;
-import com.oneandone.sushi.fs.ListException;
-import com.oneandone.sushi.fs.MkdirException;
-import com.oneandone.sushi.fs.MkfileException;
-import com.oneandone.sushi.fs.MoveException;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.OnShutdown;
-import com.oneandone.sushi.fs.ReadLinkException;
-import com.oneandone.sushi.fs.SetLastModifiedException;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.fs.zip.ZipFilesystem;
-import com.oneandone.sushi.fs.zip.ZipNode;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Program;
+import net.sf.beezle.sushi.archive.Archive;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.ExistsException;
+import net.sf.beezle.sushi.fs.GetLastModifiedException;
+import net.sf.beezle.sushi.fs.LengthException;
+import net.sf.beezle.sushi.fs.LinkException;
+import net.sf.beezle.sushi.fs.ListException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.MkfileException;
+import net.sf.beezle.sushi.fs.MoveException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.OnShutdown;
+import net.sf.beezle.sushi.fs.ReadLinkException;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
+import net.sf.beezle.sushi.fs.zip.ZipNode;
+import net.sf.beezle.sushi.io.Buffer;
+import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.util.Program;
 
 import java.io.File;
 import java.io.FileInputStream;

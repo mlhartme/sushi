@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.ssh;
+package net.sf.beezle.sushi.fs.ssh;
 
 import com.jcraft.jsch.JSchException;
-import com.oneandone.sushi.TestProperties;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.util.ExitCode;
+import net.sf.beezle.sushi.TestProperties;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.util.ExitCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

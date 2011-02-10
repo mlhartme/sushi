@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.rss;
+package net.sf.beezle.sushi.rss;
 
-import com.oneandone.sushi.xml.Xml;
-import com.oneandone.sushi.xml.XmlException;
+import net.sf.beezle.sushi.xml.Xml;
+import net.sf.beezle.sushi.xml.XmlException;
 import junit.framework.TestCase;
 
 import java.util.Date;

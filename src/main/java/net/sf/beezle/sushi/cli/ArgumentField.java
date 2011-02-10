@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.cli;
+package net.sf.beezle.sushi.cli;
 
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
-import com.oneandone.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.Type;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

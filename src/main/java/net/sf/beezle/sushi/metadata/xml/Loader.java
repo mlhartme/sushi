@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.Type;
-import com.oneandone.sushi.xml.Builder;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.xml.Builder;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;

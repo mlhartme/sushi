@@ -15,18 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.metadata.listmodel.All;
-import com.oneandone.sushi.metadata.listmodel.Empty;
-import com.oneandone.sushi.metadata.model.Car;
-import com.oneandone.sushi.metadata.model.Engine;
-import com.oneandone.sushi.metadata.model.Kind;
-import com.oneandone.sushi.metadata.model.ModelBase;
-import com.oneandone.sushi.metadata.model.Radio;
-import com.oneandone.sushi.metadata.model.Vendor;
-import com.oneandone.sushi.xml.Builder;
+import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.metadata.listmodel.All;
+import net.sf.beezle.sushi.metadata.listmodel.Empty;
+import net.sf.beezle.sushi.metadata.model.Car;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.model.Kind;
+import net.sf.beezle.sushi.metadata.model.ModelBase;
+import net.sf.beezle.sushi.metadata.model.Radio;
+import net.sf.beezle.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.xml.Builder;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -111,7 +111,7 @@ public class SerializeTest extends ModelBase {
                 "</engine>" + LF +
                 "</car>" + LF +
                 "</root>" + LF, 
-                new com.oneandone.sushi.xml.Serializer().serialize(root));
+                new net.sf.beezle.sushi.xml.Serializer().serialize(root));
     }
     
     private String run(Object obj) {
@@ -135,7 +135,7 @@ public class SerializeTest extends ModelBase {
         all.objects.add("");
         all.objects.add(2);
         assertEquals("<all>" + LF +
-                "  <objects type='com.oneandone.sushi.metadata.listmodel.Empty'/>" + LF +
+                "  <objects type='net.sf.beezle.sushi.metadata.listmodel.Empty'/>" + LF +
                 "  <objects type='java.lang.String'></objects>" + LF +
                 "  <objects type='java.lang.Integer'>2</objects>" + LF + 
                 "</all>" + LF, 

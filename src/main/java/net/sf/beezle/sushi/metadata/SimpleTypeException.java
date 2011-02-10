@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
 /** Indicates a problem creating a simple type from a String */
 public class SimpleTypeException extends Exception {

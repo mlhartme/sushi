@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.model;
+package net.sf.beezle.sushi.metadata.model;
 
 public enum Kind {
     NORMAL, SPORTS, VAN, PICKUP

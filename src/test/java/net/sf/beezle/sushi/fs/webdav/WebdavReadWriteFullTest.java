@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.TestProperties;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeTest;
+import net.sf.beezle.sushi.TestProperties;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.NodeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

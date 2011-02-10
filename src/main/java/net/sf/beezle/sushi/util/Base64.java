@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.util;
+package net.sf.beezle.sushi.util;
 
-import com.oneandone.sushi.fs.Settings;
+import net.sf.beezle.sushi.fs.Settings;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

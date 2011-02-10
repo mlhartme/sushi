@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.csv;
+package net.sf.beezle.sushi.csv;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.util.Strings;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.util.Strings;
 
 import java.io.IOException;
 import java.io.StringWriter;

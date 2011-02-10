@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.xml;
+package net.sf.beezle.sushi.xml;
 
 public class XmlException extends Exception {
     private static final long serialVersionUID = 8847745909613374505L;

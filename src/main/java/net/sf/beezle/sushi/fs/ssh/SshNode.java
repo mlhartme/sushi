@@ -15,25 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.ssh;
+package net.sf.beezle.sushi.fs.ssh;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
-import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.ExistsException;
-import com.oneandone.sushi.fs.GetLastModifiedException;
-import com.oneandone.sushi.fs.LengthException;
-import com.oneandone.sushi.fs.LinkException;
-import com.oneandone.sushi.fs.ListException;
-import com.oneandone.sushi.fs.MkdirException;
-import com.oneandone.sushi.fs.MoveException;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.ReadLinkException;
-import com.oneandone.sushi.fs.SetLastModifiedException;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.io.CheckedByteArrayOutputStream;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.ExistsException;
+import net.sf.beezle.sushi.fs.GetLastModifiedException;
+import net.sf.beezle.sushi.fs.LengthException;
+import net.sf.beezle.sushi.fs.LinkException;
+import net.sf.beezle.sushi.fs.ListException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.MoveException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.ReadLinkException;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

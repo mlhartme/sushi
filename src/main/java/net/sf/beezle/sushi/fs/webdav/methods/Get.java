@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav.methods;
+package net.sf.beezle.sushi.fs.webdav.methods;
 
-import com.oneandone.sushi.fs.webdav.StatusException;
-import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavNode;
+import net.sf.beezle.sushi.fs.webdav.StatusException;
+import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
+import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 

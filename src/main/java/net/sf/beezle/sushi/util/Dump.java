@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.util;
+package net.sf.beezle.sushi.util;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.ComplexType;
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
-import com.oneandone.sushi.metadata.Type;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;
 import java.io.StringWriter;

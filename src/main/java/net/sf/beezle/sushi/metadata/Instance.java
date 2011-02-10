@@ -15,19 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
-import com.oneandone.sushi.csv.Csv;
-import com.oneandone.sushi.csv.View;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeWriter;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.store.PropertyStore;
-import com.oneandone.sushi.metadata.xml.DomTree;
-import com.oneandone.sushi.metadata.xml.LoaderException;
-import com.oneandone.sushi.metadata.xml.Serializer;
-import com.oneandone.sushi.metadata.xml.Tree;
-import com.oneandone.sushi.metadata.xml.WriterTree;
+import net.sf.beezle.sushi.csv.Csv;
+import net.sf.beezle.sushi.csv.View;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.NodeWriter;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.store.PropertyStore;
+import net.sf.beezle.sushi.metadata.xml.DomTree;
+import net.sf.beezle.sushi.metadata.xml.LoaderException;
+import net.sf.beezle.sushi.metadata.xml.Serializer;
+import net.sf.beezle.sushi.metadata.xml.Tree;
+import net.sf.beezle.sushi.metadata.xml.WriterTree;
 import org.w3c.dom.Element;
 
 import java.io.IOException;
@@ -141,7 +141,7 @@ public class Instance<T> {
     }
     
     public void toProperties(Properties props, String name) {
-        com.oneandone.sushi.metadata.store.Writer.write(getType(), get(), name, new PropertyStore(props));
+        net.sf.beezle.sushi.metadata.store.Writer.write(getType(), get(), name, new PropertyStore(props));
     }
     
     public void exportCsv(View view, Csv dest, String ... selection) {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.rss;
+package net.sf.beezle.sushi.rss;
 
 import junit.framework.TestCase;
 

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
 import org.xml.sax.Locator;
 import org.xml.sax.SAXParseException;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
 public class MkdirException extends NodeException {
     public MkdirException(Node node) {

@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.model;
+package net.sf.beezle.sushi.metadata.model;
 
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Before;
 
 public abstract class ModelBase {

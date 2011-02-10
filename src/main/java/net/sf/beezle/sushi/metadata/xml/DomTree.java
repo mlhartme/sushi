@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
-import com.oneandone.sushi.xml.Builder;
+import net.sf.beezle.sushi.xml.Builder;
 import org.w3c.dom.Element;
 
 import java.io.IOException;

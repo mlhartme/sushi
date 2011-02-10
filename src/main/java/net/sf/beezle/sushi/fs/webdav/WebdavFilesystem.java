@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.Features;
-import com.oneandone.sushi.fs.Filesystem;
-import com.oneandone.sushi.fs.NodeInstantiationException;
-import com.oneandone.sushi.fs.Settings;
-import com.oneandone.sushi.fs.World;
+import net.sf.beezle.sushi.fs.Features;
+import net.sf.beezle.sushi.fs.Filesystem;
+import net.sf.beezle.sushi.fs.NodeInstantiationException;
+import net.sf.beezle.sushi.fs.Settings;
+import net.sf.beezle.sushi.fs.World;
 
 import java.io.IOException;
 import java.net.URI;

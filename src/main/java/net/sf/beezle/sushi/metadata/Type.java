@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.metadata.store.PropertyStore;
-import com.oneandone.sushi.metadata.xml.Loader;
-import com.oneandone.sushi.metadata.xml.LoaderException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.metadata.store.PropertyStore;
+import net.sf.beezle.sushi.metadata.xml.Loader;
+import net.sf.beezle.sushi.metadata.xml.LoaderException;
 import org.xml.sax.InputSource;
 
 import java.io.IOException;
@@ -115,7 +115,7 @@ public abstract class Type {
     public <T> Instance<T> loadProperties(Properties props, String name) {
         T obj;
         
-        obj = (T) new com.oneandone.sushi.metadata.store.Reader(new PropertyStore(props)).read(name, this);
+        obj = (T) new net.sf.beezle.sushi.metadata.store.Reader(new PropertyStore(props)).read(name, this);
         return instance(obj);
     }
     

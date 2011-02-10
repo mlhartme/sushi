@@ -15,19 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.csv;
+package net.sf.beezle.sushi.csv;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.Path;
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
-import com.oneandone.sushi.metadata.SimpleTypeException;
-import com.oneandone.sushi.metadata.annotation.AnnotationSchema;
-import com.oneandone.sushi.metadata.annotation.Sequence;
-import com.oneandone.sushi.metadata.annotation.Type;
-import com.oneandone.sushi.metadata.annotation.Value;
-import com.oneandone.sushi.metadata.xml.LoaderException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.Path;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.SimpleTypeException;
+import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
+import net.sf.beezle.sushi.metadata.annotation.Sequence;
+import net.sf.beezle.sushi.metadata.annotation.Type;
+import net.sf.beezle.sushi.metadata.annotation.Value;
+import net.sf.beezle.sushi.metadata.xml.LoaderException;
 
 import java.io.IOException;
 import java.util.ArrayList;

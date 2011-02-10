@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
 public class PathException extends RuntimeException {
     private static final long serialVersionUID = 1L;

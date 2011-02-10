@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.reflect;
+package net.sf.beezle.sushi.metadata.reflect;
 
-import com.oneandone.sushi.metadata.Cardinality;
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.Cardinality;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Type;
 
 import java.lang.reflect.Field;
 import java.util.Collection;

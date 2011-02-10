@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.simpletypes;
+package net.sf.beezle.sushi.metadata.simpletypes;
 
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
 
 public class CharacterType extends SimpleType {
     public CharacterType(Schema schema) {

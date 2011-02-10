@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.csv;
+package net.sf.beezle.sushi.csv;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.Path;
-import com.oneandone.sushi.metadata.model.ModelBase;
-import com.oneandone.sushi.metadata.xml.LoaderException;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.Path;
+import net.sf.beezle.sushi.metadata.model.ModelBase;
+import net.sf.beezle.sushi.metadata.xml.LoaderException;
 import org.junit.Test;
 
 import java.io.IOException;

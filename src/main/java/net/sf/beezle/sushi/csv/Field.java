@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.csv;
+package net.sf.beezle.sushi.csv;
 
-import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.Path;
-import com.oneandone.sushi.metadata.SimpleTypeException;
-import com.oneandone.sushi.metadata.Variable;
-import com.oneandone.sushi.metadata.annotation.Type;
-import com.oneandone.sushi.metadata.annotation.Value;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.Path;
+import net.sf.beezle.sushi.metadata.SimpleTypeException;
+import net.sf.beezle.sushi.metadata.Variable;
+import net.sf.beezle.sushi.metadata.annotation.Type;
+import net.sf.beezle.sushi.metadata.annotation.Value;
 
 import java.util.List;
 

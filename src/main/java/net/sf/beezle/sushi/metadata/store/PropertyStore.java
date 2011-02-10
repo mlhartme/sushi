@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.store;
+package net.sf.beezle.sushi.metadata.store;
 
-import com.oneandone.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Item;
 
 import java.util.List;
 import java.util.Properties;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.cli;
+package net.sf.beezle.sushi.cli;
 
 /** Indicates a problem with the arguments supplied */
 public class ArgumentException extends RuntimeException {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.cli;
+package net.sf.beezle.sushi.cli;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

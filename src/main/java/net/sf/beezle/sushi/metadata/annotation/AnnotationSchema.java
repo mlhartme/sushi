@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.annotation;
+package net.sf.beezle.sushi.metadata.annotation;
 
-import com.oneandone.sushi.metadata.ComplexType;
-import com.oneandone.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Schema;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,7 +33,7 @@ public class AnnotationSchema extends Schema {
         Constructor<?> constr;
 
         clazz = type.getType();
-        if (clazz.getAnnotation(com.oneandone.sushi.metadata.annotation.Type.class) == null) {
+        if (clazz.getAnnotation(net.sf.beezle.sushi.metadata.annotation.Type.class) == null) {
             throw new IllegalArgumentException("missing type annotation: " + clazz);
         }
 
@@ -54,7 +54,7 @@ public class AnnotationSchema extends Schema {
             }
         }
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.getAnnotation(com.oneandone.sushi.metadata.annotation.Value.class) != null) {
+            if (field.getAnnotation(net.sf.beezle.sushi.metadata.annotation.Value.class) != null) {
                 type.items().add(ValueItem.create(this, field));
             } else if (field.getAnnotation(Option.class) != null) {
                 type.items().add(OptionItem.create(this, field));

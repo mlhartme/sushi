@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.graph;
+package net.sf.beezle.sushi.graph;
 
 import org.junit.After;
 import org.junit.Before;

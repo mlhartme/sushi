@@ -15,21 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata;
+package net.sf.beezle.sushi.metadata;
 
-import com.oneandone.sushi.metadata.simpletypes.BooleanType;
-import com.oneandone.sushi.metadata.simpletypes.CharacterType;
-import com.oneandone.sushi.metadata.simpletypes.ClassType;
-import com.oneandone.sushi.metadata.simpletypes.DoubleType;
-import com.oneandone.sushi.metadata.simpletypes.EnumType;
-import com.oneandone.sushi.metadata.simpletypes.FloatType;
-import com.oneandone.sushi.metadata.simpletypes.IntType;
-import com.oneandone.sushi.metadata.simpletypes.LongType;
-import com.oneandone.sushi.metadata.simpletypes.MethodType;
-import com.oneandone.sushi.metadata.simpletypes.StringType;
-import com.oneandone.sushi.metadata.simpletypes.VoidType;
-import com.oneandone.sushi.util.Reflect;
-import com.oneandone.sushi.util.Strings;
+import net.sf.beezle.sushi.metadata.simpletypes.BooleanType;
+import net.sf.beezle.sushi.metadata.simpletypes.CharacterType;
+import net.sf.beezle.sushi.metadata.simpletypes.ClassType;
+import net.sf.beezle.sushi.metadata.simpletypes.DoubleType;
+import net.sf.beezle.sushi.metadata.simpletypes.EnumType;
+import net.sf.beezle.sushi.metadata.simpletypes.FloatType;
+import net.sf.beezle.sushi.metadata.simpletypes.IntType;
+import net.sf.beezle.sushi.metadata.simpletypes.LongType;
+import net.sf.beezle.sushi.metadata.simpletypes.MethodType;
+import net.sf.beezle.sushi.metadata.simpletypes.StringType;
+import net.sf.beezle.sushi.metadata.simpletypes.VoidType;
+import net.sf.beezle.sushi.util.Reflect;
+import net.sf.beezle.sushi.util.Strings;
 
 import java.util.ArrayList;
 import java.util.Collection;

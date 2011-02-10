@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.zip;
+package net.sf.beezle.sushi.fs.zip;
 
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.Root;
+import net.sf.beezle.sushi.archive.Archive;
+import net.sf.beezle.sushi.fs.Root;
 
 import java.io.File;
 import java.io.IOException;

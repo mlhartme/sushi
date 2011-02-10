@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.ssh;
+package net.sf.beezle.sushi.fs.ssh;
 
 import com.jcraft.jsch.JSchException;
 

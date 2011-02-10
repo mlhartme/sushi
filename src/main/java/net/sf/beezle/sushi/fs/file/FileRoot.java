@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.file;
+package net.sf.beezle.sushi.fs.file;
 
-import com.oneandone.sushi.fs.Root;
+import net.sf.beezle.sushi.fs.Root;
 
 import java.io.File;
 

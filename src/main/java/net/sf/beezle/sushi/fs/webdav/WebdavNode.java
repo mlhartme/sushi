@@ -15,27 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.ExistsException;
-import com.oneandone.sushi.fs.GetLastModifiedException;
-import com.oneandone.sushi.fs.LengthException;
-import com.oneandone.sushi.fs.ListException;
-import com.oneandone.sushi.fs.MkdirException;
-import com.oneandone.sushi.fs.MoveException;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.SetLastModifiedException;
-import com.oneandone.sushi.fs.webdav.methods.Delete;
-import com.oneandone.sushi.fs.webdav.methods.Get;
-import com.oneandone.sushi.fs.webdav.methods.Head;
-import com.oneandone.sushi.fs.webdav.methods.Method;
-import com.oneandone.sushi.fs.webdav.methods.MkCol;
-import com.oneandone.sushi.fs.webdav.methods.Move;
-import com.oneandone.sushi.fs.webdav.methods.PropFind;
-import com.oneandone.sushi.fs.webdav.methods.PropPatch;
-import com.oneandone.sushi.fs.webdav.methods.Put;
-import com.oneandone.sushi.util.Strings;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.ExistsException;
+import net.sf.beezle.sushi.fs.GetLastModifiedException;
+import net.sf.beezle.sushi.fs.LengthException;
+import net.sf.beezle.sushi.fs.ListException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.MoveException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.webdav.methods.Delete;
+import net.sf.beezle.sushi.fs.webdav.methods.Get;
+import net.sf.beezle.sushi.fs.webdav.methods.Head;
+import net.sf.beezle.sushi.fs.webdav.methods.Method;
+import net.sf.beezle.sushi.fs.webdav.methods.MkCol;
+import net.sf.beezle.sushi.fs.webdav.methods.Move;
+import net.sf.beezle.sushi.fs.webdav.methods.PropFind;
+import net.sf.beezle.sushi.fs.webdav.methods.PropPatch;
+import net.sf.beezle.sushi.fs.webdav.methods.Put;
+import net.sf.beezle.sushi.util.Strings;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.filter;
+package net.sf.beezle.sushi.fs.filter;
 
 import org.junit.Test;
 

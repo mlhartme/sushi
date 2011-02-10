@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.archive;
+package net.sf.beezle.sushi.archive;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.World;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.World;
 import org.junit.Before;
 import org.junit.Test;
 

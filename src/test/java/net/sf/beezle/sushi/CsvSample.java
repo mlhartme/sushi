@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi;
+package net.sf.beezle.sushi;
 
-import com.oneandone.sushi.csv.Csv;
-import com.oneandone.sushi.csv.Format;
-import com.oneandone.sushi.csv.View;
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.Type;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.csv.Csv;
+import net.sf.beezle.sushi.csv.Format;
+import net.sf.beezle.sushi.csv.View;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 
 import java.util.Arrays;
 

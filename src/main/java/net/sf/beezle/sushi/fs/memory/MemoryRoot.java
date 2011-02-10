@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.memory;
+package net.sf.beezle.sushi.fs.memory;
 
-import com.oneandone.sushi.fs.LengthException;
-import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.io.CheckedByteArrayInputStream;
+import net.sf.beezle.sushi.fs.LengthException;
+import net.sf.beezle.sushi.fs.Root;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.io.CheckedByteArrayInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;

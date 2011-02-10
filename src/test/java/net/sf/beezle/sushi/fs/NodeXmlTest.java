@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
-import com.oneandone.sushi.fs.memory.MemoryNode;
+import net.sf.beezle.sushi.fs.memory.MemoryNode;
 import org.junit.Test;
 
 import javax.xml.transform.Transformer;

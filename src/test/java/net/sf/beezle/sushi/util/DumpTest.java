@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.util;
+package net.sf.beezle.sushi.util;
 
-import com.oneandone.sushi.metadata.model.Car;
-import com.oneandone.sushi.metadata.model.Engine;
-import com.oneandone.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.metadata.model.Car;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.model.Vendor;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -93,12 +93,12 @@ public class DumpTest {
     
     @Test
     public void clazz() {
-        check("com.oneandone.sushi.util.DumpTest\n", getClass());
+        check("net.sf.beezle.sushi.util.DumpTest\n", getClass());
     }
 
     @Test
     public void method() throws Exception {
-        check("public void com.oneandone.sushi.util.DumpTest.method() throws java.lang.Exception\n",
+        check("public void net.sf.beezle.sushi.util.DumpTest.method() throws java.lang.Exception\n",
                 getClass().getDeclaredMethod("method", new Class[] {}));
     }
 

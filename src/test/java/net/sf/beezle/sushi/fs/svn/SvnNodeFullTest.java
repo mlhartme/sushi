@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.svn;
+package net.sf.beezle.sushi.fs.svn;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeInstantiationException;
-import com.oneandone.sushi.fs.NodeTest;
-import com.oneandone.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.NodeInstantiationException;
+import net.sf.beezle.sushi.fs.NodeTest;
+import net.sf.beezle.sushi.fs.file.FileNode;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.tmatesoft.svn.core.SVNException;

@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.fs.filter.Tree;
-import com.oneandone.sushi.fs.filter.TreeAction;
-import com.oneandone.sushi.util.Substitution;
+import net.sf.beezle.sushi.fs.filter.Filter;
+import net.sf.beezle.sushi.fs.filter.Tree;
+import net.sf.beezle.sushi.fs.filter.TreeAction;
+import net.sf.beezle.sushi.util.Substitution;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

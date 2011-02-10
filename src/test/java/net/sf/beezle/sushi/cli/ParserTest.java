@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.cli;
+package net.sf.beezle.sushi.cli;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
 import java.util.ArrayList;

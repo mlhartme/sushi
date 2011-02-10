@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.filter;
+package net.sf.beezle.sushi.fs.filter;
 
-import com.oneandone.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;

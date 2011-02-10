@@ -1,7 +1,7 @@
-package com.oneandone.sushi;
+package net.sf.beezle.sushi;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.World;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.World;
 
 import java.io.IOException;
 import java.io.Reader;

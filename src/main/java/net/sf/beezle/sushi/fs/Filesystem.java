@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
-import com.oneandone.sushi.util.Strings;
+import net.sf.beezle.sushi.util.Strings;
 
 import java.net.URI;
 import java.util.List;

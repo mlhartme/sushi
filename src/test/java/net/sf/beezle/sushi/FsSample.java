@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi;
+package net.sf.beezle.sushi;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.World;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.World;
 
 public class FsSample {
     /** print all Java files in your src/main/java directory */

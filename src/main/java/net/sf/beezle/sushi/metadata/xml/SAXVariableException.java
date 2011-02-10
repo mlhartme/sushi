@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
-import com.oneandone.sushi.metadata.Variable;
+import net.sf.beezle.sushi.metadata.Variable;
 import org.xml.sax.Locator;
 
 public class SAXVariableException extends SAXLoaderException {

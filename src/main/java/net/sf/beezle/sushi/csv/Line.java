@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.csv;
+package net.sf.beezle.sushi.csv;
 
-import com.oneandone.sushi.util.Misc;
+import net.sf.beezle.sushi.util.Misc;
 
 import java.util.ArrayList;
 import java.util.List;

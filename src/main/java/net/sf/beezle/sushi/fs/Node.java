@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
-import com.oneandone.sushi.archive.Archive;
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.fs.zip.ZipFilesystem;
-import com.oneandone.sushi.fs.zip.ZipNode;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.util.Strings;
-import com.oneandone.sushi.xml.Serializer;
+import net.sf.beezle.sushi.archive.Archive;
+import net.sf.beezle.sushi.fs.filter.Filter;
+import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
+import net.sf.beezle.sushi.fs.zip.ZipNode;
+import net.sf.beezle.sushi.io.Buffer;
+import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.xml.Serializer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

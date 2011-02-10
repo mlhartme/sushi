@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.xml;
+package net.sf.beezle.sushi.xml;
 
 import org.junit.Test;
 import org.w3c.dom.Document;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.io;
+package net.sf.beezle.sushi.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

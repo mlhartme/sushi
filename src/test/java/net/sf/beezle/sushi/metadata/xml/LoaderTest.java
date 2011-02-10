@@ -15,19 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.xml;
+package net.sf.beezle.sushi.metadata.xml;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.Type;
-import com.oneandone.sushi.metadata.Variable;
-import com.oneandone.sushi.metadata.listmodel.All;
-import com.oneandone.sushi.metadata.listmodel.Empty;
-import com.oneandone.sushi.metadata.model.Car;
-import com.oneandone.sushi.metadata.model.Engine;
-import com.oneandone.sushi.metadata.model.ModelBase;
-import com.oneandone.sushi.metadata.model.Vendor;
-import com.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.Variable;
+import net.sf.beezle.sushi.metadata.listmodel.All;
+import net.sf.beezle.sushi.metadata.listmodel.Empty;
+import net.sf.beezle.sushi.metadata.model.Car;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.model.ModelBase;
+import net.sf.beezle.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -326,7 +326,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void object() throws Exception {
         Object obj;
-        com.oneandone.sushi.fs.Node node;
+        net.sf.beezle.sushi.fs.Node node;
         
         node = WORLD.memoryNode("<object/>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
@@ -336,7 +336,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void objectString() throws Exception {
         Object obj;
-        com.oneandone.sushi.fs.Node node;
+        net.sf.beezle.sushi.fs.Node node;
         
         node = WORLD.memoryNode("<object type='java.lang.String'>foo</object>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
@@ -346,12 +346,12 @@ public class LoaderTest extends ModelBase {
     @Test
     public void list() throws Exception {
         All all;
-        com.oneandone.sushi.fs.Node node;
+        net.sf.beezle.sushi.fs.Node node;
         
         node = WORLD.memoryNode(
                 "<all>" +
                 "  <objects type='java.lang.Integer'>2</objects>" +
-                "  <objects type='com.oneandone.sushi.metadata.listmodel.Empty'/>" +
+                "  <objects type='net.sf.beezle.sushi.metadata.listmodel.Empty'/>" +
                 "  <objects type='java.lang.String'></objects>" +
                 "</all>"                
         );

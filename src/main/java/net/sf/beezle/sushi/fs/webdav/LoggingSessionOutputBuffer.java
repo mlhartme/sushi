@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.params.HttpParams;

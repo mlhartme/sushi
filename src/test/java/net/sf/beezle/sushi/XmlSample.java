@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi;
+package net.sf.beezle.sushi;
 
-import com.oneandone.sushi.xml.Xml;
+import net.sf.beezle.sushi.xml.Xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;

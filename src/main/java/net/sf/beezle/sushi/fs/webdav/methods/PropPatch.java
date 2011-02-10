@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav.methods;
+package net.sf.beezle.sushi.fs.webdav.methods;
 
-import com.oneandone.sushi.fs.webdav.MovedException;
-import com.oneandone.sushi.fs.webdav.MultiStatus;
-import com.oneandone.sushi.fs.webdav.Name;
-import com.oneandone.sushi.fs.webdav.Property;
-import com.oneandone.sushi.fs.webdav.StatusException;
-import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.xml.Builder;
+import net.sf.beezle.sushi.fs.webdav.MovedException;
+import net.sf.beezle.sushi.fs.webdav.MultiStatus;
+import net.sf.beezle.sushi.fs.webdav.Name;
+import net.sf.beezle.sushi.fs.webdav.Property;
+import net.sf.beezle.sushi.fs.webdav.StatusException;
+import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
+import net.sf.beezle.sushi.fs.webdav.WebdavNode;
+import net.sf.beezle.sushi.xml.Builder;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;

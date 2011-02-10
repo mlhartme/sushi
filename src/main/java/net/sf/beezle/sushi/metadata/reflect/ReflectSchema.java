@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.reflect;
+package net.sf.beezle.sushi.metadata.reflect;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.metadata.ComplexType;
-import com.oneandone.sushi.metadata.Item;
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.simpletypes.FileNodeType;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.simpletypes.FileNodeType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.cli;
+package net.sf.beezle.sushi.cli;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.io.InputLogStream;
-import com.oneandone.sushi.io.MultiOutputStream;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.io.InputLogStream;
+import net.sf.beezle.sushi.io.MultiOutputStream;
 
 import java.io.InputStream;
 import java.io.OutputStream;

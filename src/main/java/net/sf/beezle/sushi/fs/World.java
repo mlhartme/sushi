@@ -15,21 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs;
+package net.sf.beezle.sushi.fs;
 
-import com.oneandone.sushi.fs.console.ConsoleFilesystem;
-import com.oneandone.sushi.fs.file.FileFilesystem;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.fs.filter.Filter;
-import com.oneandone.sushi.fs.memory.MemoryFilesystem;
-import com.oneandone.sushi.fs.memory.MemoryNode;
-import com.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
-import com.oneandone.sushi.fs.zip.ZipFilesystem;
-import com.oneandone.sushi.io.Buffer;
-import com.oneandone.sushi.io.OS;
-import com.oneandone.sushi.util.Reflect;
-import com.oneandone.sushi.util.Strings;
-import com.oneandone.sushi.xml.Xml;
+import net.sf.beezle.sushi.fs.console.ConsoleFilesystem;
+import net.sf.beezle.sushi.fs.file.FileFilesystem;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.fs.filter.Filter;
+import net.sf.beezle.sushi.fs.memory.MemoryFilesystem;
+import net.sf.beezle.sushi.fs.memory.MemoryNode;
+import net.sf.beezle.sushi.fs.timemachine.TimeMachineFilesystem;
+import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
+import net.sf.beezle.sushi.io.Buffer;
+import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.util.Reflect;
+import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.xml.Xml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -153,12 +153,12 @@ public class World {
         addFilesystem(new ZipFilesystem(this, "zip"));
         addFilesystem(new ZipFilesystem(this, "jar"));
         addFilesystem(new TimeMachineFilesystem(this, "tm"));
-        addFilesystemOpt("com.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh");
-        addFilesystemOpt("com.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "dav", "http", true);
-        addFilesystemOpt("com.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "davs", "https", true);
+        addFilesystemOpt("net.sf.beezle.sushi.fs.ssh.SshFilesystem", this, "ssh");
+        addFilesystemOpt("net.sf.beezle.sushi.fs.svn.SvnFilesystem", this, "svn");
+        addFilesystemOpt("net.sf.beezle.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
+        addFilesystemOpt("net.sf.beezle.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
+        addFilesystemOpt("net.sf.beezle.sushi.fs.webdav.WebdavFilesystem", this, "dav", "http", true);
+        addFilesystemOpt("net.sf.beezle.sushi.fs.webdav.WebdavFilesystem", this, "davs", "https", true);
         return this;
     }
 

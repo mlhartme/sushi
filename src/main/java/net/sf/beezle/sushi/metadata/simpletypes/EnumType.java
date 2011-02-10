@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.simpletypes;
+package net.sf.beezle.sushi.metadata.simpletypes;
 
-import com.oneandone.sushi.metadata.Schema;
-import com.oneandone.sushi.metadata.SimpleType;
-import com.oneandone.sushi.metadata.SimpleTypeException;
-import com.oneandone.sushi.metadata.Type;
-import com.oneandone.sushi.util.Reflect;
-import com.oneandone.sushi.xml.Serializer;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.SimpleTypeException;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.util.Reflect;
+import net.sf.beezle.sushi.xml.Serializer;
 
 import java.util.Set;
 

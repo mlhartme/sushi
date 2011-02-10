@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.zip;
+package net.sf.beezle.sushi.fs.zip;
 
-import com.oneandone.sushi.fs.DeleteException;
-import com.oneandone.sushi.fs.MkdirException;
-import com.oneandone.sushi.fs.MoveException;
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.MoveException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav;
+package net.sf.beezle.sushi.fs.webdav;
 
-import com.oneandone.sushi.fs.Node;
-import com.oneandone.sushi.fs.NodeReadOnlyTest;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.NodeReadOnlyTest;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.svn;
+package net.sf.beezle.sushi.fs.svn;
 
-import com.oneandone.sushi.fs.Root;
-import com.oneandone.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.fs.Root;
+import net.sf.beezle.sushi.fs.file.FileNode;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;

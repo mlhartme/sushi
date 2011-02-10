@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.store;
+package net.sf.beezle.sushi.metadata.store;
 
-import com.oneandone.sushi.metadata.Instance;
-import com.oneandone.sushi.metadata.model.Engine;
-import com.oneandone.sushi.metadata.model.ModelBase;
-import com.oneandone.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.model.ModelBase;
+import net.sf.beezle.sushi.metadata.model.Vendor;
 import org.junit.Test;
 
 import java.util.Properties;

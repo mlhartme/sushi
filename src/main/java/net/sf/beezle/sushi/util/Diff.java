@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.util;
+package net.sf.beezle.sushi.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.fs.webdav.methods;
+package net.sf.beezle.sushi.fs.webdav.methods;
 
-import com.oneandone.sushi.fs.webdav.WebdavConnection;
-import com.oneandone.sushi.fs.webdav.WebdavNode;
-import com.oneandone.sushi.fs.webdav.WebdavRoot;
-import com.oneandone.sushi.xml.Namespace;
-import com.oneandone.sushi.xml.Xml;
+import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
+import net.sf.beezle.sushi.fs.webdav.WebdavNode;
+import net.sf.beezle.sushi.fs.webdav.WebdavRoot;
+import net.sf.beezle.sushi.xml.Namespace;
+import net.sf.beezle.sushi.xml.Xml;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ByteArrayEntity;

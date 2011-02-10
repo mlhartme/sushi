@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.metadata.model;
+package net.sf.beezle.sushi.metadata.model;
 
-import com.oneandone.sushi.metadata.annotation.Type;
-import com.oneandone.sushi.metadata.annotation.Value;
+import net.sf.beezle.sushi.metadata.annotation.Type;
+import net.sf.beezle.sushi.metadata.annotation.Value;
 
 @Type
 public class Engine {

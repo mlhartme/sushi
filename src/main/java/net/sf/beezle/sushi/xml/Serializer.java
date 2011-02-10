@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.xml;
+package net.sf.beezle.sushi.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,7 +46,7 @@ public class Serializer {
     }
     
     /** Generates an xml/encoding declaration */
-    public void serialize(Node src, com.oneandone.sushi.fs.Node dest) throws IOException {
+    public void serialize(Node src, net.sf.beezle.sushi.fs.Node dest) throws IOException {
         OutputStream out;
         
         // don't use Writer to allow transformer to decide about encoding */

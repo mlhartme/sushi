@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.xml;
+package net.sf.beezle.sushi.xml;
 
 /**
  * <p>Xml processing stuff. Not thread-save - every thread should have it's own instance. </p>

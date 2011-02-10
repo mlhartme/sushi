@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.oneandone.sushi.util;
+package net.sf.beezle.sushi.util;
 
-import com.oneandone.sushi.fs.World;
-import com.oneandone.sushi.fs.file.FileNode;
-import com.oneandone.sushi.io.OS;
+import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 
 import java.io.IOException;

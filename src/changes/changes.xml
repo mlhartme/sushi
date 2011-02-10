@@ -7,7 +7,7 @@
         Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
       </action>
     </release>
-    <release version="2.1.0" date="2011-02-??">
+    <release version="2.1.0" date="2011-02-08">
       <action dev="mlhartme" type="add">
         Added Node.resolveLink().
       </action>

@@ -112,7 +112,18 @@ public class OnShutdown extends Thread {
         }
     }
 
-    //-- 
+    /**
+     * Deletes all temp files created until now, without waiting for shutdown - usefull for long-running processes.
+     * Caution: the caller has to be sure that none of the files is still in use. It's usually better to explicitly
+     * delete temporary files in your application if you're know they are no longer used. */
+    public synchronized void deleteNow() {
+        for (FileNode node : delete) {
+            tryDelete(node);
+        }
+        delete.clear();
+    }
+
+    //--
     
     /**
      * @param node  file or directory

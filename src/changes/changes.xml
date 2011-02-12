@@ -5,6 +5,10 @@
     <release version="2.2.0" date="2011-02-??">
       <action dev="mlhartme" type="update">
         Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
+        Bumped version number to indicate this incompatible change.
+      </action>
+      <action dev="mlhartme" type="add">
+        OnShutdown.deleteNow() added.
       </action>
     </release>
     <release version="2.1.0" date="2011-02-08">
@@ -61,6 +65,7 @@
       </action>
       <action dev="mlhartme" type="update">
         Changed groupId and packages from de.ui.sushi to com.oneandone.sushi.
+        Bumped version number to indicate this incompatible change.
       </action>
       <action dev="mlhartme" type="update">
         Strings.split now throws an IllegalArgumentException for empty separator strings.

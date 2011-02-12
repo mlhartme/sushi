@@ -229,19 +229,20 @@
   <distributionManagement>
     <repository>
       <id>sonatype-staging</id>
-      <name>Sonatype Staging</name>
+      <name>Sonatype Nexus Staging Repository</name>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
     <snapshotRepository>
-      <id>pustefix-snapshots</id>
-      <name>Pustefix Maven Repository</name>
-      <url>scpexe://pustefix@pustefix-hp.schlund.de/home/pustefix/repository/maven</url>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Nexus Snapshots Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </snapshotRepository>
     <site>
       <id>sourceforge</id>
       <url>scp://shell.sourceforge.net/home/groups/b/be/beezle/htdocs/sushi/site</url>
     </site>
   </distributionManagement>
+
   <profiles>
     <profile>
       <id>release-sign-artifacts</id>

@@ -105,13 +105,6 @@
 
   <build>
     <defaultGoal>package</defaultGoal>
-    <extensions>
-      <extension><!-- for scpexe uploads -->
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-external</artifactId>
-        <version>1.0-beta-7</version>
-      </extension>
-    </extensions>
 
     <pluginManagement>
       <plugins>
@@ -239,7 +232,7 @@
     </snapshotRepository>
     <site>
       <id>sourceforge</id>
-      <url>scp://shell.sourceforge.net/home/groups/b/be/beezle/htdocs/sushi/site</url>
+      <url>scp://shell.sourceforge.net/home/project-web/beezle/htdocs/sushi/site</url>
     </site>
   </distributionManagement>
 

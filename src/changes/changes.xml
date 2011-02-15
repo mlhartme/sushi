@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.2.0" date="2011-02-??">
+    <release version="2.2.0" date="2011-02-15">
       <action dev="mlhartme" type="update">
         Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
         Bumped version number to indicate this incompatible change.

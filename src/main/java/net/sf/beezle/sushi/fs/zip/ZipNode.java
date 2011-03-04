@@ -141,9 +141,30 @@ public class ZipNode extends Node {
     @Override
     public boolean isFile() {
         ZipEntry entry;
-        
+        InputStream in;
+
         entry = root.getZip().getEntry(path);
-        return entry == null ? false : !entry.isDirectory();
+        if (entry == null || entry.isDirectory()) {
+            return false;
+        }
+        if (entry.getSize() > 0) {
+            return true;
+        }
+        try {
+            in = root.getZip().getInputStream(entry);
+        } catch (IOException e) {
+            return true;
+        }
+        if (in == null) {
+            return false;
+        } else {
+            try {
+                in.close();
+            } catch (IOException e) {
+                // fall through
+            }
+            return true;
+        }
     }
 
     @Override
@@ -185,7 +206,7 @@ public class ZipNode extends Node {
         
         zip = root.getZip();
         entry = zip.getEntry(path);
-        if (entry == null) {
+        if (entry == null || entry.isDirectory()) {
             throw new FileNotFoundException(path);
         }
         return zip.getInputStream(entry);

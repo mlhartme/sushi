@@ -2,6 +2,14 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
+    <release version="2.2.1" date="2011-03-04">
+      <action dev="mlhartme" type="fix">
+        Properly report unknown scheme if http core client dependency is not available.
+      </action>
+      <action dev="mlhartme" type="fix">
+        ZipNode.isFile() problem work-around.
+      </action>
+    </release>
     <release version="2.2.0" date="2011-02-15">
       <action dev="mlhartme" type="update">
         Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.

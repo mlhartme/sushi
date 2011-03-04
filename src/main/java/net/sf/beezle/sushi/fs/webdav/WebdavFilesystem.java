@@ -22,6 +22,7 @@ import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.NodeInstantiationException;
 import net.sf.beezle.sushi.fs.Settings;
 import net.sf.beezle.sushi.fs.World;
+import org.apache.http.HttpHost;
 
 import java.io.IOException;
 import java.net.URI;
@@ -36,6 +37,12 @@ public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = Settings.UTF_8;
 	public static final Logger WIRE = Logger.getLogger("sushi.webdav.wire");
 
+    static {
+        // make sure that WebdavFilesystem class loading fails if http core dependency is not available
+        if (HttpHost.class == null) {
+            throw new IllegalStateException();
+        }
+    }
 	public static void wireLog(String file) {
         Handler handler;
 

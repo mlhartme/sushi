@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.fs.file.FileNode;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -121,13 +122,18 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertNull(file.list());
     }
 
-    @Test(expected=ListException.class)
+    @Test
     public void listNonExisting() throws IOException {
         Node nosuchfile;
 
         nosuchfile = work.join("nosuchfile");
         assertFalse(nosuchfile.exists());
-        assertNull(nosuchfile.list());
+        try {
+            assertNull(nosuchfile.list());
+            fail();
+        } catch (ListException e) {
+            assertTrue(e.getCause().getClass().getName(), e.getCause() instanceof FileNotFoundException);
+        }
     }
 
     //--

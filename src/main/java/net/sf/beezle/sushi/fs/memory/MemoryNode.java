@@ -44,9 +44,9 @@ public class MemoryNode extends Node {
 
     /** never null */
     private Type type;
-    
+
     private long lastModified;
-    
+
     /** Do not call - use create instead. */
     public MemoryNode(MemoryRoot root, String path, Type type, byte[] data) {
         this.root = root;
@@ -68,7 +68,7 @@ public class MemoryNode extends Node {
     public MemoryRoot getRoot() {
         return root;
     }
-    
+
     @Override
     public MemoryNode getParent() {
         return (MemoryNode) doGetParent();
@@ -87,7 +87,7 @@ public class MemoryNode extends Node {
     public Type getType() {
         return type;
     }
-    
+
     @Override
     public boolean exists() {
         return type != Type.NONE;
@@ -102,7 +102,7 @@ public class MemoryNode extends Node {
     public boolean isDirectory() {
         return type == Type.DIRECTORY;
     }
-    
+
     @Override
     public boolean isLink() {
     	return false;
@@ -116,20 +116,20 @@ public class MemoryNode extends Node {
         return root.length(path);
     }
 
-    @Override 
+    @Override
     public long getLastModified() throws GetLastModifiedException {
         if (type == Type.NONE) {
             throw new GetLastModifiedException(this, null);
         }
         return lastModified;
     }
-    
+
     @Override
     public void setLastModified(long millis) throws SetLastModifiedException {
         lastModified = millis;
     }
-    
-    @Override 
+
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -139,7 +139,7 @@ public class MemoryNode extends Node {
         throw unsupported("setMode()");
     }
 
-    @Override 
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -149,7 +149,7 @@ public class MemoryNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }
@@ -162,7 +162,7 @@ public class MemoryNode extends Node {
     @Override
     public Node mkdir() throws MkdirException {
         boolean parentDir;
-        
+
         if (type != Type.NONE) {
             throw new MkdirException(this);
         }
@@ -174,7 +174,7 @@ public class MemoryNode extends Node {
         lastModified = System.currentTimeMillis();
         return this;
     }
-    
+
     @Override
     public void mklink(String target) {
         throw unsupported("mklink()");
@@ -185,7 +185,7 @@ public class MemoryNode extends Node {
         throw unsupported("readLink()");
     }
 
-    
+
     @Override
     public MemoryNode delete() throws DeleteException {
         if (type == Type.NONE) {
@@ -208,7 +208,7 @@ public class MemoryNode extends Node {
     public List<MemoryNode> list() throws ListException {
         switch (type) {
             case NONE:
-                throw new ListException(this, new IOException("directory expected"));
+                throw new ListException(this, new FileNotFoundException(getPath()));
             case FILE:
                 return null;
             case DIRECTORY:
@@ -224,7 +224,7 @@ public class MemoryNode extends Node {
         }
         return root.readBytes(path);
     }
-    
+
     @Override
     public InputStream createInputStream() throws IOException {
         if (type != Type.FILE) {

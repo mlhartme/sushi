@@ -6,6 +6,10 @@
       <action dev="mlhartme" type="fix">
         ZipNode.isDirectory() problem work-around.
       </action>
+      <action dev="mlhartme" type="fix">
+        Node.list() properly throws a ListException with wrapped FileNotFoundException if the respective node
+        does not exist.
+      </action>
     </release>
     <release version="2.2.1" date="2011-03-04">
       <action dev="mlhartme" type="fix">

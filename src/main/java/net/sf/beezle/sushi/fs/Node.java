@@ -118,7 +118,8 @@ public abstract class Node {
      * @return List of child nodes or null if this node is a file. Note that returning null allows for optimizations
      *    because list() may be called on any existing node; otherwise, you'd have to inspect the resulting exception
      *    whether you called list on a file.
-     * @throws ListException if this does not exist or permission is denied.
+     * @throws ListException if this does not exist (in this case, cause is set to a FileNotFoundException),
+     *    permission is denied, or another IO problem occurs.
      */
     public abstract List<? extends Node> list() throws ListException;
 

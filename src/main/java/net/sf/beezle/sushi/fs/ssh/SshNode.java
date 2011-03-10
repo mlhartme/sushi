@@ -67,7 +67,7 @@ public class SshNode extends Node {
             throw new IllegalStateException();
         }
     }
-    
+
     @Override
     public SshRoot getRoot() {
         return root;
@@ -188,6 +188,9 @@ public class SshNode extends Node {
                 return nodes;
             }
         } catch (SftpException e) {
+            if (e.id == 2) {
+                throw new ListException(this, new FileNotFoundException(getPath()));
+            }
             throw new ListException(this, e);
         } catch (JSchException e) {
             throw new ListException(this, e);

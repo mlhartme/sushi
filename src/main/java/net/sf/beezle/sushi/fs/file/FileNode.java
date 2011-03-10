@@ -106,7 +106,7 @@ public class FileNode extends Node {
     public String getAbsolute() {
         return file.getAbsolutePath();
     }
-    
+
     //--
 
     @Override
@@ -191,6 +191,9 @@ public class FileNode extends Node {
 
         children = file.listFiles();
         if (children == null) {
+            if (!file.exists()) {
+                throw new ListException(this, new FileNotFoundException(getPath()));
+            }
             if (!file.canRead()) {
                 try {
                     if (isLink()) {

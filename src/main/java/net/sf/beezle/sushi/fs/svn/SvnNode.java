@@ -113,7 +113,7 @@ public class SvnNode extends Node {
             } else if (kind == SVNNodeKind.FILE) {
                 return null;
             } else {
-                throw new ListException(this, new IOException("not a directory"));
+                throw new ListException(this, new FileNotFoundException(getPath()));
             }
         } catch (SVNException e) {
             throw new ListException(this, e);

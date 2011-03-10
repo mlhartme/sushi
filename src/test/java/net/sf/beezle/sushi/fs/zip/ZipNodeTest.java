@@ -80,6 +80,25 @@ public class ZipNodeTest {
     }
 
     @Test
+    public void type() throws Exception {
+        FileNode jar;
+        ZipNode root;
+
+        jar = world.locateClasspathItem(Assert.class);
+        root = jar.openZip();
+        for (Node node : root.find("**/*")) {
+            while (true) {
+                node = node.getParent();
+                if (node == null) {
+                    break;
+                }
+                assertTrue(node.isDirectory());
+                assertFalse(node.isFile());
+            }
+        }
+    }
+
+    @Test
     public void jarWithBlank() throws Exception {
         checkSpecialPath("a b", "foo bar.jar");
     }
@@ -88,7 +107,7 @@ public class ZipNodeTest {
     public void jarWithHash() throws Exception {
         checkSpecialPath("ab#", "X#Y.jar");
     }
-    
+
     private void checkSpecialPath(String dir, String name) throws IOException {
         final String clazz = "org/junit/Assert.class";
         FileNode jar;

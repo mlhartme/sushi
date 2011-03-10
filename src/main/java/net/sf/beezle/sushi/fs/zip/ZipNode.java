@@ -33,10 +33,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/** Represents an entry in a zip or jar file. Read-only */
 public class ZipNode extends Node {
     private final ZipRoot root;
     private final String path;
-    
+
     public ZipNode(ZipRoot root, String path) {
         super();
         this.root = root;
@@ -47,7 +48,7 @@ public class ZipNode extends Node {
     public ZipRoot getRoot() {
         return root;
     }
-    
+
     @Override
     public ZipNode getParent() {
         return (ZipNode) doGetParent();
@@ -68,7 +69,7 @@ public class ZipNode extends Node {
         return root.getZip().getEntry(path).getSize();
     }
 
-    @Override 
+    @Override
     public long getLastModified() {
         return root.getLastModified();
     }
@@ -77,8 +78,8 @@ public class ZipNode extends Node {
     public void setLastModified(long millis) throws SetLastModifiedException {
         throw new SetLastModifiedException(this);
     }
-    
-    @Override 
+
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -88,7 +89,7 @@ public class ZipNode extends Node {
         throw unsupported("setMode()");
     }
 
-    @Override 
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -98,7 +99,7 @@ public class ZipNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }
@@ -127,12 +128,12 @@ public class ZipNode extends Node {
     public void mklink(String target) {
         throw unsupported("mklink()");
     }
-    
+
     @Override
     public String readLink() {
         throw unsupported("readLink()");
     }
-    
+
     @Override
     public boolean exists() {
         return root.getZip().getEntry(path)  != null || isDirectory();
@@ -203,7 +204,7 @@ public class ZipNode extends Node {
     public InputStream createInputStream() throws IOException {
         ZipFile zip;
         ZipEntry entry;
-        
+
         zip = root.getZip();
         entry = zip.getEntry(path);
         if (entry == null || entry.isDirectory()) {
@@ -228,7 +229,7 @@ public class ZipNode extends Node {
         List<ZipNode> result;
         List<String> done;
         int idx;
-        
+
         // TODO: expensive
         e = root.getZip().entries();
         separator = root.getFilesystem().getSeparator();

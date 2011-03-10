@@ -23,7 +23,11 @@ import net.sf.beezle.sushi.fs.Root;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ZipRoot implements Root<ZipNode> {
@@ -72,6 +76,36 @@ public class ZipRoot implements Root<ZipNode> {
             throw new IllegalArgumentException(encodedQuery);
         }
         return new ZipNode(this, path);
+    }
+
+    // TODO: cache?
+    public List<String> list(String path) {
+        ZipEntry entry;
+        Enumeration<? extends ZipEntry> e;
+        String name;
+        String separator;
+        String prefix;
+        int length;
+        List<String> result;
+        int idx;
+
+        e = zip.entries();
+        separator = getFilesystem().getSeparator();
+        prefix = path.length() == 0 ? "" : path + separator;
+        length = prefix.length();
+        result = new ArrayList<String>();
+        while (e.hasMoreElements()) {
+            entry = e.nextElement();
+            name = entry.getName();
+            if (name.length() > length && name.startsWith(prefix)) {
+                idx = name.indexOf(separator, length);
+                name = (idx == -1 ? name : name.substring(0, idx));
+                if (!result.contains(name)) {
+                    result.add(name);
+                }
+            }
+        }
+        return result;
     }
 
     public Manifest readManifest() throws IOException {

@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.zip;
 
 import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.ListException;
 import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.Node;
@@ -145,7 +146,7 @@ public class ZipNode extends Node {
         InputStream in;
 
         entry = root.getZip().getEntry(path);
-        if (entry == null || entry.isDirectory()) {
+        if (entry == null) {
             return false;
         }
         if (entry.getSize() > 0) {
@@ -176,28 +177,16 @@ public class ZipNode extends Node {
     @Override
     public boolean isDirectory() {
         ZipFile zip;
-        ZipEntry entry;
-        Enumeration<? extends ZipEntry> e;
-        String name;
-        String separator;
-        String prefix;
 
         if (path.isEmpty()) {
             return true;
         }
         zip = root.getZip();
-        e = zip.entries();
-        separator = root.getFilesystem().getSeparator();
-        prefix = getPath() + separator;
-        // TODO: expensive
-        while (e.hasMoreElements()) {
-            entry = e.nextElement();
-            name = entry.getName();
-            if (name.startsWith(prefix)) {
-                return true;
-            }
+        if (zip.getEntry(path + "/") != null) {
+            return true;
         }
-        return false;
+        // also contains implicit directories
+        return root.list(path).size() > 0;
     }
 
     @Override
@@ -207,7 +196,7 @@ public class ZipNode extends Node {
 
         zip = root.getZip();
         entry = zip.getEntry(path);
-        if (entry == null || entry.isDirectory()) {
+        if (entry == null) {
             throw new FileNotFoundException(path);
         }
         return zip.getInputStream(entry);
@@ -219,36 +208,20 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public List<ZipNode> list() {
-        ZipEntry entry;
-        Enumeration<? extends ZipEntry> e;
-        String name;
-        String separator;
-        String prefix;
-        int length;
+    public List<ZipNode> list() throws ListException {
+        List<String> paths;
         List<ZipNode> result;
-        List<String> done;
-        int idx;
 
-        // TODO: expensive
-        e = root.getZip().entries();
-        separator = root.getFilesystem().getSeparator();
-        prefix = path.length() == 0 ? "" : path + separator;
-        length = prefix.length();
+        if (isFile()) {
+            return null;
+        }
+        paths = root.list(path);
+        if (paths.size() == 0 && root.getZip().getEntry(path + "/") == null) {
+            throw new ListException(this, new FileNotFoundException(path));
+        }
         result = new ArrayList<ZipNode>();
-        done = new ArrayList<String>();
-        done.add(path);
-        while (e.hasMoreElements()) {
-            entry = e.nextElement();
-            name = entry.getName();
-            if (name.length() > length && name.startsWith(prefix)) {
-                idx = name.indexOf(separator, length);
-                name = (idx == -1 ? name : name.substring(0, idx));
-                if (!done.contains(name)) {
-                    done.add(name);
-                    result.add(root.node(name, null));
-                }
-            }
+        for (String path : paths) {
+            result.add(root.node(path, null));
         }
         return result;
     }

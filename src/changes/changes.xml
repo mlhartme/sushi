@@ -4,7 +4,7 @@
   <body>
     <release version="2.2.2" date="2011-03-??">
       <action dev="mlhartme" type="fix">
-        ZipNode.isDirectory() problem work-around.
+        ZipNode.isDirectory() fixed.
       </action>
       <action dev="mlhartme" type="fix">
         Node.list() properly throws a ListException with wrapped FileNotFoundException if the respective node

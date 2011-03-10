@@ -83,10 +83,13 @@ public class ZipNodeTest {
     public void type() throws Exception {
         FileNode jar;
         ZipNode root;
+        int count;
 
         jar = world.locateClasspathItem(Assert.class);
         root = jar.openZip();
+        count = 0;
         for (Node node : root.find("**/*")) {
+            count++;
             while (true) {
                 node = node.getParent();
                 if (node == null) {
@@ -96,6 +99,7 @@ public class ZipNodeTest {
                 assertFalse(node.isFile());
             }
         }
+        assertEquals(267, count);
     }
 
     @Test

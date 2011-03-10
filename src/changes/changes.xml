@@ -36,7 +36,7 @@
         Rename World.stringNode to World.memoryNode, add method for bytes.
       </action>
       <action dev="mlhartme" type="update">
-        World.working may be null.
+        World.getWorking() may be null now.
       </action>
       <action dev="mlhartme" type="fix">
         Serializer.escapeEntities now properly reports illegal characters.

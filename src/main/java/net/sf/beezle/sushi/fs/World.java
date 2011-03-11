@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -198,7 +199,13 @@ public class World {
             if (constructor == null) {
                 throw new IllegalArgumentException("no constructor: " + filesystemClass);
             }
-            filesystem = (Filesystem) constructor.newInstance(args);
+            try {
+                filesystem = (Filesystem) constructor.newInstance(args);
+            } catch (InvocationTargetException e) {
+                // for SshFilesystem for example, if fails with a NoClassDefFoundException on Mac OS
+                // TODO: logging
+                return null;
+            }
             addFilesystem(filesystem);
             return filesystem;
         } catch (RuntimeException e) {

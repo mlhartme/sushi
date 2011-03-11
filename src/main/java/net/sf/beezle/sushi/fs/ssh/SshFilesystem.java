@@ -33,13 +33,6 @@ import java.net.URI;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    static {
-        // make sure that SshFilesystem class loading fails if jsch dependency is not available
-        if (JSch.class == null) {
-            throw new IllegalStateException();
-        }
-    }
-
     private Credentials defaultCredentials;
     private int defaultTimeout;
     private final JSch jsch;

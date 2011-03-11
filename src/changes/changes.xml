@@ -10,6 +10,9 @@
         Node.list() properly throws a ListException with wrapped FileNotFoundException if the respective node
         does not exist.
       </action>
+      <action dev="mlhartme" type="fix">
+        Properly report unknown scheme if jsch dependency is not available (only for specific Java versions).
+      </action>
     </release>
     <release version="2.2.1" date="2011-03-04">
       <action dev="mlhartme" type="fix">

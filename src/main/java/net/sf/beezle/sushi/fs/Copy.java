@@ -265,7 +265,7 @@ public class Copy {
         try {
             return m.invoke(this, args);
         } catch (InvocationTargetException e) {
-            throw new ReflectionException(m.getName() + " failed: " + e.getMessage(), e.getTargetException());
+            throw new ReflectionException(m.getName() + " failed: " + e.getTargetException().getMessage(), e.getTargetException());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(m.getName() + ": " + e.getMessage(), e);
         } catch (IllegalAccessException e) {

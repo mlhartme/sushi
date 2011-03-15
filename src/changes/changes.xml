@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="fix">
         fs.Copy: improved ReflectionException message.
       </action>
+      <action dev="mlhartme" type="fix">
+        Fix ZipNode URI encoding problems in constructor and getURI().
+      </action>
     </release>
     <release version="2.2.2" date="2011-03-11">
       <action dev="mlhartme" type="fix">

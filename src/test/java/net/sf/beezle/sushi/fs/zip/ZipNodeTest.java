@@ -25,6 +25,8 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -102,6 +104,23 @@ public class ZipNodeTest {
         assertEquals(267, count);
     }
 
+    @Test
+    public void getUriWithSpecialChars() throws Exception {
+        ZipNode zip;
+        URI uri;
+        byte[] bytes;
+
+        zip = world.guessProjectHome(getClass()).join("src/test/test.jar").openZip();
+        for (Node node : zip.find("**/*")) {
+            uri = node.getURI();
+            if (node.isFile()) {
+                bytes = node.readBytes();
+                assertTrue(Arrays.equals(bytes, world.node(uri).readBytes()));
+            }
+            assertNotNull(node.getURI());
+        }
+    }
+    
     @Test
     public void jarWithBlank() throws Exception {
         checkSpecialPath("a b", "foo bar.jar");

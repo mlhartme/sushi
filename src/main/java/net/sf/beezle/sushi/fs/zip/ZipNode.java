@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -43,6 +45,34 @@ public class ZipNode extends Node {
         super();
         this.root = root;
         this.path = path;
+    }
+
+    /** @return a normalized URI, not necesarily the URI this node was created from */
+    public URI getURI() {
+        return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + encodePath(getPath()));
+    }
+
+    /** TODO: is there a better way ... ? */
+    public static String encodePath(String path) {
+        URI tmp;
+
+        try {
+            tmp = new URI("foo", "host", "/" + path, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+        return tmp.getRawPath().substring(1);
+    }
+    /** TODO: is there a better way ... ? */
+    public static String decodePath(String path) {
+        URI tmp;
+
+        try {
+            tmp = new URI("scheme://host/" + path);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+        return tmp.getPath().substring(1);
     }
 
     @Override

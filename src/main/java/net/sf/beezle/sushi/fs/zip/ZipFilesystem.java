@@ -37,7 +37,7 @@ public class ZipFilesystem extends Filesystem {
     }
 
     public ZipNode node(URI uri, Object extra) throws NodeInstantiationException {
-        String schemeSpecific;
+        String encodedSchemeSpecific;
         String path;
         Node jar;
 
@@ -45,8 +45,8 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
-        schemeSpecific = uri.getRawSchemeSpecificPart();
-        path = after(schemeSpecific, ZIP_SEPARATOR);
+        encodedSchemeSpecific = uri.getRawSchemeSpecificPart();
+        path = after(encodedSchemeSpecific, ZIP_SEPARATOR);
         if (path == null) {
             throw new NodeInstantiationException(uri, "missing '" + ZIP_SEPARATOR +"'");
         }
@@ -57,7 +57,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
         }
         try {
-            jar = getWorld().node(schemeSpecific.substring(0, schemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
+            jar = getWorld().node(encodedSchemeSpecific.substring(0, encodedSchemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));
         } catch (URISyntaxException e) {
             throw new NodeInstantiationException(uri, "invalid jar file in jar url", e);
         }
@@ -65,7 +65,7 @@ public class ZipFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "file node expected, got: " + jar.getURI());
         }
         try {
-            return root((FileNode) jar).node(path, null);
+            return root((FileNode) jar).node(ZipNode.decodePath(path), null);
         } catch (IOException e) {
             throw new NodeInstantiationException(uri, "world exception", e);
         }

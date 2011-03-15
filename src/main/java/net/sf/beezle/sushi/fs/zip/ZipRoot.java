@@ -100,7 +100,7 @@ public class ZipRoot implements Root<ZipNode> {
             if (name.length() > length && name.startsWith(prefix)) {
                 idx = name.indexOf(separator, length);
                 name = (idx == -1 ? name : name.substring(0, idx));
-                if (!result.contains(name)) {
+                if (!result.contains(name) && name.length() > 0 /* happens for "/" entries ... */) {
                     result.add(name);
                 }
             }

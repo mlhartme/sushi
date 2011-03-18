@@ -145,8 +145,6 @@ public class Archive {
         List<Node> files;
         
         out = new ZipOutputStream(dest);
-        out.putNextEntry(new ZipEntry("/"));
-        out.closeEntry();
         if (manifest != null) {
             out.putNextEntry(new ZipEntry(MANIFEST));
             manifest.write(out);

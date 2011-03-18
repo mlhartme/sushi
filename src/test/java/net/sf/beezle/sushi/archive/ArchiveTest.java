@@ -44,7 +44,8 @@ public class ArchiveTest {
     }
 
     @Test 
-    public void empty() throws IOException {
+    public void one() throws IOException {
+        dir("one");
         checkZip();
         checkJar();
     }

@@ -4,6 +4,9 @@
   <body>
     <release version="2.2.3" date="2011-03-??">
       <action dev="mlhartme" type="fix">
+        Archive.save() no longer creates an "/" entry.
+      </action>
+      <action dev="mlhartme" type="fix">
         Fix ZipRoot.list() for archives with an "/" entry.
       </action>
       <action dev="mlhartme" type="fix">

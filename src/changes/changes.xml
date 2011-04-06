@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Merge Misc class into Util.
       </action>
+      <action dev="mlhartme" type="delete">
+        Dump Util.absoluteFile.
+      </action>
       <action dev="mlhartme" type="fix">
         Archive.save() no longer creates an "/" entry.
       </action>

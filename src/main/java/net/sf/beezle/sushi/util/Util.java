@@ -45,16 +45,6 @@ public class Util {
         return (a == null)? b == null : a.equals(b);
     }
 
-    public static File absoluteFile(File dir, String fileName) {
-        File file;
-
-        file = new File(fileName);
-        if (file.isAbsolute()) {
-            return file;
-        }
-        return new File(dir, fileName);
-    }
-
     public static String[] split(String str, char c) {
         List<String> lst;
         int idx;

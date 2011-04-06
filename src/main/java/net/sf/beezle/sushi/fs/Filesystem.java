@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Filesystem {
@@ -113,7 +114,7 @@ public abstract class Filesystem {
     //--
 
     public String join(String... names) {
-        return Strings.join(separator, names);
+        return join("", Arrays.asList(names));
     }
 
     public String join(String head, List<String> paths) {

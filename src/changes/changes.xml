@@ -18,6 +18,9 @@
       <action dev="mlhartme" type="fix">
         Fix WebdavNode.equals to also compare queries.
       </action>
+      <action dev="mlhartme" type="fix">
+        Fix Filesystem.join(String ...) to skip empty parts.
+      </action>
     </release>
     <release version="2.2.2" date="2011-03-11">
       <action dev="mlhartme" type="fix">

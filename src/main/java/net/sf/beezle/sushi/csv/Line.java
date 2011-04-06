@@ -17,7 +17,7 @@
 
 package net.sf.beezle.sushi.csv;
 
-import net.sf.beezle.sushi.util.Misc;
+import net.sf.beezle.sushi.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class Line {
             return false;
         }
         for (int i = ofs; i < max; i++) {
-            if (!Misc.eq(cells.get(i), line.cells.get(i))) {
+            if (!Util.eq(cells.get(i), line.cells.get(i))) {
                 return false;
             }
         }

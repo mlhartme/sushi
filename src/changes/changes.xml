@@ -3,6 +3,9 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release version="2.2.3" date="2011-03-??">
+      <action dev="mlhartme" type="update">
+        Merge Misc class into Util.
+      </action>
       <action dev="mlhartme" type="fix">
         Archive.save() no longer creates an "/" entry.
       </action>

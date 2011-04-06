@@ -35,8 +35,8 @@ import net.sf.beezle.sushi.fs.webdav.methods.Move;
 import net.sf.beezle.sushi.fs.webdav.methods.PropFind;
 import net.sf.beezle.sushi.fs.webdav.methods.PropPatch;
 import net.sf.beezle.sushi.fs.webdav.methods.Put;
-import net.sf.beezle.sushi.util.Misc;
 import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.util.Util;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
@@ -106,7 +106,7 @@ public class WebdavNode extends Node {
 
     public boolean equals(Object object) {
         if (object instanceof WebdavNode) {
-            if (Misc.eq(encodedQuery, ((WebdavNode) object).encodedQuery)) {
+            if (Util.eq(encodedQuery, ((WebdavNode) object).encodedQuery)) {
                 return super.equals(object);
             }
         }

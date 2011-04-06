@@ -25,6 +25,26 @@ import java.util.List;
  * Misc static utility methods.
  */
 public class Util {
+    /**
+     * @return absolute resource name
+     */
+    public static String getPackageResourceName(Class<?> clazz) {
+        String name;
+        int idx;
+
+        name = clazz.getName();
+        idx = name.lastIndexOf('.');
+        if (idx == -1) {
+            throw new RuntimeException(name);
+        }
+        name = name.substring(0, idx);
+        return "/" + name.replace('.', '/');
+    }
+
+    public static boolean eq(Object a, Object b) {
+        return (a == null)? b == null : a.equals(b);
+    }
+
     public static File absoluteFile(File dir, String fileName) {
         File file;
 

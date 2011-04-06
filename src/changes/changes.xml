@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.2.3" date="2011-03-??">
+    <release version="2.3.0" date="2011-04-06">
       <action dev="mlhartme" type="update">
         Merge Misc class into Util.
       </action>

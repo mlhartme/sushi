@@ -35,6 +35,7 @@ import net.sf.beezle.sushi.fs.webdav.methods.Move;
 import net.sf.beezle.sushi.fs.webdav.methods.PropFind;
 import net.sf.beezle.sushi.fs.webdav.methods.PropPatch;
 import net.sf.beezle.sushi.fs.webdav.methods.Put;
+import net.sf.beezle.sushi.util.Misc;
 import net.sf.beezle.sushi.util.Strings;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
@@ -70,6 +71,7 @@ public class WebdavNode extends Node {
 
     private boolean tryDir;
 
+    /** @param encodedQuery null or query without initial "?" */
     public WebdavNode(WebdavRoot root, String path, String encodedQuery, boolean tryDir) {
         if (path.startsWith("/")) {
             throw new IllegalArgumentException(path);
@@ -102,6 +104,15 @@ public class WebdavNode extends Node {
         }
     }
 
+    public boolean equals(Object object) {
+        if (object instanceof WebdavNode) {
+            if (Misc.eq(encodedQuery, ((WebdavNode) object).encodedQuery)) {
+                return super.equals(object);
+            }
+        }
+        return false;
+    }
+    
     @Override
     public WebdavRoot getRoot() {
         return root;

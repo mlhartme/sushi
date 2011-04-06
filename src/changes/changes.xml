@@ -15,6 +15,9 @@
       <action dev="mlhartme" type="fix">
         Fix ZipNode URI encoding problems in constructor and getURI().
       </action>
+      <action dev="mlhartme" type="fix">
+        Fix WebdavNode.equals to also compare queries.
+      </action>
     </release>
     <release version="2.2.2" date="2011-03-11">
       <action dev="mlhartme" type="fix">

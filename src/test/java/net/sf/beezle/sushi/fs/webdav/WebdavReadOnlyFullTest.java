@@ -27,6 +27,7 @@ import java.net.URI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
@@ -45,6 +46,15 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
         assertEquals("//englishediting.de/", node.getRoot().getId());
         assertEquals("index.html", node.getPath());
         assertEquals("", node.getParent().getPath());
+    }
+
+    @Test
+    public void eq() throws Exception {
+        WebdavNode node;
+
+        node = (WebdavNode) WORLD.node("http://englishediting.de/index.html?foo=1");
+        assertEquals(node, WORLD.node("http://englishediting.de/index.html?foo=1"));
+        assertFalse(node.equals(WORLD.node("http://englishediting.de/index.html?foo=2")));
     }
 
     @Test

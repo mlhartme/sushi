@@ -17,7 +17,9 @@
 
 package net.sf.beezle.sushi.fs.webdav;
 
+import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
+import net.sf.beezle.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -27,6 +29,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public abstract class WebdavNodeFullBase extends NodeTest<WebdavNode> {
+    public static void main(String[] args) throws Exception {
+        World world = new World();
+        Node node = world.node("http://eue-home.walter.winworld.schlund.de:8080/webservice?wsscript&name=EditorialSearchService&type=jsonws");
+        System.out.println("read: " + node.readString());
+        System.out.println("uri: " + node.toString());
+    }
+
 	@Test
 	public void attributeFile() throws IOException {
 		WebdavNode node;

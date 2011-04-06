@@ -61,7 +61,7 @@ public abstract class Method<T> {
         ByteArrayOutputStream serialized;
         
         serialized = new ByteArrayOutputStream();
-       	getXml().serializer.serialize(new DOMSource(body), new StreamResult(serialized));
+       	getXml().getSerializer().serialize(new DOMSource(body), new StreamResult(serialized));
     	request.setEntity(new ByteArrayEntity(serialized.toByteArray()));
     }
 

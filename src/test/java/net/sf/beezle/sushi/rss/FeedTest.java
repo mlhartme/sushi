@@ -30,7 +30,7 @@ public class FeedTest extends TestCase {
         Feed feed;
         
         feed = new Feed();
-        feed = Feed.fromXml(XML.selector, feed.toXml(XML.builder));
+        feed = Feed.fromXml(XML.getSelector(), feed.toXml(XML.getBuilder()));
         assertEquals(0, feed.channels().size());
     }
 
@@ -50,7 +50,7 @@ public class FeedTest extends TestCase {
         channel.items().add(new Item("t", "l", "d", "a", "g", date));
         feed.channels().add(channel);
         
-        feed = Feed.fromXml(XML.selector, feed.toXml(XML.builder));
+        feed = Feed.fromXml(XML.getSelector(), feed.toXml(XML.getBuilder()));
         assertEquals(2, feed.channels().size());
         assertEquals(2, feed.channels().get(0).items().size());
 

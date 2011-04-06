@@ -369,7 +369,7 @@ public abstract class Node {
     }
 
     public Document readXml() throws IOException, SAXException {
-        return getWorld().getXml().builder.parse(this);
+        return getWorld().getXml().getBuilder().parse(this);
     }
 
     public Transformer readXsl() throws IOException, TransformerConfigurationException {
@@ -792,7 +792,7 @@ public abstract class Node {
     }
 
     public Node writeXml(org.w3c.dom.Node node) throws IOException {
-        getWorld().getXml().serializer.serialize(node, this);
+        getWorld().getXml().getSerializer().serialize(node, this);
         return this;
     }
 

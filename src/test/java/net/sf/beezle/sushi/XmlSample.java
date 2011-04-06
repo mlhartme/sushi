@@ -28,13 +28,13 @@ public class XmlSample {
     public static void main(String[] args) throws SAXException {
         Document doc;
         
-        doc = XML.builder.parseString(
+        doc = XML.getBuilder().parseString(
                 "<foo>" +
                 "  <bar a='1'/>" +
                 "  <bar b='2'/>" +
                 "</foo>");
-        for (Node node : XML.selector.nodes(doc, "//bar")) {
-            System.out.println(XML.serializer.serialize(node));
+        for (Node node : XML.getSelector().nodes(doc, "//bar")) {
+            System.out.println(XML.getSerializer().serialize(node));
         }
     }
 }

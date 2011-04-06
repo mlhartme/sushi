@@ -47,7 +47,7 @@ public class PropPatch extends Method<Void> {
 
         this.dest = property.getName();
 
-        document = getXml().builder.createDocument("propertyupdate", DAV);
+        document = getXml().getBuilder().createDocument("propertyupdate", DAV);
         set = Builder.element(document.getDocumentElement(), "set" , DAV);
         prop = Builder.element(set, XML_PROP, DAV);
         property.addXml(prop);

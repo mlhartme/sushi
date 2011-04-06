@@ -43,7 +43,7 @@ public class MultiStatus {
 		
         in = response.getEntity().getContent();
         try {
-            root = xml.builder.parse(in).getDocumentElement();
+            root = xml.getBuilder().parse(in).getDocumentElement();
         } catch (SAXException e) {
             throw new IOException(e.getMessage(), e);
         } finally {

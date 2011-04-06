@@ -39,7 +39,7 @@ public class PropFind extends Method<List<MultiStatus>> {
         Document document;
 
         setRequestHeader("Depth", String.valueOf(depth));
-        document = getXml().builder.createDocument("propfind", DAV);
+        document = getXml().getBuilder().createDocument("propfind", DAV);
 		name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
         setRequestEntity(document);
     }

@@ -18,16 +18,38 @@
 package net.sf.beezle.sushi.xml;
 
 /**
- * <p>Xml processing stuff. Not thread-save - every thread should have it's own instance. </p>
+ * <p>Xml processing stuff. Not thread-save - every thread should have it's own instance.
+ * Creates members lazy because they are resource comsuming. </p>
  */
 public class Xml {
-    public final Builder builder;
-    public final Selector selector;
-    public final Serializer serializer;
+    private Builder builder;
+    private Selector selector;
+    private Serializer serializer;
     
     public Xml() {
-        this.builder = new Builder();
-        this.selector = new Selector();
-        this.serializer = new Serializer();
+        this.builder = null;
+        this.selector = null;
+        this.serializer = null;
+    }
+
+    public Builder getBuilder() {
+        if (builder == null) {
+            builder = new Builder();
+        }
+        return builder;
+    }
+
+    public Selector getSelector() {
+        if (selector == null) {
+            selector = new Selector();
+        }
+        return selector;
+    }
+
+    public Serializer getSerializer() {
+        if (serializer == null) {
+            serializer = new Serializer();
+        }
+        return serializer;
     }
 }

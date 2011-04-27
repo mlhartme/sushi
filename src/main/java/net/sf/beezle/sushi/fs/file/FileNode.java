@@ -17,7 +17,6 @@
 
 package net.sf.beezle.sushi.fs.file;
 
-import net.sf.beezle.sushi.archive.Archive;
 import net.sf.beezle.sushi.fs.DeleteException;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.GetLastModifiedException;

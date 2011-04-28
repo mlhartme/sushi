@@ -17,10 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
-import net.sf.beezle.sushi.archive.Archive;
 import net.sf.beezle.sushi.fs.filter.Filter;
-import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
-import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.util.Strings;
 import net.sf.beezle.sushi.xml.Serializer;
@@ -84,7 +81,7 @@ public abstract class Node {
         return new UnsupportedOperationException(getURI() + ":" + op);
     }
 
-    public abstract Root getRoot();
+    public abstract Root<?> getRoot();
 
     public Node getRootNode() {
         return getRoot().node("", null);
@@ -292,7 +289,7 @@ public abstract class Node {
     public abstract Node join(List<String> paths);
 
     protected Node doJoin(List<String> paths) {
-        Root root;
+        Root<?> root;
         Node result;
 
         root = getRoot();

@@ -150,15 +150,15 @@ public abstract class Filesystem {
                 break;
             }
             if (idx + 1 < builder.length() && builder.charAt(idx + 1) == '.') {
-                if (idx + 2 == builder.length() || builder.charAt(idx + 2) == '/') {
+                if (idx + 2 == builder.length() || builder.charAt(idx + 2) == separatorChar) {
                     if (idx == 0) {
                         throw new IllegalArgumentException(builder.toString());
                     }
-                    if (builder.charAt(idx - 1) == '/') {
-                        prev = builder.lastIndexOf("/", idx - 2) + 1; // ok for -1
+                    if (builder.charAt(idx - 1) == separatorChar) {
+                        prev = builder.lastIndexOf(separator, idx - 2) + 1; // ok for -1
                         builder.delete(prev, idx + 1);
                         idx = prev;
-                        if (builder.charAt(idx) == '/') {
+                        if (builder.charAt(idx) == separatorChar) {
                             builder.deleteCharAt(idx);
                         }
                         continue;

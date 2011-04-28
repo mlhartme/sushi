@@ -162,9 +162,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void joinDoubleDot() throws Exception {
-        assertEquals(work, work.join("foo/.."));
+        assertEquals(work, work.join(sep("foo/..")));
         assertEquals(work.join("xyz"), work.join(sep("a/./../xyz")));
-        assertEquals(work.join("a/b"), work.join(sep("x/y/../../a/b")));
+        assertEquals(work.join(sep("a/b")), work.join(sep("x/y/../../a/b")));
     }
 
 
@@ -570,7 +570,8 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.appendLines("", "xyz");
         file.appendString("1");
         file.appendChars('A', 'B');
-        assertEquals("ab\nxyz\n1AB", file.readString());
+        assertEquals("ab" + OS.CURRENT.lineSeparator + "xyz" + 
+        		OS.CURRENT.lineSeparator + "1AB", file.readString());
     }
 
     @Test

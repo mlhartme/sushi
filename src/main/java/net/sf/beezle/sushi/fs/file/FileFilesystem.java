@@ -43,10 +43,10 @@ public class FileFilesystem extends Filesystem {
     }
 
     public Node node(URI uri, Object extra) throws NodeInstantiationException {
+        final String URI_SEP = "/";
         String authority;
         File file;
         String path;
-        String separator;
 
         if (extra != null) {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
@@ -57,12 +57,11 @@ public class FileFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "invalid root: unexpected authority " + authority);
         }
         path = uri.getPath();
-        separator = getSeparator();
-        if (!path.startsWith(separator)) {
-            throw new NodeInstantiationException(uri, "missing initial separator " + separator);
+        if (!path.startsWith(URI_SEP)) {
+            throw new NodeInstantiationException(uri, "missing initial separator " + URI_SEP);
         }
         // note that the URI may contain a tailing slash, but turning it into a file will remove the slash
-        file = new File(uri);
+        file = new File(uri).getAbsoluteFile();
         return new FileNode(getRoot(file), file);
     }
 

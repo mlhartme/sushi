@@ -66,22 +66,12 @@ public class WorldTest {
         World world;
 
         world = new World();
-        node = world.node("file:/usr");
+        node = world.node(new File(File.listRoots()[0], "usr").toURI());
         assertEquals("usr", node.getPath());
         node = world.node("console:///");
         assertTrue(node instanceof ConsoleNode);
         node = world.node("mem://1/foo");
         assertTrue(node instanceof MemoryNode);
-    }
-
-    @Test
-    public void file() {
-        World world;
-
-        world = new World();
-        assertEquals("/foo", world.file("/foo").getFile().getPath());
-        assertEquals("/foo", world.file("/foo/").getFile().getPath());
-        assertEquals("/", world.file("/").getFile().getPath());
     }
 
     @Test
@@ -100,7 +90,8 @@ public class WorldTest {
         uri = new URI("file:/home/mhm/bar.txt");
         node = world.node(uri);
         assertTrue(node instanceof FileNode);
-        assertEquals("home/mhm/bar.txt", node.getPath());
+        assertEquals("home/mhm/bar.txt".replace('/', node.getRoot().getFilesystem().getSeparatorChar()), 
+        		node.getPath());
 
         uri = getClass().getClassLoader().getResource("java/lang/Object.class").toURI();
         node = world.node(uri);
@@ -148,7 +139,7 @@ public class WorldTest {
         world.locateClasspathItem(Object.class).checkFile();
         world.locateClasspathItem("/java/lang/Object.class").checkFile();
         world.locateClasspathItem("/java/lang/Object.class").checkFile();
-        assertEquals("foo%20bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         world.locateClasspathItem("/nosuchresource");
     }

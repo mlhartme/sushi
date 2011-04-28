@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs.file;
 import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
+import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 
@@ -37,6 +38,14 @@ public class FileNodeTest extends NodeTest<FileNode> {
     @Override
     protected FileNode createWork() throws IOException {
         return WORLD.getTemp().createTempDirectory();
+    }
+
+    @Test
+    public void filePath() {
+        World world;
+
+        world = new World();
+        assertEquals("foo", world.file("foo").getFile().getPath());
     }
 
     @Test

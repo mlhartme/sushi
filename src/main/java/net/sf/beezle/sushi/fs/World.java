@@ -253,7 +253,7 @@ public class World {
     //-- Node creation
 
     public FileNode file(File file) {
-        return file(file.getPath());
+        return file(file.getPath()); // TODO: toURI?
     }
 
     public FileNode file(String path) {
@@ -524,14 +524,19 @@ public class World {
             }
             file = file(filename.substring(0, filename.length() - resourcename.length()));
         } else if ("jar".equals(protocol)) {
-            // obtaining the jar file follows the code in java.net.JarURLConnection
             filename = url.getFile();
-            filename = Strings.removeStart(filename, "file:");
             idx = filename.indexOf("!/");
             if (idx == -1) {
                 throw new RuntimeException("!/ not found: " + filename);
             }
-            file = file(filename.substring(0, idx));
+            filename = filename.substring(0, idx);
+            try {
+				file = (FileNode) node(filename);
+			} catch (NodeInstantiationException e) {
+				throw new IllegalStateException(filename, e);
+			} catch (URISyntaxException e) {
+				throw new IllegalStateException(filename, e);
+			}
         } else {
             throw new RuntimeException("protocol not supported: " + protocol);
         }

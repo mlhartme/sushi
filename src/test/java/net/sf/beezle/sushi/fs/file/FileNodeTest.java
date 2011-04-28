@@ -17,10 +17,7 @@
 
 package net.sf.beezle.sushi.fs.file;
 
-import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
-import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 
@@ -45,7 +42,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
         assertEquals(WORLD.getHome(), WORLD.file(System.getProperty("user.home")));
         assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
         assertEquals(work.getPath(), WORLD.file(new File(work.getAbsolute() + "/")).getPath());
-        assertEquals("", WORLD.file("/").getPath());
+        assertEquals("", WORLD.file(File.listRoots()[0]).getPath());
     }
 
     @Test
@@ -55,18 +52,6 @@ public class FileNodeTest extends NodeTest<FileNode> {
         file = WORLD.file("foo");
         assertEquals(file.getAbsolute(), file.getFile().getPath());
     }
-
-    @Test
-    public void tailingSlash() throws Exception {
-        Filesystem fs;
-        Node node;
-
-        fs = work.getRoot().getFilesystem();
-        assertTrue(work.getURI().toString().endsWith(fs.getSeparator()));
-        node = work.getWorld().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath() + fs.getSeparator());
-        assertFalse(node.getPath().endsWith(fs.getSeparator()));
-    }
-
 
     @Test
     public void renameFile() throws IOException {

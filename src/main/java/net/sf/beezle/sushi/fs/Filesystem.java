@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class Filesystem {
+	public static final String URI_SEPARATOR = "/";
+	public static final char URI_SEPARATOR_CHAR = '/';
+	
     private final World world;
     private final String separator;
     private final char separatorChar;

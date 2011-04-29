@@ -149,22 +149,15 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void joinDot() throws Exception {
         assertEquals(work, work.join("."));
-        assertEquals(work.join("a"), work.join(sep("a/.")));
-        assertEquals(work.join(sep("x/y")), work.join(sep("x/./y/.")));
-    }
-
-    private String sep(String path) {
-    	char sep;
-    	
-    	sep = work.getRoot().getFilesystem().getSeparatorChar();
-    	return path.replace(Filesystem.URI_SEPARATOR_CHAR, sep);
+        assertEquals(work.join("a"), work.join("a/."));
+        assertEquals(work.join("x/y"), work.join("x/./y/."));
     }
 
     @Test
     public void joinDoubleDot() throws Exception {
-        assertEquals(work, work.join(sep("foo/..")));
-        assertEquals(work.join("xyz"), work.join(sep("a/./../xyz")));
-        assertEquals(work.join(sep("a/b")), work.join(sep("x/y/../../a/b")));
+        assertEquals(work, work.join("foo/.."));
+        assertEquals(work.join("xyz"), work.join("a/./../xyz"));
+        assertEquals(work.join("a/b"), work.join("x/y/../../a/b"));
     }
 
 
@@ -173,7 +166,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void joinWithSlash() {
         try {
-            work.join(sep, "a");
+            work.join(Filesystem.URI_SEPARATOR, "a");
             fail();
         } catch (IllegalArgumentException e) {
             // ok
@@ -206,9 +199,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file = parent.join("bar");
         assertEquals(".", file.getRelative(file));
         assertEquals("bar", file.getRelative(parent));
-        assertEquals("foo" + sep + "bar", file.getRelative(work));
-        assertEquals(".." + sep + "foo" + sep + "bar", file.getRelative(work.join("baz")));
-        assertEquals(".." + sep + "bar", file.getRelative(work.join("foo/baz")));
+        assertEquals("foo/bar", file.getRelative(work));
+        assertEquals("../foo/bar", file.getRelative(work.join("baz")));
+        assertEquals("../bar", file.getRelative(work.join("foo/baz")));
     }
 
     @Test
@@ -221,11 +214,11 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("foo", node.getName());
         node = work.join("a/b");
         assertFalse(node.exists());
-        assertTrue(node.getPath().endsWith("a" + sep + "b"));
+        assertTrue(node.getPath().endsWith("a/b"));
         assertEquals("b", node.getName());
         node = work.join("x/y/z");
         assertFalse(node.exists());
-        assertTrue(node.getPath().endsWith("x" + sep + "y" + sep + "z"));
+        assertTrue(node.getPath().endsWith("x/y/z"));
         assertEquals("z", node.getName());
     }
 

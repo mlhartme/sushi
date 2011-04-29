@@ -57,7 +57,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * <p>A node is identified by a URI, whose most important part is the path. </p>
  *
- * <p>The path is a sequence of names separated by the filesystem separator. It never starts
+ * <p>The path is a sequence of names separated by /, even for files on windows. It never starts
  * or ends with a separator. It does not include the root, but it always includes the path
  * of the base. A node with an empty path is called root node. That last part of the path is the name.
  * Paths are always specified decoded, but URIs always contain encoded paths.
@@ -214,7 +214,7 @@ public abstract class Node {
 
         path = getPath();
         // ok for -1:
-        return path.substring(path.lastIndexOf(getRoot().getFilesystem().getSeparatorChar()) + 1);
+        return path.substring(path.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR) + 1);
     }
 
     public abstract Node getParent();
@@ -226,7 +226,7 @@ public abstract class Node {
         if ("".equals(path)) {
             return null;
         }
-        idx = path.lastIndexOf(getRoot().getFilesystem().getSeparatorChar());
+        idx = path.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR);
         if (idx == -1) {
             return getRoot().node("", null);
         } else {
@@ -269,23 +269,21 @@ public abstract class Node {
         int len;
         int ups;
         int i;
-        Filesystem fs;
 
         if (base.equals(this)) {
             return ".";
         }
-        fs = getRoot().getFilesystem();
         startfilepath = base.join("foo").getPath();
         destpath = getPath();
         common = Strings.getCommon(startfilepath, destpath);
-        common = common.substring(0, common.lastIndexOf(fs.getSeparatorChar()) + 1);  // ok for idx == -1
+        common = common.substring(0, common.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR) + 1);  // ok for idx == -1
         len = common.length();
         startfilepath = startfilepath.substring(len);
         destpath = destpath.substring(len);
         result = new StringBuilder();
-        ups = Strings.count(startfilepath, fs.getSeparator());
+        ups = Strings.count(startfilepath, Filesystem.URI_SEPARATOR);
         for (i = 0; i < ups; i++) {
-            result.append("..").append(fs.getSeparator());
+            result.append("..").append(Filesystem.URI_SEPARATOR);
         }
         result.append(Strings.replace(destpath, getWorld().os.lineSeparator, "" + getWorld().os.lineSeparator));
         return result.toString();
@@ -450,7 +448,7 @@ public abstract class Node {
             throw new LinkException(this, e);
         }
         // TODO: getRoot() for ssh root ...
-        dest.mklink(getRoot().getFilesystem().getSeparator() + this.getPath());
+        dest.mklink(Filesystem.URI_SEPARATOR + this.getPath());
         return dest;
     }
 
@@ -470,12 +468,10 @@ public abstract class Node {
      */
     public Node resolveLink() throws ReadLinkException {
         String path;
-        String separator;
 
         path = readLink();
-        separator = getRoot().getFilesystem().getSeparator();
-        if (path.startsWith(separator)) {
-            return getRoot().node(path.substring(separator.length()), null);
+        if (path.startsWith(Filesystem.URI_SEPARATOR)) {
+            return getRoot().node(path.substring(1), null);
         } else {
             return getParent().join(path);
         }
@@ -891,7 +887,7 @@ public abstract class Node {
             if (hasAnchestor(working)) {
                 return getRelative(working);
             } else {
-                return getRoot().getFilesystem().getSeparator() + getPath();
+                return Filesystem.URI_SEPARATOR + getPath();
             }
         }
     }

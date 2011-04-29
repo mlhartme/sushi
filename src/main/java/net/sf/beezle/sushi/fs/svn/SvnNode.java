@@ -17,14 +17,7 @@
 
 package net.sf.beezle.sushi.fs.svn;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 import org.tmatesoft.svn.core.SVNCommitInfo;
@@ -414,7 +407,7 @@ public class SvnNode extends Node {
         if (left.length() == 0) {
             return right;
         }
-        return left + root.getFilesystem().getSeparator() + right;
+        return left + Filesystem.URI_SEPARATOR + right;
     }
 
     public long export(Node dest) throws IOException, SVNException {

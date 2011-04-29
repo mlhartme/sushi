@@ -34,12 +34,10 @@ public abstract class NodeReadOnlyTest<T extends Node> {
     protected abstract T createWork() throws IOException;
 
     protected T work;
-    protected String sep;
 
     @Before
     public void setUp() throws Exception {
         work = createWork();
-        sep = work.getRoot().getFilesystem().getSeparator();
     }
 
     @Test

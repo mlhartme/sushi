@@ -90,8 +90,7 @@ public class WorldTest {
         uri = new URI("file:/home/mhm/bar.txt");
         node = world.node(uri);
         assertTrue(node instanceof FileNode);
-        assertEquals("home/mhm/bar.txt".replace('/', node.getRoot().getFilesystem().getSeparatorChar()), 
-        		node.getPath());
+        assertEquals("home/mhm/bar.txt", node.getPath());
 
         uri = getClass().getClassLoader().getResource("java/lang/Object.class").toURI();
         node = world.node(uri);

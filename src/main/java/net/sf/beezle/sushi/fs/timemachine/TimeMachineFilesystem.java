@@ -56,11 +56,11 @@ public class TimeMachineFilesystem extends Filesystem {
         if (path == null) {
             throw new NodeInstantiationException(uri, "missing '!': " + schemeSpecific);
         }
-        if (path.endsWith(getSeparator())) {
-            throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
+        if (path.endsWith(URI_SEPARATOR)) {
+            throw new NodeInstantiationException(uri, "invalid tailing " + URI_SEPARATOR);
         }
-        if (path.startsWith(getSeparator())) {
-            throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
+        if (path.startsWith(URI_SEPARATOR)) {
+            throw new NodeInstantiationException(uri, "invalid heading " + URI_SEPARATOR);
         }
         root = schemeSpecific.substring(0, schemeSpecific.length() - path.length());
         try {

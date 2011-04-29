@@ -66,7 +66,7 @@ public class SvnFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
-        separator = getSeparator();
+        separator = URI_SEPARATOR;
         encodedSchemeSpecific = uri.getRawSchemeSpecificPart();
         try {
             repository = repository(encodedSchemeSpecific);
@@ -82,10 +82,10 @@ public class SvnFilesystem extends Filesystem {
                 encodedPath = encodedPath.substring(separator.length());
             }
             if (encodedPath.endsWith(separator)) {
-                throw new NodeInstantiationException(uri, "invalid tailing " + getSeparator());
+                throw new NodeInstantiationException(uri, "invalid tailing " + separator);
             }
             if (encodedPath.startsWith(separator)) {
-                throw new NodeInstantiationException(uri, "invalid heading " + getSeparator());
+                throw new NodeInstantiationException(uri, "invalid heading " + separator);
             }
             repository = repository(encodedSchemeSpecific.substring(0, encodedSchemeSpecific.length() - encodedPath.length()));
             return new SvnRoot(this, repository).node(SVNEncodingUtil.uriDecode(encodedPath), null);

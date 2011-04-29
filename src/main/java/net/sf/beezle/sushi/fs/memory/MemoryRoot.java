@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.memory;
 
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.LengthException;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.fs.file.FileNode;
@@ -89,7 +90,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         result = new ArrayList<MemoryNode>();
         for (MemoryNode node : nodes.values()) {
             child = node.getPath();
-            idx = child.lastIndexOf(node.getRoot().getFilesystem().getSeparatorChar());
+            idx = child.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR);
             if (!path.equals(child) && path.equals(idx == -1 ? "" : child.substring(0, idx))) {
                 if (node.exists()) {
                     result.add(node);

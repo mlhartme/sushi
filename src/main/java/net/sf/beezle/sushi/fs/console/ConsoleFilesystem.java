@@ -50,7 +50,7 @@ public class ConsoleFilesystem extends Filesystem implements Root<ConsoleNode> {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkHierarchical(uri);
-        if (!getSeparator().equals(uri.getPath())) {
+        if (!URI_SEPARATOR.equals(uri.getPath())) {
             throw new NodeInstantiationException(uri, "unexpected path");
         }
         return new ConsoleNode(this);

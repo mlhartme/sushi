@@ -180,7 +180,6 @@ public class FilterTest {
 
         try {
             for (String path : paths) {
-                path = path.replace('/', root.getRoot().getFilesystem().getSeparatorChar());
                 file = root.join(path);
                 file.getParent().mkdirsOpt();
                 file.writeBytes();

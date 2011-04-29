@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.zip;
 
 import net.sf.beezle.sushi.archive.Archive;
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Root;
 
 import java.io.File;
@@ -90,7 +91,7 @@ public class ZipRoot implements Root<ZipNode> {
         int idx;
 
         e = zip.entries();
-        separator = getFilesystem().getSeparator();
+        separator = Filesystem.URI_SEPARATOR;
         prefix = path.length() == 0 ? "" : path + separator;
         length = prefix.length();
         result = new ArrayList<String>();

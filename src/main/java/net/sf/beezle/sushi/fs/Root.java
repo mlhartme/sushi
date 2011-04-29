@@ -24,7 +24,8 @@ package net.sf.beezle.sushi.fs;
 public interface Root<T extends Node> {
     /** Backlink */
     Filesystem getFilesystem();
-    
+
+    /** Part of the URI between scheme (including ':') and path */
     String getId();
     
     /**

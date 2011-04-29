@@ -198,7 +198,7 @@ public abstract class Node {
     /** never starts or end with a slash; an empty string is the root path */
     public abstract String getPath();
 
-    /** @return a normalized URI, not necesarily the URI this node was created from */
+    /** @return a normalized URI, not necessarily the URI this node was created from */
     public URI getURI() {
         return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath());
     }

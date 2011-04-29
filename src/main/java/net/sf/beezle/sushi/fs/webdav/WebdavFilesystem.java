@@ -43,6 +43,7 @@ public class WebdavFilesystem extends Filesystem {
             throw new IllegalStateException();
         }
     }
+
 	public static void wireLog(String file) {
         Handler handler;
 

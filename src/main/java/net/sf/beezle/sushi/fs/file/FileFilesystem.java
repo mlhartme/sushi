@@ -38,7 +38,7 @@ public class FileFilesystem extends Filesystem {
         rootFiles = File.listRoots();
         roots = new FileRoot[rootFiles.length];
         for (int i = 0; i < rootFiles.length; i++) {
-            roots[i] = new FileRoot(this, rootFiles[i].getAbsolutePath());
+            roots[i] = FileRoot.create(this, rootFiles[i]);
         }
     }
 
@@ -70,7 +70,7 @@ public class FileFilesystem extends Filesystem {
 
         path = file.getPath();
         for (FileRoot root : roots) {
-            if (path.startsWith(root.getId())) {
+            if (path.startsWith(root.getFile().getAbsolutePath())) {
                 return root;
             }
         }

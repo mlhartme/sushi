@@ -23,11 +23,17 @@ import java.io.File;
 
 
 public class FileRoot implements Root<FileNode> {
+    public static FileRoot create(FileFilesystem filesystem, File file) {
+        return new FileRoot(filesystem, file, file.getAbsolutePath());
+    }
+
     private final FileFilesystem filesystem;
+    private final File file;
     private final String id;
     
-    public FileRoot(FileFilesystem filesystem, String id) {
+    public FileRoot(FileFilesystem filesystem, File file, String id) {
         this.filesystem = filesystem;
+        this.file = file;
         this.id = id;
         if (!id.endsWith(filesystem.getSeparator())) {
             throw new IllegalArgumentException();
@@ -36,6 +42,10 @@ public class FileRoot implements Root<FileNode> {
 
     public FileFilesystem getFilesystem() {
         return filesystem;
+    }
+
+    public File getFile() {
+        return file;
     }
 
     public String getId() {

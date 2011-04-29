@@ -2,6 +2,11 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
+    <release version="2.3.1" date="2011-04-??">
+      <action dev="mlhartme" type="fix">
+        Clearify Root.getId() and fix it for Windows.
+      </action>
+    </release>
     <release version="2.3.0" date="2011-04-06">
       <action dev="mlhartme" type="update">
         Merge Misc class into Util.

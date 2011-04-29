@@ -20,7 +20,6 @@ package net.sf.beezle.sushi.fs;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -44,27 +43,16 @@ public abstract class NodeReadOnlyTest<T extends Node> {
     }
 
     @Test
-    public void locator() throws Exception {
-        URI locator;
+    public void uri() throws Exception {
+        URI uri;
         Node again;
         Filesystem fs;
 
         fs = work.getRoot().getFilesystem();
-        locator = work.getURI();
-        assertEquals(locator, work.getWorld().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
-        again = WORLD.node(locator);
+        uri = work.getURI();
+        assertEquals(uri, work.getWorld().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
+        again = WORLD.node(uri);
         assertEquals(work, again);
-        assertEquals(locator, again.getURI());
-    }
-
-    //@Test(expected=NodeInstantiationException.class)
-    @Ignore
-    public void headingSlash() throws Exception {
-        Filesystem fs;
-        Root root;
-
-        root = work.getRoot();
-        fs = root.getFilesystem();
-        fs.getWorld().node(fs.getScheme() + ":" + root.getId() + fs.getSeparator() + work.getPath());
+        assertEquals(uri, again.getURI());
     }
 }

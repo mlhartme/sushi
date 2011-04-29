@@ -17,14 +17,16 @@
 
 package net.sf.beezle.sushi.fs.file;
 
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Root;
+import net.sf.beezle.sushi.util.Strings;
 
 import java.io.File;
 
 
 public class FileRoot implements Root<FileNode> {
     public static FileRoot create(FileFilesystem filesystem, File file) {
-        return new FileRoot(filesystem, file, file.getAbsolutePath());
+        return new FileRoot(filesystem, file, Strings.removeStart(file.toURI().toString(), "file:"));
     }
 
     private final FileFilesystem filesystem;
@@ -35,8 +37,8 @@ public class FileRoot implements Root<FileNode> {
         this.filesystem = filesystem;
         this.file = file;
         this.id = id;
-        if (!id.endsWith(filesystem.getSeparator())) {
-            throw new IllegalArgumentException();
+        if (!id.endsWith(Filesystem.URI_SEPARATOR)) {
+            throw new IllegalArgumentException(id);
         }
     }
 
@@ -56,6 +58,6 @@ public class FileRoot implements Root<FileNode> {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
         }
-        return new FileNode(this, new File(id + path));
+        return new FileNode(this, new File(file, path));
     }
 }

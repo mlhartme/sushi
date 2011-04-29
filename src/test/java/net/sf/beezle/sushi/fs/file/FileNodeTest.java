@@ -49,7 +49,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
     public void filePath() {
         FileNode file;
 
-        file = WORLD.file("foo");
+        file = WORLD.file(File.listRoots()[0] + "foo");
         assertEquals(file.getAbsolute(), file.getFile().getPath());
     }
 

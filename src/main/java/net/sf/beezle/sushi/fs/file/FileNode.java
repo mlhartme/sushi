@@ -61,7 +61,7 @@ public class FileNode extends Node {
             throw new IllegalArgumentException(file.toString());
         }
         if (file.getPath().endsWith(File.separator) && file.getParent() != null) {
-            throw new IllegalArgumentException("should not happen because java.world.File normalizes paths: " + file.getPath());
+            throw new IllegalArgumentException(file.getPath());
         }
         this.root = root;
         this.file = file;

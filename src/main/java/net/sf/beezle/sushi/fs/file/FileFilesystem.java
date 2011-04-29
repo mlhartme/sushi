@@ -67,13 +67,23 @@ public class FileFilesystem extends Filesystem {
 
     public FileRoot getRoot(File file) {
         String path;
+        FileRoot result;
 
         path = file.getPath();
+        result = lookupRoot(path);
+        if (result == null) {
+            throw new IllegalArgumentException(path);
+        }
+        return result;
+    }
+
+    public FileRoot lookupRoot(String path) {
+        path = path.toLowerCase();
         for (FileRoot root : roots) {
-            if (path.startsWith(root.getFile().getAbsolutePath())) {
+            if (path.startsWith(root.getAbsolute())) {
                 return root;
             }
         }
-        throw new IllegalArgumentException(path);
+        return null;
     }
 }

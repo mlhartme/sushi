@@ -27,7 +27,7 @@ import java.io.File;
 public class FileRoot implements Root<FileNode> {
     public static FileRoot create(FileFilesystem filesystem, File file) {
         return new FileRoot(filesystem, file, file.getAbsolutePath(),
-                Strings.removeStart(file.toURI().toString(), "file:"));
+                Strings.removeStart(file.toURI().toString().toLowerCase(), "file:"));
     }
 
     private final FileFilesystem filesystem;

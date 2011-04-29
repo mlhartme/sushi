@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs;
 import net.sf.beezle.sushi.fs.console.ConsoleFilesystem;
 import net.sf.beezle.sushi.fs.file.FileFilesystem;
 import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.fs.file.FileRoot;
 import net.sf.beezle.sushi.fs.filter.Filter;
 import net.sf.beezle.sushi.fs.memory.MemoryFilesystem;
 import net.sf.beezle.sushi.fs.memory.MemoryNode;
@@ -253,26 +254,28 @@ public class World {
     //-- Node creation
 
     public FileNode file(File file) {
-        return file(file.getPath()); // TODO: toURI?
+        return file(file.getPath());
     }
 
     public FileNode file(String path) {
-        File file;
+        FileRoot root;
 
-        if (path.length() > 1) {
-            path = Strings.removeEndOpt(path, File.separator);
+        root = fileFilesystem.lookupRoot(path);
+        if (root != null) {
+            path = path.substring(root.getAbsolute().length());
         }
-        file = new File(path);
-        if (!file.isAbsolute()) {
+        path = Strings.removeEndOpt(path, File.separator);
+        if (root == null) {
             if (working == null) {
                 throw new IllegalStateException("working directory is missing");
             } else if (working instanceof FileNode) {
-                file = new File(((FileNode) working).getFile(), path);
+                return ((FileNode) working).join(path);
             } else {
                 throw new IllegalStateException("working directory is not a file: " + working.getURI());
             }
+        } else {
+            return root.node(path, null);
         }
-        return new FileNode(fileFilesystem.getRoot(file), file);
     }
 
     public Node validNode(String uri) throws NodeInstantiationException {

@@ -26,16 +26,19 @@ import java.io.File;
 
 public class FileRoot implements Root<FileNode> {
     public static FileRoot create(FileFilesystem filesystem, File file) {
-        return new FileRoot(filesystem, file, Strings.removeStart(file.toURI().toString(), "file:"));
+        return new FileRoot(filesystem, file, file.getAbsolutePath(),
+                Strings.removeStart(file.toURI().toString(), "file:"));
     }
 
     private final FileFilesystem filesystem;
     private final File file;
+    private final String absolute;
     private final String id;
     
-    public FileRoot(FileFilesystem filesystem, File file, String id) {
+    public FileRoot(FileFilesystem filesystem, File file, String absolute, String id) {
         this.filesystem = filesystem;
         this.file = file;
+        this.absolute = absolute;
         this.id = id;
         if (!id.endsWith(Filesystem.URI_SEPARATOR)) {
             throw new IllegalArgumentException(id);
@@ -48,6 +51,10 @@ public class FileRoot implements Root<FileNode> {
 
     public File getFile() {
         return file;
+    }
+
+    public String getAbsolute() {
+        return absolute;
     }
 
     public String getId() {

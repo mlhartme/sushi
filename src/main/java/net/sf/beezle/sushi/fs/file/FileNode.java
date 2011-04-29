@@ -97,9 +97,10 @@ public class FileNode extends Node {
         return file;
     }
 
+    /** does not include the drive on windows */
     @Override
     public String getPath() {
-        return file.getPath().substring(getRoot().getId().length());
+        return file.getPath().substring(getRoot().getAbsolute().length());
     }
 
     public String getAbsolute() {

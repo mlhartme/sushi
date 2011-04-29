@@ -195,7 +195,7 @@ public abstract class Node {
 
     //-- path functionality
 
-    /** never starts or end with a slash; an empty string is the root path */
+    /** never starts or end with a slash or a drive; an empty string is the root path */
     public abstract String getPath();
 
     /** @return a normalized URI, not necessarily the URI this node was created from */

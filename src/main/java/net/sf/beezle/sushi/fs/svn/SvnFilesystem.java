@@ -43,7 +43,7 @@ public class SvnFilesystem extends Filesystem {
     private String defaultPassword;
 
     public SvnFilesystem(World world, String name) {
-        super(world, '/', new Features(true, false, false, false, false, false), name);
+        super(world, new Features(true, false, false, false, false, false), name);
 
         this.defaultUsername = null;
         this.defaultPassword = null;

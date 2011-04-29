@@ -81,7 +81,7 @@ public class WebdavFilesystem extends Filesystem {
     private int defaultSoTimeout;
 
     public WebdavFilesystem(World io, String scheme, String internalScheme, boolean dav) {
-        super(io, '/', new Features(dav, true, false, false, false, false), scheme);
+        super(io, new Features(dav, true, false, false, false, false), scheme);
 
         this.internalScheme = internalScheme;
         this.dav = dav;

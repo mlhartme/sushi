@@ -31,7 +31,7 @@ public class MemoryFilesystem extends Filesystem {
     public final int maxInMemorySize;
 
     public MemoryFilesystem(World world, String name) {
-        super(world, '/', new Features(true, false, false, false, false, false), name);
+        super(world, new Features(true, false, false, false, false, false), name);
 
         this.roots = new WeakHashMap<Integer, MemoryRoot>();
         this.maxInMemorySize = 32 * 1024;

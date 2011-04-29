@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Always use / in paths.
       </action>
+      <action dev="mlhartme" type="update">
+        Moved Filesystem.separator and separatorChar to FileFilesystem.
+      </action>
       <action dev="mlhartme" type="fix">
         Clearify Root.getId() and fix it for Windows.
       </action>

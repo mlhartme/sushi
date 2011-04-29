@@ -28,13 +28,17 @@ import java.io.File;
 import java.net.URI;
 
 public class FileFilesystem extends Filesystem {
+    private final char separatorChar;
+    private final String separator;
     private final FileRoot[] roots;
 
     public FileFilesystem(World world, String name) {
-        super(world, File.separatorChar, new Features(true, true, world.os != OS.WINDOWS, world.os != OS.WINDOWS, true, false), name);
+        super(world, new Features(true, true, world.os != OS.WINDOWS, world.os != OS.WINDOWS, true, false), name);
 
         File[] rootFiles;
 
+        this.separatorChar = File.separatorChar;
+        this.separator = String.valueOf(separatorChar);
         rootFiles = File.listRoots();
         roots = new FileRoot[rootFiles.length];
         for (int i = 0; i < rootFiles.length; i++) {
@@ -86,4 +90,13 @@ public class FileFilesystem extends Filesystem {
         }
         return null;
     }
+
+    public String getSeparator() {
+        return separator;
+    }
+
+    public char getSeparatorChar() {
+        return separatorChar;
+    }
+
 }

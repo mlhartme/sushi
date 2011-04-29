@@ -27,7 +27,7 @@ import java.net.URI;
 
 public class ConsoleFilesystem extends Filesystem implements Root<ConsoleNode> {
     public ConsoleFilesystem(World world, String name) {
-        super(world, '/', new Features(true, false, false, false, false, false), name);
+        super(world, new Features(true, false, false, false, false, false), name);
     }
 
     public Filesystem getFilesystem() {

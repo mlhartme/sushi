@@ -33,7 +33,7 @@ public class ZipFilesystem extends Filesystem {
     private static final String ZIP_SEPARATOR = "!/";
 
     public ZipFilesystem(World world, String name) {
-        super(world, '/', new Features(false, false, false, false, false, false), name);
+        super(world, new Features(false, false, false, false, false, false), name);
     }
 
     public ZipNode node(URI uri, Object extra) throws NodeInstantiationException {

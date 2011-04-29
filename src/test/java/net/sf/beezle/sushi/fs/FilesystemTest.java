@@ -24,7 +24,7 @@ import java.net.URI;
 import static org.junit.Assert.assertEquals;
 
 public class FilesystemTest {
-    private final Filesystem fs = new Filesystem(new World(), '/', null, "foo") {
+    private final Filesystem fs = new Filesystem(new World(), null, "foo") {
         @Override
         public Node node(URI uri, Object extra) throws NodeInstantiationException {
             return null;

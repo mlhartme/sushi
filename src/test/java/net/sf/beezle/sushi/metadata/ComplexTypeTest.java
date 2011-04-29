@@ -18,16 +18,10 @@
 package net.sf.beezle.sushi.metadata;
 
 import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
-import net.sf.beezle.sushi.metadata.model.Car;
-import net.sf.beezle.sushi.metadata.model.Engine;
-import net.sf.beezle.sushi.metadata.model.Kind;
-import net.sf.beezle.sushi.metadata.model.Radio;
-import net.sf.beezle.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.metadata.model.*;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ComplexTypeTest {
     private static final Schema METADATA = new AnnotationSchema();

@@ -17,9 +17,9 @@
 
 package net.sf.beezle.sushi.rss;
 
+import junit.framework.TestCase;
 import net.sf.beezle.sushi.xml.Xml;
 import net.sf.beezle.sushi.xml.XmlException;
-import junit.framework.TestCase;
 
 import java.util.Date;
 

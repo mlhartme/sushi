@@ -24,9 +24,7 @@ import org.xml.sax.SAXException;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class DomTest {
     private static final Builder BUILDER = new Builder();

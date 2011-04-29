@@ -20,12 +20,7 @@ package net.sf.beezle.sushi.metadata.xml;
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.metadata.listmodel.All;
 import net.sf.beezle.sushi.metadata.listmodel.Empty;
-import net.sf.beezle.sushi.metadata.model.Car;
-import net.sf.beezle.sushi.metadata.model.Engine;
-import net.sf.beezle.sushi.metadata.model.Kind;
-import net.sf.beezle.sushi.metadata.model.ModelBase;
-import net.sf.beezle.sushi.metadata.model.Radio;
-import net.sf.beezle.sushi.metadata.model.Vendor;
+import net.sf.beezle.sushi.metadata.model.*;
 import net.sf.beezle.sushi.xml.Builder;
 import org.junit.Test;
 

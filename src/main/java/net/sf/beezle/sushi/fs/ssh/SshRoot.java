@@ -17,12 +17,7 @@
 
 package net.sf.beezle.sushi.fs.ssh;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
+import com.jcraft.jsch.*;
 import net.sf.beezle.sushi.fs.OnShutdown;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.io.MultiOutputStream;

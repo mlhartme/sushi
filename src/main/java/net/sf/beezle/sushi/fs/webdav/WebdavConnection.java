@@ -17,12 +17,7 @@
 
 package net.sf.beezle.sushi.fs.webdav;
 
-import org.apache.http.HttpClientConnection;
-import org.apache.http.HttpConnectionMetrics;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.HttpConnectionMetricsImpl;
 import org.apache.http.impl.entity.EntityDeserializer;

@@ -17,24 +17,8 @@
 
 package net.sf.beezle.sushi.fs.webdav;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.webdav.methods.Delete;
-import net.sf.beezle.sushi.fs.webdav.methods.Get;
-import net.sf.beezle.sushi.fs.webdav.methods.Head;
-import net.sf.beezle.sushi.fs.webdav.methods.Method;
-import net.sf.beezle.sushi.fs.webdav.methods.MkCol;
-import net.sf.beezle.sushi.fs.webdav.methods.Move;
-import net.sf.beezle.sushi.fs.webdav.methods.PropFind;
-import net.sf.beezle.sushi.fs.webdav.methods.PropPatch;
-import net.sf.beezle.sushi.fs.webdav.methods.Put;
+import net.sf.beezle.sushi.fs.*;
+import net.sf.beezle.sushi.fs.webdav.methods.*;
 import net.sf.beezle.sushi.util.Strings;
 import net.sf.beezle.sushi.util.Util;
 import org.apache.http.HttpHost;
@@ -49,11 +33,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 public class WebdavNode extends Node {
 	private final WebdavRoot root;

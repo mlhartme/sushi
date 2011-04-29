@@ -24,9 +24,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class WebdavNodeFullBase extends NodeTest<WebdavNode> {
     public static void main(String[] args) throws Exception {

@@ -27,7 +27,6 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 

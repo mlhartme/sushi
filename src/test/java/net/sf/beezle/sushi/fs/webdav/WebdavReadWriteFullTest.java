@@ -18,7 +18,6 @@
 package net.sf.beezle.sushi.fs.webdav;
 
 import net.sf.beezle.sushi.TestProperties;
-import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +26,7 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
 public class WebdavReadWriteFullTest extends NodeTest<WebdavNode> {

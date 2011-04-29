@@ -17,11 +17,7 @@
 
 package net.sf.beezle.sushi;
 
-import net.sf.beezle.sushi.cli.Cli;
-import net.sf.beezle.sushi.cli.Command;
-import net.sf.beezle.sushi.cli.Option;
-import net.sf.beezle.sushi.cli.Remaining;
-import net.sf.beezle.sushi.cli.Value;
+import net.sf.beezle.sushi.cli.*;
 
 import java.util.ArrayList;
 import java.util.List;

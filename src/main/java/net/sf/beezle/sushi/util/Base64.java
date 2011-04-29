@@ -19,12 +19,7 @@ package net.sf.beezle.sushi.util;
 
 import net.sf.beezle.sushi.fs.Settings;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 public class Base64 {
     /** true create base64 */

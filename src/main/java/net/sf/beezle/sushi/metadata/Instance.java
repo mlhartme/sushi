@@ -23,11 +23,7 @@ import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeWriter;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.metadata.store.PropertyStore;
-import net.sf.beezle.sushi.metadata.xml.DomTree;
-import net.sf.beezle.sushi.metadata.xml.LoaderException;
-import net.sf.beezle.sushi.metadata.xml.Serializer;
-import net.sf.beezle.sushi.metadata.xml.Tree;
-import net.sf.beezle.sushi.metadata.xml.WriterTree;
+import net.sf.beezle.sushi.metadata.xml.*;
 import org.w3c.dom.Element;
 
 import java.io.IOException;

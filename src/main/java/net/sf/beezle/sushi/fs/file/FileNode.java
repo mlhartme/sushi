@@ -17,32 +17,14 @@
 
 package net.sf.beezle.sushi.fs.file;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.LinkException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MkfileException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.OnShutdown;
-import net.sf.beezle.sushi.fs.ReadLinkException;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.util.Program;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;

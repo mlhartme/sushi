@@ -19,12 +19,7 @@ package net.sf.beezle.sushi.fs.ssh;
 
 import net.sf.beezle.sushi.fs.NodeTest;
 import net.sf.beezle.sushi.fs.file.FileNode;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.List;

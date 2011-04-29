@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -195,13 +196,17 @@ public abstract class Node {
 
     //-- path functionality
 
-    /** never starts or end with a slash or a drive; an empty string is the root path */
+    /**
+     * Never starts or end with a slash or a drive; an empty string is the root path. The path is decoded,
+     * you have to encoded if you want to build an URI.
+     */
     public abstract String getPath();
 
     /** @return a normalized URI, not necessarily the URI this node was created from */
     public URI getURI() {
-        return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + getPath());
+        return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + encodePath(getPath()));
     }
+
 
     /** @return the last path segment (or an empty string for the root node */
     public String getName() {
@@ -890,4 +895,30 @@ public abstract class Node {
             }
         }
     }
+
+    //--
+
+    /** TODO: is there a better way ... ? */
+    public static String encodePath(String path) {
+        URI tmp;
+
+        try {
+            tmp = new URI("foo", "host", "/" + path, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+        return tmp.getRawPath().substring(1);
+    }
+    /** TODO: is there a better way ... ? */
+    public static String decodePath(String path) {
+        URI tmp;
+
+        try {
+            tmp = new URI("scheme://host/" + path);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+        return tmp.getPath().substring(1);
+    }
+
 }

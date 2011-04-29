@@ -50,7 +50,8 @@ public abstract class NodeReadOnlyTest<T extends Node> {
 
         fs = work.getRoot().getFilesystem();
         uri = work.getURI();
-        assertEquals(uri, work.getWorld().node(fs.getScheme() + ":" + work.getRoot().getId() + work.getPath()).getURI());
+        assertEquals(uri, work.getWorld().node(fs.getScheme() + ":"
+                + work.getRoot().getId() + Node.encodePath(work.getPath())).getURI());
         again = WORLD.node(uri);
         assertEquals(work, again);
         assertEquals(uri, again.getURI());

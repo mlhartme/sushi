@@ -47,34 +47,6 @@ public class ZipNode extends Node {
         this.path = path;
     }
 
-    /** @return a normalized URI, not necesarily the URI this node was created from */
-    public URI getURI() {
-        return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + encodePath(getPath()));
-    }
-
-    /** TODO: is there a better way ... ? */
-    public static String encodePath(String path) {
-        URI tmp;
-
-        try {
-            tmp = new URI("foo", "host", "/" + path, null);
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        }
-        return tmp.getRawPath().substring(1);
-    }
-    /** TODO: is there a better way ... ? */
-    public static String decodePath(String path) {
-        URI tmp;
-
-        try {
-            tmp = new URI("scheme://host/" + path);
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        }
-        return tmp.getPath().substring(1);
-    }
-
     @Override
     public ZipRoot getRoot() {
         return root;

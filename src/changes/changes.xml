@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="fix">
         Clearify Root.getId() and fix it for Windows.
       </action>
+      <action dev="mlhartme" type="update">
+        Moved ZipNode.encodePath and decodePath to Node.
+      </action>
     </release>
     <release version="2.3.0" date="2011-04-06">
       <action dev="mlhartme" type="update">

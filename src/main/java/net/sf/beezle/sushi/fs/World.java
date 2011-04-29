@@ -264,7 +264,9 @@ public class World {
         }
         file = new File(path);
         if (!file.isAbsolute()) {
-            if (working instanceof FileNode) {
+            if (working == null) {
+                throw new IllegalStateException("working directory is missing");
+            } else if (working instanceof FileNode) {
                 file = new File(((FileNode) working).getFile(), path);
             } else {
                 throw new IllegalStateException("working directory is not a file: " + working.getURI());

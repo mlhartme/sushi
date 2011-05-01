@@ -20,15 +20,25 @@ package net.sf.beezle.sushi.metadata.xml;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.sun.org.apache.xml.internal.serialize.LineSeparator;
+
+import net.sf.beezle.sushi.io.OS;
+
 public class WriterTree extends Tree {
     private final Writer dest;
     private int indent;
     private boolean strict;
+    private final String lineSeparator;
 
     public WriterTree(Writer dest, boolean strict) {
+    	this(dest, strict, OS.CURRENT.lineSeparator);
+    }
+    
+    public WriterTree(Writer dest, boolean strict, String lineSeparator) {
         this.dest = dest;
         this.indent = 0;
         this.strict = strict;
+        this.lineSeparator = lineSeparator;
     }
 
     @Override
@@ -47,7 +57,8 @@ public class WriterTree extends Tree {
         dest.write(name);
         dest.write(" idref='");
         dest.write(Integer.toString(id));
-        dest.write("'/>\n");
+        dest.write("'/>");
+        dest.write(lineSeparator);
     }
 
     @Override
@@ -62,11 +73,12 @@ public class WriterTree extends Tree {
         }
         type(type);
         if (withEnd) {
-            dest.write("/>\n");
+            dest.write("/>");
         } else {
             indent++;
-            dest.write(">\n");
+            dest.write(">");
         }
+        dest.write(lineSeparator);
     }
 
     @Override
@@ -75,7 +87,8 @@ public class WriterTree extends Tree {
         indent();
         dest.write("</");
         dest.write(name);
-        dest.write(">\n");
+        dest.write('>');
+        dest.write(lineSeparator);
     }
 
     @Override
@@ -88,7 +101,8 @@ public class WriterTree extends Tree {
         dest.write(net.sf.beezle.sushi.xml.Serializer.escapeEntities(text, strict));
         dest.write("</");
         dest.write(name);
-        dest.write(">\n");
+        dest.write('>');
+        dest.write(lineSeparator);
     }
 
     private void type(String type) throws IOException {

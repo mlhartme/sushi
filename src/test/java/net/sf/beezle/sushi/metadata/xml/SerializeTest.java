@@ -31,32 +31,41 @@ import static org.junit.Assert.assertEquals;
 public class SerializeTest extends ModelBase {
     @Test
     public void string() {
-        assertEquals("<string></string>\n", run(""));
-        assertEquals("<string>&lt;&gt;&amp;</string>\n", run("<>&"));
-        assertEquals("<string>ab</string>\n", run("ab"));
+        assertEquals(l("<string></string>"), run(""));
+        assertEquals(l("<string>&lt;&gt;&amp;</string>"), run("<>&"));
+        assertEquals(l("<string>ab</string>"), run("ab"));
     }
     
     @Test
     public void integer() {
-        assertEquals("<int>9</int>\n", run(9));
+        assertEquals(l("<int>9</int>"), run(9));
     }
 
     @Test
     public void enm() {
-        assertEquals("<kind>van</kind>\n", run(Kind.VAN));
+        assertEquals(l("<kind>van</kind>"), run(Kind.VAN));
     }
     
     @Test
     public void engine() {
-        assertEquals("<engine>\n  <turbo>true</turbo>\n  <ps>1</ps>\n</engine>\n", run(new Engine(true, 1)));
+        assertEquals(l("<engine>",
+        		"  <turbo>true</turbo>",
+        		"  <ps>1</ps>",
+        		"</engine>"), run(new Engine(true, 1)));
     }
 
     @Test
     public void car() {
-        assertEquals(
-                "<car>\n  <name></name>\n  <kind>normal</kind>\n  <seats>0</seats>\n" +
-                "  <engine>\n    <turbo>false</turbo>\n    <ps>0</ps>\n  </engine>\n" +
-                "</car>\n", run(new Car()));
+        assertEquals(l(
+                "<car>", 
+                "  <name></name>",
+                "  <kind>normal</kind>",
+                "  <seats>0</seats>",
+                "  <engine>",
+                "    <turbo>false</turbo>", 
+                "    <ps>0</ps>",
+                "  </engine>",
+                "</car>"), run(new Car()));
     }
 
     @Test
@@ -66,46 +75,44 @@ public class SerializeTest extends ModelBase {
         vendor = new Vendor();
         vendor.cars().add(new Car("foo", Kind.NORMAL, 5, new Engine(), new Radio()));
         vendor.cars().add(vendor.cars().get(0));
-        assertEquals(
-                "<vendor>\n" +
-                "  <id>0</id>\n" +
-                "  <car id='0'>\n" +
-                "    <name>foo</name>\n" +
-                "    <kind>normal</kind>\n" + 
-                "    <seats>5</seats>\n" + 
-                "    <engine>\n" + 
-                "      <turbo>false</turbo>\n" + 
-                "      <ps>0</ps>\n" + 
-                "    </engine>\n" + 
-                "    <radio>\n" + 
-                "      <cd>false</cd>\n" + 
-                "      <speaker>0</speaker>\n" +
-                "    </radio>\n" + 
-                "  </car>\n" + 
-                "  <car idref='0'/>\n" + 
-                "</vendor>\n" , run(vendor));
+        assertEquals(l(
+                "<vendor>",
+                "  <id>0</id>",
+                "  <car id='0'>",
+                "    <name>foo</name>",
+                "    <kind>normal</kind>", 
+                "    <seats>5</seats>",
+                "    <engine>",
+                "      <turbo>false</turbo>",
+                "      <ps>0</ps>",
+                "    </engine>",
+                "    <radio>",
+                "      <cd>false</cd>",
+                "      <speaker>0</speaker>",
+                "    </radio>",
+                "  </car>",
+                "  <car idref='0'/>",
+                "</vendor>") , run(vendor));
     }
 
-    private static final String LF = OS.CURRENT.lineSeparator;
-    
     @Test
     public void carDom() throws IOException {
         org.w3c.dom.Element root;
         
         root = new Builder().createDocument("root").getDocumentElement();
         MODEL.instance(new Car()).toXml(root);
-        assertEquals(
-                "<root>" + LF +
-                "<car>" + LF +
-                "<name/>" + LF +
-                "<kind>normal</kind>" + LF +
-                "<seats>0</seats>" + LF +
-                "<engine>" + LF +
-                "<turbo>false</turbo>" + LF +
-                "<ps>0</ps>" + LF +
-                "</engine>" + LF +
-                "</car>" + LF +
-                "</root>" + LF, 
+        assertEquals(l(
+                "<root>",
+                "<car>",
+                "<name/>",
+                "<kind>normal</kind>",
+                "<seats>0</seats>",
+                "<engine>",
+                "<turbo>false</turbo>",
+                "<ps>0</ps>",
+                "</engine>",
+                "</car>",
+                "</root>"),
                 new net.sf.beezle.sushi.xml.Serializer().serialize(root));
     }
     
@@ -118,7 +125,7 @@ public class SerializeTest extends ModelBase {
 
     @Test
     public void empty() {
-        assertEquals("<empty/>" + LF, LISTMODEL.instance(new Empty()).toXml());
+        assertEquals(l("<empty/>"), LISTMODEL.instance(new Empty()).toXml());
     }
     
     @Test
@@ -129,11 +136,15 @@ public class SerializeTest extends ModelBase {
         all.objects.add(new Empty());
         all.objects.add("");
         all.objects.add(2);
-        assertEquals("<all>" + LF +
-                "  <objects type='net.sf.beezle.sushi.metadata.listmodel.Empty'/>" + LF +
-                "  <objects type='java.lang.String'></objects>" + LF +
-                "  <objects type='java.lang.Integer'>2</objects>" + LF + 
-                "</all>" + LF, 
+        assertEquals(l("<all>",
+                "  <objects type='net.sf.beezle.sushi.metadata.listmodel.Empty'/>",
+                "  <objects type='java.lang.String'></objects>",
+                "  <objects type='java.lang.Integer'>2</objects>",
+                "</all>"), 
                 LISTMODEL.instance(all).toXml());
+    }
+    
+    private static String l(String ... lines) {
+        return OS.CURRENT.lines(lines);
     }
 }

@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.filter.Filter;
+import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.IOException;
@@ -27,9 +28,15 @@ import java.util.List;
 
 public class Diff {
     private final boolean brief;
+	private final OS os;
 
     public Diff(boolean brief) {
+    	this(brief, OS.CURRENT);
+    }
+    
+    public Diff(boolean brief, OS os) {
         this.brief = brief;
+        this.os = os;
     }
 
     //-- scan directories for relevant files
@@ -144,6 +151,6 @@ public class Diff {
     }
 
     private void header(String name, String relative, StringBuilder result) {
-        result.append(name).append(' ').append(relative).append('\n');
+        result.append(name).append(' ').append(relative).append(os.lineSeparator);
     }
 }

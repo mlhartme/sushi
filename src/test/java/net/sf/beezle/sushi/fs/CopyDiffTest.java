@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.util.Substitution;
 import org.junit.Test;
 
@@ -59,7 +60,7 @@ public class CopyDiffTest {
         assertEquals(0700, destdir.join("file").getMode());
 
         file.setMode(0655);
-        assertEquals("m file\n", brief(destdir));
+        assertEquals(l("m file"), brief(destdir));
         copy.directory(destdir);
         assertEquals(0655, destdir.join("file").getMode());
     }
@@ -73,8 +74,8 @@ public class CopyDiffTest {
 		right = world.getTemp().createTempDirectory();
 		left.join("left").writeString("1");
 		right.join("right").writeString("2");
-		assertEquals("R left\nA right\n", left.diffDirectory(right, true));
-		assertEquals("A right\n", new Diff(true).directory(left, right, "right"));
+		assertEquals(l("R left", "A right"), left.diffDirectory(right, true));
+		assertEquals(l("A right"), new Diff(true).directory(left, right, "right"));
 	}
 
 	@Test
@@ -90,46 +91,46 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         assertEquals("", diff(destdir));
 
-        copy.getSourceDir().join("file").writeString("home: ${home}\nmachine: ${machine}\n");
-        assertEquals("A file\n", brief(destdir));
-        assertEquals("### file\n" +
-        		"+ home: mhm\n" +
-                "+ machine: walter\n", diff(destdir));
+        copy.getSourceDir().join("file").writeLines("home: ${home}", "machine: ${machine}");
+        assertEquals(l("A file"), brief(destdir));
+        assertEquals(l("### file",
+        		"+ home: mhm",
+                "+ machine: walter"), diff(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));
         
         copy.getSourceDir().join("folder").mkdir();
-        assertEquals("A folder\n", brief(destdir));
+        assertEquals(l("A folder"), brief(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));
         
         copy.getSourceDir().join("superdir/subdir").mkdirs();
-        assertEquals("A superdir\nA superdir/subdir\n", brief(destdir));
+        assertEquals(l("A superdir", "A superdir/subdir"), brief(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));
 
-        copy.getSourceDir().join("folder/file").writeString("home: ${home}\nmachine: ${machine}\n");
-        assertEquals("A folder/file\n", brief(destdir));
+        copy.getSourceDir().join("folder/file").writeLines("home: ${home}", "machine: ${machine}");
+        assertEquals(l("A folder/file"), brief(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));
         
         variables.put("machine", "fritz");
         brief = brief(destdir);
-        assertTrue(brief, brief.equals("M folder/file\nM file\n") || brief.equals("M file\nM folder/file\n"));
+        assertTrue(brief, brief.equals(l("M folder/file", "M file")) || brief.equals(l("M file", "M folder/file")));
         normal = diff(destdir);
         assertTrue(normal,
-                ("### folder/file\n" +
-                "-machine: walter\n" +
-                "+machine: fritz\n" +
-                "### file\n" +
-                "-machine: walter\n" +
-                "+machine: fritz\n").equals(normal) ||
-                ("### file\n" +
-                "-machine: walter\n" +
-                "+machine: fritz\n" +
-                "### folder/file\n" +
-                "-machine: walter\n" +
-                "+machine: fritz\n").equals(normal)
+                (l("### folder/file",
+                "-machine: walter",
+                "+machine: fritz",
+                "### file",
+                "-machine: walter",
+                "+machine: fritz")).equals(normal) ||
+                (l("### file",
+                "-machine: walter",
+                "+machine: fritz",
+                "### folder/file",
+                "-machine: walter",
+                "+machine: fritz")).equals(normal)
                 );
         copy.directory(destdir);
         assertEquals("", brief(destdir));
@@ -221,5 +222,9 @@ public class CopyDiffTest {
             result.put(name, Integer.toString(n));
             return result;
         }
+    }
+    
+    private static String l(String ... lines) {
+    	return OS.CURRENT.lines(lines);
     }
 }

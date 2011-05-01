@@ -69,6 +69,17 @@ public enum OS {
         this.gid = gid;
     }
 
+    public String lines(String ... lines) {
+    	StringBuilder result;
+    	
+    	result = new StringBuilder();
+    	for (String line : lines) {
+    		result.append(line);
+    		result.append(lineSeparator);
+    	}
+    	return result.toString();
+    }
+
     public String variable(String name) {
         return variablePrefix + name + variableSuffix;
     }

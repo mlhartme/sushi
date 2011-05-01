@@ -82,7 +82,13 @@ public class FileNode extends Node {
     /** does not include the drive on windows */
     @Override
     public String getPath() {
-        return file.getPath().substring(getRoot().getAbsolute().length());
+    	String result;
+    	
+    	result = file.getPath().substring(getRoot().getAbsolute().length());
+    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
+    		result = result.replace(File.separatorChar, Filesystem.URI_SEPARATOR_CHAR);
+    	}
+    	return result;
     }
 
     public String getAbsolute() {

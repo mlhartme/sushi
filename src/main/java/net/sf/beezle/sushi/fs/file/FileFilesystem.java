@@ -77,10 +77,10 @@ public class FileFilesystem extends Filesystem {
         return result;
     }
 
-    public FileRoot lookupRoot(String path) {
-        path = path.toLowerCase();
+    public FileRoot lookupRoot(String filePath) {
+        filePath = filePath.toUpperCase();
         for (FileRoot root : roots) {
-            if (path.startsWith(root.getAbsolute())) {
+            if (filePath.startsWith(root.getAbsolute())) {
                 return root;
             }
         }

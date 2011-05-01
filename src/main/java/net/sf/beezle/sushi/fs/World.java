@@ -172,7 +172,7 @@ public class World {
 
     public Filesystem addFilesystemOpt(String filesystemClass, Object ... args) {
         Class<?> clazz;
-        Constructor constructor;
+        Constructor<?> constructor;
         Filesystem filesystem;
 
         try {
@@ -184,7 +184,7 @@ public class World {
         }
         try {
             constructor = null;
-            for (Constructor c : clazz.getConstructors()) {
+            for (Constructor<?> c : clazz.getConstructors()) {
                 if (Reflect.matches(c.getParameterTypes(), args)) {
                     if (constructor != null) {
                         throw new IllegalArgumentException("constructor ambiguous");
@@ -252,14 +252,20 @@ public class World {
         return file(file.getPath());
     }
 
-    public FileNode file(String path) {
+    public FileNode file(String filePath) {
         FileRoot root;
+        String path;
 
-        root = fileFilesystem.lookupRoot(path);
+        root = fileFilesystem.lookupRoot(filePath);
         if (root != null) {
-            path = path.substring(root.getAbsolute().length());
+            filePath = filePath.substring(root.getAbsolute().length());
         }
-        path = Strings.removeEndOpt(path, File.separator);
+        filePath = Strings.removeEndOpt(filePath, File.separator);
+    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
+    		path = filePath.replace(File.separatorChar, Filesystem.URI_SEPARATOR_CHAR);
+    	} else {
+    		path = filePath;
+    	}
         if (root == null) {
             if (working == null) {
                 throw new IllegalStateException("working directory is missing");

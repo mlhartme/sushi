@@ -26,13 +26,14 @@ import java.io.File;
 
 public class FileRoot implements Root<FileNode> {
     public static FileRoot create(FileFilesystem filesystem, File file) {
-        return new FileRoot(filesystem, file, file.getAbsolutePath(),
+        return new FileRoot(filesystem, file, file.getAbsolutePath().toUpperCase(),
                 Strings.removeStart(file.toURI().toString().toLowerCase(), "file:"));
     }
 
     private final FileFilesystem filesystem;
     private final File file;
-    private final String absolute;
+    /** file.getAbsolutePath().toUpperCase() */
+    private final String absolute; 
     private final String id;
     
     public FileRoot(FileFilesystem filesystem, File file, String absolute, String id) {
@@ -65,6 +66,9 @@ public class FileRoot implements Root<FileNode> {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
         }
+    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
+    		path = path.replace(Filesystem.URI_SEPARATOR_CHAR, File.separatorChar);
+    	}
         return new FileNode(this, new File(file, path));
     }
 }

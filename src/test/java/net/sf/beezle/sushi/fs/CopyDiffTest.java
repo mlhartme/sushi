@@ -38,7 +38,7 @@ public class CopyDiffTest {
 		world = new World();
 		variables = new HashMap<String, String>();
         copy = new Copy(world.getTemp().createTempDirectory(),
-                world.filter().includeAll(), true,
+                world.filter().includeAll(), world.getTemp().getRoot().getFilesystem().getFeatures().modes,
                 variables, Substitution.path(), Substitution.ant(), Copy.DEFAULT_CONTEXT_DELIMITER, Copy.DEFAULT_CALL_PREFIX);
 	}
 
@@ -47,6 +47,9 @@ public class CopyDiffTest {
         Node destdir;
         Node file;
         
+        if (!copy.getSourceDir().getRoot().getFilesystem().getFeatures().modes) {
+        	return;
+        }
         destdir = copy.getSourceDir().getWorld().getTemp().createTempDirectory();
 
         file = copy.getSourceDir().join("file");
@@ -87,7 +90,7 @@ public class CopyDiffTest {
         assertEquals("", brief(destdir));
         assertEquals("", diff(destdir));
 
-        copy.getSourceDir().join("file").writeLines("home: ${home}", "machine: ${machine}");
+        copy.getSourceDir().join("file").writeString("home: ${home}\nmachine: ${machine}\n");
         assertEquals("A file\n", brief(destdir));
         assertEquals("### file\n" +
         		"+ home: mhm\n" +
@@ -105,7 +108,7 @@ public class CopyDiffTest {
         copy.directory(destdir);
         assertEquals("", brief(destdir));
 
-        copy.getSourceDir().join("folder/file").writeLines("home: ${home}\n", "machine: ${machine}\n");
+        copy.getSourceDir().join("folder/file").writeString("home: ${home}\nmachine: ${machine}\n");
         assertEquals("A folder/file\n", brief(destdir));
         copy.directory(destdir);
         assertEquals("", brief(destdir));

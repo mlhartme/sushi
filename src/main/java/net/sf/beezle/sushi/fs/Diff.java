@@ -131,7 +131,8 @@ public class Diff {
             header('R', relative, result);
         } else if (left.diff(right)) {
             header('M', relative, result);
-        } else if (left.getMode() != right.getMode()) {
+        } else if (left.getRoot().getFilesystem().getFeatures().modes 
+        		&& left.getMode() != right.getMode()) {
             header('m', relative, result);
         } else {
             // nothing

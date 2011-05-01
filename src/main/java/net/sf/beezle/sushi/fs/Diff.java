@@ -28,15 +28,15 @@ import java.util.List;
 
 public class Diff {
     private final boolean brief;
-	private final OS os;
+	private final String lineSeparator;
 
     public Diff(boolean brief) {
-    	this(brief, OS.CURRENT);
+    	this(brief, OS.CURRENT.lineSeparator);
     }
     
-    public Diff(boolean brief, OS os) {
+    public Diff(boolean brief, String lineSeparator) {
         this.brief = brief;
-        this.os = os;
+        this.lineSeparator = lineSeparator;
     }
 
     //-- scan directories for relevant files
@@ -151,6 +151,6 @@ public class Diff {
     }
 
     private void header(String name, String relative, StringBuilder result) {
-        result.append(name).append(' ').append(relative).append(os.lineSeparator);
+        result.append(name).append(' ').append(relative).append(lineSeparator);
     }
 }

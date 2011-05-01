@@ -20,8 +20,6 @@ package net.sf.beezle.sushi.metadata.xml;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.sun.org.apache.xml.internal.serialize.LineSeparator;
-
 import net.sf.beezle.sushi.io.OS;
 
 public class WriterTree extends Tree {

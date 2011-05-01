@@ -17,6 +17,8 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.io.OS;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class LineReaderTest {
 
     @Test
     public void one() {
-        check("abc\n", "abc");
+        check(l("abc"), "abc");
     }
 
     @Test
@@ -45,7 +47,7 @@ public class LineReaderTest {
 
     @Test
     public void two() {
-        check("abc\n\n123\n", "abc", "", "123");
+        check(l("abc", "", "123"), "abc", "", "123");
     }
 
     @Test
@@ -53,28 +55,28 @@ public class LineReaderTest {
         String ll = "1234567890abcdefghijklmnopqrstuvwxyz";
         
         ll = ll + ll + ll;
-        check(ll + "\n" + ll, ll, ll);
+        check(l(ll, ll), ll, ll);
     }
 
     @Test
     public void comment() {
-        check("first\n // \n\n//comment\nlast",
+        check(l("first", "", " // ", "//comment") + "last",
                 new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, LineFormat.excludes(true, "//")), 5,
                 "first", "last");
     }
 
     @Test
     public void excludeEmpty() {
-        check("first\n\nthird\n  \nfifth",
+        check(l("first", "", "third", "  ", "fifth"),
                 new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.ALL, LineFormat.excludes(true)), 5,
                 "first", "third", "fifth");
     }
 
     @Test
     public void trimNothing() {
-        check("hello\nworld",
+        check("hello\nworld\r\n",
                 new LineFormat(LineFormat.LF_SEPARATOR, LineFormat.Trim.NOTHING, LineFormat.NO_EXCLUDES), 2,
-                "hello\n", "world");
+                "hello\n", "world\r\n");
     }
 
     @Test
@@ -111,5 +113,9 @@ public class LineReaderTest {
         }
         assertEquals(Arrays.asList(expected), result);
         assertEquals(lastLine, reader.getLine());
+    }
+    
+    private static String l(String ... lines) {
+    	return OS.CURRENT.lines(lines);
     }
 }

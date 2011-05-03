@@ -261,8 +261,8 @@ public class World {
             filePath = filePath.substring(root.getAbsolute().length());
         }
         filePath = Strings.removeEndOpt(filePath, File.separator);
-    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
-    		path = filePath.replace(File.separatorChar, Filesystem.URI_SEPARATOR_CHAR);
+    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
+    		path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     	} else {
     		path = filePath;
     	}

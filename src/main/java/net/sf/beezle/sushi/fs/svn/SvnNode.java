@@ -399,7 +399,7 @@ public class SvnNode extends Node {
         if (left.length() == 0) {
             return right;
         }
-        return left + Filesystem.URI_SEPARATOR + right;
+        return left + Filesystem.SEPARATOR + right;
     }
 
     public long export(Node dest) throws IOException, SVNException {

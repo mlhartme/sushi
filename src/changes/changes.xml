@@ -7,7 +7,7 @@
         Always use / in paths; World.file() methods expect filePaths (with platform separators), not paths.
       </action>
       <action dev="mlhartme" type="update">
-        Dumped Filesystem.separator and separatorChar. Use Filesystem.URI_SEPARATOR(_CHAR) instead. Or, when dealing
+        Dumped Filesystem.separator and separatorChar. Use Filesystem.SEPARATOR(_CHAR) instead. Or, when dealing
         with file paths, File.separator(Char).
       </action>
       <action dev="mlhartme" type="fix">

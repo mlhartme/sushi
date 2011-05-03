@@ -85,8 +85,8 @@ public class FileNode extends Node {
     	String result;
     	
     	result = file.getPath().substring(getRoot().getAbsolute().length());
-    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
-    		result = result.replace(File.separatorChar, Filesystem.URI_SEPARATOR_CHAR);
+    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
+    		result = result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     	}
     	return result;
     }

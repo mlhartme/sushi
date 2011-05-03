@@ -52,8 +52,8 @@ public class FileFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "invalid root: unexpected authority " + authority);
         }
         path = uri.getPath();
-        if (!path.startsWith(URI_SEPARATOR)) {
-            throw new NodeInstantiationException(uri, "missing initial separator " + URI_SEPARATOR);
+        if (!path.startsWith(SEPARATOR)) {
+            throw new NodeInstantiationException(uri, "missing initial separator " + SEPARATOR);
         }
         // note that the URI may contain a tailing slash, but turning it into a file will remove the slash;
         // getAbsolute is needed to add the current drive on windows if the URI path omitted the drive letter

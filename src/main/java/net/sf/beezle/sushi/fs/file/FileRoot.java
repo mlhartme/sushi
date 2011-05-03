@@ -41,7 +41,7 @@ public class FileRoot implements Root<FileNode> {
         this.file = file;
         this.absolute = absolute;
         this.id = id;
-        if (!id.endsWith(Filesystem.URI_SEPARATOR)) {
+        if (!id.endsWith(Filesystem.SEPARATOR)) {
             throw new IllegalArgumentException(id);
         }
     }
@@ -66,8 +66,8 @@ public class FileRoot implements Root<FileNode> {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
         }
-    	if (File.separatorChar != Filesystem.URI_SEPARATOR_CHAR) {
-    		path = path.replace(Filesystem.URI_SEPARATOR_CHAR, File.separatorChar);
+    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
+    		path = path.replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
     	}
         return new FileNode(this, new File(file, path));
     }

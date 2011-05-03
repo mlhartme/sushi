@@ -66,7 +66,7 @@ public class SvnFilesystem extends Filesystem {
             throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
         }
         checkOpaque(uri);
-        separator = URI_SEPARATOR;
+        separator = SEPARATOR;
         encodedSchemeSpecific = uri.getRawSchemeSpecificPart();
         try {
             repository = repository(encodedSchemeSpecific);

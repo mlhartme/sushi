@@ -207,7 +207,7 @@ public abstract class Node {
 
         path = getPath();
         // ok for -1:
-        return path.substring(path.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR) + 1);
+        return path.substring(path.lastIndexOf(Filesystem.SEPARATOR_CHAR) + 1);
     }
 
     public abstract Node getParent();
@@ -219,7 +219,7 @@ public abstract class Node {
         if ("".equals(path)) {
             return null;
         }
-        idx = path.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR);
+        idx = path.lastIndexOf(Filesystem.SEPARATOR_CHAR);
         if (idx == -1) {
             return getRoot().node("", null);
         } else {
@@ -269,14 +269,14 @@ public abstract class Node {
         startfilepath = base.join("foo").getPath();
         destpath = getPath();
         common = Strings.getCommon(startfilepath, destpath);
-        common = common.substring(0, common.lastIndexOf(Filesystem.URI_SEPARATOR_CHAR) + 1);  // ok for idx == -1
+        common = common.substring(0, common.lastIndexOf(Filesystem.SEPARATOR_CHAR) + 1);  // ok for idx == -1
         len = common.length();
         startfilepath = startfilepath.substring(len);
         destpath = destpath.substring(len);
         result = new StringBuilder();
-        ups = Strings.count(startfilepath, Filesystem.URI_SEPARATOR);
+        ups = Strings.count(startfilepath, Filesystem.SEPARATOR);
         for (i = 0; i < ups; i++) {
-            result.append("..").append(Filesystem.URI_SEPARATOR);
+            result.append("..").append(Filesystem.SEPARATOR);
         }
         result.append(Strings.replace(destpath, getWorld().os.lineSeparator, "" + getWorld().os.lineSeparator));
         return result.toString();
@@ -441,7 +441,7 @@ public abstract class Node {
             throw new LinkException(this, e);
         }
         // TODO: getRoot() for ssh root ...
-        dest.mklink(Filesystem.URI_SEPARATOR + this.getPath());
+        dest.mklink(Filesystem.SEPARATOR + this.getPath());
         return dest;
     }
 
@@ -463,7 +463,7 @@ public abstract class Node {
         String path;
 
         path = readLink();
-        if (path.startsWith(Filesystem.URI_SEPARATOR)) {
+        if (path.startsWith(Filesystem.SEPARATOR)) {
             return getRoot().node(path.substring(1), null);
         } else {
             return getParent().join(path);
@@ -880,7 +880,7 @@ public abstract class Node {
             if (hasAnchestor(working)) {
                 return getRelative(working);
             } else {
-                return Filesystem.URI_SEPARATOR + getPath();
+                return Filesystem.SEPARATOR + getPath();
             }
         }
     }

@@ -24,8 +24,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class Filesystem {
-	public static final String URI_SEPARATOR = "/";
-	public static final char URI_SEPARATOR_CHAR = '/';
+    /**
+     * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
+     * use it in URI or path constants.
+     */
+	public static final String SEPARATOR = "/";
+
+    /**
+     * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
+     * use it in URI or path constants.
+     */
+	public static final char SEPARATOR_CHAR = '/';
 	
     private final World world;
     private final Features features;
@@ -91,12 +100,12 @@ public abstract class Filesystem {
 
         path = uri.getPath();
         if (path.length() > 0) {
-            if (!path.startsWith(URI_SEPARATOR)) {
-                throw new NodeInstantiationException(uri, "missing initial separator " + URI_SEPARATOR);
+            if (!path.startsWith(SEPARATOR)) {
+                throw new NodeInstantiationException(uri, "missing initial separator " + SEPARATOR);
             }
             path = path.substring(1);
-            if (path.endsWith(URI_SEPARATOR)) {
-                throw new NodeInstantiationException(uri, "invalid tailing " + URI_SEPARATOR);
+            if (path.endsWith(SEPARATOR)) {
+                throw new NodeInstantiationException(uri, "invalid tailing " + SEPARATOR);
             }
         }
         return path;
@@ -114,11 +123,11 @@ public abstract class Filesystem {
         builder = new StringBuilder(head);
         for (String path : paths) {
             if (path.length() > 0) {
-                if (path.startsWith(URI_SEPARATOR)) {
+                if (path.startsWith(SEPARATOR)) {
                     throw new IllegalArgumentException(path);
                 }
                 if (builder.length() > 0) {
-                    builder.append(URI_SEPARATOR);
+                    builder.append(SEPARATOR);
                 }
                 builder.append(path);
             }
@@ -138,27 +147,27 @@ public abstract class Filesystem {
                 break;
             }
             if (idx + 1 < builder.length() && builder.charAt(idx + 1) == '.') {
-                if (idx + 2 == builder.length() || builder.charAt(idx + 2) == URI_SEPARATOR_CHAR) {
+                if (idx + 2 == builder.length() || builder.charAt(idx + 2) == SEPARATOR_CHAR) {
                     if (idx == 0) {
                         throw new IllegalArgumentException(builder.toString());
                     }
-                    if (builder.charAt(idx - 1) == URI_SEPARATOR_CHAR) {
-                        prev = builder.lastIndexOf(URI_SEPARATOR, idx - 2) + 1; // ok for -1
+                    if (builder.charAt(idx - 1) == SEPARATOR_CHAR) {
+                        prev = builder.lastIndexOf(SEPARATOR, idx - 2) + 1; // ok for -1
                         builder.delete(prev, idx + 1);
                         idx = prev;
-                        if (builder.charAt(idx) == URI_SEPARATOR_CHAR) {
+                        if (builder.charAt(idx) == SEPARATOR_CHAR) {
                             builder.deleteCharAt(idx);
                         }
                         continue;
                     }
                 }
             }
-            if (idx == 0 || builder.charAt(idx - 1) == URI_SEPARATOR_CHAR) {
-                if (idx + 1 == builder.length() || builder.charAt(idx + 1) == URI_SEPARATOR_CHAR) {
+            if (idx == 0 || builder.charAt(idx - 1) == SEPARATOR_CHAR) {
+                if (idx + 1 == builder.length() || builder.charAt(idx + 1) == SEPARATOR_CHAR) {
                     builder.deleteCharAt(idx);
-                    if (idx < builder.length() && builder.charAt(idx) == URI_SEPARATOR_CHAR) {
+                    if (idx < builder.length() && builder.charAt(idx) == SEPARATOR_CHAR) {
                         builder.deleteCharAt(idx);
-                    } else if (idx > 0 && builder.charAt(idx - 1) == URI_SEPARATOR_CHAR) {
+                    } else if (idx > 0 && builder.charAt(idx - 1) == SEPARATOR_CHAR) {
                         builder.deleteCharAt(--idx);
                     }
                     continue;
@@ -168,13 +177,13 @@ public abstract class Filesystem {
         }
         // TODO: this is not part of java.net.URI's normalization
         for (int i = builder.length() - 1; i > 0; i--) {
-            if (builder.charAt(i) == URI_SEPARATOR_CHAR && builder.charAt(i - 1) == URI_SEPARATOR_CHAR) {
+            if (builder.charAt(i) == SEPARATOR_CHAR && builder.charAt(i - 1) == SEPARATOR_CHAR) {
                 builder.deleteCharAt(i);
             }
         }
     }
 
     public List<String> split(String path) {
-        return Strings.split(URI_SEPARATOR, path);
+        return Strings.split(SEPARATOR, path);
     }
 }

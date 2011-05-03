@@ -91,7 +91,7 @@ public class ZipRoot implements Root<ZipNode> {
         int idx;
 
         e = zip.entries();
-        separator = Filesystem.URI_SEPARATOR;
+        separator = Filesystem.SEPARATOR;
         prefix = path.length() == 0 ? "" : path + separator;
         length = prefix.length();
         result = new ArrayList<String>();

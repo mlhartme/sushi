@@ -134,12 +134,6 @@ public class FileNodeTest extends NodeTest<FileNode> {
     //--
 
     @Test
-    public void filesystem() {
-        assertEquals(File.separator, work.getRoot().getFilesystem().getSeparator());
-        assertEquals(File.separatorChar, work.getRoot().getFilesystem().getSeparatorChar());
-    }
-
-    @Test
     public void temp() throws IOException {
         FileNode tmp;
 

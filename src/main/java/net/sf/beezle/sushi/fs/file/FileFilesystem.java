@@ -24,8 +24,6 @@ import java.io.File;
 import java.net.URI;
 
 public class FileFilesystem extends Filesystem {
-    private final char separatorChar;
-    private final String separator;
     private final FileRoot[] roots;
 
     public FileFilesystem(World world, String name) {
@@ -33,8 +31,6 @@ public class FileFilesystem extends Filesystem {
 
         File[] rootFiles;
 
-        this.separatorChar = File.separatorChar;
-        this.separator = String.valueOf(separatorChar);
         rootFiles = File.listRoots();
         roots = new FileRoot[rootFiles.length];
         for (int i = 0; i < rootFiles.length; i++) {
@@ -86,13 +82,4 @@ public class FileFilesystem extends Filesystem {
         }
         return null;
     }
-
-    public String getSeparator() {
-        return separator;
-    }
-
-    public char getSeparatorChar() {
-        return separatorChar;
-    }
-
 }

@@ -261,11 +261,7 @@ public class World {
             filePath = filePath.substring(root.getAbsolute().length());
         }
         filePath = Strings.removeEndOpt(filePath, File.separator);
-    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
-    		path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
-    	} else {
-    		path = filePath;
-    	}
+   		path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
         if (root == null) {
             if (working == null) {
                 throw new IllegalStateException("working directory is missing");

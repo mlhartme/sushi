@@ -43,11 +43,13 @@ public class FileNodeTest extends NodeTest<FileNode> {
     }
 
     @Test
-    public void filePath() {
+    public void relativeFile() throws IOException {
         FileNode file;
 
-        file = WORLD.file(File.listRoots()[0] + "foo");
-        assertEquals(file.getAbsolute(), file.getFile().getPath());
+        assertEquals(((FileNode) WORLD.getWorking()).getFile(), new File(".").getCanonicalFile());
+        file = WORLD.file("foo");
+        assertEquals("foo", file.toString());
+        assertEquals(WORLD.getWorking(), file.getParent());
     }
 
     @Test

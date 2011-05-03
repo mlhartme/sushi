@@ -124,24 +124,7 @@ public class WorldTest {
         assertEquals("bar", path.get(1).getName());
     }
 
-    //--
-
-    @Test(expected=RuntimeException.class)
-    public void locate() throws IOException {
-        World world;
-
-        world = new World();
-        world.locateClasspathItem(World.class).checkDirectory();
-        world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
-        world.locateClasspathItem(Object.class).checkFile();
-        world.locateClasspathItem("/java/lang/Object.class").checkFile();
-        world.locateClasspathItem("/java/lang/Object.class").checkFile();
-        assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        world.locateClasspathItem("/nosuchresource");
-    }
-
-    //--
+    //-- resources
 
     @Test
     public void fileResource() throws Exception {
@@ -174,7 +157,22 @@ public class WorldTest {
     }
 
 
-    //--
+    //-- locating
+
+    @Test(expected=RuntimeException.class)
+    public void locate() throws IOException {
+        World world;
+
+        world = new World();
+        world.locateClasspathItem(World.class).checkDirectory();
+        world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
+        world.locateClasspathItem(Object.class).checkFile();
+        world.locateClasspathItem("/java/lang/Object.class").checkFile();
+        world.locateClasspathItem("/java/lang/Object.class").checkFile();
+        assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        world.locateClasspathItem("/nosuchresource");
+    }
 
     @Test
     public void locateRuntime() throws IOException {

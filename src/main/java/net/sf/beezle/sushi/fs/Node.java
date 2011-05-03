@@ -866,11 +866,10 @@ public abstract class Node {
     /**
      * Returns a String representation suitable for messages.
      *
-     * CAUTION: don't use to convert to a string, use getRelative and getAbsolute() instead.
-     * Also call the respective getter if the difference matters for your representation.
+     * CAUTION: don't use to convert to a string, use instead.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         Node working;
 
         working = getWorld().getWorking();

@@ -85,10 +85,7 @@ public class FileNode extends Node {
     	String result;
     	
     	result = file.getPath().substring(getRoot().getAbsolute().length());
-    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
-    		result = result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
-    	}
-    	return result;
+    	return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     }
 
     public String getAbsolute() {
@@ -502,6 +499,20 @@ public class FileNode extends Node {
         stat.add(args);
         stat.add(getAbsolute());
         return Integer.parseInt(stat.exec().trim(), radix);
+    }
+
+    //--
+
+    @Override
+    public String toString() {
+        Node working;
+
+        working = getWorld().getWorking();
+        if (working == null || !getRoot().equals(working.getRoot()) || !hasAnchestor(working)) {
+            return file.toString();
+        } else {
+            return getRelative(working).replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
+        }
     }
 
     //--

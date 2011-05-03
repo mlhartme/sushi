@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -1070,7 +1071,11 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals(".", work.toString());
         assertEquals("foo", node.toString());
         work.getWorld().setWorking(null);
-        assertEquals(node.getURI().toString(), node.toString());
+        if (node instanceof FileNode) {
+            assertEquals(((FileNode) node).getFile().toString(), node.toString());
+        } else {
+            assertEquals(node.getURI().toString(), node.toString());
+        }
     }
 
     //-- links

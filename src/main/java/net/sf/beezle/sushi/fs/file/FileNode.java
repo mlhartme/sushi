@@ -508,10 +508,10 @@ public class FileNode extends Node {
         Node working;
 
         working = getWorld().getWorking();
-        if (working == null || !getRoot().equals(working.getRoot()) || !hasAnchestor(working)) {
-            return file.toString();
-        } else {
+        if (working != null && hasAnchestor(working)) {
             return getRelative(working).replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
+        } else {
+            return file.toString();
         }
     }
 

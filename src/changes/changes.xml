@@ -4,13 +4,13 @@
   <body>
     <release version="2.4.0" date="2011-04-??">
       <action dev="mlhartme" type="update">
-        Always use / in paths.
+        Always use / in paths; World.file() methods expect filePaths (with platform separators), not paths.
       </action>
       <action dev="mlhartme" type="update">
         Moved Filesystem.separator and separatorChar to FileFilesystem.
       </action>
       <action dev="mlhartme" type="fix">
-        Clearify Root.getId() and fix it for Windows.
+        Clarify Root.getId() and fix it for Windows.
       </action>
       <action dev="mlhartme" type="update">
         Moved ZipNode.encodePath and decodePath to Node.

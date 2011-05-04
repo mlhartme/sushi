@@ -72,10 +72,6 @@ public class SshNode extends Node {
         return (SshNode) doJoin(paths);
     }
 
-    public ChannelSftp getChannel() throws JSchException {
-        return root.getChannelFtp();
-    }
-
     private static String escape(String str) {
         StringBuilder builder;
         int len;
@@ -123,12 +119,19 @@ public class SshNode extends Node {
 
     @Override
     public long length() throws LengthException {
+        ChannelSftp sftp;
+
         try {
-            SftpATTRS attrs = getChannel().stat(escape(slashPath));
-            if (attrs.isDir()) {
-                throw new LengthException(this, new IOException("file expected"));
+            sftp = alloc();
+            try {
+                SftpATTRS attrs = sftp.stat(escape(slashPath));
+                if (attrs.isDir()) {
+                    throw new LengthException(this, new IOException("file expected"));
+                }
+                return attrs.getSize();
+            } finally {
+                free(sftp);
             }
-            return attrs.getSize();
         } catch (SftpException e) {
             throw new LengthException(this, e);
         } catch (JSchException e) {
@@ -149,27 +152,33 @@ public class SshNode extends Node {
         ChannelSftp.LsEntry entry;
         String name;
         boolean dir;
+        ChannelSftp sftp;
 
         try {
             nodes = new ArrayList<SshNode>();
             dir = false;
-            for (Object obj : getChannel().ls(escape(slashPath))) {
-                try {
-                    entry = (ChannelSftp.LsEntry) obj;
-                    name = entry.getFilename();
-                    if (".".equals(name) || "..".equals(name)) {
-                        dir = true;
-                    } else {
-                        nodes.add(join(name));
+            sftp = alloc();
+            try {
+                for (Object obj : sftp.ls(escape(slashPath))) {
+                    try {
+                        entry = (ChannelSftp.LsEntry) obj;
+                        name = entry.getFilename();
+                        if (".".equals(name) || "..".equals(name)) {
+                            dir = true;
+                        } else {
+                            nodes.add(join(name));
+                        }
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalArgumentException("illegal name: " + obj, e);
                     }
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException("illegal name: " + obj, e);
                 }
-            }
-            if (!dir && nodes.size() == 1) {
-                return null;
-            } else {
-                return nodes;
+                if (!dir && nodes.size() == 1) {
+                    return null;
+                } else {
+                    return nodes;
+                }
+            } finally {
+                free(sftp);
             }
         } catch (SftpException e) {
             if (e.id == 2) {
@@ -186,19 +195,23 @@ public class SshNode extends Node {
     @Override
     public SshNode delete() throws DeleteException {
         SftpATTRS stat;
-        ChannelSftp channel;
+        ChannelSftp sftp;
 
         try {
-            channel = getChannel();
-            // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
-            stat = channel.lstat(escape(slashPath));
-            if (stat.isDir()) {
-                for (Node child : list()) {
-                    child.delete();
+            sftp = alloc();
+            try {
+                // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
+                stat = sftp.lstat(escape(slashPath));
+                if (stat.isDir()) {
+                    for (Node child : list()) {
+                        child.delete();
+                    }
+                    sftp.rmdir(escape(slashPath));
+                } else {
+                    sftp.rm(escape(slashPath));
                 }
-                channel.rmdir(escape(slashPath));
-            } else {
-                channel.rm(escape(slashPath));
+            } finally {
+                free(sftp);
             }
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
@@ -216,13 +229,19 @@ public class SshNode extends Node {
     @Override
     public Node move(Node destNode) throws MoveException {
         SshNode dest;
+        ChannelSftp sftp;
 
         if (!(destNode instanceof SshNode)) {
             throw new MoveException(this, destNode, "target has is different node type");
         }
         dest = (SshNode) destNode;
         try {
-            getChannel().rename(escape(slashPath), escape(dest.slashPath));
+            sftp = alloc();
+            try {
+                sftp.rename(escape(slashPath), escape(dest.slashPath));
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new MoveException(this, dest, "ssh failure", e);
         } catch (JSchException e) {
@@ -233,8 +252,15 @@ public class SshNode extends Node {
 
     @Override
     public Node mkdir() throws MkdirException {
+        ChannelSftp sftp;
+
         try {
-            getChannel().mkdir(escape(slashPath));
+            sftp = alloc();
+            try {
+                sftp.mkdir(escape(slashPath));
+            } finally {
+                free(sftp);
+            }
             return this;
         } catch (SftpException e) {
             throw new MkdirException(this, e);
@@ -254,9 +280,16 @@ public class SshNode extends Node {
 
     @Override
     public boolean exists() throws ExistsException {
+        ChannelSftp sftp;
+
         try {
-            // do not follow links!
-            getChannel().lstat(escape(slashPath));
+            sftp = alloc();
+            try {
+                // do not follow links!
+                sftp.lstat(escape(slashPath));
+            } finally {
+                free(sftp);
+            }
             return true;
         } catch (SftpException e) {
             return noSuchFile(e);
@@ -267,9 +300,16 @@ public class SshNode extends Node {
 
     @Override
     public boolean isFile() throws ExistsException {
+        ChannelSftp sftp;
+
         try {
-            // follow links!
-            return !getChannel().stat(escape(slashPath)).isDir();
+            sftp = alloc();
+            try {
+                // follow links!
+                return !sftp.stat(escape(slashPath)).isDir();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             return noSuchFile(e);
         } catch (JSchException e) {
@@ -279,9 +319,16 @@ public class SshNode extends Node {
 
     @Override
     public boolean isDirectory() throws ExistsException {
+        ChannelSftp sftp;
+
         try {
-            // follow links!
-            return getChannel().stat(escape(slashPath)).isDir();
+            sftp = alloc();
+            try {
+                // follow links!
+                return sftp.stat(escape(slashPath)).isDir();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             return noSuchFile(e);
         } catch (JSchException e) {
@@ -291,9 +338,16 @@ public class SshNode extends Node {
 
     @Override
     public boolean isLink() throws ExistsException {
+        ChannelSftp sftp;
+
         try {
-            // CAUTION: use lstat to *not* follow symlinks
-            return getChannel().lstat(escape(slashPath)).isLink();
+            sftp = alloc();
+            try {
+                // CAUTION: use lstat to *not* follow symlinks
+                return sftp.lstat(escape(slashPath)).isLink();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             return noSuchFile(e);
         } catch (JSchException e) {
@@ -303,10 +357,17 @@ public class SshNode extends Node {
 
     @Override
     public void mklink(String target) throws LinkException {
+        ChannelSftp sftp;
+
         try {
             checkNotExists();
             getParent().checkDirectory();
-            getChannel().symlink(target, escape(slashPath));
+            sftp = alloc();
+            try {
+                sftp.symlink(target, escape(slashPath));
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new LinkException(this, e);
         } catch (JSchException e) {
@@ -318,8 +379,15 @@ public class SshNode extends Node {
 
     @Override
     public String readLink() throws ReadLinkException {
+        ChannelSftp sftp;
+
         try {
-            return getChannel().readlink(escape(slashPath));
+            sftp = alloc();
+            try {
+                return sftp.readlink(escape(slashPath));
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new ReadLinkException(this, e);
         } catch (JSchException e) {
@@ -329,8 +397,15 @@ public class SshNode extends Node {
 
     @Override
     public long getLastModified() throws GetLastModifiedException {
+        ChannelSftp sftp;
+
         try {
-            return 1000L * getChannel().stat(escape(slashPath)).getMTime();
+            sftp = alloc();
+            try {
+                return 1000L * sftp.stat(escape(slashPath)).getMTime();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new GetLastModifiedException(this, e);
         } catch (JSchException e) {
@@ -341,8 +416,15 @@ public class SshNode extends Node {
 
     @Override
     public void setLastModified(long millis) throws SetLastModifiedException {
+        ChannelSftp sftp;
+
         try {
-            getChannel().setMtime(escape(slashPath), (int) (millis / 1000));
+            sftp = alloc();
+            try {
+                sftp.setMtime(escape(slashPath), (int) (millis / 1000));
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new SetLastModifiedException(this, e);
         } catch (JSchException e) {
@@ -352,8 +434,15 @@ public class SshNode extends Node {
 
     @Override
     public int getMode() throws IOException {
+        ChannelSftp sftp;
+
         try {
-            return getChannel().stat(escape(slashPath)).getPermissions() & 0777;
+            sftp = alloc();
+            try {
+                return sftp.stat(escape(slashPath)).getPermissions() & 0777;
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new IOException(e);
         } catch (JSchException e) {
@@ -364,13 +453,17 @@ public class SshNode extends Node {
     @Override
     public void setMode(int mode) throws IOException {
         SftpATTRS stat;
-        ChannelSftp channel;
+        ChannelSftp sftp;
 
         try {
-            channel = getChannel();
-            stat = channel.stat(escape(slashPath));
-            stat.setPERMISSIONS(mode);
-            channel.setStat(escape(slashPath), stat);
+            sftp = alloc();
+            try {
+                stat = sftp.stat(escape(slashPath));
+                stat.setPERMISSIONS(mode);
+                sftp.setStat(escape(slashPath), stat);
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new IOException(e);
         } catch (JSchException e) {
@@ -380,8 +473,15 @@ public class SshNode extends Node {
 
     @Override
     public int getUid() throws IOException {
+        ChannelSftp sftp;
+
         try {
-            return getChannel().stat(escape(slashPath)).getUId();
+            sftp = alloc();
+            try {
+                return sftp.stat(escape(slashPath)).getUId();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new IOException(e);
         } catch (JSchException e) {
@@ -393,7 +493,7 @@ public class SshNode extends Node {
     public void setUid(int uid) throws IOException {
         String str;
         SftpATTRS stat;
-        ChannelSftp channel;
+        ChannelSftp sftp;
 
         try {
             if (isDirectory()) { // TODO
@@ -402,10 +502,14 @@ public class SshNode extends Node {
                     throw new IOException("chown failed:" + str);
                 }
             } else {
-                channel = getChannel();
-                stat = channel.stat(escape(slashPath));
-                stat.setUIDGID(uid, stat.getGId());
-                channel.setStat(escape(slashPath), stat);
+                sftp = alloc();
+                try {
+                    stat = sftp.stat(escape(slashPath));
+                    stat.setUIDGID(uid, stat.getGId());
+                    sftp.setStat(escape(slashPath), stat);
+                } finally {
+                    free(sftp);
+                }
             }
         } catch (JSchException e) {
             throw new IOException(e);
@@ -416,8 +520,15 @@ public class SshNode extends Node {
 
     @Override
     public int getGid() throws IOException {
+        ChannelSftp sftp;
+
         try {
-            return getChannel().stat(escape(slashPath)).getGId();
+            sftp = alloc();
+            try {
+                return sftp.stat(escape(slashPath)).getGId();
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             throw new IOException(e);
         } catch (JSchException e) {
@@ -429,7 +540,7 @@ public class SshNode extends Node {
     public void setGid(int gid) throws IOException {
         String str;
         SftpATTRS stat;
-        ChannelSftp channel;
+        ChannelSftp sftp;
 
         try {
             if (isDirectory()) { // TODO
@@ -438,10 +549,14 @@ public class SshNode extends Node {
                     throw new IOException("chgrp failed:" + str);
                 }
             } else {
-                channel = getChannel();
-                stat = channel.stat(escape(slashPath));
-                stat.setUIDGID(stat.getUId(), gid);
-                channel.setStat(escape(slashPath), stat);
+                sftp = alloc();
+                try {
+                    stat = sftp.stat(escape(slashPath));
+                    stat.setUIDGID(stat.getUId(), gid);
+                    sftp.setStat(escape(slashPath), stat);
+                } finally {
+                    free(sftp);
+                }
             }
         } catch (JSchException e) {
             throw new IOException(e);
@@ -501,8 +616,15 @@ public class SshNode extends Node {
      * @throws FileNotFoundException if this is not a file
      */
     public void get(OutputStream out) throws IOException {
+        ChannelSftp sftp;
+
         try {
-            getChannel().get(escape(slashPath), out);
+            sftp = alloc();
+            try {
+                sftp.get(escape(slashPath), out);
+            } finally {
+                free(sftp);
+            }
         } catch (SftpException e) {
             if (e.id == 2 || e.id == 4) {
                 throw new FileNotFoundException(getPath());
@@ -518,6 +640,25 @@ public class SshNode extends Node {
     }
 
     public void put(final byte[] data, boolean append) throws JSchException, SftpException {
-        getChannel().put(new ByteArrayInputStream(data), escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
+        ChannelSftp sftp;
+
+        sftp = alloc();
+        try {
+            sftp.put(new ByteArrayInputStream(data), escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
+        } finally {
+            free(sftp);
+        }
     }
+
+
+    //-- convenience
+
+    private ChannelSftp alloc() throws JSchException {
+        return root.allocateChannelSftp();
+    }
+
+    private void free(ChannelSftp channel) throws JSchException {
+        root.freeChannelSftp(channel);
+    }
+
 }

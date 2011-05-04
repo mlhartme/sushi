@@ -1213,7 +1213,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- multi-threading tests
 
-    // TODO: Test
+    @Test
     public void multiReadBytes() throws Exception {
         final Node file;
 

@@ -36,7 +36,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
-    private ChannelSftp channelFtp;
+    private ChannelSftp sftp;
 
     public SshRoot(SshFilesystem filesystem, String host, String user, Credentials credentials, int timeout)
     throws JSchException {
@@ -49,7 +49,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         this.credentials = credentials;
         this.session = login(filesystem.getJSch(), host);
         this.session.connect(timeout);
-        this.channelFtp = null;
+        this.sftp = null;
         OnShutdown.get().onShutdown(this);
     }
 
@@ -93,12 +93,25 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
 
     //--
 
-    public ChannelSftp getChannelFtp() throws JSchException {
-        if (channelFtp == null) {
-            channelFtp = (ChannelSftp) session.openChannel("sftp");
-            channelFtp.connect();
+    public synchronized ChannelSftp allocateChannelSftp() throws JSchException {
+        ChannelSftp result;
+
+        if (sftp != null) {
+            result = sftp;
+            sftp = null;
+        } else {
+            result = (ChannelSftp) session.openChannel("sftp");
+            result.connect();
         }
-        return channelFtp;
+        return result;
+    }
+
+    public synchronized void freeChannelSftp(ChannelSftp free) {
+        if (sftp == null) {
+            sftp = free;
+        } else {
+            free.disconnect();
+        }
     }
 
     public ChannelExec createChannelExec() throws JSchException {

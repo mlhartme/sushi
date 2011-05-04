@@ -6,6 +6,15 @@
       <action dev="mlhartme" type="fix">
         Various Windows fixes.
       </action>
+      <action dev="mlhartme" type="fix">
+        Multi-threading fixes for WebdavNode and SshNode.
+      </action>
+      <action dev="mlhartme" type="update">
+        SshRoot.getChannel() changed to allocSftpChannel and freeSftpChannel().
+      </action>
+      <action dev="mlhartme" type="remove">
+        Dump SshNode.getChannel().
+      </action>
       <action dev="mlhartme" type="update">
         Always use / in paths; World.file() methods expect filePaths (with platform separators), not paths.
       </action>

@@ -113,7 +113,7 @@ public class WebdavRoot implements Root<WebdavNode> {
 
     private final List<WebdavConnection> pool = new ArrayList<WebdavConnection>();
 
-    public WebdavConnection allocate() throws IOException {
+    public synchronized WebdavConnection allocate() throws IOException {
         int size;
 
         size = pool.size();
@@ -131,7 +131,7 @@ public class WebdavRoot implements Root<WebdavNode> {
         }
     }
 
-    public void free(HttpResponse response, WebdavConnection connection) throws IOException {
+    public synchronized void free(HttpResponse response, WebdavConnection connection) throws IOException {
         HttpEntity entity;
 
         if (response != null) {

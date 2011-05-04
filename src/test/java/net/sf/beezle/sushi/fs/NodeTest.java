@@ -1064,17 +1064,23 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void toStr() {
+        Node orig;
         Node node;
 
-        work.getWorld().setWorking(work);
-        node = work.join("foo");
-        assertEquals(".", work.toString());
-        assertEquals("foo", node.toString());
-        work.getWorld().setWorking(null);
-        if (node instanceof FileNode) {
-            assertEquals(((FileNode) node).getFile().toString(), node.toString());
-        } else {
-            assertEquals(node.getURI().toString(), node.toString());
+        orig = work.getWorld().getWorking();
+        try {
+            work.getWorld().setWorking(work);
+            node = work.join("foo");
+            assertEquals(".", work.toString());
+            assertEquals("foo", node.toString());
+            work.getWorld().setWorking(null);
+            if (node instanceof FileNode) {
+                assertEquals(((FileNode) node).getFile().toString(), node.toString());
+            } else {
+                assertEquals(node.getURI().toString(), node.toString());
+            }
+        } finally {
+            work.getWorld().setWorking(orig);
         }
     }
 

@@ -436,9 +436,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
                     // skip
                 } else if (c == '/') {
                     // skip
-                } else if (c == '*') {
+                } else if (c == '*') { // TODO: still fail in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
                     // skip
-                } else if (c == '?') {
+                } else if (c == '?') { // TODO: still fail in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
                     // skip
                 } else if (c == '\\') {
                     // skip

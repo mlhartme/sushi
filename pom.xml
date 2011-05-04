@@ -35,6 +35,7 @@
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
+      <!-- TODO: 0.1.44 does not compile; 0.1.44-1 still fails the specialNames test for * and ? --> 
       <version>0.1.42</version>
       <optional>true</optional>
     </dependency>

@@ -1210,4 +1210,19 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertTrue(file.isFile());
     }
 
+
+    //-- multi-threading tests
+
+    // TODO: Test
+    public void multiReadBytes() throws Exception {
+        final Node file;
+
+        file = work.join("foo").writeString("abc");
+        RepeatThread.runAll(new Step() {
+            @Override
+            public void invoke() throws Exception {
+                assertEquals("abc", file.readString());
+            }
+        }, 7, 100);
+    }
 }

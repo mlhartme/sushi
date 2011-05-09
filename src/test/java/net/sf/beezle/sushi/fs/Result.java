@@ -17,32 +17,80 @@
 
 package net.sf.beezle.sushi.fs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Result {
-    private boolean complete;
+    private int next;
     private Step[] steps;
     private Exception[] exceptions;
     private long[] starts;
     private long[] ends;
-    private int next;
+    private boolean complete;
 
     public Result(int size) {
-        complete = false;
+        next = 0;
+        steps = new Step[size];
         starts = new long[size];
         ends = new long[size];
-        steps = new Step[size];
         exceptions = new Exception[size];
+        complete = false;
     }
 
     /** @return true if the calling thread should complete */
     public synchronized boolean add(Step step, Exception exception, long start, long end) {
+        steps[next] = step;
         starts[next] = start;
         ends[next] = end;
-        steps[next] = step;
         exceptions[next] = exception;
-        next = (next + 1) % steps.length;
+        next = (next + 1) % starts.length;
         if (!complete && exception != null) {
             complete = true;
         }
         return complete;
+    }
+
+
+    public String toString() {
+        int i, count;
+        StringBuilder result;
+
+        result = new StringBuilder();
+        for (i = startIndex(), count = size(); count > 0; i = (i + 1) % steps.length, count--) {
+            result.append(steps[i]);
+            if (exceptions[i] != null) {
+                result.append(": ");
+                result.append(exceptions[i].getMessage());
+            }
+            result.append('\n');
+        }
+        return result.toString();
+    }
+
+    public int startIndex() {
+        return steps[next] != null ? next : 0;
+    }
+
+    public int size() {
+        return steps[next] != null ? steps.length : next;
+    }
+
+    public void fail() {
+        List<Exception> lst;
+
+        lst = new ArrayList<Exception>();
+        for (int i = 0; i < exceptions.length; i++) {
+            if (exceptions[i] != null) {
+                lst.add(exceptions[i]);
+            }
+        }
+        switch (lst.size()) {
+            case 0:
+                return;
+            case 1:
+                throw new RuntimeException("1 failure:\n" + toString(), lst.get(0));
+            default:
+                throw new RuntimeException("multiple failures\n" + toString());
+        }
     }
 }

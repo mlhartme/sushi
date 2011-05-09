@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.webdav;
 
 import net.sf.beezle.sushi.fs.webdav.methods.Method;
+import net.sf.beezle.sushi.xml.Builder;
 import net.sf.beezle.sushi.xml.ChildElements;
 import net.sf.beezle.sushi.xml.Dom;
 import net.sf.beezle.sushi.xml.Xml;
@@ -34,16 +35,20 @@ import java.util.List;
 public class MultiStatus {
     private static final String XML_STATUS = "status";
     private static final String XML_PROPSTAT = "propstat";
-    
+
 	public static List<MultiStatus> fromResponse(Xml xml, HttpResponse response) throws IOException {
+        Builder builder;
         InputStream in;
 		Element root;
 		List<MultiStatus> result;
 		ChildElements iter;
-		
+
         in = response.getEntity().getContent();
         try {
-            root = xml.getBuilder().parse(in).getDocumentElement();
+            builder = xml.getBuilder();
+            synchronized (builder) {
+                root = builder.parse(in).getDocumentElement();
+            }
         } catch (SAXException e) {
             throw new IOException(e.getMessage(), e);
         } finally {
@@ -67,7 +72,7 @@ public class MultiStatus {
         Element prop;
         int status;
         ChildElements propIter;
-        
+
         Dom.require(response, Method.XML_RESPONSE, Method.DAV);
 		href = Dom.getFirstChildElement(response, "href", Method.DAV);
         if (href == null) {
@@ -86,7 +91,7 @@ public class MultiStatus {
             }
         }
     }
-	
+
     //--
 
     public final String href;
@@ -100,7 +105,7 @@ public class MultiStatus {
     }
 
     //--
-    
+
     public static MultiStatus lookup(List<MultiStatus> lst, Name name, int status) {
     	for (MultiStatus ms : lst) {
     		if (status == ms.status && name.equals(ms.property.getName())) {
@@ -112,7 +117,7 @@ public class MultiStatus {
 
     public static MultiStatus lookupOne(List<MultiStatus> lst, Name name) {
     	MultiStatus result;
-    	
+
     	result = null;
     	for (MultiStatus ms : lst) {
     		if (name.equals(ms.property.getName())) {

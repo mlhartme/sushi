@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs.webdav.methods;
 import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
 import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import net.sf.beezle.sushi.fs.webdav.WebdavRoot;
+import net.sf.beezle.sushi.xml.Serializer;
 import net.sf.beezle.sushi.xml.Namespace;
 import net.sf.beezle.sushi.xml.Xml;
 import org.apache.http.HttpEntity;
@@ -39,42 +40,46 @@ public abstract class Method<T> {
     public static final String XML_PROP = "prop";
     public static final String XML_RESPONSE = "response";
 
-    
+
     //--
-    
+
     protected final WebdavRoot root;
 
     private final BasicHttpEntityEnclosingRequest request;
-    
+
     public Method(String method, WebdavNode resource) {
         this.root = resource.getRoot();
         this.request = new BasicHttpEntityEnclosingRequest(method, resource.getAbsPath());
     }
 
     //--
-    
+
     public void setRequestHeader(String name, String value) {
     	request.addHeader(name, value);
     }
-    
+
     public void setRequestEntity(Document body) throws IOException {
+        Serializer serializer;
         ByteArrayOutputStream serialized;
-        
+
         serialized = new ByteArrayOutputStream();
-       	getXml().getSerializer().serialize(new DOMSource(body), new StreamResult(serialized));
+        serializer = getXml().getSerializer();
+        synchronized (serializer) {
+            serializer.serialize(new DOMSource(body), new StreamResult(serialized));
+        }
     	request.setEntity(new ByteArrayEntity(serialized.toByteArray()));
     }
 
     //--
-    
+
     public String getUri() {
     	return request.getRequestLine().getUri();
     }
-    
+
     public Xml getXml() {
         return root.getFilesystem().getWorld().getXml();
     }
-    
+
     //--
 
     public T invoke() throws IOException {
@@ -83,7 +88,7 @@ public abstract class Method<T> {
 
     public WebdavConnection request() throws IOException {
         WebdavConnection conn;
-        
+
         conn = root.allocate();
     	setRequestHeader("Expires", "0");
         setRequestHeader("Pragma", "no-cache");
@@ -109,7 +114,7 @@ public abstract class Method<T> {
 
     protected void setContentHeader() {
         HttpEntity entity;
-        
+
         entity = request.getEntity();
         if (entity == null) {
             request.addHeader(HTTP.CONTENT_LEN, "0");
@@ -120,14 +125,14 @@ public abstract class Method<T> {
         }
         request.addHeader(HTTP.CONTENT_LEN, Long.toString(entity.getContentLength()));
         if (entity.getContentType() != null) {
-            request.addHeader(entity.getContentType()); 
+            request.addHeader(entity.getContentType());
         }
         if (entity.getContentEncoding() != null) {
-            request.addHeader(entity.getContentEncoding()); 
+            request.addHeader(entity.getContentEncoding());
         }
-    	
+
     }
-    
+
     // TODO: connection argument needed for GetMethod ...
     public abstract T processResponse(WebdavConnection connection, HttpResponse response) throws IOException;
 

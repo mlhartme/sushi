@@ -30,11 +30,15 @@ import java.util.List;
 public class PropFind extends Method<List<MultiStatus>> {
     public PropFind(WebdavNode resource, Name name, int depth) throws IOException {
     	super("PROPFIND", resource);
-    	
+
         Document document;
+        Builder builder;
 
         setRequestHeader("Depth", String.valueOf(depth));
-        document = getXml().getBuilder().createDocument("propfind", DAV);
+        builder = getXml().getBuilder();
+        synchronized (builder) {
+            document = builder.createDocument("propfind", DAV);
+        }
 		name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
         setRequestEntity(document);
     }

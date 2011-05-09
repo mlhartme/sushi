@@ -17,32 +17,32 @@
 
 package net.sf.beezle.sushi.fs;
 
-public class Log {
-    private boolean terminate;
+public class Result {
+    private boolean complete;
     private Step[] steps;
     private Exception[] exceptions;
     private long[] starts;
     private long[] ends;
     private int next;
 
-    public Log(int size) {
-        terminate = false;
+    public Result(int size) {
+        complete = false;
         starts = new long[size];
         ends = new long[size];
         steps = new Step[size];
         exceptions = new Exception[size];
     }
 
-    /** @return true if the calling thread should terminate */
+    /** @return true if the calling thread should complete */
     public synchronized boolean add(Step step, Exception exception, long start, long end) {
         starts[next] = start;
         ends[next] = end;
         steps[next] = step;
         exceptions[next] = exception;
         next = (next + 1) % steps.length;
-        if (!terminate && exception != null) {
-            terminate = true;
+        if (!complete && exception != null) {
+            complete = true;
         }
-        return terminate;
+        return complete;
     }
 }

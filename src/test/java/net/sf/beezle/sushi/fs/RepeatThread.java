@@ -22,10 +22,10 @@ import java.util.Random;
 public class RepeatThread extends Thread {
     public static void runAll(int parallel, int count, Step ... steps) throws Exception {
         RepeatThread[] threads;
-        Log log;
+        Result log;
 
         threads = new RepeatThread[parallel];
-        log = new Log(100);
+        log = new Result(100);
         for (int i = 0; i < parallel; i++) {
             threads[i] = new RepeatThread(steps, count, log);
         }
@@ -37,14 +37,14 @@ public class RepeatThread extends Thread {
         }
     }
 
-    private final Log log;
+    private final Result result;
     private final Random random;
     private final Step[] steps;
     private final int count;
     private Exception exception;
 
-    public RepeatThread(Step[] steps, int count, Log log) {
-        this.log = log;
+    public RepeatThread(Step[] steps, int count, Result result) {
+        this.result = result;
         this.random = new Random();
         this.steps = steps;
         this.count = count;
@@ -65,7 +65,7 @@ public class RepeatThread extends Thread {
             } catch (Exception e) {
                 exception = e;
             }
-            if (log.add(step, exception, started, System.currentTimeMillis())) {
+            if (result.add(step, exception, started, System.currentTimeMillis())) {
                 return;
             }
         }

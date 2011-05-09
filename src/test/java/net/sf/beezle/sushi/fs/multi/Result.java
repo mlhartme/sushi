@@ -22,14 +22,16 @@ import java.util.List;
 
 public class Result {
     private int next;
-    private Step[] steps;
-    private Exception[] exceptions;
-    private long[] starts;
-    private long[] ends;
+    private final int[] ids;
+    private final Step[] steps;
+    private final Exception[] exceptions;
+    private final long[] starts;
+    private final long[] ends;
     private boolean complete;
 
     public Result(int size) {
         next = 0;
+        ids = new int[size];
         steps = new Step[size];
         starts = new long[size];
         ends = new long[size];
@@ -38,7 +40,8 @@ public class Result {
     }
 
     /** @return true if the calling thread should complete */
-    public synchronized boolean add(Step step, Exception exception, long start, long end) {
+    public synchronized boolean add(int id, Step step, Exception exception, long start, long end) {
+        ids[next] = id;
         steps[next] = step;
         starts[next] = start;
         ends[next] = end;
@@ -52,11 +55,19 @@ public class Result {
 
 
     public String toString() {
+        long firstStart;
         int i, count;
         StringBuilder result;
 
         result = new StringBuilder();
+        firstStart = firstStart();
         for (i = startIndex(), count = size(); count > 0; i = (i + 1) % steps.length, count--) {
+            result.append(starts[i] - firstStart);
+            result.append('-');
+            result.append(ends[i] - firstStart);
+            result.append('@');
+            result.append(ids[i]);
+            result.append(": ");
             result.append(steps[i]);
             if (exceptions[i] != null) {
                 result.append(": ");
@@ -92,5 +103,17 @@ public class Result {
             default:
                 throw new RuntimeException("multiple failures\n" + toString());
         }
+    }
+
+    public long firstStart() {
+        long result;
+
+        result = Long.MAX_VALUE;
+        for (int i = 0; i < steps.length; i++) {
+            if (steps[i] != null) {
+                result = Math.min(result, starts[i]);
+            }
+        }
+        return result;
     }
 }

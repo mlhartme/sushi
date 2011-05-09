@@ -26,7 +26,7 @@ public abstract class Step {
 
     public abstract void invoke() throws Exception;
 
-    public String toSting() {
+    public String toString() {
         return line;
     }
 }

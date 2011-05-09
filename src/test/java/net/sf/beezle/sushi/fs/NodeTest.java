@@ -18,7 +18,7 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.fs.multi.RandomStepThread;
+import net.sf.beezle.sushi.fs.multi.StepThread;
 import net.sf.beezle.sushi.fs.multi.Step;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
@@ -1216,20 +1216,35 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     //-- multi-threading tests
 
     @Test
-    public void multiReadBytes() throws Exception {
+    public void multiThreading() throws Exception {
         final Node small;
 
         small = work.join("foo").writeString("abc");
-        RandomStepThread.runAll(7, 100, new Step("small.readString()") {
-            @Override
-            public void invoke() throws Exception {
-                assertEquals("abc", small.readString());
-            }
-        }, new Step("small.length()") {
-            @Override
-            public void invoke() throws Exception {
-                assertEquals(3, small.length());
-            }
-        });
+        StepThread.runAll(5, 100,
+                new Step("small.readBytes()") {
+                    @Override
+                    public void invoke() throws Exception {
+                        assertEquals("abc", small.readString());
+                    }
+                },
+                new Step("small.readString()") {
+                    @Override
+                    public void invoke() throws Exception {
+                        assertEquals("abc", small.readString());
+                    }
+                },
+                new Step("small.readLines()") {
+                    @Override
+                    public void invoke() throws Exception {
+                        assertEquals(Arrays.asList("abc"), small.readLines());
+                    }
+                },
+                new Step("small.length()") {
+                    @Override
+                    public void invoke() throws Exception {
+                        assertEquals(3, small.length());
+                    }
+                }
+        );
     }
 }

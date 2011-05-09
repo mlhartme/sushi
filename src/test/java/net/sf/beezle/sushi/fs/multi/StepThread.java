@@ -19,15 +19,15 @@ package net.sf.beezle.sushi.fs.multi;
 
 import java.util.Random;
 
-public class RandomStepThread extends Thread {
+public class StepThread extends Thread {
     public static void runAll(int threadCount, int stepCount, Step... steps) throws Exception {
-        RandomStepThread[] threads;
+        StepThread[] threads;
         Result result;
 
-        threads = new RandomStepThread[threadCount];
+        threads = new StepThread[threadCount];
         result = new Result(100);
         for (int i = 0; i < threadCount; i++) {
-            threads[i] = new RandomStepThread(steps, stepCount, result);
+            threads[i] = new StepThread(i + 1, steps, stepCount, result);
         }
         for (int i = 0; i < threadCount; i++) {
             threads[i].start();
@@ -38,12 +38,14 @@ public class RandomStepThread extends Thread {
         result.fail();
     }
 
+    private final int id;
     private final Result result;
     private final Random random;
     private final Step[] steps;
     private final int stepCount;
 
-    public RandomStepThread(Step[] steps, int stepCount, Result result) {
+    public StepThread(int id, Step[] steps, int stepCount, Result result) {
+        this.id = id;
         this.result = result;
         this.random = new Random();
         this.steps = steps;
@@ -64,7 +66,7 @@ public class RandomStepThread extends Thread {
             } catch (Exception e) {
                 exception = e;
             }
-            if (result.add(step, exception, started, System.currentTimeMillis())) {
+            if (result.add(id, step, exception, started, System.currentTimeMillis())) {
                 return;
             }
         }

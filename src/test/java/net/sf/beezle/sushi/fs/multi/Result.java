@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.fs;
+package net.sf.beezle.sushi.fs.multi;
 
 import java.util.ArrayList;
 import java.util.List;

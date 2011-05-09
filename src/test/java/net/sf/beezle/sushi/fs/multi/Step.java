@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.fs;
+package net.sf.beezle.sushi.fs.multi;
 
 public abstract class Step {
     private final String line;
@@ -25,4 +25,8 @@ public abstract class Step {
     }
 
     public abstract void invoke() throws Exception;
+
+    public String toSting() {
+        return line;
+    }
 }

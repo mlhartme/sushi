@@ -15,24 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.fs;
+package net.sf.beezle.sushi.fs.multi;
 
 import java.util.Random;
 
-public class RepeatThread extends Thread {
-    public static void runAll(int parallel, int count, Step ... steps) throws Exception {
-        RepeatThread[] threads;
+public class RandomStepThread extends Thread {
+    public static void runAll(int threadCount, int stepCount, Step... steps) throws Exception {
+        RandomStepThread[] threads;
         Result result;
 
-        threads = new RepeatThread[parallel];
+        threads = new RandomStepThread[threadCount];
         result = new Result(100);
-        for (int i = 0; i < parallel; i++) {
-            threads[i] = new RepeatThread(steps, count, result);
+        for (int i = 0; i < threadCount; i++) {
+            threads[i] = new RandomStepThread(steps, stepCount, result);
         }
-        for (int i = 0; i < parallel; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads[i].start();
         }
-        for (int i = 0; i < parallel; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads[i].join();
         }
         result.fail();
@@ -41,13 +41,13 @@ public class RepeatThread extends Thread {
     private final Result result;
     private final Random random;
     private final Step[] steps;
-    private final int count;
+    private final int stepCount;
 
-    public RepeatThread(Step[] steps, int count, Result result) {
+    public RandomStepThread(Step[] steps, int stepCount, Result result) {
         this.result = result;
         this.random = new Random();
         this.steps = steps;
-        this.count = count;
+        this.stepCount = stepCount;
     }
 
     public void run() {
@@ -55,7 +55,7 @@ public class RepeatThread extends Thread {
         long started;
         Exception exception;
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < stepCount; i++) {
             step = steps[random.nextInt(steps.length)];
             started = System.currentTimeMillis();
             try {

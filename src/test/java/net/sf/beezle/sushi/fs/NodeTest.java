@@ -18,6 +18,8 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.fs.multi.RandomStepThread;
+import net.sf.beezle.sushi.fs.multi.Step;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -552,7 +554,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.appendLines("", "xyz");
         file.appendString("1");
         file.appendChars('A', 'B');
-        assertEquals("ab" + OS.CURRENT.lineSeparator + "xyz" + 
+        assertEquals("ab" + OS.CURRENT.lineSeparator + "xyz" +
         		OS.CURRENT.lineSeparator + "1AB", file.readString());
     }
 
@@ -1218,7 +1220,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         final Node small;
 
         small = work.join("foo").writeString("abc");
-        RepeatThread.runAll(7, 100, new Step("small.readString()") {
+        RandomStepThread.runAll(7, 100, new Step("small.readString()") {
             @Override
             public void invoke() throws Exception {
                 assertEquals("abc", small.readString());

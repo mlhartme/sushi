@@ -54,19 +54,20 @@ public class RepeatThread extends Thread {
     public void run() {
         Step step;
         long started;
+        Exception exception;
 
         for (int i = 0; i < count; i++) {
             step = steps[random.nextInt(steps.length)];
             started = System.currentTimeMillis();
             try {
                 step.invoke();
+                exception = null;
             } catch (Exception e) {
                 exception = e;
-                log.failed(step, e, started);
-                // terminate this thread
+            }
+            if (log.add(step, exception, started, System.currentTimeMillis())) {
                 return;
             }
-            log.ok(step, started);
         }
     }
 

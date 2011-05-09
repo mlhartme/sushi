@@ -18,32 +18,31 @@
 package net.sf.beezle.sushi.fs;
 
 public class Log {
+    private boolean terminate;
     private Step[] steps;
     private Exception[] exceptions;
-    private long[] starteds;
-    private long[] endeds;
+    private long[] starts;
+    private long[] ends;
     private int next;
 
     public Log(int size) {
-        starteds = new long[size];
-        endeds = new long[size];
+        terminate = false;
+        starts = new long[size];
+        ends = new long[size];
         steps = new Step[size];
         exceptions = new Exception[size];
     }
 
-    public synchronized void ok(Step step, long started) {
-        add(step, null, started);
-    }
-
-    public synchronized void failed(Step step, Exception exception, long started) {
-        add(step, exception, started);
-    }
-
-    private void add(Step step, Exception exception, long started) {
-        starteds[next] = started;
-        endeds[next] = System.currentTimeMillis();
+    /** @return true if the calling thread should terminate */
+    public synchronized boolean add(Step step, Exception exception, long start, long end) {
+        starts[next] = start;
+        ends[next] = end;
         steps[next] = step;
         exceptions[next] = exception;
         next = (next + 1) % steps.length;
+        if (!terminate && exception != null) {
+            terminate = true;
+        }
+        return terminate;
     }
 }

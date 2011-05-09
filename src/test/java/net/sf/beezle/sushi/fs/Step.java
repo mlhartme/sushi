@@ -17,6 +17,12 @@
 
 package net.sf.beezle.sushi.fs;
 
-public interface Step {
-    void invoke() throws Exception;
+public abstract class Step {
+    private final String line;
+
+    protected Step(String line) {
+        this.line = line;
+    }
+
+    public abstract void invoke() throws Exception;
 }

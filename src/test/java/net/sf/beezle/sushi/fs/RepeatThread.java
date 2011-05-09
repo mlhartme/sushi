@@ -17,13 +17,17 @@
 
 package net.sf.beezle.sushi.fs;
 
+import java.util.Random;
+
 public class RepeatThread extends Thread {
-    public static void runAll(Step step, int parallel, int count) throws Exception {
+    public static void runAll(int parallel, int count, Step ... steps) throws Exception {
         RepeatThread[] threads;
+        Log log;
 
         threads = new RepeatThread[parallel];
+        log = new Log(100);
         for (int i = 0; i < parallel; i++) {
-            threads[i] = new RepeatThread(step, count);
+            threads[i] = new RepeatThread(steps, count, log);
         }
         for (int i = 0; i < parallel; i++) {
             threads[i].start();
@@ -32,23 +36,37 @@ public class RepeatThread extends Thread {
             threads[i].finish();
         }
     }
-    private final Step step;
+
+    private final Log log;
+    private final Random random;
+    private final Step[] steps;
     private final int count;
     private Exception exception;
 
-    public RepeatThread(Step step, int count) {
-        this.step = step;
+    public RepeatThread(Step[] steps, int count, Log log) {
+        this.log = log;
+        this.random = new Random();
+        this.steps = steps;
         this.count = count;
         this.exception = null;
     }
 
     public void run() {
+        Step step;
+        long started;
+
         for (int i = 0; i < count; i++) {
+            step = steps[random.nextInt(steps.length)];
+            started = System.currentTimeMillis();
             try {
                 step.invoke();
             } catch (Exception e) {
                 exception = e;
+                log.failed(step, e, started);
+                // terminate this thread
+                return;
             }
+            log.ok(step, started);
         }
     }
 

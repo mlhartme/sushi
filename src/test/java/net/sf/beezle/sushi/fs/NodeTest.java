@@ -1215,14 +1215,19 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void multiReadBytes() throws Exception {
-        final Node file;
+        final Node small;
 
-        file = work.join("foo").writeString("abc");
-        RepeatThread.runAll(new Step() {
+        small = work.join("foo").writeString("abc");
+        RepeatThread.runAll(7, 100, new Step("small.readString()") {
             @Override
             public void invoke() throws Exception {
-                assertEquals("abc", file.readString());
+                assertEquals("abc", small.readString());
             }
-        }, 7, 100);
+        }, new Step("small.length()") {
+            @Override
+            public void invoke() throws Exception {
+                assertEquals(3, small.length());
+            }
+        });
     }
 }

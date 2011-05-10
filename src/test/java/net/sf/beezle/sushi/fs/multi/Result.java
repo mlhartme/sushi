@@ -17,14 +17,18 @@
 
 package net.sf.beezle.sushi.fs.multi;
 
+import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.util.Util;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Result {
     private int next;
     private final int[] ids;
-    private final Step[] steps;
-    private final Exception[] exceptions;
+    private final Method[] methods;
+    private final Throwable[] throwables;
     private final long[] starts;
     private final long[] ends;
     private boolean complete;
@@ -32,22 +36,22 @@ public class Result {
     public Result(int size) {
         next = 0;
         ids = new int[size];
-        steps = new Step[size];
+        methods = new Method[size];
         starts = new long[size];
         ends = new long[size];
-        exceptions = new Exception[size];
+        throwables = new Throwable[size];
         complete = false;
     }
 
     /** @return true if the calling thread should complete */
-    public synchronized boolean add(int id, Step step, Exception exception, long start, long end) {
+    public synchronized boolean add(int id, Method method, Throwable throwable, long start, long end) {
         ids[next] = id;
-        steps[next] = step;
+        methods[next] = method;
         starts[next] = start;
         ends[next] = end;
-        exceptions[next] = exception;
+        throwables[next] = throwable;
         next = (next + 1) % starts.length;
-        if (!complete && exception != null) {
+        if (!complete && throwable != null) {
             complete = true;
         }
         return complete;
@@ -61,17 +65,17 @@ public class Result {
 
         result = new StringBuilder();
         firstStart = firstStart();
-        for (i = startIndex(), count = size(); count > 0; i = (i + 1) % steps.length, count--) {
+        for (i = startIndex(), count = size(); count > 0; i = (i + 1) % methods.length, count--) {
             result.append(starts[i] - firstStart);
             result.append('-');
             result.append(ends[i] - firstStart);
             result.append('@');
             result.append(ids[i]);
             result.append(": ");
-            result.append(steps[i]);
-            if (exceptions[i] != null) {
-                result.append(": ");
-                result.append(exceptions[i].getMessage());
+            result.append(methods[i].getName());
+            if (throwables[i] != null) {
+                result.append(":");
+                result.append(Strings.indent(Util.toString(throwables[i]), "  "));
             }
             result.append('\n');
         }
@@ -79,20 +83,20 @@ public class Result {
     }
 
     public int startIndex() {
-        return steps[next] != null ? next : 0;
+        return methods[next] != null ? next : 0;
     }
 
     public int size() {
-        return steps[next] != null ? steps.length : next;
+        return methods[next] != null ? methods.length : next;
     }
 
     public void fail() {
-        List<Exception> lst;
+        List<Throwable> lst;
 
-        lst = new ArrayList<Exception>();
-        for (int i = 0; i < exceptions.length; i++) {
-            if (exceptions[i] != null) {
-                lst.add(exceptions[i]);
+        lst = new ArrayList<Throwable>();
+        for (int i = 0; i < throwables.length; i++) {
+            if (throwables[i] != null) {
+                lst.add(throwables[i]);
             }
         }
         switch (lst.size()) {
@@ -109,8 +113,8 @@ public class Result {
         long result;
 
         result = Long.MAX_VALUE;
-        for (int i = 0; i < steps.length; i++) {
-            if (steps[i] != null) {
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i] != null) {
                 result = Math.min(result, starts[i]);
             }
         }

@@ -17,17 +17,22 @@
 
 package net.sf.beezle.sushi.fs.multi;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class StepThread extends Thread {
-    public static void runAll(int threadCount, int stepCount, Step... steps) throws Exception {
-        StepThread[] threads;
+public class Invoker extends Thread {
+    public static void runAll(int threadCount, int stepCount, Object target) throws Exception {
+        Invoker[] threads;
         Result result;
 
-        threads = new StepThread[threadCount];
+        threads = new Invoker[threadCount];
         result = new Result(100);
         for (int i = 0; i < threadCount; i++) {
-            threads[i] = new StepThread(i + 1, steps, stepCount, result);
+            threads[i] = new Invoker(i + 1, target, getMethods(target), stepCount, result);
         }
         for (int i = 0; i < threadCount; i++) {
             threads[i].start();
@@ -38,35 +43,51 @@ public class StepThread extends Thread {
         result.fail();
     }
 
+    private static List<Method> getMethods(Object target) {
+        List<Method> result;
+
+        result = new ArrayList<Method>();
+        for (Method method : target.getClass().getDeclaredMethods()) {
+            if (!Modifier.isStatic(method.getModifiers())) {
+                result.add(method);
+            }
+        }
+        return result;
+    }
+    
     private final int id;
     private final Result result;
     private final Random random;
-    private final Step[] steps;
+    private final Object target;
+    private final List<Method> methods;
     private final int stepCount;
 
-    public StepThread(int id, Step[] steps, int stepCount, Result result) {
+    public Invoker(int id, Object target, List<Method> methods, int stepCount, Result result) {
         this.id = id;
         this.result = result;
         this.random = new Random();
-        this.steps = steps;
+        this.target = target;
+        this.methods = methods;
         this.stepCount = stepCount;
     }
 
     public void run() {
-        Step step;
+        Method method;
         long started;
-        Exception exception;
+        Throwable throwable;
 
         for (int i = 0; i < stepCount; i++) {
-            step = steps[random.nextInt(steps.length)];
+            method = methods.get(random.nextInt(methods.size()));
             started = System.currentTimeMillis();
             try {
-                step.invoke();
-                exception = null;
+                method.invoke(target);
+                throwable = null;
+            } catch (InvocationTargetException e) {
+                throwable = e.getTargetException();
             } catch (Exception e) {
-                exception = e;
+                throwable = e;
             }
-            if (result.add(id, step, exception, started, System.currentTimeMillis())) {
+            if (result.add(id, method, throwable, started, System.currentTimeMillis())) {
                 return;
             }
         }

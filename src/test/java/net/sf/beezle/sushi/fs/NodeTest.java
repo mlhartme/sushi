@@ -18,8 +18,8 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.fs.multi.StepThread;
-import net.sf.beezle.sushi.fs.multi.Step;
+import net.sf.beezle.sushi.fs.multi.Invoker;
+import net.sf.beezle.sushi.fs.multi.Target;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -1217,34 +1217,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void multiThreading() throws Exception {
-        final Node small;
-
-        small = work.join("foo").writeString("abc");
-        StepThread.runAll(5, 100,
-                new Step("small.readBytes()") {
-                    @Override
-                    public void invoke() throws Exception {
-                        assertEquals("abc", small.readString());
-                    }
-                },
-                new Step("small.readString()") {
-                    @Override
-                    public void invoke() throws Exception {
-                        assertEquals("abc", small.readString());
-                    }
-                },
-                new Step("small.readLines()") {
-                    @Override
-                    public void invoke() throws Exception {
-                        assertEquals(Arrays.asList("abc"), small.readLines());
-                    }
-                },
-                new Step("small.length()") {
-                    @Override
-                    public void invoke() throws Exception {
-                        assertEquals(3, small.length());
-                    }
-                }
-        );
+        Invoker.runAll(5, 100, new Target(work));
     }
 }

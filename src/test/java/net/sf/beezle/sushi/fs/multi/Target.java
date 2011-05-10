@@ -17,16 +17,33 @@
 
 package net.sf.beezle.sushi.fs.multi;
 
-public abstract class Step {
-    private final String line;
+import net.sf.beezle.sushi.fs.Node;
 
-    protected Step(String line) {
-        this.line = line;
+import java.io.IOException;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+
+public class Target {
+    private final Node small;
+
+    public Target(Node work) throws IOException {
+        this.small = work.join("foo").writeString("abc");
     }
 
-    public abstract void invoke() throws Exception;
+    public void smallReadBytes() throws IOException {
+        assertEquals("abc", small.readString());
+    }
 
-    public String toString() {
-        return line;
+    public void smallReadString() throws IOException {
+        assertEquals("abc", small.readString());
+    }
+
+    public void smallReadLines() throws IOException {
+        assertEquals(Arrays.asList("abc"), small.readLines());
+    }
+
+    public void smallLength() throws IOException {
+        assertEquals(3, small.length());
     }
 }

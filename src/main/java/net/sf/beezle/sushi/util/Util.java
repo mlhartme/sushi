@@ -17,6 +17,8 @@
 
 package net.sf.beezle.sushi.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,4 +84,14 @@ public class Util {
         return -1;
     }
 
+    public static String toString(Throwable e) {
+        StringWriter dest;
+        PrintWriter pw;
+
+        dest = new StringWriter();
+        pw = new PrintWriter(dest);
+        e.printStackTrace(pw);
+        pw.close();
+        return dest.toString();
+    }
 }

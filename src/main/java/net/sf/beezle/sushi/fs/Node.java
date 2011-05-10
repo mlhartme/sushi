@@ -322,9 +322,13 @@ public abstract class Node {
     public byte[] readBytes() throws IOException {
         InputStream src;
         byte[] result;
+        Buffer buffer;
 
         src = createInputStream();
-        result = getWorld().getBuffer().readBytes(src);
+        buffer = getWorld().getBuffer();
+        synchronized (buffer) {
+            result = buffer.readBytes(src);
+        }
         src.close();
         return result;
     }

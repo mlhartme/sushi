@@ -94,4 +94,18 @@ public class Util {
         pw.close();
         return dest.toString();
     }
+
+    public static String toString(byte[] bytes) {
+        StringBuilder result;
+
+        result = new StringBuilder();
+        for (byte b : bytes) {
+            if ((b >= ' ' && b <= 'z') || b == 10) {
+                result.append((char) b);
+            } else {
+                result.append('[').append((int) b).append(']');
+            }
+        }
+        return result.toString();
+    }
 }

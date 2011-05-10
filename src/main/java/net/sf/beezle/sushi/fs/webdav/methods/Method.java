@@ -89,13 +89,13 @@ public abstract class Method<T> {
     public WebdavConnection request() throws IOException {
         WebdavConnection conn;
 
-        conn = root.allocate();
     	setRequestHeader("Expires", "0");
         setRequestHeader("Pragma", "no-cache");
         setRequestHeader("Cache-control", "no-cache");
         setRequestHeader("Cache-store", "no-store");
         setRequestHeader(HTTP.USER_AGENT, "Sushi Webdav");
         setContentHeader();
+        conn = root.allocate();
         root.send(conn, request);
         return conn;
     }

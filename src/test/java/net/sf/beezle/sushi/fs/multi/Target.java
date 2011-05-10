@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.multi;
 
 import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.util.Util;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,11 +27,15 @@ import static org.junit.Assert.assertEquals;
 
 public class Target {
     private final Node small;
+    private final byte[] mediumBytes;
+    private final Node medium;
 
     public Target(Node work) throws IOException {
-        this.small = work.join("foo").writeString("abc");
+        this.small = work.join("small").writeString("abc");
+        this.mediumBytes = bytes(16799);
+        this.medium = work.join("medium").writeBytes(mediumBytes);
     }
-
+/*
     public void smallReadBytes() throws IOException {
         assertEquals("abc", small.readString());
     }
@@ -46,4 +51,27 @@ public class Target {
     public void smallLength() throws IOException {
         assertEquals(3, small.length());
     }
+*/
+    public void mediumReadBytes() throws IOException {
+        byte[] result;
+
+        result = medium.readBytes();
+        if (!Arrays.equals(mediumBytes, result)) {
+            assertEquals(Util.toString(mediumBytes), Util.toString(result));
+        }
+    }    
+
+    //--
+
+    private static byte[] bytes(int count) {
+        byte[] result;
+
+        result = new byte[count];
+        for (int i = 0; i < count; i++) {
+            result[i] = (byte) i;
+        }
+        return result;
+    }
+    
+
 }

@@ -1217,6 +1217,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void multiThreading() throws Exception {
-        Invoker.runAll(5, 100, new Target(work));
+        Invoker.runAll(3, 2000, new Target(work));
     }
 }

@@ -833,13 +833,19 @@ public abstract class Node {
 
     public byte[] digestBytes(String name) throws IOException, NoSuchAlgorithmException {
         InputStream src;
-        MessageDigest complete;
+        MessageDigest digest;
+        Buffer buffer;
 
         src =  createInputStream();
-        complete = MessageDigest.getInstance(name);
-        getWorld().getBuffer().digest(src, complete);
-        src.close();
-        return complete.digest();
+        digest = MessageDigest.getInstance(name);
+        synchronized (digest) {
+            buffer = getWorld().getBuffer();
+            synchronized (buffer) {
+                buffer.digest(src, digest);
+            }
+            src.close();
+            return digest.digest();
+        }
     }
 
     public String digest(String name) throws IOException, NoSuchAlgorithmException {
@@ -912,5 +918,4 @@ public abstract class Node {
         }
         return tmp.getPath().substring(1);
     }
-
 }

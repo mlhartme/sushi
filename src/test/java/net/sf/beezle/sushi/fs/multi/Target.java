@@ -33,6 +33,7 @@ public class Target {
     private final Node medium;
     private final String mediumString;
     private final long mediumLastModified;
+    private final String mediumMd5;
     private final Node dir;
 
     public Target(Node work) throws IOException {
@@ -41,6 +42,7 @@ public class Target {
         this.medium = work.join("medium").writeBytes(mediumBytes);
         this.mediumString = medium.readString();
         this.mediumLastModified = medium.getLastModified();
+        this.mediumMd5 = medium.md5();
         this.dir = work.join("emptydir").mkdir();
         dir.join("one").mkfile();
         dir.join("two").mkfile();
@@ -76,6 +78,10 @@ public class Target {
         assertEquals(mediumString, medium.readString());
     }
 
+    public void mediumMd5() throws IOException {
+        assertEquals(mediumMd5, medium.md5());
+    }
+
     public void mediumLastModified() throws IOException {
         assertEquals(mediumLastModified, medium.getLastModified());
     }
@@ -92,7 +98,16 @@ public class Target {
         assertTrue(dir.isDirectory());
     }
 
-    public void mediumIsDirectory() throws IOException {
+    public void dirFind() throws IOException {
+        List<? extends Node> lst;
+
+        lst = dir.list();
+        assertTrue(lst.contains(dir.join("one")));
+        assertTrue(lst.contains(dir.join("two")));
+        assertEquals(2, lst.size());
+    }
+
+    public void dirList() throws IOException {
         List<? extends Node> lst;
 
         lst = dir.list();

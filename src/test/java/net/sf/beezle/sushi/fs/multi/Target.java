@@ -31,6 +31,7 @@ public class Target {
     private final Node small;
     private final byte[] mediumBytes;
     private final Node medium;
+    private final String mediumString;
     private final long mediumLastModified;
     private final Node dir;
 
@@ -38,6 +39,7 @@ public class Target {
         this.small = work.join("small").writeString("abc");
         this.mediumBytes = bytes(16799);
         this.medium = work.join("medium").writeBytes(mediumBytes);
+        this.mediumString = medium.readString();
         this.mediumLastModified = medium.getLastModified();
         this.dir = work.join("emptydir").mkdir();
         dir.join("one").mkfile();
@@ -70,6 +72,10 @@ public class Target {
         }
     }
 
+    public void mediumReadString() throws IOException {
+        assertEquals(mediumString, medium.readString());
+    }
+
     public void mediumLastModified() throws IOException {
         assertEquals(mediumLastModified, medium.getLastModified());
     }
@@ -99,10 +105,16 @@ public class Target {
 
     private static byte[] bytes(int count) {
         byte[] result;
+        byte b;
 
         result = new byte[count];
+        b = 32;
         for (int i = 0; i < count; i++) {
-            result[i] = (byte) i;
+            result[i] = b;
+            b++;
+            if (b > 'z') {
+                b = 32;
+            }
         }
         return result;
     }

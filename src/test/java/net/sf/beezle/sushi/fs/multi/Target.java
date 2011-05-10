@@ -22,20 +22,29 @@ import net.sf.beezle.sushi.util.Util;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class Target {
     private final Node small;
     private final byte[] mediumBytes;
     private final Node medium;
+    private final long mediumLastModified;
+    private final Node dir;
 
     public Target(Node work) throws IOException {
         this.small = work.join("small").writeString("abc");
         this.mediumBytes = bytes(16799);
         this.medium = work.join("medium").writeBytes(mediumBytes);
+        this.mediumLastModified = medium.getLastModified();
+        this.dir = work.join("emptydir").mkdir();
+        dir.join("one").mkfile();
+        dir.join("two").mkfile();
+
     }
-/*
+
     public void smallReadBytes() throws IOException {
         assertEquals("abc", small.readString());
     }
@@ -51,7 +60,7 @@ public class Target {
     public void smallLength() throws IOException {
         assertEquals(3, small.length());
     }
-*/
+
     public void mediumReadBytes() throws IOException {
         byte[] result;
 
@@ -59,7 +68,32 @@ public class Target {
         if (!Arrays.equals(mediumBytes, result)) {
             assertEquals(Util.toString(mediumBytes), Util.toString(result));
         }
-    }    
+    }
+
+    public void mediumLastModified() throws IOException {
+        assertEquals(mediumLastModified, medium.getLastModified());
+    }
+
+    public void mediumExists() throws IOException {
+        assertTrue(medium.exists());
+    }
+
+    public void mediumIsFile() throws IOException {
+        assertTrue(medium.isFile());
+    }
+
+    public void dirIsDirectory() throws IOException {
+        assertTrue(dir.isDirectory());
+    }
+
+    public void mediumIsDirectory() throws IOException {
+        List<? extends Node> lst;
+
+        lst = dir.list();
+        assertTrue(lst.contains(dir.join("one")));
+        assertTrue(lst.contains(dir.join("two")));
+        assertEquals(2, lst.size());
+    }
 
     //--
 

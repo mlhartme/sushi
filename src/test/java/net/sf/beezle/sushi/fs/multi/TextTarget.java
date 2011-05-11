@@ -83,12 +83,12 @@ public class TextTarget {
         assertEquals(lines, file.readLines());
     }
 
-    public void length() throws IOException {
-        assertEquals(length, file.length());
-    }
-
     public void md5() throws IOException {
         assertEquals(md5, file.md5());
+    }
+
+    public void length() throws IOException {
+        assertEquals(length, file.length());
     }
 
     public void lastModified() throws IOException {

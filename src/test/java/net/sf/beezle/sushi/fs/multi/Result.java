@@ -20,14 +20,13 @@ package net.sf.beezle.sushi.fs.multi;
 import net.sf.beezle.sushi.util.Strings;
 import net.sf.beezle.sushi.util.Util;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Result {
     private int next;
     private final int[] ids;
-    private final Method[] methods;
+    private final Function[] functions;
     private final Throwable[] throwables;
     private final long[] starts;
     private final long[] ends;
@@ -36,7 +35,7 @@ public class Result {
     public Result(int size) {
         next = 0;
         ids = new int[size];
-        methods = new Method[size];
+        functions = new Function[size];
         starts = new long[size];
         ends = new long[size];
         throwables = new Throwable[size];
@@ -44,9 +43,9 @@ public class Result {
     }
 
     /** @return true if the calling thread should complete */
-    public synchronized boolean add(int id, Method method, Throwable throwable, long start, long end) {
+    public synchronized boolean add(int id, Function function, Throwable throwable, long start, long end) {
         ids[next] = id;
-        methods[next] = method;
+        functions[next] = function;
         starts[next] = start;
         ends[next] = end;
         throwables[next] = throwable;
@@ -65,14 +64,14 @@ public class Result {
 
         result = new StringBuilder();
         firstStart = firstStart();
-        for (i = startIndex(), count = size(); count > 0; i = (i + 1) % methods.length, count--) {
+        for (i = startIndex(), count = size(); count > 0; i = (i + 1) % functions.length, count--) {
             result.append(starts[i] - firstStart);
             result.append('-');
             result.append(ends[i] - firstStart);
             result.append('@');
             result.append(ids[i]);
             result.append(": ");
-            result.append(methods[i].getName());
+            result.append(functions[i].toString());
             if (throwables[i] != null) {
                 result.append(":");
                 result.append(Strings.indent(Util.toString(throwables[i]), "  "));
@@ -83,11 +82,11 @@ public class Result {
     }
 
     public int startIndex() {
-        return methods[next] != null ? next : 0;
+        return functions[next] != null ? next : 0;
     }
 
     public int size() {
-        return methods[next] != null ? methods.length : next;
+        return functions[next] != null ? functions.length : next;
     }
 
     public void fail() {
@@ -113,8 +112,8 @@ public class Result {
         long result;
 
         result = Long.MAX_VALUE;
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i] != null) {
+        for (int i = 0; i < functions.length; i++) {
+            if (functions[i] != null) {
                 result = Math.min(result, starts[i]);
             }
         }

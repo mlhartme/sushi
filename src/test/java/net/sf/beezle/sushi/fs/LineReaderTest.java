@@ -18,7 +18,6 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.io.OS;
-
 import org.junit.Test;
 
 import java.io.IOException;

@@ -17,10 +17,10 @@
 
 package net.sf.beezle.sushi.metadata.xml;
 
+import net.sf.beezle.sushi.io.OS;
+
 import java.io.IOException;
 import java.io.Writer;
-
-import net.sf.beezle.sushi.io.OS;
 
 public class WriterTree extends Tree {
     private final Writer dest;

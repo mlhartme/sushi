@@ -18,13 +18,10 @@
 package net.sf.beezle.sushi.fs.multi;
 
 import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.util.Util;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class XmlTarget {
     private final Node file;

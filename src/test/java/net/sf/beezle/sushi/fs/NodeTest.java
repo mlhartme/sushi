@@ -18,10 +18,7 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.fs.multi.DirectoryTarget;
-import net.sf.beezle.sushi.fs.multi.Function;
-import net.sf.beezle.sushi.fs.multi.Invoker;
-import net.sf.beezle.sushi.fs.multi.TextTarget;
+import net.sf.beezle.sushi.fs.multi.*;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -1217,13 +1214,13 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void multiThreading() throws Exception {
         List<Function> functions;
-        Node dir;
 
         functions = new ArrayList<Function>();
         Function.forTarget("empty", TextTarget.create(work.join("empty"), 0), functions);
         Function.forTarget("small", TextTarget.create(work.join("small"), 3), functions);
         Function.forTarget("medium", TextTarget.create(work.join("medium"), 16548), functions);
         Function.forTarget("emptyDir", DirectoryTarget.create(work.join("dir"), 0), functions);
+        Function.forTarget("xml", new XmlTarget(work.join("xml").writeString("<foo><bar/></foo>")), functions);
         Function.forTarget("dir", DirectoryTarget.create(work.join("emptyDir"), 9), functions);
         Invoker.runAll(3, 1000, functions);
     }

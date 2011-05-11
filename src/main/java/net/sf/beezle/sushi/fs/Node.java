@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs;
 import net.sf.beezle.sushi.fs.filter.Filter;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.xml.Builder;
 import net.sf.beezle.sushi.xml.Serializer;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -69,6 +70,8 @@ import java.util.zip.GZIPOutputStream;
  *
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
+ *
+ * <p>As long as you stick to read operations, nodes are thread-save</p>
  */
 public abstract class Node {
     protected UnsupportedOperationException unsupported(String op) {
@@ -366,7 +369,12 @@ public abstract class Node {
     }
 
     public Document readXml() throws IOException, SAXException {
-        return getWorld().getXml().getBuilder().parse(this);
+        Builder builder;
+
+        builder = getWorld().getXml().getBuilder();
+        synchronized (builder) {
+            return builder.parse(this);
+        }
     }
 
     public Transformer readXsl() throws IOException, TransformerConfigurationException {

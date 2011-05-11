@@ -20,7 +20,11 @@ package net.sf.beezle.sushi.io;
 import net.sf.beezle.sushi.fs.Settings;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.Assert.*;
 

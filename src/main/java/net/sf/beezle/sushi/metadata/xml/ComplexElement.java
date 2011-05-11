@@ -17,7 +17,11 @@
 
 package net.sf.beezle.sushi.metadata.xml;
 
-import net.sf.beezle.sushi.metadata.*;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.ItemException;
+import net.sf.beezle.sushi.metadata.Type;
+import net.sf.beezle.sushi.metadata.Variable;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 

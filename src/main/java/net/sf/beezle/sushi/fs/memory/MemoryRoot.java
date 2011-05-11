@@ -25,7 +25,11 @@ import net.sf.beezle.sushi.io.CheckedByteArrayInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MemoryRoot implements Root<MemoryNode> {
     public final MemoryFilesystem filesystem;

@@ -17,7 +17,12 @@
 
 package net.sf.beezle.sushi.metadata.store;
 
-import net.sf.beezle.sushi.metadata.*;
+import net.sf.beezle.sushi.metadata.Cardinality;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.SimpleTypeException;
+import net.sf.beezle.sushi.metadata.Type;
 
 import java.util.ArrayList;
 import java.util.Collection;

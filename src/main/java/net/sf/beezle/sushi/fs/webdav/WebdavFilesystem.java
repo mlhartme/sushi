@@ -17,12 +17,21 @@
 
 package net.sf.beezle.sushi.fs.webdav;
 
-import net.sf.beezle.sushi.fs.*;
+import net.sf.beezle.sushi.fs.Features;
+import net.sf.beezle.sushi.fs.Filesystem;
+import net.sf.beezle.sushi.fs.NodeInstantiationException;
+import net.sf.beezle.sushi.fs.Settings;
+import net.sf.beezle.sushi.fs.World;
 import org.apache.http.HttpHost;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = Settings.UTF_8;

@@ -19,7 +19,11 @@ package net.sf.beezle.sushi.fs.svn;
 
 import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.Node;
-import org.tmatesoft.svn.core.*;
+import org.tmatesoft.svn.core.SVNCommitInfo;
+import org.tmatesoft.svn.core.SVNErrorCode;
+import org.tmatesoft.svn.core.SVNErrorMessage;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNPropertyValue;
 import org.tmatesoft.svn.core.internal.wc.SVNFileUtil;
 import org.tmatesoft.svn.core.io.ISVNEditor;
 import org.tmatesoft.svn.core.io.ISVNReporter;

@@ -17,7 +17,13 @@
 
 package net.sf.beezle.sushi.fs.webdav.methods;
 
-import net.sf.beezle.sushi.fs.webdav.*;
+import net.sf.beezle.sushi.fs.webdav.MovedException;
+import net.sf.beezle.sushi.fs.webdav.MultiStatus;
+import net.sf.beezle.sushi.fs.webdav.Name;
+import net.sf.beezle.sushi.fs.webdav.Property;
+import net.sf.beezle.sushi.fs.webdav.StatusException;
+import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
+import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import net.sf.beezle.sushi.xml.Builder;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

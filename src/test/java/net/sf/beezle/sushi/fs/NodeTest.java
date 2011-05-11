@@ -18,14 +18,27 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.fs.multi.*;
+import net.sf.beezle.sushi.fs.multi.DirectoryTarget;
+import net.sf.beezle.sushi.fs.multi.Function;
+import net.sf.beezle.sushi.fs.multi.Invoker;
+import net.sf.beezle.sushi.fs.multi.TextTarget;
+import net.sf.beezle.sushi.fs.multi.XmlTarget;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 

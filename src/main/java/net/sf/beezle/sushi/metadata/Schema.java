@@ -17,11 +17,25 @@
 
 package net.sf.beezle.sushi.metadata;
 
-import net.sf.beezle.sushi.metadata.simpletypes.*;
+import net.sf.beezle.sushi.metadata.simpletypes.BooleanType;
+import net.sf.beezle.sushi.metadata.simpletypes.CharacterType;
+import net.sf.beezle.sushi.metadata.simpletypes.ClassType;
+import net.sf.beezle.sushi.metadata.simpletypes.DoubleType;
+import net.sf.beezle.sushi.metadata.simpletypes.EnumType;
+import net.sf.beezle.sushi.metadata.simpletypes.FloatType;
+import net.sf.beezle.sushi.metadata.simpletypes.IntType;
+import net.sf.beezle.sushi.metadata.simpletypes.LongType;
+import net.sf.beezle.sushi.metadata.simpletypes.MethodType;
+import net.sf.beezle.sushi.metadata.simpletypes.StringType;
+import net.sf.beezle.sushi.metadata.simpletypes.VoidType;
 import net.sf.beezle.sushi.util.Reflect;
 import net.sf.beezle.sushi.util.Strings;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
  * A set of Types. Initially, the set consists of simple types only. Complex types

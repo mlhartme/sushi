@@ -19,7 +19,11 @@ package net.sf.beezle.sushi.util;
 
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.World;
-import net.sf.beezle.sushi.metadata.*;
+import net.sf.beezle.sushi.metadata.ComplexType;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.Type;
 import net.sf.beezle.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;

@@ -18,7 +18,11 @@
 package net.sf.beezle.sushi.csv;
 
 import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.metadata.*;
+import net.sf.beezle.sushi.metadata.Instance;
+import net.sf.beezle.sushi.metadata.Path;
+import net.sf.beezle.sushi.metadata.Schema;
+import net.sf.beezle.sushi.metadata.SimpleType;
+import net.sf.beezle.sushi.metadata.SimpleTypeException;
 import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
 import net.sf.beezle.sushi.metadata.annotation.Sequence;
 import net.sf.beezle.sushi.metadata.annotation.Type;

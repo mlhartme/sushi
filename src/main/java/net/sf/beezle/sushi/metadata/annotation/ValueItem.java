@@ -17,7 +17,10 @@
 
 package net.sf.beezle.sushi.metadata.annotation;
 
-import net.sf.beezle.sushi.metadata.*;
+import net.sf.beezle.sushi.metadata.Cardinality;
+import net.sf.beezle.sushi.metadata.Item;
+import net.sf.beezle.sushi.metadata.ItemException;
+import net.sf.beezle.sushi.metadata.Schema;
 import net.sf.beezle.sushi.metadata.Type;
 
 import java.lang.reflect.AnnotatedElement;

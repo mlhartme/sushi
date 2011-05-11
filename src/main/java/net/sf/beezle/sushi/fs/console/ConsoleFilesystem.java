@@ -17,7 +17,11 @@
 
 package net.sf.beezle.sushi.fs.console;
 
-import net.sf.beezle.sushi.fs.*;
+import net.sf.beezle.sushi.fs.Features;
+import net.sf.beezle.sushi.fs.Filesystem;
+import net.sf.beezle.sushi.fs.NodeInstantiationException;
+import net.sf.beezle.sushi.fs.Root;
+import net.sf.beezle.sushi.fs.World;
 
 import java.net.URI;
 

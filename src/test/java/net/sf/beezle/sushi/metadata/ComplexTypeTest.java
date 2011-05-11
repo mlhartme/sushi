@@ -18,7 +18,11 @@
 package net.sf.beezle.sushi.metadata;
 
 import net.sf.beezle.sushi.metadata.annotation.AnnotationSchema;
-import net.sf.beezle.sushi.metadata.model.*;
+import net.sf.beezle.sushi.metadata.model.Car;
+import net.sf.beezle.sushi.metadata.model.Engine;
+import net.sf.beezle.sushi.metadata.model.Kind;
+import net.sf.beezle.sushi.metadata.model.Radio;
+import net.sf.beezle.sushi.metadata.model.Vendor;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

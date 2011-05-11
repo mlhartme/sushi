@@ -17,10 +17,22 @@
 
 package net.sf.beezle.sushi.fs.svn;
 
-import net.sf.beezle.sushi.fs.*;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.ExistsException;
+import net.sf.beezle.sushi.fs.Filesystem;
+import net.sf.beezle.sushi.fs.GetLastModifiedException;
+import net.sf.beezle.sushi.fs.LengthException;
+import net.sf.beezle.sushi.fs.ListException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
-import org.tmatesoft.svn.core.*;
+import org.tmatesoft.svn.core.SVNCommitInfo;
+import org.tmatesoft.svn.core.SVNDirEntry;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNNodeKind;
+import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.util.SVNPathUtil;
 import org.tmatesoft.svn.core.io.ISVNEditor;
 import org.tmatesoft.svn.core.io.SVNFileRevision;
@@ -28,7 +40,11 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;

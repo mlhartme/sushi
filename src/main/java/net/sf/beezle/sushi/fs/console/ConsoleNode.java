@@ -17,7 +17,11 @@
 
 package net.sf.beezle.sushi.fs.console;
 
-import net.sf.beezle.sushi.fs.*;
+import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.MkdirException;
+import net.sf.beezle.sushi.fs.MoveException;
+import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.fs.SetLastModifiedException;
 
 import java.io.IOException;
 import java.io.InputStream;

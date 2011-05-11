@@ -18,7 +18,11 @@
 package net.sf.beezle.sushi.fs.webdav;
 
 import net.sf.beezle.sushi.xml.Dom;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;

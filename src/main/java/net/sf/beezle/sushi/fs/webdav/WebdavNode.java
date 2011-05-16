@@ -183,7 +183,9 @@ public class WebdavNode extends Node {
             throw new GetLastModifiedException(this, e);
         }
         try {
-            return FMT.parse((String) property.getValue()).getTime();
+            synchronized (FMT) {
+                return FMT.parse((String) property.getValue()).getTime();
+            }
         } catch (ParseException e) {
             throw new GetLastModifiedException(this, e);
         }

@@ -1235,6 +1235,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Function.forTarget("emptyDir", DirectoryTarget.create(work.join("dir"), 0), functions);
         Function.forTarget("xml", new XmlTarget(work.join("xml").writeString("<foo><bar/></foo>")), functions);
         Function.forTarget("dir", DirectoryTarget.create(work.join("emptyDir"), 9), functions);
-        Invoker.runAll(1, 100, functions);
+        Invoker.runAll(3, 1000, functions);
     }
 }

@@ -40,7 +40,9 @@ public class Item {
         result.guid = selector.string(item, "guid");
         str = selector.string(item, "pubDate");
         try {
-            result.pubDate = FORMAT.parse(str);
+            synchronized (FORMAT) {
+                result.pubDate = FORMAT.parse(str);
+            }
         } catch (ParseException e) {
             throw new XmlException("invalid pubDate", e);
         }
@@ -124,6 +126,8 @@ public class Item {
         }
         Builder.textElement(item, "author", author);
         Builder.textElement(item, "guid", guid);
-        Builder.textElement(item, "pubDate", FORMAT.format(pubDate));
+        synchronized (FORMAT) {
+            Builder.textElement(item, "pubDate", FORMAT.format(pubDate));
+        }
     }
 }

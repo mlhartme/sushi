@@ -71,6 +71,8 @@ public class WebdavNode extends Node {
 
     private boolean tryDir;
 
+    private final Object tryLock;
+
     /** @param encodedQuery null or query without initial "?" */
     public WebdavNode(WebdavRoot root, String path, String encodedQuery, boolean tryDir) {
         if (path.startsWith("/")) {
@@ -83,6 +85,7 @@ public class WebdavNode extends Node {
         this.path = path;
         this.encodedQuery = encodedQuery;
         this.tryDir = tryDir;
+        this.tryLock = new Object();
     }
 
     public URI getURI() {
@@ -138,15 +141,17 @@ public class WebdavNode extends Node {
         boolean oldTryDir;
         Property property;
 
-        oldTryDir = tryDir;
-        try {
-            tryDir = false;
-            property = getProperty(Name.GETCONTENTLENGTH);
-        } catch (IOException e) {
-            tryDir = oldTryDir;
-            throw new LengthException(this, e);
+        synchronized (tryLock) {
+            oldTryDir = tryDir;
+            try {
+                tryDir = false;
+                property = getProperty(Name.GETCONTENTLENGTH);
+            } catch (IOException e) {
+                tryDir = oldTryDir;
+                throw new LengthException(this, e);
+            }
+            return Long.parseLong((String) property.getValue());
         }
-        return Long.parseLong((String) property.getValue());
     }
 
     private static final SimpleDateFormat FMT;
@@ -166,12 +171,14 @@ public class WebdavNode extends Node {
         Property property;
 
         try {
-        	try {
-        		property = getProperty(Name.GETLASTMODIFIED);
-        	} catch (MovedException e) {
-                tryDir = !tryDir;
-        		property = getProperty(Name.GETLASTMODIFIED);
-        	}
+            synchronized (tryLock) {
+                try {
+                    property = getProperty(Name.GETLASTMODIFIED);
+                } catch (MovedException e) {
+                    tryDir = !tryDir;
+                    property = getProperty(Name.GETLASTMODIFIED);
+                }
+            }
         } catch (IOException e) {
             throw new GetLastModifiedException(this, e);
         }
@@ -238,12 +245,14 @@ public class WebdavNode extends Node {
     @Override
     public Node delete() throws DeleteException {
         try {
-        	try {
-        		new Delete(this).invoke();
-        	} catch (MovedException e) {
-                tryDir = !tryDir;
-        		new Delete(this).invoke();
-        	}
+            synchronized (tryLock) {
+                try {
+                    new Delete(this).invoke();
+                } catch (MovedException e) {
+                    tryDir = !tryDir;
+                    new Delete(this).invoke();
+                }
+            }
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -261,14 +270,16 @@ public class WebdavNode extends Node {
 
     public WebdavNode move(WebdavNode dest) throws MoveException {
         try {
-        	try {
-                dest.tryDir = tryDir;
-        		new Move(this, dest).invoke();
-        	} catch (MovedException e) {
-                tryDir = !tryDir;
-                dest.tryDir = tryDir;
-        		new Move(this, dest).invoke();
-        	}
+            synchronized (tryLock) {
+                try {
+                    dest.tryDir = tryDir;
+                    new Move(this, dest).invoke();
+                } catch (MovedException e) {
+                    tryDir = !tryDir;
+                    dest.tryDir = tryDir;
+                    new Move(this, dest).invoke();
+                }
+            }
 		} catch (IOException e) {
 			throw new MoveException(this, dest, e.getMessage(), e);
 		}
@@ -278,8 +289,10 @@ public class WebdavNode extends Node {
     @Override
     public WebdavNode mkdir() throws MkdirException {
         try {
-            tryDir = true;
-            new MkCol(this).invoke();
+            synchronized (tryLock) {
+                tryDir = true;
+                new MkCol(this).invoke();
+            }
         } catch (IOException e) {
             throw new MkdirException(this, e);
         }
@@ -298,21 +311,23 @@ public class WebdavNode extends Node {
 
     @Override
     public boolean exists() throws ExistsException {
-        try {
-            new Head(this).invoke();
-            return true;
-        } catch (StatusException e) {
-            switch (e.getStatusLine().getStatusCode()) {
-                case HttpStatus.SC_MOVED_PERMANENTLY:
-                    tryDir = !tryDir;
-                    return true;
-                case HttpStatus.SC_NOT_FOUND:
-                    return false;
-                default:
-                    throw new ExistsException(this, e);
+        synchronized (tryLock) {
+            try {
+                new Head(this).invoke();
+                return true;
+            } catch (StatusException e) {
+                switch (e.getStatusLine().getStatusCode()) {
+                    case HttpStatus.SC_MOVED_PERMANENTLY:
+                        tryDir = !tryDir;
+                        return true;
+                    case HttpStatus.SC_NOT_FOUND:
+                        return false;
+                    default:
+                        throw new ExistsException(this, e);
+                }
+            } catch (IOException e) {
+                throw new ExistsException(this, e);
             }
-        } catch (IOException e) {
-            throw new ExistsException(this, e);
         }
     }
 
@@ -333,8 +348,10 @@ public class WebdavNode extends Node {
 
     @Override
     public InputStream createInputStream() throws IOException {
-        tryDir = false;
-        return new Get(this).invoke();
+        synchronized (tryLock) {
+            tryDir = false;
+            return new Get(this).invoke();
+        }
     }
 
     @Override
@@ -353,23 +370,25 @@ public class WebdavNode extends Node {
         } else {
             add = null;
         }
-        tryDir = false;
-        method = new Put(this);
-        connection = method.request();
-        result = new ChunkedOutputStream(connection.getOutputBuffer()) {
-            private boolean closed = false;
-            @Override
-            public void close() throws IOException {
-                if (closed) {
-                    return;
+        synchronized (tryLock) {
+            tryDir = false;
+            method = new Put(this);
+            connection = method.request();
+            result = new ChunkedOutputStream(connection.getOutputBuffer()) {
+                private boolean closed = false;
+                @Override
+                public void close() throws IOException {
+                    if (closed) {
+                        return;
+                    }
+                    closed = true;
+                    super.close();
+                    method.response(connection);
                 }
-                closed = true;
-                super.close();
-                method.response(connection);
+            };
+            if (add != null) {
+                result.write(add);
             }
-        };
-        if (add != null) {
-            result.write(add);
         }
         return result;
     }
@@ -380,33 +399,35 @@ public class WebdavNode extends Node {
         List<Node> result;
         URI href;
 
-        try {
-            tryDir = true;
-            method = new PropFind(this, Name.DISPLAYNAME, 1);
-            result = new ArrayList<Node>();
-            for (MultiStatus response : method.invoke()) {
-                try {
-                	href = new URI(response.href);
-                } catch (URISyntaxException e) {
-                    throw new ListException(this, e);
+        synchronized (tryLock) {
+            try {
+                tryDir = true;
+                method = new PropFind(this, Name.DISPLAYNAME, 1);
+                result = new ArrayList<Node>();
+                for (MultiStatus response : method.invoke()) {
+                    try {
+                        href = new URI(response.href);
+                    } catch (URISyntaxException e) {
+                        throw new ListException(this, e);
+                    }
+                    if (samePath(href)) {
+                        // ignore "."
+                    } else {
+                        result.add(createChild(href));
+                    }
                 }
-                if (samePath(href)) {
-                    // ignore "."
-                } else {
-                    result.add(createChild(href));
+                return result;
+            } catch (StatusException e) {
+                if (e.getStatusLine().getStatusCode() == 400) {
+                    return null; // this is a file
                 }
-            }
-            return result;
-        } catch (StatusException e) {
-            if (e.getStatusLine().getStatusCode() == 400) {
+                throw new ListException(this, e);
+            } catch (MovedException e) {
+                tryDir = false;
                 return null; // this is a file
+            } catch (IOException e) {
+                throw new ListException(this, e);
             }
-            throw new ListException(this, e);
-        } catch (MovedException e) {
-            tryDir = false;
-            return null; // this is a file
-        } catch (IOException e) {
-            throw new ListException(this, e);
         }
     }
 
@@ -452,12 +473,14 @@ public class WebdavNode extends Node {
 
     	n = new Name(name, Method.DAV);
         try {
-        	try {
-        		result = getPropertyOpt(n);
-        	} catch (MovedException e) {
-                tryDir = !tryDir;
-        		result = getPropertyOpt(n);
-        	}
+            synchronized (tryLock) {
+            	try {
+        		    result = getPropertyOpt(n);
+        	    } catch (MovedException e) {
+                    tryDir = !tryDir;
+            		result = getPropertyOpt(n);
+            	}
+            }
         	return result == null ? null : (String) result.getValue();
 		} catch (IOException e) {
 			throw new WebdavException(this, e);
@@ -476,12 +499,14 @@ public class WebdavNode extends Node {
     	Property prop;
 
         prop = new Property(name, value);
-       	try {
-       		new PropPatch(this, prop).invoke();
-       	} catch (MovedException e) {
-            tryDir = !tryDir;
-       		new PropPatch(this, prop).invoke();
-      	}
+        synchronized (tryLock) {
+            try {
+                new PropPatch(this, prop).invoke();
+            } catch (MovedException e) {
+                tryDir = !tryDir;
+                new PropPatch(this, prop).invoke();
+            }
+        }
     }
 
     /** @return never null */
@@ -508,26 +533,28 @@ public class WebdavNode extends Node {
         boolean reset;
         boolean result;
 
-        reset = tryDir;
-        tryDir = tryTryDir;
-        try {
-            if (getRoot().getFilesystem().isDav()) {
-                result = doTryDirDav();
-            } else {
-                result = doTryDirHttp();
+        synchronized (tryLock) {
+            reset = tryDir;
+            tryDir = tryTryDir;
+            try {
+                if (getRoot().getFilesystem().isDav()) {
+                    result = doTryDirDav();
+                } else {
+                    result = doTryDirHttp();
+                }
+            } catch (MovedException e) {
+                tryDir = reset;
+                return false;
+            } catch (FileNotFoundException e) {
+                tryDir = reset;
+                return false;
+            } catch (IOException e) {
+                tryDir = reset;
+                throw new ExistsException(this, e);
             }
-        } catch (MovedException e) {
-            tryDir = reset;
-            return false;
-        } catch (FileNotFoundException e) {
-            tryDir = reset;
-            return false;
-        } catch (IOException e) {
-            tryDir = reset;
-            throw new ExistsException(this, e);
-        }
-        if (!result) {
-            tryDir = reset;
+            if (!result) {
+                tryDir = reset;
+            }
         }
         return result;
     }
@@ -566,21 +593,23 @@ public class WebdavNode extends Node {
     public String getAbsPath() {
         StringBuilder builder;
 
-        builder = new StringBuilder(path.length() + 10);
-        builder.append('/');
-        if (!path.isEmpty()) {
-            try {
-                builder.append(new URI(null, null, path, null).getRawPath());
-            } catch (URISyntaxException e) {
-                throw new IllegalStateException();
+        synchronized (tryLock) {
+            builder = new StringBuilder(path.length() + 10);
+            builder.append('/');
+            if (!path.isEmpty()) {
+                try {
+                    builder.append(new URI(null, null, path, null).getRawPath());
+                } catch (URISyntaxException e) {
+                    throw new IllegalStateException();
+                }
+                if (tryDir) {
+                    builder.append('/');
+                }
             }
-            if (tryDir) {
-                builder.append('/');
+            if (encodedQuery != null) {
+                builder.append('?');
+                builder.append(encodedQuery);
             }
-        }
-        if (encodedQuery != null) {
-            builder.append('?');
-            builder.append(encodedQuery);
         }
         return builder.toString();
     }

@@ -90,10 +90,5 @@ public class WebdavReadWriteFullTest extends NodeTest<WebdavNode> {
         node.move(second);
         assertEquals("baz", second.getAttribute(name));
     }
-
-    @Test @Override
-    public void multiThreading() throws Exception {
-        System.out.println("TODO: currently broken");
-    }
 }
 

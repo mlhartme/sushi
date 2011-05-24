@@ -333,33 +333,23 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- read/write
 
-    @Test
+    @Test(expected=FileNotFoundException.class)
     public void readNonexisting() throws IOException {
         Node file;
 
         file = work.join("doesnotexist");
         assertFalse(file.exists());
-        try {
-            file.createInputStream();
-            fail();
-        } catch (FileNotFoundException e) {
-            // ok
-        }
+        file.createInputStream();
     }
 
-    @Test
+    @Test(expected=FileNotFoundException.class)
     public void readDirectory() throws IOException {
         Node dir;
 
         dir = work.join("dir");
         dir.mkdir();
         assertTrue(dir.isDirectory());
-        try {
-            dir.createInputStream();
-            fail();
-        } catch (FileNotFoundException e) {
-            // ok
-        }
+        dir.createInputStream();
     }
 
     public void lengthFile() throws IOException {

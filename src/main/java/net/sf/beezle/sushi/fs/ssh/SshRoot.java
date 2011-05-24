@@ -98,6 +98,12 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
 
     //--
 
+    private int allocated = 0;
+
+    public synchronized int getAllocated() {
+        return allocated;
+    }
+
     public synchronized ChannelSftp allocateChannelSftp() throws JSchException {
         ChannelSftp result;
 
@@ -108,6 +114,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
             result = (ChannelSftp) session.openChannel("sftp");
             result.connect();
         }
+        allocated++;
         return result;
     }
 
@@ -117,6 +124,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         } else {
             free.disconnect();
         }
+        allocated--;
     }
 
     public ChannelExec createChannelExec() throws JSchException {

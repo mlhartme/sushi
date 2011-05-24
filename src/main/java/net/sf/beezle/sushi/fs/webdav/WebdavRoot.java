@@ -120,10 +120,12 @@ public class WebdavRoot implements Root<WebdavNode> {
     }
 
     private final List<WebdavConnection> pool = new ArrayList<WebdavConnection>();
+    private int allocated = 0;
 
     public synchronized WebdavConnection allocate() throws IOException {
         int size;
 
+        allocated++;
         size = pool.size();
         if (size > 0) {
             return pool.remove(size - 1);
@@ -142,6 +144,7 @@ public class WebdavRoot implements Root<WebdavNode> {
     public synchronized void free(HttpResponse response, WebdavConnection connection) throws IOException {
         HttpEntity entity;
 
+        allocated--;
         if (response != null) {
             entity = response.getEntity();
             if (entity != null) {
@@ -154,6 +157,10 @@ public class WebdavRoot implements Root<WebdavNode> {
         if (connection.isOpen() && pool.size() < 10) {
             pool.add(connection);
         }
+    }
+
+    public synchronized int getAllocated() {
+        return allocated;
     }
 
     private static boolean wantsClose(HttpResponse response) {

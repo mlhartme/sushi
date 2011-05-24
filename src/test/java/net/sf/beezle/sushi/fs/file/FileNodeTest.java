@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** TODO: move more tests into NodeTest */
 public class FileNodeTest extends NodeTest<FileNode> {
@@ -40,6 +41,11 @@ public class FileNodeTest extends NodeTest<FileNode> {
         assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
         assertEquals(work.getPath(), WORLD.file(new File(work.getAbsolute() + "/")).getPath());
         assertEquals("", WORLD.file(File.listRoots()[0]).getPath());
+    }
+
+    @Override
+    public void validateDeallocation() {
+        // nothing to check
     }
 
     @Test

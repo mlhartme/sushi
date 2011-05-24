@@ -50,6 +50,10 @@ public class WebdavReadWriteFullTest extends NodeTest<WebdavNode> {
         return (WebdavNode) WORLD.validNode(uri).deleteOpt().mkdir();
     }
 
+    public void validateDeallocation() {
+        assertEquals(0, work.getRoot().getAllocated());
+    }
+
     @Test
     public void attributeFile() throws IOException {
         WebdavNode node;

@@ -25,11 +25,16 @@ import java.io.IOException;
 import java.net.URI;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
-public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
+public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<WebdavNode> {
     static {
         WebdavFilesystem.wireLog(WORLD.guessProjectHome(WebdavNodeFullBase.class).getAbsolute() + "/target/webdav-readonly.log");
+    }
+
+    public void validateDeallocation() {
+        assertEquals(0, work.getRoot().getAllocated());
     }
 
     @Test
@@ -57,7 +62,7 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
     @Test
     public void uriWithEmptyPath() throws Exception {
         Node node;
-    
+
         node = WORLD.node("http://www.heise.de");
         assertTrue(node instanceof WebdavNode);
         assertEquals("http://www.heise.de:80/", node.getURI().toString());
@@ -90,8 +95,8 @@ public class WebdavReadOnlyFullTest extends NodeReadOnlyTest<Node> {
     }
 
     @Override
-    protected Node createWork() throws IOException {
-        return WORLD.validNode("http://englishediting.de/foo");
+    protected WebdavNode createWork() throws IOException {
+        return (WebdavNode) WORLD.validNode("http://englishediting.de/foo");
     }
 }
 

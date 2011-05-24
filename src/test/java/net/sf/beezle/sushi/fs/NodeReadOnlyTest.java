@@ -19,6 +19,7 @@ package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +39,11 @@ public abstract class NodeReadOnlyTest<T extends Node> {
     @Before
     public void setUp() throws Exception {
         work = createWork();
+        validateDeallocation();
     }
+
+    @After
+    public abstract void validateDeallocation() throws Exception;
 
     @Test
     public void uri() throws Exception {

@@ -36,7 +36,7 @@ public class Get extends Method<InputStream> {
     @Override
     public InputStream processResponse(final WebdavConnection connection, final HttpResponse response) throws IOException {
     	int status;
-    	
+
         status = response.getStatusLine().getStatusCode();
         switch (status) {
         case HttpStatus.SC_OK:
@@ -54,9 +54,9 @@ public class Get extends Method<InputStream> {
         	throw new StatusException(response.getStatusLine());
         }
     }
-    
+
     @Override
     public void done(HttpResponse response, WebdavConnection connection) {
-    	// do nothing
+    	// do nothing - the resulting stream perform the close
     }
 }

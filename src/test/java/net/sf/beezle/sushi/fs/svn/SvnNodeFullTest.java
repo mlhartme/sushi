@@ -55,6 +55,11 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
         return node;
     }
 
+    @Override
+    public void validateDeallocation() {
+        // nothing to check
+    }
+
     @Test
     public void rootLocator() {
         assertEquals("svn:" + URL.toString() + "/work", work.getURI().toString());

@@ -45,8 +45,9 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         super.setUp();
     }
 
-    @After
-    public void after() {
+    @Override
+    public void validateDeallocation() {
+        assertEquals(0, work.getRoot().getAllocated());
     }
 
     @AfterClass

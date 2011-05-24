@@ -24,4 +24,10 @@ public class MemoryNodeTest extends NodeTest<MemoryNode> {
     protected MemoryNode createWork() {
         return WORLD.getMemoryFilesystem().root().node("", null);
     }
+
+    @Override
+    public void validateDeallocation() {
+        // nothing to check
+    }
+
 }

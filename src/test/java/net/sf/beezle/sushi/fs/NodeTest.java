@@ -811,6 +811,22 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test(expected=MkdirException.class)
+    public void mkdirOverFile() throws IOException {
+        Node file;
+
+        file = work.join("file").writeBytes();
+        file.mkdir();
+    }
+
+    @Test(expected=IOException.class)
+    public void fileOverMkdir() throws IOException {
+        Node dir;
+
+        dir = work.join("dir").mkdir();
+        dir.writeBytes();
+    }
+
+    @Test(expected=MkdirException.class)
     public void mkdirsOptOverFile() throws IOException {
         Node file;
 

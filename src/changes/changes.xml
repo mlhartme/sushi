@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="fix">
         Multi-threading unit tests and fixes.
       </action>
+      <action dev="mlhartme" type="fix">
+        Fix WebdavNode connection leaks.
+      </action>
     </release>
     <release version="2.4.0" date="2011-05-11">
       <action dev="mlhartme" type="update">

@@ -447,9 +447,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
                     // skip
                 } else if (c == '/') {
                     // skip
-                } else if (c == '*') { // TODO: still fail in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
+                } else if (c == '*') { // TODO: still fails in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
                     // skip
-                } else if (c == '?') { // TODO: still fail in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
+                } else if (c == '?') { // TODO: still fails in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
                     // skip
                 } else if (c == '\\') {
                     // skip
@@ -473,6 +473,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals(content, file.readString());
         assertEquals(Collections.singletonList(file), file.getParent().list());
         alias = WORLD.node(file.getURI());
+        assertEquals(file, alias);
+        assertEquals(content, alias.readString());
+        alias = file.getRoot().node(file.getPath(), null);
         assertEquals(file, alias);
         assertEquals(content, alias.readString());
         file.delete();

@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.ssh;
 
+import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import org.junit.After;
@@ -68,6 +69,15 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         } finally {
             file.delete();
         }
+    }
+
+    @Test
+    public void recursiveDeleteBug() throws Exception {
+        Node dir;
+
+        dir = work.join("a").mkdir();
+        dir.join("a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p").mkdirs();
+        dir.delete();
     }
 
     // TODO

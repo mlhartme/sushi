@@ -210,36 +210,47 @@ public class SshNode extends Node {
 
     @Override
     public SshNode delete() throws DeleteException {
-        SftpATTRS stat;
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
+        } catch (JSchException e) {
+            throw new DeleteException(this, e);
+        }
+        try {
+            doDelete(sftp);
+        } finally {
             try {
-                // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
-                stat = sftp.lstat(escape(slashPath));
-                if (stat.isDir()) {
-                    for (Node child : list()) {
-                        child.delete();
-                    }
-                    sftp.rmdir(escape(slashPath));
-                } else {
-                    sftp.rm(escape(slashPath));
-                }
-            } finally {
                 free(sftp);
+            } catch (JSchException e) {
+                throw new DeleteException(this, e);
+            }
+        }
+        return this;
+    }
+
+    private void doDelete(ChannelSftp sftp) throws DeleteException {
+        SftpATTRS stat;
+
+        try {
+            // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
+            stat = sftp.lstat(escape(slashPath));
+            if (stat.isDir()) {
+                for (SshNode child : list()) {
+                    child.doDelete(sftp);
+                }
+                sftp.rmdir(escape(slashPath));
+            } else {
+                sftp.rm(escape(slashPath));
             }
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
                 throw new DeleteException(this, new FileNotFoundException());
             }
             throw new DeleteException(this, e);
-        } catch (JSchException e) {
-            throw new DeleteException(this, e);
         } catch (ListException e) {
             throw new DeleteException(this, e);
         }
-        return this;
     }
 
     @Override

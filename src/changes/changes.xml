@@ -9,6 +9,9 @@
       <action dev="mlhartme" type="fix">
         Fix WebdavNode connection leaks.
       </action>
+      <action dev="mlhartme" type="fix">
+        SshNode.delete() failed for deeply nested directories because every level opened a new channel.
+      </action>
     </release>
     <release version="2.4.0" date="2011-05-11">
       <action dev="mlhartme" type="update">

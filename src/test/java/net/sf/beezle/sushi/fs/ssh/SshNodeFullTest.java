@@ -72,12 +72,22 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
     }
 
     @Test
-    public void recursiveDeleteBug() throws Exception {
+    public void recursiveDelete() throws Exception {
+        // I used to have problems here because every directory level opened a new channel
         Node dir;
 
         dir = work.join("a").mkdir();
         dir.join("a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p").mkdirs();
         dir.delete();
+    }
+
+    @Test
+    public void recursiveCopy() throws Exception {
+        Node dir;
+
+        dir = work.join("a").mkdir();
+        dir.join("a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p").mkdirs();
+        dir.copy(work.join("copy").mkdir());
     }
 
     // TODO

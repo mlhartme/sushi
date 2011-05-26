@@ -41,14 +41,15 @@ public class Get extends Method<InputStream> {
         switch (status) {
         case HttpStatus.SC_OK:
         	return new FilterInputStream(response.getEntity().getContent()) {
-                private boolean closed = false;
+                private boolean freed = false;
 
         		@Override
         		public void close() throws IOException {
-                    if (!closed) {
-                        closed = true;
+                    if (!freed) {
+                        freed = true;
                         root.free(response, connection);
                     }
+                    super.close();
         		}
         	};
         case HttpStatus.SC_NOT_FOUND:

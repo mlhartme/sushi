@@ -103,12 +103,11 @@ public abstract class Method<T> {
     public T response(WebdavConnection connection) throws IOException {
         HttpResponse response;
 
-        response = null;
+        response = root.receive(connection);
         try {
-            response = root.receive(connection);
             return processResponse(connection, response);
         } finally {
-        	done(response, connection);
+        	afterProcessResponse(response, connection);
         }
     }
 
@@ -136,7 +135,8 @@ public abstract class Method<T> {
     // TODO: connection argument needed for GetMethod ...
     public abstract T processResponse(WebdavConnection connection, HttpResponse response) throws IOException;
 
-    protected void done(HttpResponse response, WebdavConnection conn) throws IOException {
+    /** called after processResponse finished normally or with an exception */
+    protected void afterProcessResponse(HttpResponse response, WebdavConnection conn) throws IOException {
     	root.free(response, conn);
     }
 }

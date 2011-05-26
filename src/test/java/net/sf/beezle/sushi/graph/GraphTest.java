@@ -25,7 +25,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GraphTest {
     private Graph<String> g;
@@ -39,9 +41,9 @@ public class GraphTest {
     public void after() {
         g.check();
     }
-    
+
     //--
-    
+
     @Test
     public void nodes() {
         assertTrue(g.addNode("foo"));
@@ -50,7 +52,7 @@ public class GraphTest {
         assertTrue(g.addNode("bar"));
         assertEquals(2, g.getNodeCount());
     }
-    
+
     @Test
     public void edge() {
         assertFalse(g.removeEdge("foo", "bar"));
@@ -73,7 +75,7 @@ public class GraphTest {
     	assertFalse(g.edges().step());
     	assertEquals(1, g.getNodeCount());
     }
-    
+
     @Test
     public void edges() {
         assertFalse(g.addEdges("foo"));
@@ -97,7 +99,7 @@ public class GraphTest {
     }
 
     //--
-    
+
     @Test
     public void sortEmpty() throws CyclicDependency {
         sort();
@@ -165,11 +167,11 @@ public class GraphTest {
     }
 
     //--
-    
+
     @Test
     public void graph() {
         Graph<String> op;
-        
+
         op = new Graph<String>();
         g.addGraph(op);
         assertEquals(0, g.getNodeCount());
@@ -181,16 +183,16 @@ public class GraphTest {
         g.addGraph(op);
         assertTrue(g.containsEdge("foo", "bar"));
     }
-    
+
     //--
-    
+
     @Test
     public void closure() {
         g.addEdge("a", "b");
         closure("a",  "a", "b");
     }
 
-    
+
     @Test
     public void closureOne() {
         g.addEdge("a", "b");
@@ -210,13 +212,13 @@ public class GraphTest {
     private void closure(String start, String ... expected) {
         assertEquals(Arrays.asList(expected), g.closure(start));
     }
-    
+
     //--
-    
+
     @Test
     public void edgeIterator() {
         EdgeIterator<String> iter;
-        
+
         iter = g.edges();
         assertFalse(iter.step());
         assertFalse(iter.step());
@@ -243,7 +245,7 @@ public class GraphTest {
         assertEquals("d", iter.right());
         assertFalse(iter.step());
     }
-    
+
     @Test
     public void relationSize() {
         checkSet(g.getDomain());
@@ -261,16 +263,16 @@ public class GraphTest {
 
     private void checkSet(Set<String> got, String ...expected) {
         assertEquals(new HashSet<String>(Arrays.asList(expected)), got);
-        
+
     }
-    
+
     //--
-    
+
     @Test
     public void string() {
         g.addEdge("a", "b");
         g.addEdge("a", "c");
         assertEquals("[a-b|c, b, c]", g.toString());
     }
-    
+
 }

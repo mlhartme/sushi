@@ -26,7 +26,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 public class BufferTest {
     @Test
@@ -34,13 +36,13 @@ public class BufferTest {
         Buffer buffer;
         Settings settings;
         InputStream src;
-        
+
         buffer = new Buffer();
         settings = new Settings();
-        
+
         src = new ByteArrayInputStream(new byte[] { });
         assertNull(buffer.readLine(src, settings.encoding));
-        
+
         src = new ByteArrayInputStream(new byte[] { 'a', 'b', 'c', '\n', 'a', '\n', '\n', 'x', 'x' });
         assertEquals("abc", buffer.readLine(src, settings.encoding));
         assertEquals("a", buffer.readLine(src, settings.encoding));
@@ -63,21 +65,21 @@ public class BufferTest {
 
     private byte[] bytes(int ... data) {
         byte[] result;
-        
+
         result = new byte[data.length];
         for (int i = 0; i < data.length; i++) {
             result[i] = (byte) data[i];
         }
         return result;
     }
-    
+
     private void copy(byte[] expected, byte[] data, int max) throws IOException {
         Buffer buffer;
         InputStream src;
         ByteArrayOutputStream dest;
         int length;
         byte[] found;
-        
+
         buffer = new Buffer(1);
         src = new ByteArrayInputStream(data);
         dest = new ByteArrayOutputStream();

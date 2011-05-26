@@ -20,7 +20,6 @@ package net.sf.beezle.sushi.fs.ssh;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
 import net.sf.beezle.sushi.fs.file.FileNode;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;

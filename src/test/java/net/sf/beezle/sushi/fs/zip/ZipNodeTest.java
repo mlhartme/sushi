@@ -29,7 +29,11 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {
@@ -116,7 +120,7 @@ public class ZipNodeTest {
             assertNotNull(node.getURI());
         }
     }
-    
+
     @Test
     public void jarWithBlank() throws Exception {
         checkSpecialPath("a b", "foo bar.jar");

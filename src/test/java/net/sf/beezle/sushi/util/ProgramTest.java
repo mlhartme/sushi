@@ -24,7 +24,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ProgramTest {
     private static final World WORLD = new World();
@@ -66,7 +68,7 @@ public class ProgramTest {
     @Test
     public void myEnv() throws IOException {
         Program p;
-        
+
         p = p(environ());
         p.builder.environment().put("bar", "foo");
         assertTrue(p.exec().contains("bar=foo"));
@@ -76,7 +78,7 @@ public class ProgramTest {
     public void output() throws IOException {
         assertEquals("foo", p("echo", "foo").exec().trim());
     }
-    
+
     @Test
     public void chains() throws IOException {
     	if (OS.CURRENT == OS.WINDOWS) {
@@ -87,10 +89,10 @@ public class ProgramTest {
 
     @Test
     public void noChains() throws IOException {
-        assertEquals(OS.CURRENT == OS.WINDOWS ? "foo \r\nbar" : "foo && echo bar", 
+        assertEquals(OS.CURRENT == OS.WINDOWS ? "foo \r\nbar" : "foo && echo bar",
         		p("echo", "foo", "&&", "echo", "bar").exec().trim());
     }
-    
+
     private String environ() {
         if (OS.CURRENT == OS.WINDOWS) {
             return "set";
@@ -98,7 +100,7 @@ public class ProgramTest {
             return "env";
         }
     }
-    
+
     public void failure() throws IOException {
         try {
             p("ls", "nosuchfile").exec();
@@ -119,10 +121,10 @@ public class ProgramTest {
             assertTrue(OS.WINDOWS != OS.CURRENT);
         }
     }
-    
+
     private Program p(String ... args) {
         Program p;
-        
+
         p = new Program((FileNode) WORLD.getHome());
         if (OS.CURRENT == OS.WINDOWS) {
             p.add("cmd", "/C");

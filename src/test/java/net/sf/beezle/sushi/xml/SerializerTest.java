@@ -31,7 +31,9 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 public class SerializerTest {
     private static final String LF = OS.CURRENT.lineSeparator;
@@ -44,14 +46,14 @@ public class SerializerTest {
     public void escape() throws SAXException {
         Document doc;
         String str;
-        
+
         assertEquals("", Serializer.escapeEntities("", true));
         assertEquals(" \t\r\n", Serializer.escapeEntities(" \t\r\n", true));
         assertEquals("abc", Serializer.escapeEntities("abc", true));
         assertEquals("&lt;", Serializer.escapeEntities("<", true));
         assertEquals("abc&lt;&gt;&amp;&apos;&quot;xyz", Serializer.escapeEntities("abc<>&'\"xyz", true));
         for (char c = 1; c < 128; c++) {
-            str = "<doc attr='" 
+            str = "<doc attr='"
                 + Serializer.escapeEntities("" + c, false) + "'>"
                 + Serializer.escapeEntities("" + c, false) + "</doc>";
             doc = BUILDER.parseString(str);
@@ -89,14 +91,14 @@ public class SerializerTest {
     public void exceptn() throws Exception {
         OutputStream stream;
         final IOException e;
-        
+
         e = new IOException();
         stream = new OutputStream() {
             @Override
             public void write(int b) throws IOException {
                 throw e;
             }
-            
+
         };
         try {
             SERIALIZER.serialize(new DOMSource(BUILDER.parseString("<foo/>")), new StreamResult(stream));
@@ -109,11 +111,11 @@ public class SerializerTest {
     public void serializeWithEncoding() throws Exception {
         Document doc;
         FileNode file;
-        
-        doc = BUILDER.parseString("<a><b/></a>");        
+
+        doc = BUILDER.parseString("<a><b/></a>");
         file = new World().getTemp().createTempFile();
-        SERIALIZER.serialize(doc, file);        
-        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>"), 
+        SERIALIZER.serialize(doc, file);
+        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>"),
         		file.readString());
     }
 
@@ -135,14 +137,14 @@ public class SerializerTest {
     }
 
     //--
-    
+
     private void checkSerialize(String expected, String doc, String path) throws Exception {
-        Node node = SELECTOR.node(BUILDER.parseString(doc), path);        
+        Node node = SELECTOR.node(BUILDER.parseString(doc), path);
         assertEquals(expected, SERIALIZER.serialize(node));
     }
-    
+
     private void checkSerializeChildren(String expected, String doc, String path) throws Exception {
-        Element element = SELECTOR.element(BUILDER.parseString(doc), path);        
+        Element element = SELECTOR.element(BUILDER.parseString(doc), path);
         assertEquals(expected, SERIALIZER.serializeChildren(element));
     }
 

@@ -28,7 +28,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class SchemaTest {
     private static final World WORLD = new World();
@@ -38,7 +40,7 @@ public class SchemaTest {
         String schema;
 
         schema = new ReflectSchema().type(String.class).createSchema();
-        assertEquals(Type.SCHEMA_HEAD + 
+        assertEquals(Type.SCHEMA_HEAD +
                 "  <xs:element name='string' type='xs:string'/>\n" +
                 "</xs:schema>",
                 schema);
@@ -57,7 +59,7 @@ public class SchemaTest {
         String schema;
 
         schema = new AnnotationSchema().type(Engine.class).createSchema();
-        assertEquals(Type.SCHEMA_HEAD + 
+        assertEquals(Type.SCHEMA_HEAD +
                 "  <xs:element name='engine' type='engine'/>\n" +
                 "  <xs:complexType name='engine'>\n" +
                 "    <xs:sequence minOccurs='0'>\n" +

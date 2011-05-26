@@ -24,13 +24,19 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class PathTest extends ModelBase {
     @Test
     public void parse() {
         List<Step> steps;
-        
+
         steps = new Path("foo/bar[2]").steps();
         assertEquals(2, steps.size());
         assertEquals("foo", steps.get(0).name);
@@ -70,7 +76,7 @@ public class PathTest extends ModelBase {
     @Test
     public void accessFalse() {
         Variable<Integer> v;
-        
+
         assertTrue(null, access(bmw, "radio", false).get().isEmpty());
         assertSame(audi.getRadio(), access(audi, "radio", false).getOne());
 
@@ -93,7 +99,7 @@ public class PathTest extends ModelBase {
     @Test
     public void accessTrue() {
         Variable<Boolean> v;
-        
+
         assertNull(bmw.getRadio());
         v = (Variable) access(bmw, "radio/cd", true);
         assertNotNull(bmw.getRadio());
@@ -105,7 +111,7 @@ public class PathTest extends ModelBase {
     @Test
     public void accessIndex() {
         Variable<?> v;
-        
+
         assertEquals(2, vendor.cars().size());
         v = access(vendor, "car[3]/engine", true);
         assertEquals(4, vendor.cars().size());
@@ -124,10 +130,10 @@ public class PathTest extends ModelBase {
 
 
     //--
-    
+
     private void one(Object expected, Object obj, String path) {
         Path p;
-        
+
         p = new Path(path);
         assertEquals(expected, p.selectOne(MODEL.instance(obj)).get());
     }

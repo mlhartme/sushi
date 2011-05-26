@@ -33,11 +33,16 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class LoaderTest extends ModelBase {
     // primitives
-    
+
     @Test
     public void string() throws LoaderException {
         assertEquals("", str("<string></string>"));
@@ -89,11 +94,11 @@ public class LoaderTest extends ModelBase {
     }
 
     //-- complex types
-    
+
     @Test
     public void engine() throws LoaderException {
         Engine engine;
-        
+
         engine = engine("<engine><turbo>true</turbo><ps>12</ps></engine>");
         assertEquals(true, engine.getTurbo());
         assertEquals(12, engine.getPs());
@@ -103,7 +108,7 @@ public class LoaderTest extends ModelBase {
     public void vendor() throws LoaderException {
         Vendor vendor;
         Car car;
-        
+
         vendor = (Vendor) loadXml(MODEL.type(Vendor.class), "<vendor>" +
         "  <id>100</id>" +
         "  <car><name>m3</name><kind>sports</kind><seats>2</seats>" +
@@ -128,7 +133,7 @@ public class LoaderTest extends ModelBase {
     @Test
     public void id() throws LoaderException {
         Vendor vendor;
-        
+
         vendor = (Vendor) loadXml(MODEL.type(Vendor.class), "<vendor>" +
         "  <id>100</id>" +
         "  <car id='foo'><name>m3</name><kind>sports</kind><seats>2</seats>" +
@@ -144,7 +149,7 @@ public class LoaderTest extends ModelBase {
     @Test(expected=LoaderException.class)
     public void idNotFound() throws LoaderException {
         Vendor vendor;
-        
+
         vendor = (Vendor) loadXml(MODEL.type(Vendor.class), "<vendor>" +
         "  <id>100</id>" +
         "  <car idref='foo'/>" +
@@ -153,11 +158,11 @@ public class LoaderTest extends ModelBase {
         assertEquals(2, vendor.cars().size());
         assertSame(vendor.cars().get(0), vendor.cars().get(1));
     }
-    
+
     @Test(expected=LoaderException.class)
     public void idDuplicate() throws LoaderException {
         Vendor vendor;
-        
+
         vendor = (Vendor) loadXml(MODEL.type(Vendor.class), "<vendor>" +
         "  <id>100</id>" +
         "  <car id='foo'><name>m3</name><kind>sports</kind><seats>2</seats>" +
@@ -175,7 +180,7 @@ public class LoaderTest extends ModelBase {
     @Test(expected=LoaderException.class)
     public void idUnexpectedContent() throws LoaderException {
         Vendor vendor;
-        
+
         vendor = (Vendor) loadXml(MODEL.type(Vendor.class), "<vendor>" +
         "  <id>100</id>" +
         "  <car id='foo'><name>m3</name><kind>sports</kind><seats>2</seats>" +
@@ -189,15 +194,15 @@ public class LoaderTest extends ModelBase {
         assertEquals(2, vendor.cars().size());
         assertSame(vendor.cars().get(0), vendor.cars().get(1));
     }
-    //-- 
-    
+    //--
+
     @Test
     public void whitespaceBetweenElements() throws LoaderException {
         assertEquals(1, engine("<engine>\t\n<turbo>true</turbo> <ps>1</ps></engine>").getPs());
     }
 
     //--
-    
+
     @Test
     public void malformed() {
         try {
@@ -236,7 +241,7 @@ public class LoaderTest extends ModelBase {
             oneLoader(e, "unexpected content");
         }
     }
-    
+
     @Test
     public void unknownField() {
         try {
@@ -246,12 +251,12 @@ public class LoaderTest extends ModelBase {
             oneLoader(e, "unknown element 'unknown'");
         }
     }
-    
+
     @Test
     public void missingField() {
         Variable<Boolean> v;
         Engine engine;
-        
+
         try {
             engine("<engine><ps>12</ps></engine>");
             fail();
@@ -263,7 +268,7 @@ public class LoaderTest extends ModelBase {
             assertEquals(12, engine.getPs());
             assertEquals(false, engine.getTurbo());
             assertEquals(false, v.getOne());
-            
+
             v.set(true);
             assertEquals(true, engine.getTurbo());
             assertEquals(true, v.getOne());
@@ -271,7 +276,7 @@ public class LoaderTest extends ModelBase {
     }
 
     //--
-    
+
     private Object str(String str) throws LoaderException {
         return loadXml(new ReflectSchema().type(String.class), str).get();
     }
@@ -287,9 +292,9 @@ public class LoaderTest extends ModelBase {
     private Engine engine(String str) throws LoaderException {
         return (Engine) loadXml(MODEL.type(Engine.class), str).get();
     }
-    
+
     //--
-    
+
     private SAXLoaderException oneLoader(LoaderException e, String contains) {
         return (SAXLoaderException) one(e, contains);
     }
@@ -297,7 +302,7 @@ public class LoaderTest extends ModelBase {
     private SAXVariableException oneVariable(LoaderException e, String contains) {
         return (SAXVariableException) one(e, contains);
     }
-    
+
     private SAXException one(LoaderException e, String contains) {
         assertEquals(1, e.causes().size());
         assertTrue(e.getMessage(), e.getMessage().contains(contains));
@@ -305,7 +310,7 @@ public class LoaderTest extends ModelBase {
     }
 
     private static final World WORLD = new World();
-    
+
     private static Instance<?> loadXml(Type type, String str) throws LoaderException {
         try {
             return type.loadXml(WORLD.memoryNode(str));
@@ -315,40 +320,40 @@ public class LoaderTest extends ModelBase {
             throw new RuntimeException(e);
         }
     }
-    
+
     //--
-    
+
     @Test
     public void object() throws Exception {
         Object obj;
         net.sf.beezle.sushi.fs.Node node;
-        
+
         node = WORLD.memoryNode("<object/>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertNotNull(obj);
     }
-    
+
     @Test
     public void objectString() throws Exception {
         Object obj;
         net.sf.beezle.sushi.fs.Node node;
-        
+
         node = WORLD.memoryNode("<object type='java.lang.String'>foo</object>");
         obj = LISTMODEL.type(Object.class).loadXml(node).get();
         assertEquals("foo", obj);
     }
-    
+
     @Test
     public void list() throws Exception {
         All all;
         net.sf.beezle.sushi.fs.Node node;
-        
+
         node = WORLD.memoryNode(
                 "<all>" +
                 "  <objects type='java.lang.Integer'>2</objects>" +
                 "  <objects type='net.sf.beezle.sushi.metadata.listmodel.Empty'/>" +
                 "  <objects type='java.lang.String'></objects>" +
-                "</all>"                
+                "</all>"
         );
         all = (All) LISTMODEL.type(All.class).loadXml(node).get();
         assertEquals(3, all.objects.size());

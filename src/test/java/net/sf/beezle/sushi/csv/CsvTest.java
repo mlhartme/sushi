@@ -24,12 +24,14 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CsvTest {
     private static final Format FMT = new Format();
     private static final World WORLD = new World();
-    
+
     @Test
     public void empty() throws IOException {
         check("");
@@ -47,7 +49,7 @@ public class CsvTest {
 
     @Test
     public void two() throws IOException {
-        check("a\nbc\r\n\rd\n", 
+        check("a\nbc\r\n\rd\n",
               "a", "bc", "", "d");
     }
 
@@ -55,7 +57,7 @@ public class CsvTest {
     public void twoError() throws IOException {
         String msg;
         int idx;
-        
+
         try {
             check("\"\n\"");
             fail();
@@ -69,20 +71,20 @@ public class CsvTest {
     }
 
     //--
-    
+
     private Csv read(String str) throws IOException {
         return Csv.read(FMT, node(str));
     }
-    
+
     private Node node(String str) {
         return WORLD.memoryNode(str);
     }
-    
+
     private void check(String orig, String ... lines) throws IOException {
         Csv csv = read(orig);
         lines(csv, lines);
     }
-    
+
     private void lines(Csv csv, String ... lines) {
         assertEquals(lines.length, csv.size());
         for (int i = 0; i < lines.length; i++) {

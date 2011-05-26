@@ -25,17 +25,19 @@ import net.sf.beezle.sushi.metadata.model.Radio;
 import net.sf.beezle.sushi.metadata.model.Vendor;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ComplexTypeTest {
     private static final Schema METADATA = new AnnotationSchema();
 
     @Test
     public void normal() {
-        ComplexType type; 
+        ComplexType type;
         Item item;
-        Car demo; 
-        
+        Car demo;
+
         type = (ComplexType) METADATA.type(Car.class);
         assertEquals("car", type.getName());
 
@@ -48,7 +50,7 @@ public class ComplexTypeTest {
         item.setOne(demo, "foo");
         assertEquals("foo", item.getOne(demo));
         assertEquals(1, item.get(demo).size());
-        
+
         item = type.lookup("seats");
         assertEquals("seats", item.getName());
         assertEquals(Integer.class, item.getType().getType());
@@ -58,10 +60,10 @@ public class ComplexTypeTest {
 
     @Test
     public void sequence() {
-        ComplexType type; 
+        ComplexType type;
         Item item;
-        Vendor demo; 
-        
+        Vendor demo;
+
         type = (ComplexType) METADATA.type(Vendor.class);
         assertEquals("vendor", type.getName());
 
@@ -76,9 +78,9 @@ public class ComplexTypeTest {
 
     @Test
     public void clon() {
-        Car orig; 
+        Car orig;
         Car clone;
-        
+
         orig = new Car("foo", Kind.SPORTS, 3, new Engine(true, 11), new Radio());
         clone = METADATA.instance(orig).clone().get();
         assertTrue(orig != clone);

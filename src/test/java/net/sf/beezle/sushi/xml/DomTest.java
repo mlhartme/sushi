@@ -24,17 +24,19 @@ import org.xml.sax.SAXException;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 public class DomTest {
     private static final Builder BUILDER = new Builder();
-    
+
     @Test
     public void getElements() {
         Document doc;
         List<Element> lst;
-        
-        doc = BUILDER.literal("<root><a><b/><b/></a><A><b/></A></root>");        
+
+        doc = BUILDER.literal("<root><a><b/><b/></a><A><b/></A></root>");
         lst = Dom.getChildElements(doc.getDocumentElement());
         assertEquals(1, lst.size());
         assertSame(doc.getDocumentElement(), lst.get(0));
@@ -71,7 +73,7 @@ public class DomTest {
     public void whitespace() {
         assertEquals("\n tanjev ", getString("<doc>\n tanjev </doc>"));
     }
-    
+
     @Test
     public void noElement() {
         try {
@@ -94,13 +96,13 @@ public class DomTest {
 
     private String getString(String docString) {
         Document doc;
-        
+
         try {
-            doc = BUILDER.parseString(docString);        
+            doc = BUILDER.parseString(docString);
         } catch (SAXException e) {
             throw new RuntimeException(docString, e);
         }
         return Dom.getString(doc.getDocumentElement());
     }
-    
+
 }

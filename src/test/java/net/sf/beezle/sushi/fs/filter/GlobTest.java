@@ -21,11 +21,13 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GlobTest {
     private Pattern p;
-    
+
     @Test
     public void empty() {
         assertEquals("", Glob.compile("", false));
@@ -54,7 +56,7 @@ public class GlobTest {
         assertTrue(Glob.matches(p, "."));
         assertTrue(Glob.matches(p, "foo.bar"));
     }
-    
+
     @Test
     public void x() {
         p = (Pattern) Glob.compile("g.a-*.jar", true);

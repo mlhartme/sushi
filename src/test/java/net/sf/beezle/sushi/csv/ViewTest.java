@@ -26,7 +26,11 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ViewTest extends ModelBase {
     private static final Format NORMAL = new Format(false);
@@ -43,7 +47,7 @@ public class ViewTest extends ModelBase {
     @Test
     public void setOneOne() throws Exception {
         View view;
-        
+
         view = view();
         assertEquals(90, audi.getEngine().getPs());
         view.fromCsv(csv(NORMAL, "name;ps", "audi;5"), MODEL.instance(vendor));
@@ -53,18 +57,18 @@ public class ViewTest extends ModelBase {
     @Test
     public void setOneOneWith2Values() throws Exception {
         View view;
-        
+
         view = view();
         assertEquals(90, audi.getEngine().getPs());
         view.fromCsv(csv(NORMAL, "name;ps", "audi|bmw;5"), MODEL.instance(vendor));
         assertEquals(5, audi.getEngine().getPs());
         assertEquals(5, bmw.getEngine().getPs());
     }
-    
+
     @Test
     public void setTwoTwo() throws Exception {
         View view;
-        
+
         view = view();
         assertEquals(90, audi.getEngine().getPs());
         view.fromCsv(csv(NORMAL, "name;seats;ps", "audi;5;6", "bmw;1;2"), MODEL.instance(vendor));
@@ -77,7 +81,7 @@ public class ViewTest extends ModelBase {
     @Test
     public void setEmpty() throws Exception {
         View view;
-        
+
         view = view();
         view.fromCsv(csv(NORMAL, "name;seats;ps"), MODEL.instance(vendor));
     }
@@ -85,7 +89,7 @@ public class ViewTest extends ModelBase {
     @Test
     public void setOptional() throws Exception {
         View view;
-        
+
         view = view();
         view.add(new Field("cd", new Path("radio/cd")));
 
@@ -102,7 +106,7 @@ public class ViewTest extends ModelBase {
     @Test
     public void setSequence() throws Exception {
         View view;
-        
+
         view = new View(new Path("car"));
         view.add(new Field("name", new Path("name")));
         view.add(new Field("comment", new Path("comment")));
@@ -116,19 +120,19 @@ public class ViewTest extends ModelBase {
         view.fromCsv(csv(NORMAL, "name;comment", "audi;" + value), MODEL.instance(vendor));
         assertEquals(Arrays.asList(expected), audi.commentList());
     }
-    
+
     @Test
     public void merge() {
         Csv csv;
         Line one;
-        
+
         one = Line.create("one", "1");
-        
+
         csv = new Csv(MERGED);
         csv.add(one);
         csv.add(Line.create("two", "2"));
         assertEquals(2, csv.size());
-        
+
         csv.add(Line.create("eins", "1"));
         assertEquals(2, csv.size());
         assertEquals(Arrays.asList("one", "eins"), one.get(0));
@@ -138,17 +142,17 @@ public class ViewTest extends ModelBase {
     public void get() {
         View view;
         Csv dest;
-        
+
         view = view();
         dest = new Csv(NORMAL);
         view.toCsv(MODEL.instance(vendor), dest, "audi", "bmw");
         assertEquals("\"name\";\"ps\";\"seats\"\n\"audi\";90;4\n\"bmw\";200;2\n", dest.toString());
     }
-    
+
     @Test
     public void keyNotFound() throws Exception {
         View view;
-        
+
         view = view();
         try {
             view.fromCsv(csv(NORMAL, "name; ps", "audie; 5"), MODEL.instance(vendor));
@@ -162,7 +166,7 @@ public class ViewTest extends ModelBase {
     public void xml() {
         View view;
         Field field;
-        
+
         view = view("<view><scope>a</scope></view>");
         assertEquals(0, view.size());
 
@@ -172,7 +176,7 @@ public class ViewTest extends ModelBase {
                 "  <field><name>2</name><path>b</path></field>" +
                 "</view>");
         assertEquals(2, view.size());
-        
+
         field = view.lookup("1");
         assertNotNull(field);
         assertEquals("a", field.getPath().getPath());
@@ -181,7 +185,7 @@ public class ViewTest extends ModelBase {
         assertNotNull(field);
         assertEquals("b", field.getPath().getPath());
     }
-    
+
     private View view(String str) {
         try {
             return View.fromXml(new World().memoryNode(str));
@@ -194,15 +198,15 @@ public class ViewTest extends ModelBase {
 
     private View view() {
         View view;
-        
+
         view = new View(new Path("car"));
         view.add(new Field("name", new Path("name")));
         view.add(new Field("ps", new Path("engine/ps")));
         view.add(new Field("seats", new Path("seats")));
         return view;
     }
-    
-    private Csv csv(Format format, String ... lines) throws CsvLineException { 
+
+    private Csv csv(Format format, String ... lines) throws CsvLineException {
         return new Csv(format).addAll(lines);
     }
 }

@@ -23,6 +23,7 @@ import net.sf.beezle.sushi.fs.multi.Function;
 import net.sf.beezle.sushi.fs.multi.Invoker;
 import net.sf.beezle.sushi.fs.multi.TextTarget;
 import net.sf.beezle.sushi.fs.multi.XmlTarget;
+import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -49,6 +50,18 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
+    public static void main(String[] foo) throws Exception {
+        World world = new World();
+
+        WebdavNode node = (WebdavNode) world.node("dav://localhost/webdav/foo");
+        try {
+            node.readBytes();
+        } catch (IOException e) {
+            e.printStackTrace(System.out);
+        }
+        System.out.println("allocated: " + node.getRoot().getAllocated());
+    }
+
     @Test
     public void work() throws IOException {
         List<?> children;
@@ -526,6 +539,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             right = i < str.length() ? str.charAt(i) : - 1;
             assertEquals("idx=" + i, left, right);
         }
+        src.close();
     }
 
     @Test

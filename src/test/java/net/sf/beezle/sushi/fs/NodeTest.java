@@ -55,9 +55,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Node file;
 
         world = new World();
-        WebdavFilesystem.wireLog(world.guessProjectHome(NodeTest.class).getAbsolute() + "/failedtorespond3.log");
+        WebdavFilesystem.wireLog(world.guessProjectHome(NodeTest.class).getAbsolute() + "/failedtorespond.log");
 
-        file = world.node("dav://localhost/webdav/foo");
+        file = world.node("http://englishediting.de/index.html");
         System.out.println("head");
         file.exists();
         System.out.println("head");

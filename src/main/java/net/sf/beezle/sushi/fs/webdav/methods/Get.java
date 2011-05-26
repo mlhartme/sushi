@@ -56,7 +56,7 @@ public class Get extends Method<InputStream> {
     }
 
     @Override
-    public void afterProcessResponse(HttpResponse response, WebdavConnection connection) {
+    public void processResponseFinally(HttpResponse response, WebdavConnection connection) {
     	// do nothing - the resulting stream perform the close
     }
 }

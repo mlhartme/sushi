@@ -107,7 +107,7 @@ public abstract class Method<T> {
         try {
             return processResponse(connection, response);
         } finally {
-        	afterProcessResponse(response, connection);
+        	processResponseFinally(response, connection);
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class Method<T> {
     public abstract T processResponse(WebdavConnection connection, HttpResponse response) throws IOException;
 
     /** called after processResponse finished normally or with an exception */
-    protected void afterProcessResponse(HttpResponse response, WebdavConnection conn) throws IOException {
+    protected void processResponseFinally(HttpResponse response, WebdavConnection conn) throws IOException {
     	root.free(response, conn);
     }
 }

@@ -144,6 +144,9 @@ public class WebdavRoot implements Root<WebdavNode> {
     public synchronized void free(HttpResponse response, WebdavConnection connection) throws IOException {
         HttpEntity entity;
 
+        if (allocated == 0) {
+            throw new IllegalStateException();
+        }
         allocated--;
         if (response != null) {
             entity = response.getEntity();

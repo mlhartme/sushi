@@ -38,7 +38,9 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
         int result;
 
         result = super.read(bytes,  ofs,  len);
-      	logger.log(bytes, ofs, result);
+        if (result != -1) {
+      	    logger.log(bytes, ofs, result);
+        }
         return result;
     }
 
@@ -47,7 +49,9 @@ public class LoggingSessionInputBuffer extends SocketInputBuffer {
         int result;
 
         result = super.read(bytes);
-        logger.log(bytes, 0, result);
+        if (result != -1) {
+            logger.log(bytes, 0, result);
+        }
         return result;
     }
 

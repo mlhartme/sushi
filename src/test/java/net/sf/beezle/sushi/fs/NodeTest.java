@@ -23,7 +23,7 @@ import net.sf.beezle.sushi.fs.multi.Function;
 import net.sf.beezle.sushi.fs.multi.Invoker;
 import net.sf.beezle.sushi.fs.multi.TextTarget;
 import net.sf.beezle.sushi.fs.multi.XmlTarget;
-import net.sf.beezle.sushi.fs.webdav.WebdavNode;
+import net.sf.beezle.sushi.fs.webdav.WebdavFilesystem;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -51,15 +51,18 @@ import static org.junit.Assert.fail;
 
 public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public static void main(String[] foo) throws Exception {
-        World world = new World();
+        World world;
+        Node file;
 
-        WebdavNode node = (WebdavNode) world.node("dav://localhost/webdav/foo");
-        try {
-            node.readBytes();
-        } catch (IOException e) {
-            e.printStackTrace(System.out);
-        }
-        System.out.println("allocated: " + node.getRoot().getAllocated());
+        world = new World();
+        WebdavFilesystem.wireLog(world.guessProjectHome(NodeTest.class).getAbsolute() + "/failedtorespond3.log");
+
+        file = world.node("dav://localhost/webdav/foo");
+        System.out.println("head");
+        file.exists();
+        System.out.println("head");
+        file.exists();
+        System.out.println("done");
     }
 
     @Test

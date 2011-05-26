@@ -55,8 +55,10 @@ public class Get extends Method<InputStream> {
         case HttpStatus.SC_NOT_FOUND:
         case HttpStatus.SC_GONE:
         case HttpStatus.SC_MOVED_PERMANENTLY:
+            root.free(response, connection);
             throw new FileNotFoundException(getUri());
         default:
+            root.free(response, connection);
         	throw new StatusException(response.getStatusLine());
         }
     }

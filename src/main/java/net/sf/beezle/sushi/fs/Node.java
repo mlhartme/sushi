@@ -922,6 +922,7 @@ public abstract class Node {
         }
         return tmp.getRawPath().substring(1);
     }
+
     /** TODO: is there a better way ... ? */
     public static String decodePath(String path) {
         URI tmp;

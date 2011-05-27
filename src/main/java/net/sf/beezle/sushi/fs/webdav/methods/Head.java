@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class Head extends Method<Void> {
     public Head(WebdavNode resource) {
-        super("HEAD", resource);
+        super("HEAD", resource, true);
     }
 
     @Override

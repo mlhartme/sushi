@@ -47,8 +47,15 @@ public abstract class Method<T> {
 
     private final BasicHttpEntityEnclosingRequest request;
 
+    private final boolean head;
+
     public Method(String method, WebdavNode resource) {
+        this(method, resource, false);
+    }
+
+    public Method(String method, WebdavNode resource, boolean head) {
         this.root = resource.getRoot();
+        this.head = head;
         this.request = new BasicHttpEntityEnclosingRequest(method, resource.getAbsPath());
     }
 
@@ -103,7 +110,7 @@ public abstract class Method<T> {
     public T response(WebdavConnection connection) throws IOException {
         HttpResponse response;
 
-        response = root.receive(connection);
+        response = root.receive(connection, head);
         try {
             return processResponse(connection, response);
         } finally {

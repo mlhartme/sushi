@@ -208,7 +208,7 @@ public class WebdavRoot implements Root<WebdavNode> {
         }
     }
 
-    public HttpResponse receive(WebdavConnection conn) throws IOException {
+    public HttpResponse receive(WebdavConnection conn, boolean head) throws IOException {
         HttpResponse response;
         int statuscode;
 
@@ -216,7 +216,7 @@ public class WebdavRoot implements Root<WebdavNode> {
         try {
             do {
                 response = conn.receiveResponseHeader();
-                if (canResponseHaveBody(response)) {
+                if (canResponseHaveBody(response, head)) {
                     conn.receiveResponseEntity(response);
                 }
                 statuscode = response.getStatusLine().getStatusCode();
@@ -235,10 +235,13 @@ public class WebdavRoot implements Root<WebdavNode> {
         }
     }
 
-    private boolean canResponseHaveBody(HttpResponse response) {
+    private boolean canResponseHaveBody(HttpResponse response, boolean head) {
         int status;
 
         status = response.getStatusLine().getStatusCode();
+        if (status == HttpStatus.SC_OK && head) {
+            return false;
+        }
         return status >= HttpStatus.SC_OK
             && status != HttpStatus.SC_NO_CONTENT
             && status != HttpStatus.SC_NOT_MODIFIED

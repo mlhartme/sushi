@@ -4,6 +4,9 @@
   <body>
     <release version="2.4.1" date="2011-05-??">
       <action dev="mlhartme" type="fix">
+        Fix "Target server failed to respond", caused by a HEAD method that tries to read the response body.
+      </action>
+      <action dev="mlhartme" type="fix">
         Multi-threading unit tests and fixes.
       </action>
       <action dev="mlhartme" type="fix">

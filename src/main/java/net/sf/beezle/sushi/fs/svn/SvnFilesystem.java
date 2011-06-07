@@ -23,6 +23,7 @@ import net.sf.beezle.sushi.fs.NodeInstantiationException;
 import net.sf.beezle.sushi.fs.World;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
 import org.tmatesoft.svn.core.internal.util.SVNEncodingUtil;
@@ -101,7 +102,6 @@ public class SvnFilesystem extends Filesystem {
     }
 
     public static SVNRepository repository(String urlstr, String username, String password) throws SVNException {
-        SVNRepository repository;
         String userinfo;
         SVNURL url;
         int idx;
@@ -118,11 +118,21 @@ public class SvnFilesystem extends Filesystem {
                 password = userinfo.substring(idx + 1);
             }
         }
-        repository = SVNRepositoryFactory.create(url);
-        repository.setAuthenticationManager(SVNWCUtil.createDefaultAuthenticationManager(
+
+        return repository(urlstr,
+                SVNWCUtil.createDefaultAuthenticationManager(
                 SVNWCUtil.getDefaultConfigurationDirectory(),
                 username, password,
                 false /* do not store credentials, not even when configured */));
+    }
+
+    public static SVNRepository repository(String urlstr, ISVNAuthenticationManager authenticationManager)
+            throws SVNException {
+        SVNRepository repository;
+        SVNURL url = SVNURL.parseURIEncoded(urlstr);
+
+        repository = SVNRepositoryFactory.create(url);
+        repository.setAuthenticationManager(authenticationManager);
         return repository;
     }
 }

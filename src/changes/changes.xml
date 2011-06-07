@@ -2,6 +2,11 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
+    <release version="2.4.2" date="2011-06-xx">
+      <action dev="matiam" type="fix">
+        Fix missing authentication on exporting from an SvnNode - now uses AuthenticationManager supplied to backing SVNRepository.
+      </action>
+    </release>
     <release version="2.4.1" date="2011-05-27">
       <action dev="mlhartme" type="fix">
         Fix "Target server failed to respond", caused by a HEAD method that tries to read the response body.

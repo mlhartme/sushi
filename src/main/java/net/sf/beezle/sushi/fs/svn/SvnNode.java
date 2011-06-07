@@ -440,7 +440,7 @@ public class SvnNode extends Node {
         } else {
             // repository updates has a target to restrict the result, but it supports
             // only one segment. So I have to create a new repository ...
-            sub = SvnFilesystem.repository(getSvnurl().toString(), null, null); // TODO: auth
+            sub = SvnFilesystem.repository(getSvnurl().toString(), root.getRepository().getAuthenticationManager());
         }
         sub.update(revision, "", true, exporter, exporter);
     }

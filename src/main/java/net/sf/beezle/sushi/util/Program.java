@@ -17,8 +17,8 @@
 
 package net.sf.beezle.sushi.util;
 
-import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.io.Buffer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,29 +26,36 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
- * Wraps a Process builder to add some convenience methods
+ * Wraps a Process builder to arg some convenience methods
  */
 public class Program {
-    public final World world;
     private final FileNode dir;
-    public final ProcessBuilder builder;
+    private final ProcessBuilder builder;
     
     public Program(FileNode dir, String ... args) {
-        this.world = dir.getWorld();
         this.dir = dir;
         this.builder = new ProcessBuilder();
         this.builder.directory(dir.getFile());
-        add(args);
+        arg(args);
     }
-        
-    public Program add(String ... args) {
+
+    public ProcessBuilder getBuilder() {
+        return builder;
+    }
+
+    public Program env(String key, String value) {
+        builder.environment().put(key, value);
+        return this;
+    }
+
+    public Program arg(String... args) {
         for (String a : args) {
             builder.command().add(a);
         }
         return this;
     }
     
-    public Program addAll(List<String> args) {
+    public Program args(List<String> args) {
         builder.command().addAll(args);
         return this;
     }
@@ -67,19 +74,23 @@ public class Program {
         
         result = new ByteArrayOutputStream();
         exec(result);
-        return world.getSettings().string(result.toByteArray());
+        return dir.getWorld().getSettings().string(result.toByteArray());
     }
     
-    /** executes a command in this directory, returns the output */
+    /** Executes a command in this directory, returns the output. Core exec method used by all others. */
     public void exec(OutputStream dest) throws IOException {
+        Buffer buffer;
         Process process;
         int exit;
         String output;
         
         builder.redirectErrorStream(true);
         process = builder.start();
-        // this looks like a busy wait to me, but it's what all the examples suggest:
-        world.getBuffer().copy(process.getInputStream(), dest);
+        buffer = dir.getWorld().getBuffer();
+        synchronized (buffer) {
+            // this looks like a busy wait to me, but it's what all the examples suggest:
+            buffer.copy(process.getInputStream(), dest);
+        }
         try {
             exit = process.waitFor();
         } catch (InterruptedException e) {
@@ -87,7 +98,7 @@ public class Program {
         }
         if (exit != 0) {
             if (dest instanceof ByteArrayOutputStream) {
-                output = world.getSettings().string(((ByteArrayOutputStream) dest));
+                output = dir.getWorld().getSettings().string(((ByteArrayOutputStream) dest));
             } else {
                 output = "";
             }

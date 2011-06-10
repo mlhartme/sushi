@@ -347,7 +347,7 @@ public class FileNode extends Node {
         } else {
             p = new Program(dest.getParent(), "mv");
         }
-        p.add(getAbsolute(), dest.getName());
+        p.arg(getAbsolute(), dest.getName());
         try {
 			output = p.exec();
 		} catch (IOException e) {
@@ -515,8 +515,8 @@ public class FileNode extends Node {
         Program stat;
 
         stat = new Program(getParent(), "stat");
-        stat.add(args);
-        stat.add(getAbsolute());
+        stat.arg(args);
+        stat.arg(getAbsolute());
         return Integer.parseInt(stat.exec().trim(), radix);
     }
 

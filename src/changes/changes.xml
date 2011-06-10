@@ -6,6 +6,10 @@
       <action dev="matiam" type="fix">
         Fix missing authentication on exporting from an SvnNode - now uses AuthenticationManager supplied to backing SVNRepository.
       </action>
+      <action dev="mhm" type="update">
+        Program class reworked: all fields are private now, and there's only one getter for the builder;
+        added an env() method;
+      </action>
     </release>
     <release version="2.4.1" date="2011-05-27">
       <action dev="mlhartme" type="fix">

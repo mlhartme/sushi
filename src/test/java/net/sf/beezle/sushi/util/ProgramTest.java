@@ -70,7 +70,7 @@ public class ProgramTest {
         Program p;
 
         p = p(environ());
-        p.builder.environment().put("bar", "foo");
+        p.env("bar", "foo");
         assertTrue(p.exec().contains("bar=foo"));
     }
 
@@ -127,9 +127,9 @@ public class ProgramTest {
 
         p = new Program((FileNode) WORLD.getHome());
         if (OS.CURRENT == OS.WINDOWS) {
-            p.add("cmd", "/C");
+            p.arg("cmd", "/C");
         }
-        p.add(args);
+        p.arg(args);
         return p;
     }
 }

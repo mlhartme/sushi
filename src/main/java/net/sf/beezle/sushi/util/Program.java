@@ -17,30 +17,51 @@
 
 package net.sf.beezle.sushi.util;
 
+import net.sf.beezle.sushi.fs.Settings;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.Buffer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
 /**
- * Wraps a Process builder to arg some convenience methods
+ * Wraps a Process builder to add some convenience methods.
  */
 public class Program {
-    private final FileNode dir;
     private final ProcessBuilder builder;
-    
+    private Buffer buffer;
+    private Settings settings;
+
     public Program(FileNode dir, String ... args) {
-        this.dir = dir;
+        this(args);
+        dir(dir);
+    }
+
+    public Program(String ... args) {
         this.builder = new ProcessBuilder();
-        this.builder.directory(dir.getFile());
         arg(args);
     }
 
     public ProcessBuilder getBuilder() {
         return builder;
+    }
+
+    //--
+
+    /** initializes the directory to execute the command in */
+    public Program dir(FileNode dir) {
+        return dir(dir.getFile(), dir.getWorld().getBuffer(), dir.getWorld().getSettings());
+    }
+
+    /** You'll normally use the dir(FileNode) method instead. */
+    public Program dir(File dir, Buffer buffer, Settings settings) {
+        this.builder.directory(dir);
+        this.buffer = buffer;
+        this.settings = settings;
+        return this;
     }
 
     public Program env(String key, String value) {
@@ -74,19 +95,17 @@ public class Program {
         
         result = new ByteArrayOutputStream();
         exec(result);
-        return dir.getWorld().getSettings().string(result.toByteArray());
+        return settings.string(result.toByteArray());
     }
     
     /** Executes a command in this directory, returns the output. Core exec method used by all others. */
     public void exec(OutputStream dest) throws IOException {
-        Buffer buffer;
         Process process;
         int exit;
         String output;
         
         builder.redirectErrorStream(true);
         process = builder.start();
-        buffer = dir.getWorld().getBuffer();
         synchronized (buffer) {
             // this looks like a busy wait to me, but it's what all the examples suggest:
             buffer.copy(process.getInputStream(), dest);
@@ -98,7 +117,7 @@ public class Program {
         }
         if (exit != 0) {
             if (dest instanceof ByteArrayOutputStream) {
-                output = dir.getWorld().getSettings().string(((ByteArrayOutputStream) dest));
+                output = settings.string(((ByteArrayOutputStream) dest));
             } else {
                 output = "";
             }
@@ -108,6 +127,6 @@ public class Program {
 
     @Override
     public String toString() {
-        return "[" + dir + "] " + Strings.join(" ", builder.command());
+        return "[" + builder.directory() + "] " + Strings.join(" ", builder.command());
     }
 }

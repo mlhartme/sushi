@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs.ssh;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import net.sf.beezle.sushi.util.ExitCode;
+import net.sf.beezle.sushi.util.Program;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.OutputStream;
@@ -82,7 +83,7 @@ public class Process {
     /** 
      * Waits for termination.
      *  
-     * @param CAUTION: &lt;= 0 immediately times out */
+     * @param timeout CAUTION: &lt;= 0 immediately times out */
     public void waitFor(long timeout) throws JSchException, ExitCode, InterruptedException {
         long deadline;
         
@@ -95,7 +96,7 @@ public class Process {
                 Thread.sleep(100); // throws InterruptedException
             }
             if (channel.getExitStatus() != 0) {
-                throw new ExitCode(Arrays.asList(command), channel.getExitStatus());
+                throw new ExitCode(new Program(command), channel.getExitStatus());
             }
         } finally {
             channel.disconnect();

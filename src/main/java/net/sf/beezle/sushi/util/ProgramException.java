@@ -17,18 +17,19 @@
 
 package net.sf.beezle.sushi.util;
 
-/** indicates a program terminated with a non-zero result */
-public class ExitCode extends ProgramException {
-    public final int code;
-    public final String output;
-    
-    public ExitCode(Program program, int code) {
-        this(program, code, "");
+import java.io.IOException;
+import java.util.List;
+
+public class ProgramException extends IOException {
+    public final Program program;
+
+    public ProgramException(Program program, IOException exception) {
+        this(program, program.getBuilder().command().get(0) + " failed: " + exception.getMessage());
+        initCause(exception);
     }
 
-    public ExitCode(Program program, int code, String output) {
-        super(program, program.getBuilder().command().get(0) + " failed with exit code " + code + ", output: " + output.trim());
-        this.code = code;
-        this.output = output;
+    protected ProgramException(Program program, String message) {
+        super(message);
+        this.program = program;
     }
 }

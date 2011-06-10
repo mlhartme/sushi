@@ -154,7 +154,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         try {
             start(tty, out, command).waitFor();
         } catch (ExitCode e) {
-            throw new ExitCode(e.call, e.code, filesystem.getWorld().getSettings().string(out));
+            throw new ExitCode(e.program, e.code, filesystem.getWorld().getSettings().string(out));
         }
         return filesystem.getWorld().getSettings().string(out);
     }

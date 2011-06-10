@@ -8,7 +8,8 @@
       </action>
       <action dev="mhm" type="update">
         Program class reworked: all fields are private now, and there's only one getter for the builder;
-        added an env() method;
+        added an env() and a dir() method; renamed add() to arg() and addAll() to args(); throws a ProgramException
+        now, ExitCode derives from ProgramException.
       </action>
     </release>
     <release version="2.4.1" date="2011-05-27">

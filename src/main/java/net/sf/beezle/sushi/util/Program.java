@@ -81,16 +81,16 @@ public class Program {
         return this;
     }
     
-    public void execNoOutput() throws IOException {
+    public void execNoOutput() throws ProgramException {
         String result;
         
         result = exec();
         if (result.trim().length() > 0) {
-            throw new IOException(builder.command().get(0) + ": unexpected output " + result);
+            throw new ProgramException(this, builder.command().get(0) + ": unexpected output " + result);
         }
     }
     
-    public String exec() throws IOException {
+    public String exec() throws ProgramException {
         ByteArrayOutputStream result;
         
         result = new ByteArrayOutputStream();
@@ -99,16 +99,24 @@ public class Program {
     }
     
     /** Executes a command in this directory, returns the output. Core exec method used by all others. */
-    public void exec(OutputStream dest) throws IOException {
+    public void exec(OutputStream out) throws ProgramException {
         Process process;
         int exit;
         String output;
-        
+
         builder.redirectErrorStream(true);
-        process = builder.start();
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            throw new ProgramException(this, e);
+        }
         synchronized (buffer) {
             // this looks like a busy wait to me, but it's what all the examples suggest:
-            buffer.copy(process.getInputStream(), dest);
+            try {
+                buffer.copy(process.getInputStream(), out);
+            } catch (IOException e) {
+                throw new ProgramException(this, e);
+            }
         }
         try {
             exit = process.waitFor();
@@ -116,12 +124,12 @@ public class Program {
             throw new RuntimeException(e);
         }
         if (exit != 0) {
-            if (dest instanceof ByteArrayOutputStream) {
-                output = settings.string(((ByteArrayOutputStream) dest));
+            if (out instanceof ByteArrayOutputStream) {
+                output = settings.string(((ByteArrayOutputStream) out));
             } else {
                 output = "";
             }
-            throw new ExitCode(builder.command(), exit, output);
+            throw new ExitCode(this, exit, output);
         }
     }
 

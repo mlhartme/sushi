@@ -21,9 +21,6 @@ import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,27 +30,27 @@ public class ProgramTest {
     private static final World WORLD = new World();
 
     @Test
-    public void normal() throws IOException {
+    public void normal() throws ProgramException {
         p("hostname").exec();
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void noCommand() throws IOException {
+    public void noCommand() throws ProgramException {
         p().exec();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void noDirectory() throws IOException {
+    public void noDirectory() throws ProgramException {
         new Program("hostname").exec();
     }
 
     @Test
-    public void echo() throws IOException {
+    public void echo() throws ProgramException {
         assertEquals("foo", p("echo", "foo").exec().trim());
     }
 
     @Test
-    public void variableSubstitution() throws IOException {
+    public void variableSubstitution() throws ProgramException {
         String var;
         String output;
 
@@ -63,7 +60,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void noRedirect() throws IOException {
+    public void noRedirect() throws ProgramException {
         if (OS.CURRENT != OS.WINDOWS) {
             assertEquals("foo >file\n", p("echo", "foo", ">file").exec());
         } else {
@@ -72,12 +69,12 @@ public class ProgramTest {
     }
 
     @Test
-    public void env() throws IOException {
+    public void env() throws ProgramException {
         assertTrue(p(environ()).exec().contains("PATH="));
     }
 
     @Test
-    public void myEnv() throws IOException {
+    public void myEnv() throws ProgramException {
         Program p;
 
         p = p(environ());
@@ -86,12 +83,12 @@ public class ProgramTest {
     }
 
     @Test
-    public void output() throws IOException {
+    public void output() throws ProgramException {
         assertEquals("foo", p("echo", "foo").exec().trim());
     }
 
     @Test
-    public void chains() throws IOException {
+    public void chains() throws ProgramException {
     	if (OS.CURRENT == OS.WINDOWS) {
     		return;
     	}
@@ -99,7 +96,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void noChains() throws IOException {
+    public void noChains() throws ProgramException {
         assertEquals(OS.CURRENT == OS.WINDOWS ? "foo \r\nbar" : "foo && echo bar",
         		p("echo", "foo", "&&", "echo", "bar").exec().trim());
     }
@@ -112,7 +109,7 @@ public class ProgramTest {
         }
     }
 
-    public void failure() throws IOException {
+    public void failure() throws ProgramException {
         try {
             p("ls", "nosuchfile").exec();
             fail();
@@ -128,7 +125,7 @@ public class ProgramTest {
             fail();
         } catch (ExitCode e) {
             assertEquals(OS.WINDOWS, OS.CURRENT);
-        } catch (IOException e) {
+        } catch (ProgramException e) {
             assertTrue(OS.WINDOWS != OS.CURRENT);
         }
     }

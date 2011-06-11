@@ -17,7 +17,7 @@
 
 package net.sf.beezle.sushi.util;
 
-/** Tndicates a program terminated with a non-zero result. TODO: rename to ProgramExitCode? */
+/** Indicates that a program terminated with a non-zero result. TODO: rename to ProgramExitCode? */
 public class ExitCode extends ProgramException {
     public final int code;
     public final String output;

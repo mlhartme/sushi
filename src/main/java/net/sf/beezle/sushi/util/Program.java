@@ -28,9 +28,9 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
- * Wraps a Process builder to simplify usage. In paticular, most methods return this so you can configure and
- * execute a program in a single expression (short methods names further simplify this). In addition, you can
- * easily get program output as a string.
+ * Configures and executes an operating system process. This class wraps a process builder to simplify usage.
+ * In paticular, most methods return this so you can configure and execute a program in a single expression
+ * (short methods names further simplify this). In addition, you can easily get program output as a string.
  *
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies

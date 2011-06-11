@@ -43,30 +43,17 @@ public class Program {
     private Buffer buffer;
     private Settings settings;
 
-    public Program(FileNode dir, String ... args) {
-        this(args);
-        dir(dir);
-    }
-
     public Program(String ... args) {
         this.builder = new ProcessBuilder();
         arg(args);
     }
 
+    public Program(FileNode dir, String ... args) {
+        this(args);
+        dir(dir);
+    }
+
     //-- configuration
-
-    /** initializes the directory to execute the command in */
-    public Program dir(FileNode dir) {
-        return dir(dir.getFile(), dir.getWorld().getBuffer(), dir.getWorld().getSettings());
-    }
-
-    /** You'll normally use the dir(FileNode) method instead. */
-    public Program dir(File dir, Buffer buffer, Settings settings) {
-        this.builder.directory(dir);
-        this.buffer = buffer;
-        this.settings = settings;
-        return this;
-    }
 
     public Program env(String key, String value) {
         builder.environment().put(key, value);
@@ -82,6 +69,19 @@ public class Program {
 
     public Program args(List<String> args) {
         builder.command().addAll(args);
+        return this;
+    }
+
+    /** initializes the directory to execute the command in */
+    public Program dir(FileNode dir) {
+        return dir(dir.getFile(), dir.getWorld().getBuffer(), dir.getWorld().getSettings());
+    }
+
+    /** You'll normally use the dir(FileNode) method instead. */
+    public Program dir(File dir, Buffer buffer, Settings settings) {
+        this.builder.directory(dir);
+        this.buffer = buffer;
+        this.settings = settings;
         return this;
     }
 
@@ -110,6 +110,11 @@ public class Program {
         int exit;
         String output;
 
+        if (builder.directory() == null) {
+            // builder.start() does not check, I would not detect the problem until process.waitFor is called
+            // - that's to late because buffer would also be null
+            throw new IllegalStateException("Missing directory. Call dir() before invoking this method");
+        }
         builder.redirectErrorStream(true);
         try {
             process = builder.start();

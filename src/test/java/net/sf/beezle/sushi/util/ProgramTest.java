@@ -38,8 +38,13 @@ public class ProgramTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void empty() throws IOException {
+    public void noCommand() throws IOException {
         p().exec();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void noDirectory() throws IOException {
+        new Program("hostname").exec();
     }
 
     @Test

@@ -21,6 +21,7 @@ import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.io.IOException;
 
@@ -34,6 +35,11 @@ public class ProgramTest {
     @Test
     public void normal() throws IOException {
         p("hostname").exec();
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void empty() throws IOException {
+        p().exec();
     }
 
     @Test

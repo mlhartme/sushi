@@ -17,11 +17,11 @@
 
 package net.sf.beezle.sushi.util;
 
-/** indicates a program terminated with a non-zero result */
+/** Tndicates a program terminated with a non-zero result. TODO: rename to ProgramExitCode? */
 public class ExitCode extends ProgramException {
     public final int code;
     public final String output;
-    
+
     public ExitCode(Program program, int code) {
         this(program, code, "");
     }

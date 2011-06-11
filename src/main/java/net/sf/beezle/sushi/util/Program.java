@@ -28,7 +28,15 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
- * Wraps a Process builder to add some convenience methods.
+ * Wraps a Process builder to simplify usage. In paticular, most methods return this so you can configure and
+ * execute a program in a single expression (short methods names further simplify this). In addition, you can
+ * easily get program output as a string.
+ *
+ * None-zero exit codes of a program are reported as ExitCode exceptions. This helps to improve reliability
+ * because it's harder to ignore exceptions than to ignore return codes.
+ *
+ * Currently not supported (because it would need separate threads:
+ * feeding input to a process and distinguishing standard and error output.
  */
 public class Program {
     private final ProcessBuilder builder;
@@ -45,11 +53,7 @@ public class Program {
         arg(args);
     }
 
-    public ProcessBuilder getBuilder() {
-        return builder;
-    }
-
-    //--
+    //-- configuration
 
     /** initializes the directory to execute the command in */
     public Program dir(FileNode dir) {
@@ -75,29 +79,31 @@ public class Program {
         }
         return this;
     }
-    
+
     public Program args(List<String> args) {
         builder.command().addAll(args);
         return this;
     }
-    
+
+    //-- execution
+
     public void execNoOutput() throws ProgramException {
         String result;
-        
+
         result = exec();
         if (result.trim().length() > 0) {
             throw new ProgramException(this, builder.command().get(0) + ": unexpected output " + result);
         }
     }
-    
+
     public String exec() throws ProgramException {
         ByteArrayOutputStream result;
-        
+
         result = new ByteArrayOutputStream();
         exec(result);
         return settings.string(result.toByteArray());
     }
-    
+
     /** Executes a command in this directory, returns the output. Core exec method used by all others. */
     public void exec(OutputStream out) throws ProgramException {
         Process process;
@@ -110,8 +116,8 @@ public class Program {
         } catch (IOException e) {
             throw new ProgramException(this, e);
         }
+        // because in most cases, buffer is taken from the world and shared with possible other threads
         synchronized (buffer) {
-            // this looks like a busy wait to me, but it's what all the examples suggest:
             try {
                 buffer.copy(process.getInputStream(), out);
             } catch (IOException e) {
@@ -131,6 +137,13 @@ public class Program {
             }
             throw new ExitCode(this, exit, output);
         }
+    }
+
+    //--
+
+    /** If you need access to the internals. Most applications won't need this method. */
+    public ProcessBuilder getBuilder() {
+        return builder;
     }
 
     @Override

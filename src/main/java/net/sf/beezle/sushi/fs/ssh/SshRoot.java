@@ -143,6 +143,9 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         return Process.start(this, tty, out, command);
     }
 
+    //-- exec methods
+    //    I'd like to align this with Program execution, but I cannot set a working directory in Ssh Execution
+
     public String exec(String ... command) throws JSchException, ExitCode {
         return exec(true, command);
     }
@@ -158,6 +161,8 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         }
         return filesystem.getWorld().getSettings().string(out);
     }
+
+    //--
 
     public String getUser() {
         return user;

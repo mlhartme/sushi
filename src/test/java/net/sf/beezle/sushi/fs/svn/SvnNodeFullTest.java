@@ -27,6 +27,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -134,6 +135,18 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
     @Test
     public void svnurl() {
         assertEquals(URL + "/work/a", work.join("a").getSvnurl().toString());
+    }
+
+    @Test
+    public void fromWorkspace() throws Exception {
+        FileNode ws;
+        SvnNode svn;
+
+        ws = WORLD.guessProjectHome(getClass());
+        svn = SvnNode.fromWorkspace(ws);
+        svn.checkDirectory();
+        svn = SvnNode.fromWorkspace(ws.join("pom.xml"));
+        svn.checkFile();
     }
 
     //--

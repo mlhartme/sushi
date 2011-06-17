@@ -11,6 +11,9 @@
         added an env() and a dir() method; renamed add() to arg() and addAll() to args(); throws a ProgramException
         now, ExitCode derives from ProgramException.
       </action>
+      <action dev="mhm" type="update">
+        SvnNode.fromWorkspace(arg) also works for file args now.
+      </action>
     </release>
     <release version="2.4.1" date="2011-05-27">
       <action dev="mlhartme" type="fix">

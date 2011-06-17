@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.svn;
 
+import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators;
 import net.sf.beezle.sushi.fs.DeleteException;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.Filesystem;
@@ -453,8 +454,17 @@ public class SvnNode extends Node {
         }
     }
 
+    /** @param workspace a file or directory */
     public static SvnNode fromWorkspace(FileNode workspace) throws IOException {
-        return (SvnNode) workspace.getWorld().validNode("svn:" + urlFromWorkspace(workspace));
+        FileNode dir;
+        SvnNode result;
+
+        dir = workspace.isFile() ? workspace.getParent() : workspace;
+        result = (SvnNode) workspace.getWorld().validNode("svn:" + urlFromWorkspace(dir));
+        if (dir != workspace) {
+            result = result.join(workspace.getName());
+        }
+        return result;
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {

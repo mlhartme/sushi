@@ -15,20 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.util;
+package net.sf.beezle.sushi.launcher;
 
-/** Indicates that a program terminated with a non-zero result. TODO: rename to ProgramExitCode? */
-public class ExitCode extends ProgramException {
-    public final int code;
-    public final String output;
+import java.io.IOException;
 
-    public ExitCode(Program program, int code) {
-        this(program, code, "");
+/** Indicates that Launcher.exec() failed */
+public class Failure extends IOException {
+    public final Launcher launcher;
+
+    public Failure(Launcher launcher, IOException exception) {
+        this(launcher, launcher.getBuilder().command().get(0) + " failed: " + exception.getMessage());
+        initCause(exception);
     }
 
-    public ExitCode(Program program, int code, String output) {
-        super(program, program.getBuilder().command().get(0) + " failed with exit code " + code + ", output: " + output.trim());
-        this.code = code;
-        this.output = output;
+    protected Failure(Launcher launcher, String message) {
+        super(message);
+        this.launcher = launcher;
     }
 }

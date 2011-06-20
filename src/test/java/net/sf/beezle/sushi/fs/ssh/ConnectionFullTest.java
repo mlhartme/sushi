@@ -20,7 +20,7 @@ package net.sf.beezle.sushi.fs.ssh;
 import com.jcraft.jsch.JSchException;
 import net.sf.beezle.sushi.TestProperties;
 import net.sf.beezle.sushi.fs.World;
-import net.sf.beezle.sushi.util.ExitCode;
+import net.sf.beezle.sushi.launcher.ExitCode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

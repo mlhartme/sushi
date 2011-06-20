@@ -20,6 +20,8 @@ package net.sf.beezle.sushi.util;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.launcher.ExitCode;
+import net.sf.beezle.sushi.launcher.Launcher;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -65,12 +67,12 @@ public class DiffTest {
     public void changeall() {
         assertEquals("-a\n-b\n+1\n+2\n", Diff.diff("0\na\nb\nc\n", "0\n1\n2\nc\n"));
     }
-    
+
     @Test
     public void mixed() {
         assertEquals("-b\n-B\n+d\n+D\n", Diff.diff("a\nb\nB\nc\n", "a\nc\nd\nD\n"));
     }
-    
+
     @Test
     public void replace() {
         assertEquals("-before\n+after\n", Diff.diff("before\nsame\n", "after\nsame\n"));
@@ -98,7 +100,7 @@ public class DiffTest {
         for (Node left : dir.find("*.left")) {
             right = dir.join(Strings.removeEnd(left.getName(), ".left") + ".right");
             try {
-                expected = new Program((FileNode) world.getHome(), "diff", "-u", ((FileNode) left).getAbsolute(), right.getAbsolute()).exec();
+                expected = new Launcher((FileNode) world.getHome(), "diff", "-u", ((FileNode) left).getAbsolute(), right.getAbsolute()).exec();
             } catch (ExitCode e) {
                 expected = e.output;
             }
@@ -122,7 +124,7 @@ public class DiffTest {
         lines("a\nb", "a\n", "b");
         lines("a\nb\n", "a\n", "b\n");
     }
-    
+
     private void lines(String str, String ... lines) {
         assertEquals(Arrays.asList(lines), Strings.lines(str));
     }

@@ -15,11 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.util;
+package net.sf.beezle.sushi.launcher;
 
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.launcher.ExitCode;
+import net.sf.beezle.sushi.launcher.Launcher;
+import net.sf.beezle.sushi.launcher.Failure;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -28,31 +31,31 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ProgramTest {
+public class LauncherTest {
     private static final World WORLD = new World();
 
     @Test
-    public void normal() throws ProgramException {
+    public void normal() throws Failure {
         p("hostname").exec();
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void noCommand() throws ProgramException {
+    public void noCommand() throws Failure {
         p().exec();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void noDirectory() throws ProgramException {
-        new Program("hostname").exec();
+    public void noDirectory() throws Failure {
+        new Launcher("hostname").exec();
     }
 
     @Test
-    public void echo() throws ProgramException {
+    public void echo() throws Failure {
         assertEquals("foo", p("echo", "foo").exec().trim());
     }
 
     @Test
-    public void variableSubstitution() throws ProgramException {
+    public void variableSubstitution() throws Failure {
         String var;
         String output;
 
@@ -62,7 +65,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void noRedirect() throws ProgramException {
+    public void noRedirect() throws Failure {
         if (OS.CURRENT != OS.WINDOWS) {
             assertEquals("foo >file\n", p("echo", "foo", ">file").exec());
         } else {
@@ -71,13 +74,13 @@ public class ProgramTest {
     }
 
     @Test
-    public void env() throws ProgramException {
+    public void env() throws Failure {
         assertTrue(p(environ()).exec().contains("PATH="));
     }
 
     @Test
-    public void myEnv() throws ProgramException {
-        Program p;
+    public void myEnv() throws Failure {
+        Launcher p;
 
         p = p(environ());
         p.env("bar", "foo");
@@ -85,12 +88,12 @@ public class ProgramTest {
     }
 
     @Test
-    public void stdout() throws ProgramException {
+    public void stdout() throws Failure {
         assertEquals("foo", p("echo", "foo").exec().trim());
     }
 
     @Test
-    public void stderr() throws ProgramException {
+    public void stderr() throws Failure {
         if (OS.CURRENT == OS.WINDOWS) {
             return;
         }
@@ -98,7 +101,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void stdstreams() throws ProgramException {
+    public void stdstreams() throws Failure {
         ByteArrayOutputStream stdout;
         ByteArrayOutputStream stderr;
 
@@ -107,13 +110,13 @@ public class ProgramTest {
         }
         stdout = new ByteArrayOutputStream();
         stderr = new ByteArrayOutputStream();
-        new Program((FileNode) WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
+        new Launcher((FileNode) WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
         assertEquals("std", new String(stdout.toByteArray()).trim());
         assertEquals("err", new String(stderr.toByteArray()).trim());
     }
 
     @Test
-    public void chains() throws ProgramException {
+    public void chains() throws Failure {
     	if (OS.CURRENT == OS.WINDOWS) {
     		return;
     	}
@@ -121,7 +124,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void noChains() throws ProgramException {
+    public void noChains() throws Failure {
         assertEquals(OS.CURRENT == OS.WINDOWS ? "foo \r\nbar" : "foo && echo bar",
         		p("echo", "foo", "&&", "echo", "bar").exec().trim());
     }
@@ -135,7 +138,7 @@ public class ProgramTest {
     }
 
     @Test
-    public void failure() throws ProgramException {
+    public void failure() throws Failure {
         try {
             p("ls", "nosuchfile").exec();
             fail();
@@ -151,15 +154,15 @@ public class ProgramTest {
             fail();
         } catch (ExitCode e) {
             assertEquals(OS.WINDOWS, OS.CURRENT);
-        } catch (ProgramException e) {
+        } catch (Failure e) {
             assertTrue(OS.WINDOWS != OS.CURRENT);
         }
     }
 
-    private Program p(String ... args) {
-        Program p;
+    private Launcher p(String ... args) {
+        Launcher p;
 
-        p = new Program((FileNode) WORLD.getHome());
+        p = new Launcher((FileNode) WORLD.getHome());
         if (OS.CURRENT == OS.WINDOWS) {
             p.arg("cmd", "/C");
         }

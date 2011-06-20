@@ -26,7 +26,7 @@ import com.jcraft.jsch.UserInfo;
 import net.sf.beezle.sushi.fs.OnShutdown;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.io.MultiOutputStream;
-import net.sf.beezle.sushi.util.ExitCode;
+import net.sf.beezle.sushi.launcher.ExitCode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -157,7 +157,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         try {
             start(tty, out, command).waitFor();
         } catch (ExitCode e) {
-            throw new ExitCode(e.program, e.code, filesystem.getWorld().getSettings().string(out));
+            throw new ExitCode(e.launcher, e.code, filesystem.getWorld().getSettings().string(out));
         }
         return filesystem.getWorld().getSettings().string(out);
     }

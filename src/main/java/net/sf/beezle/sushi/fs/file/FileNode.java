@@ -36,7 +36,7 @@ import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
-import net.sf.beezle.sushi.util.Program;
+import net.sf.beezle.sushi.launcher.Launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -102,7 +102,7 @@ public class FileNode extends Node {
     @Override
     public String getPath() {
     	String result;
-    	
+
     	result = file.getPath().substring(getRoot().getAbsolute().length());
     	return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     }
@@ -262,7 +262,7 @@ public class FileNode extends Node {
             checkNotExists();
             parent = getParent();
             parent.checkDirectory();
-            new Program(parent, "ln", "-s", target, getName()).execNoOutput();
+            new Launcher(parent, "ln", "-s", target, getName()).execNoOutput();
         } catch (IOException e) {
             throw new LinkException(this, e);
         }
@@ -330,7 +330,7 @@ public class FileNode extends Node {
     @Override
     public FileNode move(Node destNode) throws MoveException {
     	FileNode dest;
-        Program p;
+        Launcher p;
         String output;
 
         if (!(destNode instanceof FileNode)) {
@@ -343,9 +343,9 @@ public class FileNode extends Node {
       		throw new MoveException(this, dest, "dest exists", e);
       	}
         if (getWorld().os == OS.WINDOWS) {
-            p = new Program(dest.getParent(), "cmd", "/C", "move");
+            p = new Launcher(dest.getParent(), "cmd", "/C", "move");
         } else {
-            p = new Program(dest.getParent(), "mv");
+            p = new Launcher(dest.getParent(), "mv");
         }
         p.arg(getAbsolute(), dest.getName());
         try {
@@ -427,7 +427,7 @@ public class FileNode extends Node {
 
         if (!link.exists()) {
         	// broken link
-        	new Program(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
+        	new Launcher(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
         } else {
         	target = link.getCanonicalFile();
         	dir = target.getAbsoluteFile().getParentFile();
@@ -468,11 +468,11 @@ public class FileNode extends Node {
 
     /** Executes the specified program in this directory. Convenience Method. Don't forget to check the output. */
     public String exec(String ... args) throws IOException {
-        return new Program(this, args).exec();
+        return new Launcher(this, args).exec();
     }
 
     public void execNoOutput(String ... args) throws IOException {
-        new Program(this, args).execNoOutput();
+        new Launcher(this, args).execNoOutput();
     }
 
     //--
@@ -508,13 +508,13 @@ public class FileNode extends Node {
     }
 
     private void ch(String cmd, String n) throws IOException {
-        new Program(getParent(), cmd, n, getAbsolute()).execNoOutput();
+        new Launcher(getParent(), cmd, n, getAbsolute()).execNoOutput();
     }
 
     private int stat(String[] args, int radix) throws IOException {
-        Program stat;
+        Launcher stat;
 
-        stat = new Program(getParent(), "stat");
+        stat = new Launcher(getParent(), "stat");
         stat.arg(args);
         stat.arg(getAbsolute());
         return Integer.parseInt(stat.exec().trim(), radix);

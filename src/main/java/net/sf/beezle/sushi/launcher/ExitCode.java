@@ -15,21 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.sf.beezle.sushi.util;
+package net.sf.beezle.sushi.launcher;
 
-import java.io.IOException;
-import java.util.List;
+/** Indicates that a process terminated with a non-zero result. */
+public class ExitCode extends Failure {
+    public final int code;
+    public final String output;
 
-public class ProgramException extends IOException {
-    public final Program program;
-
-    public ProgramException(Program program, IOException exception) {
-        this(program, program.getBuilder().command().get(0) + " failed: " + exception.getMessage());
-        initCause(exception);
+    public ExitCode(Launcher launcher, int code) {
+        this(launcher, code, "");
     }
 
-    protected ProgramException(Program program, String message) {
-        super(message);
-        this.program = program;
+    public ExitCode(Launcher launcher, int code, String output) {
+        super(launcher, launcher.getBuilder().command().get(0) + " failed with exit code " + code + ", output: " + output.trim());
+        this.code = code;
+        this.output = output;
     }
 }

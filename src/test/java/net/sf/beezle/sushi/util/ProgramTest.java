@@ -22,6 +22,8 @@ import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -83,8 +85,31 @@ public class ProgramTest {
     }
 
     @Test
-    public void output() throws ProgramException {
+    public void stdout() throws ProgramException {
         assertEquals("foo", p("echo", "foo").exec().trim());
+    }
+
+    @Test
+    public void stderr() throws ProgramException {
+        if (OS.CURRENT == OS.WINDOWS) {
+            return;
+        }
+        assertEquals("err", p("bash", "-c", "echo err 1>&2").exec().trim());
+    }
+
+    @Test
+    public void stdstreams() throws ProgramException {
+        ByteArrayOutputStream stdout;
+        ByteArrayOutputStream stderr;
+
+        if (OS.CURRENT == OS.WINDOWS) {
+            return;
+        }
+        stdout = new ByteArrayOutputStream();
+        stderr = new ByteArrayOutputStream();
+        new Program((FileNode) WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
+        assertEquals("std", new String(stdout.toByteArray()).trim());
+        assertEquals("err", new String(stderr.toByteArray()).trim());
     }
 
     @Test

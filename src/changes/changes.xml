@@ -2,14 +2,14 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.4.2" date="2011-06-xx">
+    <release version="2.4.2" date="2011-06-20">
       <action dev="matiam" type="fix">
         Fix missing authentication on exporting from an SvnNode - now uses AuthenticationManager supplied to backing SVNRepository.
       </action>
       <action dev="mhm" type="update">
         Program class reworked: all fields are private now, and there's only one getter for the builder;
-        added an env() and a dir() method; renamed add() to arg() and addAll() to args(); throws a ProgramException
-        now, ExitCode derives from ProgramException.
+        added an env() and a dir() method; renamed add() to arg() and addAll() to args(); exec supports an optional
+        error stream now; throws a ProgramException now, ExitCode derives from ProgramException.
       </action>
       <action dev="mhm" type="update">
         SvnNode.fromWorkspace(arg) also works for file args now.

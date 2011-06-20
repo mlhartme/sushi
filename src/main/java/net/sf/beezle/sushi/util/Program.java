@@ -24,12 +24,13 @@ import net.sf.beezle.sushi.io.Buffer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
 /**
  * Configures and executes an operating system process. This class wraps a process builder to simplify usage.
- * In paticular, most methods return this so you can configure and execute a program in a single expression
+ * In particular, most methods return this so you can configure and execute a program in a single expression
  * (short methods names further simplify this). In addition, you can easily get program output as a string.
  *
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
@@ -39,8 +40,7 @@ import java.util.List;
  * None-zero exit codes of a program are reported as ExitCode exceptions. This helps to improve reliability
  * because it's harder to ignore exceptions than to ignore return codes.
  *
- * Currently not supported (because it would need separate threads:
- * feeding input to a process and distinguishing standard and error output.
+ * Currently not supported is feeding input to a process.
  */
 public class Program {
     private final ProcessBuilder builder;
@@ -108,39 +108,63 @@ public class Program {
         return settings.string(result.toByteArray());
     }
 
-    /** Executes a command in this directory, returns the output. Core exec method used by all others. */
-    public void exec(OutputStream out) throws ProgramException {
+    public void exec(OutputStream all) throws ProgramException {
+        exec(all, null);
+    }
+
+    /**
+     * Executes a command in this directory, passing output to the specified streams.
+     * @param stderr may be null (which will redirect the error stream to stdout. */
+    public void exec(OutputStream stdout, OutputStream stderr) throws ProgramException {
         Process process;
         int exit;
         String output;
+        PumpStream ps;
 
         if (builder.directory() == null) {
             // builder.start() does not check, I would not detect the problem until process.waitFor is called
             // - that's to late because buffer would also be null
             throw new IllegalStateException("Missing directory. Call dir() before invoking this method");
         }
-        builder.redirectErrorStream(true);
+        builder.redirectErrorStream(stderr == null);
         try {
             process = builder.start();
         } catch (IOException e) {
             throw new ProgramException(this, e);
         }
+        if (stderr != null) {
+            ps = new PumpStream(process.getErrorStream(), stderr);
+            ps.start();
+        } else {
+            ps = null;
+        }
         // because in most cases, buffer is taken from the world and shared with possible other threads
         synchronized (buffer) {
             try {
-                buffer.copy(process.getInputStream(), out);
+                buffer.copy(process.getInputStream(), stdout);
+                stdout.close();
             } catch (IOException e) {
                 throw new ProgramException(this, e);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.finish();
+                stderr.close();
+            } catch (IOException e) {
+                throw new ProgramException(this, e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("TODO", e);
             }
         }
         try {
             exit = process.waitFor();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("TODO", e);
         }
         if (exit != 0) {
-            if (out instanceof ByteArrayOutputStream) {
-                output = settings.string(((ByteArrayOutputStream) out));
+            if (stderr == null && stdout instanceof ByteArrayOutputStream) {
+                output = settings.string(((ByteArrayOutputStream) stdout));
             } else {
                 output = "";
             }
@@ -158,5 +182,43 @@ public class Program {
     @Override
     public String toString() {
         return "[" + builder.directory() + "] " + Strings.join(" ", builder.command());
+    }
+
+    //--
+
+    public static class PumpStream extends Thread {
+        private byte[] buffer;
+        private final InputStream src;
+        private final OutputStream dest;
+        private IOException exception;
+
+        public PumpStream(InputStream src, OutputStream dest) {
+            this.buffer = new byte[4096];
+            this.src = src;
+            this.dest = dest;
+            setDaemon(true);
+        }
+
+        public void run() {
+            int len;
+
+            try {
+                len = src.read(buffer);
+                if (len == -1) {
+                    return;
+                }
+                dest.write(buffer, 0, len);
+            } catch (IOException e) {
+                exception = e;
+                return;
+            }
+        }
+
+        public void finish() throws InterruptedException, IOException {
+            join();
+            if (exception != null) {
+                throw exception;
+            }
+        }
     }
 }

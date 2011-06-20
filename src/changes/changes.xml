@@ -7,7 +7,8 @@
         Fix missing authentication on exporting from an SvnNode - now uses AuthenticationManager supplied to backing SVNRepository.
       </action>
       <action dev="mhm" type="update">
-        Program class reworked: all fields are private now, and there's only one getter for the builder;
+        Program renamed to Launcher, moved from util to launcher package, and completely reworked: 
+        all fields are private now, and there's only one getter for the builder;
         added an env() and a dir() method; renamed add() to arg() and addAll() to args(); exec supports an optional
         error stream now; throws a ProgramException now, ExitCode derives from ProgramException.
       </action>

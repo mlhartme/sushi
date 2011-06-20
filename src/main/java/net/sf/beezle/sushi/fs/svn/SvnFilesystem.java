@@ -121,9 +121,9 @@ public class SvnFilesystem extends Filesystem {
 
         return repository(urlstr,
                 SVNWCUtil.createDefaultAuthenticationManager(
-                SVNWCUtil.getDefaultConfigurationDirectory(),
-                username, password,
-                false /* do not store credentials, not even when configured */));
+                    SVNWCUtil.getDefaultConfigurationDirectory(),
+                    username, password,
+                    false /* do not store credentials, not even when configured */));
     }
 
     public static SVNRepository repository(String urlstr, ISVNAuthenticationManager authenticationManager)

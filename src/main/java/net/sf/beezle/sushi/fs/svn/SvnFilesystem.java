@@ -40,20 +40,26 @@ public class SvnFilesystem extends Filesystem {
         System.setProperty("svnkit.upgradeWC", "false"); // see https://wiki.svnkit.com/SVNKit_specific_system_properties
     }
 
-    private String defaultUsername;
-    private String defaultPassword;
+    private ISVNAuthenticationManager defaultAuthenticationManager;
 
     public SvnFilesystem(World world, String name) {
         super(world, new Features(true, false, false, false, false, false), name);
 
-        this.defaultUsername = null;
-        this.defaultPassword = null;
+        this.defaultAuthenticationManager = authenticationManager(null, null);
+    }
+
+    public ISVNAuthenticationManager getDefaultAuthenticationManager() {
+        return defaultAuthenticationManager;
     }
 
     public void setDefaultCredentials(String username, String password) {
-        this.defaultUsername = username;
-        this.defaultPassword = password;
+        setDefaultAuthenticationManager(authenticationManager(username, password));
     }
+
+    public void setDefaultAuthenticationManager(ISVNAuthenticationManager authenticationManager) {
+        this.defaultAuthenticationManager = authenticationManager;
+    }
+
 
     @Override
     public SvnNode node(URI uri, Object extra) throws NodeInstantiationException {
@@ -97,14 +103,13 @@ public class SvnFilesystem extends Filesystem {
 
     //--
 
-    public SVNRepository repository(String url) throws SVNException {
-        return repository(url, defaultUsername, defaultPassword);
-    }
-
-    public static SVNRepository repository(String urlstr, String username, String password) throws SVNException {
+    public SVNRepository repository(String urlstr) throws SVNException {
+        ISVNAuthenticationManager authenticationManager;
         String userinfo;
         SVNURL url;
         int idx;
+        String username;
+        String password;
 
         url = SVNURL.parseURIEncoded(urlstr);
         userinfo = url.getUserInfo();
@@ -117,22 +122,28 @@ public class SvnFilesystem extends Filesystem {
                 username = userinfo.substring(0, idx);
                 password = userinfo.substring(idx + 1);
             }
+            authenticationManager = authenticationManager(username, password);
+        } else {
+            authenticationManager = defaultAuthenticationManager == null ? authenticationManager(null, null) : defaultAuthenticationManager;
         }
 
-        return repository(urlstr,
-                SVNWCUtil.createDefaultAuthenticationManager(
-                    SVNWCUtil.getDefaultConfigurationDirectory(),
-                    username, password,
-                    false /* do not store credentials, not even when configured */));
+        return repository(url, authenticationManager);
     }
 
-    public static SVNRepository repository(String urlstr, ISVNAuthenticationManager authenticationManager)
-            throws SVNException {
+    //--
+
+    public static SVNRepository repository(SVNURL url, ISVNAuthenticationManager authenticationManager) throws SVNException {
         SVNRepository repository;
-        SVNURL url = SVNURL.parseURIEncoded(urlstr);
 
         repository = SVNRepositoryFactory.create(url);
         repository.setAuthenticationManager(authenticationManager);
         return repository;
+    }
+
+    public static ISVNAuthenticationManager authenticationManager(String username, String password) {
+        return SVNWCUtil.createDefaultAuthenticationManager(
+                SVNWCUtil.getDefaultConfigurationDirectory(),
+                username, password,
+                false /* do not store credentials, not even when configured */);
     }
 }

@@ -75,6 +75,7 @@ public class ConnectionFullTest {
         assertEquals("\r\n", root.exec("echo"));
         assertEquals("hello\r\n", root.exec("echo", "hello"));
         assertEquals("again\r\n", root.exec("echo", "again"));
+        assertEquals("err\r\n", root.exec("echo", "err", "1>&2"));
         try {
             root.exec("commandnotfound");
             fail();

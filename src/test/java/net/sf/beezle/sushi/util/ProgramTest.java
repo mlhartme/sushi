@@ -109,6 +109,7 @@ public class ProgramTest {
         }
     }
 
+    @Test
     public void failure() throws ProgramException {
         try {
             p("ls", "nosuchfile").exec();

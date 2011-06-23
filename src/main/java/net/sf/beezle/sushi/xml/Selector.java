@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -36,11 +37,17 @@ public class Selector {
     private final XPathFactory factory;
     private final Map<String, String[]> simples;
     private final Map<String, XPathExpression> normals;
+    private NamespaceContext namespaceContext;
     
     public Selector() {
         this.factory = XPathFactory.newInstance();
         this.simples = new HashMap<String, String[]>();
         this.normals = new HashMap<String, XPathExpression>();
+        this.namespaceContext = null;
+    }
+
+    public void setNamespaceContext(NamespaceContext namespaceContext) {
+        this.namespaceContext = namespaceContext;
     }
 
     //--
@@ -205,6 +212,9 @@ public class Selector {
         cached = normals.get(path);
         if (cached == null) {
             xpath = factory.newXPath();
+            if (namespaceContext != null) {
+                xpath.setNamespaceContext(namespaceContext);
+            }
             try {
                 cached = xpath.compile(path);
             } catch (XPathExpressionException e) {

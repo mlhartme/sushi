@@ -247,6 +247,7 @@ public class Serializer {
             throw new RuntimeException(e);
         }
         result.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        result.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         // TODO: ignored by both jdk 1.4 and 1.5's xalan (honored by Saxon)
         result.setOutputProperty(OutputKeys.INDENT, "yes");  
         return result;

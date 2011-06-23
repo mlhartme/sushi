@@ -108,15 +108,15 @@ public class SerializeTest extends ModelBase {
         MODEL.instance(new Car()).toXml(root);
         assertEquals(l(
                 "<root>",
-                "<car>",
-                "<name/>",
-                "<kind>normal</kind>",
-                "<seats>0</seats>",
-                "<engine>",
-                "<turbo>false</turbo>",
-                "<ps>0</ps>",
-                "</engine>",
-                "</car>",
+                "  <car>",
+                "    <name/>",
+                "    <kind>normal</kind>",
+                "    <seats>0</seats>",
+                "    <engine>",
+                "      <turbo>false</turbo>",
+                "      <ps>0</ps>",
+                "    </engine>",
+                "  </car>",
                 "</root>"),
                 new net.sf.beezle.sushi.xml.Serializer().serialize(root));
     }

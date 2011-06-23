@@ -78,7 +78,7 @@ public class SerializerTest {
     @Test
     public void serialize() throws Exception {
         checkSerialize("<root/>" + LF, "<root/>", "/");
-        checkSerialize("<root>" + LF + "<a/>" + LF + "</root>" + LF, "<root><a/></root>", "/");
+        checkSerialize("<root>" + LF + "  <a/>" + LF + "</root>" + LF, "<root><a/></root>", "/");
         checkSerialize("<root/>" + LF, "<root/>", "/root");
         checkSerialize("<a/>" + LF, "<root><a/></root>", "/root/a");
         checkSerialize("mhm", "<root>mhm</root>", "/root/text()");
@@ -115,7 +115,7 @@ public class SerializerTest {
         doc = BUILDER.parseString("<a><b/></a>");
         file = new World().getTemp().createTempFile();
         SERIALIZER.serialize(doc, file);
-        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "<b/>", "</a>"),
+        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "  <b/>", "</a>"),
         		file.readString());
     }
 
@@ -123,7 +123,7 @@ public class SerializerTest {
     public void serializeChildren() throws Exception {
         checkSerializeChildren("", "<root/>", "/root");
         checkSerializeChildren("<a/>", "<root><a/></root>", "/root");
-        checkSerializeChildren("<p>1</p>" + LF +"<p>2</p>", "<root><a><p>1</p><p>2</p></a></root>", "/root/a");
+        checkSerializeChildren("<p>1</p>" + LF +"  <p>2</p>", "<root><a><p>1</p><p>2</p></a></root>", "/root/a");
         checkSerializeChildren("<p>1<inner/>2</p>", "<root><p>1<inner/>2</p></root>", "/root");
         checkSerializeChildren("<p>1<inner>I</inner>2</p>", "<root><p>1<inner>I</inner>2</p></root>", "/root");
     }

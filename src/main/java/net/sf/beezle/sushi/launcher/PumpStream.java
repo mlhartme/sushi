@@ -25,12 +25,14 @@ public class PumpStream extends Thread {
     private byte[] buffer;
     private final InputStream src;
     private final OutputStream dest;
+    private final boolean closeDest;
     private IOException exception;
 
-    public PumpStream(InputStream src, OutputStream dest) {
+    public PumpStream(InputStream src, OutputStream dest, boolean closeDest) {
         this.buffer = new byte[1024];
         this.src = src;
         this.dest = dest;
+        this.closeDest = closeDest;
         setDaemon(true);
     }
 
@@ -41,7 +43,11 @@ public class PumpStream extends Thread {
             while (true) {
                 len = src.read(buffer);
                 if (len == -1) {
-                    dest.flush();
+                    if (closeDest) {
+                        dest.close();
+                    } else {
+                        dest.flush();
+                    }
                     return;
                 }
                 dest.write(buffer, 0, len);

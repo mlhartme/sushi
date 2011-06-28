@@ -109,22 +109,23 @@ public class Launcher {
     }
 
     public void exec(OutputStream stdout, OutputStream stderr) throws Failure {
-        exec(stdout, stderr, System.in);
+        exec(stdout, stderr, System.in, true);
     }
 
     /**
-     * Executes a command in this directory, wired with the specified stream. None of the argument stream is closed.
+     * Executes a command in this directory, wired with the specified streams. None of the argument stream is closed.
      *
      * @param stderr may be null (which will redirect the error stream to stdout.
      * @param stdin may be null
      */
-    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin) throws Failure {
+    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinSpecial) throws Failure {
         Process process;
         int exit;
         String output;
         PumpStream psout;
         PumpStream pserr;
-        InputPumpStream psin;
+        PumpStream psin;
+        InputPumpStream psinSpecial;
 
         if (builder.directory() == null) {
             // builder.start() does not check, I would not detect the problem until process.waitFor is called
@@ -137,19 +138,27 @@ public class Launcher {
         } catch (IOException e) {
             throw new Failure(this, e);
         }
-        psout = new PumpStream(process.getInputStream(), stdout);
+        psout = new PumpStream(process.getInputStream(), stdout, false);
         psout.start();
         if (stderr != null) {
-            pserr = new PumpStream(process.getErrorStream(), stderr);
+            pserr = new PumpStream(process.getErrorStream(), stderr, false);
             pserr.start();
         } else {
             pserr = null;
         }
         if (stdin != null) {
-            psin = new InputPumpStream(stdin, process.getOutputStream());
-            psin.start();
+            if (stdinSpecial) {
+                psinSpecial = new InputPumpStream(stdin, process.getOutputStream());
+                psinSpecial.start();
+                psin = null;
+            } else {
+                psin = new PumpStream(stdin, process.getOutputStream(), true);
+                psin.start();
+                psinSpecial = null;
+            }
         } else {
             psin = null;
+            psinSpecial = null;
         }
         psout.finish(this);
         if (pserr != null) {
@@ -162,6 +171,9 @@ public class Launcher {
         }
         if (psin != null) {
             psin.finish(this);
+        }
+        if (psinSpecial != null) {
+            psinSpecial.finish(this);
         }
         if (exit != 0) {
             if (stderr == null && stdout instanceof ByteArrayOutputStream) {

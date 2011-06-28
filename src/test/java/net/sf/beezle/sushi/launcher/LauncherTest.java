@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.launcher;
 
+import net.sf.beezle.sushi.fs.Settings;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
@@ -26,6 +27,7 @@ import sun.rmi.runtime.NewThreadAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -137,17 +139,23 @@ public class LauncherTest {
         }
     }
 
-    @Ignore // TODO: InputPumpStream does not recognize EOF
-    public void stdin() throws Failure {
+    @Test
+    public void stdin() throws Failure, UnsupportedEncodingException {
+        stdin("");
+        stdin("hello");
+        stdin("foo\nbar\n");
+    }
+
+    private void stdin(String str) throws Failure, UnsupportedEncodingException {
         Launcher launcher;
         ByteArrayOutputStream out;
         ByteArrayInputStream in;
 
         out = new ByteArrayOutputStream();
-        in = new ByteArrayInputStream("hello".getBytes());
+        in = new ByteArrayInputStream(str.getBytes(Settings.UTF_8));
         launcher = new Launcher((FileNode) WORLD.getHome(), "cat");
-        launcher.exec(out, null, in);
-        assertEquals("foo", new String(out.toByteArray()));
+        launcher.exec(out, null, in, false);
+        assertEquals(str, new String(out.toByteArray(), Settings.UTF_8));
     }
 
     @Test

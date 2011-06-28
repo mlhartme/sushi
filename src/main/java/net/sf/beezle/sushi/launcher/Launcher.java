@@ -113,14 +113,23 @@ public class Launcher {
         exec(all, null);
     }
 
-    /**
-     * Executes a command in this directory, passing output to the specified streams.
-     * @param stderr may be null (which will redirect the error stream to stdout. */
     public void exec(OutputStream stdout, OutputStream stderr) throws Failure {
+        exec(stdout, stderr, System.in);
+    }
+
+    /**
+     * Executes a command in this directory, passing output to the specified streams. None of the argument stream
+     * is closed.
+     *
+     * @param stderr may be null (which will redirect the error stream to stdout.
+     * @param stdin may be null
+     */
+    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin) throws Failure {
         Process process;
         int exit;
         String output;
-        PumpStream ps;
+        PumpStream pserr;
+        InputPumpStream psin;
 
         if (builder.directory() == null) {
             // builder.start() does not check, I would not detect the problem until process.waitFor is called
@@ -134,24 +143,38 @@ public class Launcher {
             throw new Failure(this, e);
         }
         if (stderr != null) {
-            ps = new PumpStream(process.getErrorStream(), stderr);
-            ps.start();
+            pserr = new PumpStream(process.getErrorStream(), stderr);
+            pserr.start();
         } else {
-            ps = null;
+            pserr = null;
+        }
+        if (stdin != null) {
+            psin = new InputPumpStream(stdin, process.getOutputStream());
+            psin.start();
+        } else {
+            psin = null;
         }
         // because in most cases, buffer is taken from the world and shared with possible other threads
         synchronized (buffer) {
             try {
                 buffer.copy(process.getInputStream(), stdout);
-                stdout.close();
+                stdout.flush();
             } catch (IOException e) {
                 throw new Failure(this, e);
             }
         }
-        if (ps != null) {
+        if (pserr != null) {
             try {
-                ps.finish();
-                stderr.close();
+                pserr.finish();
+            } catch (IOException e) {
+                throw new Failure(this, e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("TODO", e);
+            }
+        }
+        if (psin != null) {
+            try {
+                psin.finish();
             } catch (IOException e) {
                 throw new Failure(this, e);
             } catch (InterruptedException e) {
@@ -194,7 +217,7 @@ public class Launcher {
         private IOException exception;
 
         public PumpStream(InputStream src, OutputStream dest) {
-            this.buffer = new byte[4096];
+            this.buffer = new byte[1024];
             this.src = src;
             this.dest = dest;
             setDaemon(true);
@@ -204,11 +227,14 @@ public class Launcher {
             int len;
 
             try {
-                len = src.read(buffer);
-                if (len == -1) {
-                    return;
+                while (true) {
+                    len = src.read(buffer);
+                    if (len == -1) {
+                        dest.flush();
+                        return;
+                    }
+                    dest.write(buffer, 0, len);
                 }
-                dest.write(buffer, 0, len);
             } catch (IOException e) {
                 exception = e;
                 return;
@@ -219,6 +245,55 @@ public class Launcher {
             join();
             if (exception != null) {
                 throw exception;
+            }
+        }
+    }
+
+    public static class InputPumpStream extends Thread {
+        private final InputStream in;
+        private final OutputStream out;
+        private Exception exception;
+        private volatile boolean finishing;
+
+        public InputPumpStream(InputStream is, OutputStream out) {
+            this.in = is;
+            this.out = out;
+            this.exception = null;
+            this.finishing = false;
+        }
+
+        public void run() {
+            try {
+                while (true) {
+                    while (!finishing && in.available() == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            exception = e;
+                            return;
+                        }
+                    }
+                    if (finishing) {
+                        return;
+                    }
+                    out.write(in.read());
+                    out.flush();
+                }
+            } catch (IOException e) {
+                exception = e;
+            }
+        }
+
+
+        public void finish() throws IOException, InterruptedException {
+            finishing = true;
+            join();
+            if (exception != null) {
+                if (exception instanceof IOException) {
+                    throw (IOException) exception;
+                } else {
+                    throw (InterruptedException) exception;
+                }
             }
         }
     }

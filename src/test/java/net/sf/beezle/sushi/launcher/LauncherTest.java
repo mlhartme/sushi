@@ -20,11 +20,11 @@ package net.sf.beezle.sushi.launcher;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
-import net.sf.beezle.sushi.launcher.ExitCode;
-import net.sf.beezle.sushi.launcher.Launcher;
-import net.sf.beezle.sushi.launcher.Failure;
+import org.junit.Ignore;
 import org.junit.Test;
+import sun.rmi.runtime.NewThreadAction;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -36,12 +36,12 @@ public class LauncherTest {
 
     @Test
     public void normal() throws Failure {
-        p("hostname").exec();
+        launch("hostname").exec();
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void noCommand() throws Failure {
-        p().exec();
+        launch().exec();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -51,7 +51,7 @@ public class LauncherTest {
 
     @Test
     public void echo() throws Failure {
-        assertEquals("foo", p("echo", "foo").exec().trim());
+        assertEquals("foo", launch("echo", "foo").exec().trim());
     }
 
     @Test
@@ -60,14 +60,14 @@ public class LauncherTest {
         String output;
 
         var = OS.CURRENT.variable("PATH");
-        output = p("echo", var).exec().trim();
+        output = launch("echo", var).exec().trim();
         assertTrue(output + " vs " + var, OS.CURRENT != OS.WINDOWS == var.equals(output));
     }
 
     @Test
     public void noRedirect() throws Failure {
         if (OS.CURRENT != OS.WINDOWS) {
-            assertEquals("foo >file\n", p("echo", "foo", ">file").exec());
+            assertEquals("foo >file\n", launch("echo", "foo", ">file").exec());
         } else {
             // TODO
         }
@@ -75,21 +75,21 @@ public class LauncherTest {
 
     @Test
     public void env() throws Failure {
-        assertTrue(p(environ()).exec().contains("PATH="));
+        assertTrue(launch(environ()).exec().contains("PATH="));
     }
 
     @Test
     public void myEnv() throws Failure {
         Launcher p;
 
-        p = p(environ());
+        p = launch(environ());
         p.env("bar", "foo");
         assertTrue(p.exec().contains("bar=foo"));
     }
 
     @Test
     public void stdout() throws Failure {
-        assertEquals("foo", p("echo", "foo").exec().trim());
+        assertEquals("foo", launch("echo", "foo").exec().trim());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class LauncherTest {
         if (OS.CURRENT == OS.WINDOWS) {
             return;
         }
-        assertEquals("err", p("bash", "-c", "echo err 1>&2").exec().trim());
+        assertEquals("err", launch("bash", "-c", "echo err 1>&2").exec().trim());
     }
 
     @Test
@@ -120,13 +120,13 @@ public class LauncherTest {
     	if (OS.CURRENT == OS.WINDOWS) {
     		return;
     	}
-        assertEquals("foo\nbar", p("bash", "-c", "echo foo && echo bar").exec().trim());
+        assertEquals("foo\nbar", launch("bash", "-c", "echo foo && echo bar").exec().trim());
     }
 
     @Test
     public void noChains() throws Failure {
         assertEquals(OS.CURRENT == OS.WINDOWS ? "foo \r\nbar" : "foo && echo bar",
-        		p("echo", "foo", "&&", "echo", "bar").exec().trim());
+        		launch("echo", "foo", "&&", "echo", "bar").exec().trim());
     }
 
     private String environ() {
@@ -137,10 +137,23 @@ public class LauncherTest {
         }
     }
 
+    @Ignore // TODO: InputPumpStream does not recognize EOF
+    public void stdin() throws Failure {
+        Launcher launcher;
+        ByteArrayOutputStream out;
+        ByteArrayInputStream in;
+
+        out = new ByteArrayOutputStream();
+        in = new ByteArrayInputStream("hello".getBytes());
+        launcher = new Launcher((FileNode) WORLD.getHome(), "cat");
+        launcher.exec(out, null, in);
+        assertEquals("foo", new String(out.toByteArray()));
+    }
+
     @Test
     public void failure() throws Failure {
         try {
-            p("ls", "nosuchfile").exec();
+            launch("ls", "nosuchfile").exec();
             fail();
         } catch (ExitCode e) {
             // ok
@@ -150,7 +163,7 @@ public class LauncherTest {
     @Test
     public void notfoundexecFailure() {
         try {
-            p("nosuchcommand").exec();
+            launch("nosuchcommand").exec();
             fail();
         } catch (ExitCode e) {
             assertEquals(OS.WINDOWS, OS.CURRENT);
@@ -159,14 +172,14 @@ public class LauncherTest {
         }
     }
 
-    private Launcher p(String ... args) {
-        Launcher p;
+    private Launcher launch(String... args) {
+        Launcher launcher;
 
-        p = new Launcher((FileNode) WORLD.getHome());
+        launcher = new Launcher((FileNode) WORLD.getHome());
         if (OS.CURRENT == OS.WINDOWS) {
-            p.arg("cmd", "/C");
+            launcher.arg("cmd", "/C");
         }
-        p.arg(args);
-        return p;
+        launcher.arg(args);
+        return launcher;
     }
 }

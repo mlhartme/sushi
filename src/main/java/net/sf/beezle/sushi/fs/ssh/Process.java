@@ -21,6 +21,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import net.sf.beezle.sushi.launcher.ExitCode;
 import net.sf.beezle.sushi.launcher.Launcher;
+import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.OutputStream;
@@ -40,7 +41,7 @@ public class Process {
         channel.setPty(tty);
         // TODO: http://tools.ietf.org/html/rfc4250
         // TODO: channel.setTerminalMode(new byte[] { 70, 0, 0, 0, 0, /*71, 0, 0, 0, 0,*/ 0 });
-        channel.setCommand(Strings.join(" ", command));
+        channel.setCommand(Joiner.SPACE.join(command));
         channel.setInputStream(null);
         channel.setOutputStream(dest);
         channel.setExtOutputStream(dest);
@@ -108,6 +109,6 @@ public class Process {
 
     @Override
     public String toString() {
-        return root.getUser() + '@' + root.getHost() + "# " + Strings.join(" ", command);
+        return root.getUser() + '@' + root.getHost() + "# " + Joiner.SPACE.join(command);
     }
 }

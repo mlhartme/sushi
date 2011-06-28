@@ -18,7 +18,7 @@
 package net.sf.beezle.sushi.launcher;
 
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.util.Strings;
+import net.sf.beezle.sushi.util.Joiner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -194,7 +194,7 @@ public class Launcher {
 
     @Override
     public String toString() {
-        return "[" + builder.directory() + "] " + Strings.join(" ", builder.command());
+        return "[" + builder.directory() + "] " + Joiner.SPACE.join(builder.command());
     }
 
     //--

@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.filter;
 
 import net.sf.beezle.sushi.fs.Node;
+import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.IOException;
@@ -32,41 +33,41 @@ import java.util.regex.Pattern;
  * include or exclude. Predicates can be used to further restrict the collected nodes. Paths always use
  * slashes (/) - even on Windows - because a) it simplifies writings constants and b) a filter can be
  * applied to any file system.
- * 
+ *
  * <p>Usage. Create a new instance, use the various selections methods (include, exclude, etc.),
  * and pass the instance for dir.find(). Selection methods return <code>this</code> to allow expressions.</p>
  *
- * <p>A path is a list of names, separated by Filter.SEPARATOR. Paths must *not* start with a 
- * separator, i.e they have to be relative. Paths remain relative until the filter is actually 
+ * <p>A path is a list of names, separated by Filter.SEPARATOR. Paths must *not* start with a
+ * separator, i.e they have to be relative. Paths remain relative until the filter is actually
  * applied to a tree. Paths must not end with a separator either. </p>
  *
  * <p>Names use the familar glob syntax. Filters do not know about extensions. </p>
  */
 public class Filter {
     public static final int DEPTH_INFINITE = Integer.MAX_VALUE;
-    
+
     public static final char SEPARATOR_CHAR = '/';
     public static final String SEPARATOR = "" + SEPARATOR_CHAR;
 
     //--
 
-    
+
     /** List of compiled paths. CP = (HEAD, NULL | CP); HEAD = Pattern | String */
     private final List<Object[]> includes;
     private final List<String> includesRepr;
-    
+
     /** List of compiled paths. */
     private final List<Object[]> excludes;
     private final List<String> excludesRepr;
-    
+
     private final List<Predicate> predicates;
-    
+
     private boolean ignoreCase;
     private boolean followLinks;
-    
+
     private int minDepth;
     private int maxDepth;
-    
+
     public Filter() {
         this.includes = new ArrayList<Object[]>();
         this.includesRepr = new ArrayList<String>();
@@ -78,7 +79,7 @@ public class Filter {
         this.minDepth = 1;
         this.maxDepth = DEPTH_INFINITE;
     }
-    
+
     public Filter(Filter orig) {
         this.includes = new ArrayList<Object[]>(orig.includes);
         this.includesRepr = new ArrayList<String>(orig.includesRepr);
@@ -92,7 +93,7 @@ public class Filter {
     }
 
     //-- selections methods
-    
+
     /** Does *not* affect previous calles to include/exclude */
     public Filter ignoreCase() {
         ignoreCase = true;
@@ -103,30 +104,30 @@ public class Filter {
     	followLinks = true;
     	return this;
     }
-    
+
     public Filter minDepth(int minDepth) {
         this.minDepth = minDepth;
         return this;
     }
-    
+
     public Filter maxDepth(int maxDepth) {
         this.maxDepth = maxDepth;
         return this;
     }
-    
+
     public Filter predicate(Predicate p) {
         predicates.add(p);
         return this;
     }
-    
+
     public Filter includeAll() {
         return includeName("*");
     }
-    
+
     public Filter include(String... paths) {
         return include(Arrays.asList(paths));
     }
-    
+
     public Filter include(List<String> paths) {
         for (String path : paths) {
             includes.add(compile(path));
@@ -134,14 +135,14 @@ public class Filter {
         }
         return this;
     }
-    
+
     public Filter includeName(String... names) {
         for (String name : names) {
-            include(Strings.join(SEPARATOR, "**", name));
+            include(Joiner.on(SEPARATOR).join("**", name));
         }
         return this;
     }
-    
+
     public Filter exclude(String... paths) {
         return exclude(Arrays.asList(paths));
     }
@@ -153,10 +154,10 @@ public class Filter {
         }
         return this;
     }
-    
+
     public Filter excludeName(String... names) {
         for (String name : names) {
-            exclude(Strings.join(SEPARATOR, "**", name));
+            exclude(Joiner.on(SEPARATOR).join("**", name));
         }
         return this;
     }
@@ -168,16 +169,16 @@ public class Filter {
     public String[] getExcludes() {
         return Strings.toArray(excludesRepr);
     }
-    
+
     public List<Predicate> getPredicates() {
         return predicates;
     }
- 
+
     //-- select helper methods
-    
+
     private Object[] compile(String path) {
         List<String> lst;
-        
+
         lst = Strings.split(SEPARATOR, path);
         if (lst.size() == 0) {
             throw new IllegalArgumentException("empty path: " + path);
@@ -191,14 +192,14 @@ public class Filter {
         }
         return compileTail(lst, 0);
     }
-    
+
     /**
      * @param lst  array of patterns
      */
     private Object[] compileTail(List<String> lst, int start) {
         Object head;
         Object[] tail;
-        
+
         if (start == lst.size()) {
             return null;
         } else {
@@ -215,15 +216,15 @@ public class Filter {
         }
         return new Object[] { head, tail };
     }
-    
+
     public List<Node> collect(Node root) throws IOException {
         List<Node> result;
-        
+
         result = new ArrayList<Node>();
         collect(root, result);
         return result;
     }
-    
+
     public void collect(Node root, List<Node> result) throws IOException {
         invoke(root, new CollectAction(result));
     }
@@ -236,7 +237,7 @@ public class Filter {
     public void invoke(Node root, Action result) throws IOException {
         doInvoke(0, root, root.isLink(), new ArrayList<Object[]>(includes), new ArrayList<Object[]>(excludes), result);
     }
-    
+
     private void doInvoke(int currentDepth, Node parent, boolean parentIsLink, List<Object[]> includes, List<Object[]> excludes, Action result)
     throws IOException {
         List<? extends Node> children;
@@ -246,13 +247,13 @@ public class Filter {
         boolean childIsLink;
         boolean in;
         boolean ex;
-        
+
         if (currentDepth >= maxDepth) {
             return;
         }
         if (!followLinks && parentIsLink) {
             return;
-        }       
+        }
         try {
             children = list(parent, includes);
         } catch (IOException e) {
@@ -285,7 +286,7 @@ public class Filter {
     // avoids node.list() call with there is exactly 1 include with a literal head
     private List<? extends Node> list(Node node, List<Object[]> includes) throws IOException {
     	Node child;
-    	
+
     	if (includes.size() == 1 && includes.get(0)[0] instanceof String) {
             child = node.join((String) includes.get(0)[0]);
             if (child.exists()) {
@@ -294,7 +295,7 @@ public class Filter {
                 return Collections.emptyList();
             }
     	} else {
-        	return node.list();    	
+        	return node.list();
         }
     }
 
@@ -306,13 +307,13 @@ public class Filter {
         }
         return true;
     }
-    
+
     private static boolean excludesAll(List<Object[]> excludes) {
         int i;
         int max;
         Object[] pair;
         Object[] tail;
-        
+
         max = excludes.size();
         for (i = 0; i < max; i++) {
             pair = excludes.get(i);
@@ -323,7 +324,7 @@ public class Filter {
         }
         return false;
     }
-    
+
     private static boolean doMatch(String name, List<Object[]> paths, List<Object[]> remainingPaths) {
         boolean found;
         int i;
@@ -331,7 +332,7 @@ public class Filter {
         Object[] path;
         Object head;
         Object[] tail;
-        
+
         found = false;
         max = paths.size();
         for (i = 0; i < max; i++) {
@@ -360,7 +361,7 @@ public class Filter {
     	if (stringOrPattern instanceof String) {
     		return name.equals(stringOrPattern);
     	} else {
-    		return Glob.matches((Pattern) stringOrPattern, name);    	
+    		return Glob.matches((Pattern) stringOrPattern, name);
     	}
     }
 

@@ -43,34 +43,6 @@ public class Strings {
         }
     }
 
-    public static String join(String separator, String ... strings) {
-        return join(separator, Arrays.asList(strings));
-    }
-
-    /**
-     * Concatenate the specified strings, separated by the specified space.
-     *
-     * @param strings to be concatenated
-     * @param separator between two strings
-     *
-     * @return concatenated string
-     */
-    public static String join(String separator, List<String> strings) {
-        int i;
-        int max;
-        StringBuilder buffer;
-
-        buffer = new StringBuilder();
-        max = strings.size();
-        for (i = 0; i < max; i++) {
-            if (i > 0) {
-                buffer.append(separator);
-            }
-            buffer.append(strings.get(i));
-        }
-        return buffer.toString();
-    }
-
     // TODO
     private static final char SEPARATOR = '\n';
 

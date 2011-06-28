@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.ByteArrayOutputStream;
@@ -34,7 +35,7 @@ public class Settings {
     public static final String DEFAULT_LINE_SEPARATOR = OS.CURRENT.lineSeparator;
 
     private static final byte[] BYTES = { 65 };
-    
+
     public final String encoding;
     public final String lineSeparator;
     public final LineFormat lineFormat;
@@ -58,9 +59,9 @@ public class Settings {
         this.lineSeparator = lineSeparator;
         this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)));
     }
-    
+
     public String join(String ... lines) {
-        return Strings.join(lineSeparator, lines);
+        return Joiner.on(lineSeparator).join(lines);
     }
 
     public String string(byte[] bytes) {
@@ -77,7 +78,7 @@ public class Settings {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     public byte[] bytes(String str) {

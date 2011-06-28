@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.metadata;
 
+import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class Path {
     private final String path;
-    
+
     public Path(String path) {
         this.path = path;
     }
@@ -35,14 +36,14 @@ public class Path {
     public String getPath() {
         return path;
     }
-    
+
     /** @return never null */
     public List<Instance<?>> select(Instance<?> context) {
         List<Instance<?>> current;
         List<Instance<?>> next;
         Collection<Instance<?>> tmp;
         Item item;
-        
+
         current = new ArrayList<Instance<?>>();
         current.add(context);
         for (Step step : steps()) {
@@ -69,7 +70,7 @@ public class Path {
         }
         return current;
     }
-    
+
     private static Instance<?> get(Iterator<Instance<?>> iter, int idx) {
         while (idx-- > 0) {
             iter.next();
@@ -80,7 +81,7 @@ public class Path {
     /** @return never null */
     public Instance<?> selectOne(Instance<?> context) {
         List<Instance<?>> result;
-        
+
         result = select(context);
         switch (result.size()) {
         case 0:
@@ -91,7 +92,7 @@ public class Path {
             throw new PathException("ambiguous path: " + this);
         }
     }
-    
+
     /** @return null if not found */
     public Variable<?> access(Instance<?> context, boolean create) {
         Iterator<Step> steps;
@@ -101,7 +102,7 @@ public class Path {
         Object parent;
         Object child;
         List<Object> children;
-        
+
         steps = steps().iterator();
         if (!steps.hasNext()) {
             throw new PathException("cannot get value on empty path");
@@ -122,11 +123,11 @@ public class Path {
                     throw new PathException("index in last step is not supported: " + path);
                 }
                 return new Variable<Object>(parent, item);
-            } 
+            }
             children = new ArrayList<Object>(item.get(parent));
             if (step.idx == -1) {
                 switch (children.size()) {
-                    case 0: 
+                    case 0:
                         if (!create) {
                             return null;
                         }
@@ -155,7 +156,7 @@ public class Path {
 
     private List<Object> addNew(Object parent, Item<Object> item, int count) {
         List<Object> children;
-        
+
         children = new ArrayList<Object>(item.get(parent));
         do {
             children.add(item.getType().newInstance());
@@ -163,14 +164,14 @@ public class Path {
         item.set(parent, children);
         return children;
     }
-    
+
     @Override
     public String toString() {
-        return Strings.join("/", path);
+        return path;
     }
-    
+
     //--
-    
+
     protected List<Step> steps() {
         List<Step> result;
 
@@ -180,11 +181,11 @@ public class Path {
         }
         return result;
     }
-    
+
     protected static class Step {
         public static Step parse(String step) {
             int idx;
-            
+
             if (step.endsWith("]")) {
                 idx = step.lastIndexOf('[');
                 if (idx == -1) {
@@ -195,19 +196,19 @@ public class Path {
                 return new Step(step);
             }
         }
-        
+
         public final String name;
         public final int idx;
-        
+
         public Step(String name) {
             this(name, -1);
         }
-        
+
         public Step(String name, int idx) {
             this.name = name;
             this.idx = idx;
         }
-        
+
         @Override
         public String toString() {
             if (idx != -1) {

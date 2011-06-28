@@ -107,7 +107,7 @@ public class DiffTest {
             lines = Strings.split("\n", expected);
             lines.remove(0);
             lines.remove(0);
-            expected = Strings.join("\n", lines);
+            expected = Joiner.on('\n').join(lines);
             actual = Diff.diff(left.readString(), right.readString(), true, 3);
             assertEquals(left.getPath(), expected, actual);
         }

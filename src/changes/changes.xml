@@ -6,6 +6,9 @@
       <action dev="mlhartme" type="update">
         Launcher: stdin is configurable now (and defaults to System.in).
       </action>
+      <action dev="mlhartme" type="update">
+        Launcher: uses internal buffer and encoding variable now (instead of world buffer and settings).
+      </action>
       <action dev="mlhartme" type="fix">
         Launcher: fix PumpStream to copy more than one line.
       </action>

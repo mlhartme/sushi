@@ -52,10 +52,14 @@ public class PumpStream extends Thread {
         }
     }
 
-    public void finish() throws InterruptedException, IOException {
-        join();
+    public void finish(Launcher launcher) throws Failure {
+        try {
+            join();
+        } catch (InterruptedException e) {
+            throw new Interrupted(e);
+        }
         if (exception != null) {
-            throw exception;
+            throw new Failure(launcher, exception);
         }
     }
 }

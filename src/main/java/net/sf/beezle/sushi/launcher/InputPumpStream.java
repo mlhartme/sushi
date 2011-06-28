@@ -24,7 +24,7 @@ import java.io.OutputStream;
 public class InputPumpStream extends Thread {
     private final InputStream in;
     private final OutputStream out;
-    private Exception exception;
+    private IOException exception;
     private volatile boolean finishing;
 
     public InputPumpStream(InputStream in, OutputStream out) {
@@ -41,8 +41,7 @@ public class InputPumpStream extends Thread {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
-                        exception = e;
-                        return;
+                        throw new Interrupted(e);
                     }
                 }
                 if (finishing) {
@@ -57,15 +56,15 @@ public class InputPumpStream extends Thread {
     }
 
 
-    public void finish() throws IOException, InterruptedException {
+    public void finish(Launcher launcher) throws Failure {
         finishing = true;
-        join();
+        try {
+            join();
+        } catch (InterruptedException e) {
+            throw new Interrupted(e);
+        }
         if (exception != null) {
-            if (exception instanceof IOException) {
-                throw (IOException) exception;
-            } else {
-                throw (InterruptedException) exception;
-            }
+            throw new Failure(launcher, exception);
         }
     }
 }

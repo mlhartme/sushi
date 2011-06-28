@@ -17,9 +17,7 @@
 
 package net.sf.beezle.sushi.launcher;
 
-import net.sf.beezle.sushi.fs.Settings;
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.io.ByteArrayOutputStream;
@@ -27,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -40,13 +39,10 @@ import java.util.List;
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies
  * the api and allows for shorter method names.
- *
- * Currently not supported is feeding input to a process.
  */
 public class Launcher {
     private final ProcessBuilder builder;
-    private Buffer buffer;
-    private Settings settings;
+    private String encoding;
 
     public Launcher(String... args) {
         this.builder = new ProcessBuilder();
@@ -79,14 +75,13 @@ public class Launcher {
 
     /** initializes the directory to execute the command in */
     public Launcher dir(FileNode dir) {
-        return dir(dir.getFile(), dir.getWorld().getBuffer(), dir.getWorld().getSettings());
+        return dir(dir.getFile(), dir.getWorld().getSettings().encoding);
     }
 
     /** You'll normally use the dir(FileNode) method instead. */
-    public Launcher dir(File dir, Buffer buffer, Settings settings) {
+    public Launcher dir(File dir, String encoding) {
         this.builder.directory(dir);
-        this.buffer = buffer;
-        this.settings = settings;
+        this.encoding = encoding;
         return this;
     }
 
@@ -106,7 +101,7 @@ public class Launcher {
 
         result = new ByteArrayOutputStream();
         exec(result);
-        return settings.string(result.toByteArray());
+        return string(result.toByteArray());
     }
 
     public void exec(OutputStream all) throws Failure {
@@ -118,8 +113,7 @@ public class Launcher {
     }
 
     /**
-     * Executes a command in this directory, passing output to the specified streams. None of the argument stream
-     * is closed.
+     * Executes a command in this directory, wired with the specified stream. None of the argument stream is closed.
      *
      * @param stderr may be null (which will redirect the error stream to stdout.
      * @param stdin may be null
@@ -128,6 +122,7 @@ public class Launcher {
         Process process;
         int exit;
         String output;
+        PumpStream psout;
         PumpStream pserr;
         InputPumpStream psin;
 
@@ -142,6 +137,8 @@ public class Launcher {
         } catch (IOException e) {
             throw new Failure(this, e);
         }
+        psout = new PumpStream(process.getInputStream(), stdout);
+        psout.start();
         if (stderr != null) {
             pserr = new PumpStream(process.getErrorStream(), stderr);
             pserr.start();
@@ -154,41 +151,21 @@ public class Launcher {
         } else {
             psin = null;
         }
-        // because in most cases, buffer is taken from the world and shared with possible other threads
-        synchronized (buffer) {
-            try {
-                buffer.copy(process.getInputStream(), stdout);
-                stdout.flush();
-            } catch (IOException e) {
-                throw new Failure(this, e);
-            }
-        }
+        psout.finish(this);
         if (pserr != null) {
-            try {
-                pserr.finish();
-            } catch (IOException e) {
-                throw new Failure(this, e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("TODO", e);
-            }
-        }
-        if (psin != null) {
-            try {
-                psin.finish();
-            } catch (IOException e) {
-                throw new Failure(this, e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("TODO", e);
-            }
+            pserr.finish(this);
         }
         try {
             exit = process.waitFor();
         } catch (InterruptedException e) {
-            throw new RuntimeException("TODO", e);
+            throw new Interrupted(e);
+        }
+        if (psin != null) {
+            psin.finish(this);
         }
         if (exit != 0) {
             if (stderr == null && stdout instanceof ByteArrayOutputStream) {
-                output = settings.string(((ByteArrayOutputStream) stdout));
+                output = string(((ByteArrayOutputStream) stdout).toByteArray());
             } else {
                 output = "";
             }
@@ -210,4 +187,11 @@ public class Launcher {
 
     //--
 
+    private String string(byte[] bytes) {
+        try {
+            return new String(bytes, encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

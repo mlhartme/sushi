@@ -21,9 +21,7 @@ import net.sf.beezle.sushi.fs.Settings;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.OS;
-import org.junit.Ignore;
 import org.junit.Test;
-import sun.rmi.runtime.NewThreadAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

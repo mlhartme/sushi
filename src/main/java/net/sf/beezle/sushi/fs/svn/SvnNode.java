@@ -17,7 +17,6 @@
 
 package net.sf.beezle.sushi.fs.svn;
 
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators;
 import net.sf.beezle.sushi.fs.DeleteException;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.Filesystem;

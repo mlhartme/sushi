@@ -17,7 +17,6 @@
 
 package net.sf.beezle.sushi.metadata;
 
-import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.util.ArrayList;

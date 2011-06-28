@@ -19,7 +19,6 @@ package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.util.Joiner;
-import net.sf.beezle.sushi.util.Strings;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;

@@ -22,7 +22,6 @@ import com.jcraft.jsch.JSchException;
 import net.sf.beezle.sushi.launcher.ExitCode;
 import net.sf.beezle.sushi.launcher.Launcher;
 import net.sf.beezle.sushi.util.Joiner;
-import net.sf.beezle.sushi.util.Strings;
 
 import java.io.OutputStream;
 

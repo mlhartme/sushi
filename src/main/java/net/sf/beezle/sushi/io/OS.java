@@ -51,8 +51,7 @@ public enum OS {
     private final String variablePrefix;
     private final String variableSuffix;
 
-    public final String listSeparator;
-    public final Separator listSep;
+    public final Separator listSeparator;
 
     public final String lineSeparator;
     public final Separator lineSep;
@@ -68,8 +67,7 @@ public enum OS {
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
 
-        this.listSeparator = Character.toString(listSeparatorChar);
-        this.listSep = Separator.on(listSeparatorChar);
+        this.listSeparator = Separator.on(listSeparatorChar);
 
         this.lineSeparator = lineSeparator;
         this.lineSep = Separator.on(lineSeparator);

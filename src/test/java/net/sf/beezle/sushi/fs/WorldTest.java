@@ -107,7 +107,7 @@ public class WorldTest {
 
         world = new World();
         assertEquals(0, world.path("").size());
-        path = world.path("foo" + world.os.listSeparator + "bar");
+        path = world.path("foo" + world.os.listSeparator.getSeparator() + "bar");
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).toString());
         assertEquals("bar", path.get(1).toString());
@@ -120,7 +120,7 @@ public class WorldTest {
 
         world = new World();
         assertEquals(0, world.path("").size());
-        path = world.path(new File("foo").getAbsolutePath() + world.os.listSeparator + new File("bar").getAbsolutePath());
+        path = world.path(new File("foo").getAbsolutePath() + world.os.listSeparator.getSeparator() + new File("bar").getAbsolutePath());
         assertEquals(2, path.size());
         assertEquals("foo", path.get(0).getName());
         assertEquals("bar", path.get(1).getName());

@@ -188,7 +188,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void joinWithSlash() {
         try {
-            work.join(Filesystem.SEPARATOR, "a");
+            work.join(Filesystem.SEPARATOR_STRING, "a");
             fail();
         } catch (IllegalArgumentException e) {
             // ok

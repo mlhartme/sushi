@@ -415,7 +415,7 @@ public class SvnNode extends Node {
         if (left.length() == 0) {
             return right;
         }
-        return left + Filesystem.SEPARATOR + right;
+        return left + Filesystem.SEPARATOR_STRING + right;
     }
 
     public long export(Node dest) throws IOException, SVNException {

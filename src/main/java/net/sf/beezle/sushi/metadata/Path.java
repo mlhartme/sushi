@@ -175,7 +175,7 @@ public class Path {
         List<Step> result;
 
         result = new ArrayList<Step>();
-        for (String step : Filesystem.SEP.split(path)) {
+        for (String step : Filesystem.SEPARATOR.split(path)) {
             result.add(Step.parse(step));
         }
         return result;

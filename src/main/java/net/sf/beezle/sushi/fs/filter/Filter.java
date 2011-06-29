@@ -135,7 +135,7 @@ public class Filter {
 
     public Filter includeName(String... names) {
         for (String name : names) {
-            include(Filesystem.SEP.join("**", name));
+            include(Filesystem.SEPARATOR.join("**", name));
         }
         return this;
     }
@@ -154,7 +154,7 @@ public class Filter {
 
     public Filter excludeName(String... names) {
         for (String name : names) {
-            exclude(Filesystem.SEP.join("**", name));
+            exclude(Filesystem.SEPARATOR.join("**", name));
         }
         return this;
     }
@@ -176,7 +176,7 @@ public class Filter {
     private Object[] compile(String path) {
         List<String> lst;
 
-        lst = Filesystem.SEP.split(path);
+        lst = Filesystem.SEPARATOR.split(path);
         if (lst.size() == 0) {
             throw new IllegalArgumentException("empty path: " + path);
         }

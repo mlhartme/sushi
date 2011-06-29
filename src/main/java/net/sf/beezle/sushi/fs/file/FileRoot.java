@@ -33,15 +33,15 @@ public class FileRoot implements Root<FileNode> {
     private final FileFilesystem filesystem;
     private final File file;
     /** file.getAbsolutePath().toUpperCase() */
-    private final String absolute; 
+    private final String absolute;
     private final String id;
-    
+
     public FileRoot(FileFilesystem filesystem, File file, String absolute, String id) {
         this.filesystem = filesystem;
         this.file = file;
         this.absolute = absolute;
         this.id = id;
-        if (!id.endsWith(Filesystem.SEPARATOR)) {
+        if (!id.endsWith(Filesystem.SEPARATOR_STRING)) {
             throw new IllegalArgumentException(id);
         }
     }
@@ -61,7 +61,7 @@ public class FileRoot implements Root<FileNode> {
     public String getId() {
         return id;
     }
-    
+
     public FileNode node(String path, String encodedQuery) {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);

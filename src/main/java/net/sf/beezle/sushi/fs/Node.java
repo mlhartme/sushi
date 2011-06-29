@@ -284,9 +284,9 @@ public abstract class Node {
         startfilepath = startfilepath.substring(len);
         destpath = destpath.substring(len);
         result = new StringBuilder();
-        ups = Strings.count(startfilepath, Filesystem.SEPARATOR);
+        ups = Strings.count(startfilepath, Filesystem.SEPARATOR_STRING);
         for (i = 0; i < ups; i++) {
-            result.append("..").append(Filesystem.SEPARATOR);
+            result.append("..").append(Filesystem.SEPARATOR_STRING);
         }
         result.append(Strings.replace(destpath, getWorld().os.lineSeparator, "" + getWorld().os.lineSeparator));
         return result.toString();
@@ -460,7 +460,7 @@ public abstract class Node {
             throw new LinkException(this, e);
         }
         // TODO: getRoot() for ssh root ...
-        dest.mklink(Filesystem.SEPARATOR + this.getPath());
+        dest.mklink(Filesystem.SEPARATOR_STRING + this.getPath());
         return dest;
     }
 
@@ -482,7 +482,7 @@ public abstract class Node {
         String path;
 
         path = readLink();
-        if (path.startsWith(Filesystem.SEPARATOR)) {
+        if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
             return getRoot().node(path.substring(1), null);
         } else {
             return getParent().join(path);
@@ -904,7 +904,7 @@ public abstract class Node {
             if (hasAnchestor(working)) {
                 return getRelative(working);
             } else {
-                return Filesystem.SEPARATOR + getPath();
+                return Filesystem.SEPARATOR_STRING + getPath();
             }
         }
     }

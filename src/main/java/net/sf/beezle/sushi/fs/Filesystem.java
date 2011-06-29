@@ -34,9 +34,9 @@ public abstract class Filesystem {
      * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
-	public static final String SEPARATOR = Character.toString(SEPARATOR_CHAR);
+	public static final String SEPARATOR_STRING = Character.toString(SEPARATOR_CHAR);
 
-    public static final Separator SEP = Separator.on(SEPARATOR_CHAR);
+    public static final Separator SEPARATOR = Separator.on(SEPARATOR_CHAR);
 
     //--
 
@@ -104,12 +104,12 @@ public abstract class Filesystem {
 
         path = uri.getPath();
         if (path.length() > 0) {
-            if (!path.startsWith(SEPARATOR)) {
-                throw new NodeInstantiationException(uri, "missing initial separator " + SEPARATOR);
+            if (!path.startsWith(SEPARATOR_STRING)) {
+                throw new NodeInstantiationException(uri, "missing initial separator " + SEPARATOR_STRING);
             }
             path = path.substring(1);
-            if (path.endsWith(SEPARATOR)) {
-                throw new NodeInstantiationException(uri, "invalid tailing " + SEPARATOR);
+            if (path.endsWith(SEPARATOR_STRING)) {
+                throw new NodeInstantiationException(uri, "invalid tailing " + SEPARATOR_STRING);
             }
         }
         return path;
@@ -127,11 +127,11 @@ public abstract class Filesystem {
         builder = new StringBuilder(head);
         for (String path : paths) {
             if (path.length() > 0) {
-                if (path.startsWith(SEPARATOR)) {
+                if (path.startsWith(SEPARATOR_STRING)) {
                     throw new IllegalArgumentException(path);
                 }
                 if (builder.length() > 0) {
-                    builder.append(SEPARATOR);
+                    builder.append(SEPARATOR_STRING);
                 }
                 builder.append(path);
             }
@@ -156,7 +156,7 @@ public abstract class Filesystem {
                         throw new IllegalArgumentException(builder.toString());
                     }
                     if (builder.charAt(idx - 1) == SEPARATOR_CHAR) {
-                        prev = builder.lastIndexOf(SEPARATOR, idx - 2) + 1; // ok for -1
+                        prev = builder.lastIndexOf(SEPARATOR_STRING, idx - 2) + 1; // ok for -1
                         builder.delete(prev, idx + 1);
                         idx = prev;
                         if (builder.charAt(idx) == SEPARATOR_CHAR) {

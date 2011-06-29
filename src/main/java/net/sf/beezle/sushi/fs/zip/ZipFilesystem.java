@@ -50,11 +50,11 @@ public class ZipFilesystem extends Filesystem {
         if (path == null) {
             throw new NodeInstantiationException(uri, "missing '" + ZIP_SEPARATOR +"'");
         }
-        if (path.endsWith(SEPARATOR)) {
-            throw new NodeInstantiationException(uri, "invalid tailing " + SEPARATOR);
+        if (path.endsWith(SEPARATOR_STRING)) {
+            throw new NodeInstantiationException(uri, "invalid tailing " + SEPARATOR_STRING);
         }
-        if (path.startsWith(SEPARATOR)) {
-            throw new NodeInstantiationException(uri, "invalid heading " + SEPARATOR);
+        if (path.startsWith(SEPARATOR_STRING)) {
+            throw new NodeInstantiationException(uri, "invalid heading " + SEPARATOR_STRING);
         }
         try {
             jar = getWorld().node(encodedSchemeSpecific.substring(0, encodedSchemeSpecific.length() - path.length() - ZIP_SEPARATOR.length()));

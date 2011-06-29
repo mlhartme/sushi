@@ -3,6 +3,11 @@ package net.sf.beezle.sushi.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Splits strings on a separator. A reverse Joiner. Similar to Google's Splitter
+ * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Splitter.html), but it's not
+ * immutable, configuration uses side-effects. However, once configured, you can use instances concurrently.
+ */
 public class Splitter {
     public static final Splitter SLASH = Splitter.on('/');
 

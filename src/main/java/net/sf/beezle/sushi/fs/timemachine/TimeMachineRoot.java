@@ -20,6 +20,7 @@ package net.sf.beezle.sushi.fs.timemachine;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.fs.file.FileNode;
+import net.sf.beezle.sushi.util.Splitter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class TimeMachineRoot implements Root<TimeMachineNode> {
             throw new IllegalArgumentException(encodedQuery);
         }
         node = root;
-        for (String segment : filesystem.split(path)) {
+        for (String segment : Splitter.SLASH.split(path)) {
             try {
                 node = resolve(node.join(segment));
             } catch (IOException e) {

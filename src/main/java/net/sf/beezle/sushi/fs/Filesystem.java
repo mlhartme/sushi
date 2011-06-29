@@ -183,9 +183,4 @@ public abstract class Filesystem {
             }
         }
     }
-
-    // TODO: remove
-    public List<String> split(String path) {
-        return Splitter.SLASH.split(path);
-    }
 }

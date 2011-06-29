@@ -3,9 +3,9 @@ package net.sf.beezle.sushi.util;
 import java.io.IOException;
 
 /**
- * Joins objects on a separator. Similar to Google's Joiner
+ * Joins objects on a separator. A reverse Splitter. Similar to Google's Joiner
  * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Joiner.html), but it's not
- * immutable, configuration uses side-effects.
+ * immutable, configuration uses side-effects. However, once configured, you can use instances concurrently.
  */
 public class Joiner {
     public static final Joiner SPACE = Joiner.on(' ');

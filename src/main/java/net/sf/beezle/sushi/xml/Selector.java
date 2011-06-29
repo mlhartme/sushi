@@ -18,7 +18,6 @@
 package net.sf.beezle.sushi.xml;
 
 import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

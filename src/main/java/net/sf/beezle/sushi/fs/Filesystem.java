@@ -19,7 +19,6 @@ package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Splitter;
-import net.sf.beezle.sushi.util.Strings;
 
 import java.net.URI;
 import java.util.Arrays;

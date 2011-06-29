@@ -18,8 +18,6 @@
 package net.sf.beezle.sushi.metadata;
 
 import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.util.Splitter;
-import net.sf.beezle.sushi.util.Strings;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -21,7 +21,6 @@ import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.fs.file.FileNode;
-import net.sf.beezle.sushi.util.Splitter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

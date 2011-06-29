@@ -37,6 +37,10 @@ public class SplitterTest {
         check(Splitter.on(" ").split("1"), "1");
         check(Splitter.on(" ").split("a b"), "a", "b");
     }
+    @Test
+    public void plus() {
+        check(Splitter.on("+").split("++"), "", "", "");
+    }
 
     @Test
     public void trim() {
@@ -47,6 +51,15 @@ public class SplitterTest {
     public void skipEmpty() {
         check(Splitter.on(",").trim().skipEmpty().split("a,, ,"), "a");
     }
+
+    @Test
+    public void whitespace() {
+        check(Splitter.WHITESPACE.split(""));
+        check(Splitter.WHITESPACE.split(" a"), "a");
+        check(Splitter.WHITESPACE.split("a b  c\td\n e "), "a", "b", "c", "d", "e");
+    }
+
+    //--
 
     private void check(List<String> actual, String ... expected) {
         assertEquals(java.util.Arrays.asList(expected), actual);

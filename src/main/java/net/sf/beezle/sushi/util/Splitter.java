@@ -48,6 +48,10 @@ public class Splitter {
         this.skipEmpty = skipEmpty;
     }
 
+    public Splitter(Splitter orig) {
+        this(orig.separator, orig.trim, orig.skipEmpty);
+    }
+
     //-- configuration
 
     public Splitter trim() {

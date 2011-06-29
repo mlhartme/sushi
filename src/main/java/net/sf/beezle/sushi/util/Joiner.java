@@ -37,6 +37,10 @@ public class Joiner {
         this.skipEmpty = skipEmpty;
     }
 
+    public Joiner(Joiner orig) {
+        this(orig.separator, orig.trim, orig.skipNulls, orig.useForNull, orig.skipEmpty);
+    }
+
     //-- configuration
 
     public Joiner trim() {

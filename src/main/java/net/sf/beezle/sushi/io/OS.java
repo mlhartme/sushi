@@ -51,11 +51,16 @@ public enum OS {
     private final String substring;
     private final String variablePrefix;
     private final String variableSuffix;
+
     public final char listSeparatorChar;
     public final String listSeparator;
+    public final Joiner listJoiner;
     public final Splitter listSplitter;
+
     public final String lineSeparator;
     public final Joiner lineJoiner;
+    public final Splitter lineSplitter;
+
     public final String[] mode;
     public final String[] uid;
     public final String[] gid;
@@ -66,11 +71,16 @@ public enum OS {
         this.substring = substring;
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
+
         this.listSeparatorChar = listSeparatorChar;
         this.listSeparator = Character.toString(listSeparatorChar);
+        this.listJoiner = Joiner.on(listSeparatorChar);
         this.listSplitter = Splitter.on(listSeparatorChar);
+
         this.lineSeparator = lineSeparator;
         this.lineJoiner = Joiner.on(lineSeparator);
+        this.lineSplitter = Splitter.on(lineSeparator);
+
         this.mode = mode;
         this.uid = uid;
         this.gid = gid;

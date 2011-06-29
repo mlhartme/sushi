@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 
 import java.net.URI;
@@ -35,7 +36,7 @@ public abstract class Filesystem {
      * use it in URI or path constants.
      */
 	public static final char SEPARATOR_CHAR = '/';
-	
+
     private final World world;
     private final Features features;
     private final String scheme;
@@ -183,7 +184,8 @@ public abstract class Filesystem {
         }
     }
 
+    // TODO: remove
     public List<String> split(String path) {
-        return Strings.split(SEPARATOR, path);
+        return Splitter.SLASH.split(path);
     }
 }

@@ -2,15 +2,17 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2011-06-29" version="2.6.0">
+      <action dev="mlhartme" type="update">
+        Replaced Strings.join by a new Joiner class. Change former Strings.join(separator, args) to Joiner.on(separator).join(args).
+      </action>
+      <action dev="mlhartme" type="update">
+        Replaced Strings.split and Strings.trim by a new Splitter class. Change former Strings.split(separator, arg) to Split.on(separator).split(arg).
+      </action>
       <action date="2011-06-29" dev="mlhartme" type="remove">
         Removed Settings.join, added lineJoiner instead.
       </action>
       <action date="2011-06-29" dev="mlhartme" type="remove">
         Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.
-      </action>
-      <action dev="mlhartme" type="update">
-        Replaced Strings.join and Strings.trim methods by a new Joiner class.
-        Change former Strings.join(separator, args) to Joiner.on(separator).join(args).
       </action>
       <action dev="mlhartme" type="update">
         Launcher: stdin is configurable now (and defaults to System.in).

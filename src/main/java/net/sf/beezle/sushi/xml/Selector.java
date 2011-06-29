@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.xml;
 
+import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,7 +39,7 @@ public class Selector {
     private final Map<String, String[]> simples;
     private final Map<String, XPathExpression> normals;
     private NamespaceContext namespaceContext;
-    
+
     public Selector() {
         this.factory = XPathFactory.newInstance();
         this.simples = new HashMap<String, String[]>();
@@ -51,7 +52,7 @@ public class Selector {
     }
 
     //--
-    
+
     public List<Node> nodes(Node context, String path) {
         if (context instanceof Element && isSimple(path)) {
             return (List) nodesSimple((Element) context, path);
@@ -74,10 +75,10 @@ public class Selector {
     public List<Element> elements(Node root, String path) {
         return (List) nodes(root, path);
     }
-    
+
     public Element element(Node root, String path) throws XmlException {
         Element element;
-        
+
         element = elementOpt(root, path);
         if (element == null) {
             throw new XmlException("element not found: " + path);
@@ -100,7 +101,7 @@ public class Selector {
 
     public int integer(Node element, String path) throws XmlException {
         String str;
-        
+
         str = string(element, path);
         try {
             return Integer.parseInt(str);
@@ -108,11 +109,11 @@ public class Selector {
             throw new XmlException("number expected node " + path + ": " + str);
         }
     }
-    
+
     /** Checkstyle rejects method name long_  */
     public long longer(Node element, String path) throws XmlException {
         String str;
-        
+
         str = string(element, path);
         try {
             return Long.parseLong(str);
@@ -123,17 +124,17 @@ public class Selector {
 
     public String string(Node ele, String path) throws XmlException {
         String str;
-        
+
         str = stringOpt(ele, path);
         if (str == null) {
-            throw new XmlException("no such node: " + path);            
+            throw new XmlException("no such node: " + path);
         }
         return str;
     }
-    
+
     public String stringOpt(Node ele, String path) throws XmlException {
         List<Node> lst;
-        
+
         lst = nodes(ele, path);
         switch (lst.size()) {
         case 0:
@@ -144,15 +145,15 @@ public class Selector {
             throw new XmlException("node ambiguous: " + path);
         }
     }
-    
+
     //--
 
     public List<Element> nodesSimple(Element context, String path) {
         String[] steps;
-        
+
         steps = simples.get(path);
         if (steps == null) {
-            steps = Strings.toArray(Strings.split("/", path));
+            steps = Strings.toArray(Splitter.SLASH.split(path));
             simples.put(path, steps);
         }
         return Dom.getChildElements(context, steps);
@@ -162,7 +163,7 @@ public class Selector {
         int size;
         NodeList nodes;
         List<Node> result;
-        
+
         try {
             nodes = (NodeList) compile(expression).evaluate(context, XPathConstants.NODESET);
         } catch (XPathExpressionException e) {
@@ -177,12 +178,12 @@ public class Selector {
     }
 
     //--
-    
+
     public static boolean isSimple(String path) {
         int i;
         int max;
         char c;
-        
+
         max = path.length();
         if (max == 0) {
             return false;
@@ -208,7 +209,7 @@ public class Selector {
     private XPathExpression compile(String path) {
         XPathExpression cached;
         XPath xpath;
-        
+
         cached = normals.get(path);
         if (cached == null) {
             xpath = factory.newXPath();

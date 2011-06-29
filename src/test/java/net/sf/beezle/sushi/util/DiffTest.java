@@ -104,7 +104,7 @@ public class DiffTest {
             } catch (ExitCode e) {
                 expected = e.output;
             }
-            lines = Strings.split("\n", expected);
+            lines = Splitter.on('\n').split(expected);
             lines.remove(0);
             lines.remove(0);
             expected = Joiner.on('\n').join(lines);

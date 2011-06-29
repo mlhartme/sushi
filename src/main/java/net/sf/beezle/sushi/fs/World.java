@@ -416,7 +416,7 @@ public class World {
         List<FileNode> result;
 
         result = new ArrayList<FileNode>();
-        for (String str: Strings.split(os.listSeparator, path)) {
+        for (String str: os.listSplitter.split(path)) {
             result.add(file(str));
         }
         return result;
@@ -436,7 +436,7 @@ public class World {
         List<Node> result;
 
         result = new ArrayList<Node>();
-        for (String str: Strings.split(os.listSeparator, path)) {
+        for (String str: os.listSplitter.split(path)) {
             result.add(node(str));
         }
         return result;

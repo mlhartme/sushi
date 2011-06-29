@@ -167,24 +167,6 @@ public class Strings {
         return buffer.toString();
     }
 
-    public static String[] trim(String ... args) {
-        int i;
-
-        for (i = 0; i < args.length; i++) {
-            args[i] = args[i].trim();
-        }
-        return args;
-    }
-
-    public static List<String> trim(List<String> args) {
-        int i;
-
-        for (i = 0; i < args.size(); i++) {
-            args.set(i, args.get(i).trim());
-        }
-        return args;
-    }
-
     public static List<String> split(String separator, String str) {
         List<String> lst;
 

@@ -4,8 +4,8 @@
   <body>
     <release version="2.6.0" date="2011-06-28">
       <action dev="mlhartme" type="update">
-        Replaced Strings.join methods by Joiner class.
-        The former Strings.join(separator, args) is now Joiner.on(separator).join(args).
+        Replaced Strings.join and Strings.trim methods by a new Joiner class.
+        Change former Strings.join(separator, args) to Joiner.on(separator).join(args).
       </action>
       <action dev="mlhartme" type="update">
         Launcher: stdin is configurable now (and defaults to System.in).

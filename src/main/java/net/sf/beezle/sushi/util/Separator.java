@@ -17,7 +17,7 @@ public class Separator {
     public static final Separator SPACE = Separator.on(" ", Pattern.compile("\\s+", Pattern.MULTILINE)).skipEmpty();
 
     /** Separator in user-supplied lists. */
-    public static final Separator LIST = Separator.on(',').trim().skipEmpty().forNull("null");
+    public static final Separator COMMA = Separator.on(',').trim().skipEmpty().forNull("null");
 
     public static Separator on(char c) {
         return on(Character.toString(c));

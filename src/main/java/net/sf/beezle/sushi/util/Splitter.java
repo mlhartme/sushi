@@ -11,13 +11,11 @@ import java.util.regex.Pattern;
  * immutable, configuration uses side-effects. However, once configured, you can use instances concurrently.
  */
 public class Splitter {
-    public static final Splitter WHITESPACE = Splitter.pattern("\\s+").skipEmpty();
+    /** skip empty because I want to ignore heading/tailing whitespace */
+    public static final Splitter WHITESPACE = Splitter.onPattern("\\s+").skipEmpty();
+
     public static final Splitter SLASH = Splitter.on('/');
     public static final Splitter LIST = Splitter.on(',').trim();
-
-    public static Splitter pattern(String separator) {
-        return new Splitter(Pattern.compile(separator, Pattern.MULTILINE), false, false);
-    }
 
     public static Splitter on(char c) {
         return on(Character.toString(c));
@@ -25,6 +23,14 @@ public class Splitter {
 
     public static Splitter on(String separator) {
         return new Splitter(Pattern.compile(separator, Pattern.MULTILINE | Pattern.LITERAL), false, false);
+    }
+
+    public static Splitter onPattern(String separator) {
+        return on(Pattern.compile(separator, Pattern.MULTILINE));
+    }
+
+    public static Splitter on(Pattern pattern) {
+        return new Splitter(pattern, false, false);
     }
 
     //--
@@ -60,11 +66,11 @@ public class Splitter {
         List<String> lst;
 
         lst = new ArrayList<String>();
-        split(str, lst);
+        appendTo(lst, str);
         return lst;
     }
 
-    public void split(String str, List<String> result) {
+    public void appendTo(List<String> result, String str) {
         int length;
         Matcher matcher;
         int prev;

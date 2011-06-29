@@ -11,16 +11,36 @@ public class Splitter {
     }
 
     public static Splitter on(String separator) {
-        return new Splitter(separator);
+        return new Splitter(separator, false);
     }
 
     //--
 
     private final String separator;
+    private boolean trim;
+    private boolean skipEmpty;
 
-    public Splitter(String separator) {
+    public Splitter(String separator, boolean trim) {
+        if (separator.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         this.separator = separator;
+        this.trim = trim;
     }
+
+    //-- configuration
+
+    public Splitter trim() {
+        trim = true;
+        return this;
+    }
+
+    public Splitter skipEmpty() {
+        skipEmpty  = true;
+        return this;
+    }
+
+    //--
 
     public List<String> split(String str) {
         List<String> lst;
@@ -35,20 +55,26 @@ public class Splitter {
         int idx;
         int prev;
 
-        if (separator.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
         if (str.length() > 0) {
             skip = separator.length();
             idx = str.indexOf(separator);
             prev = 0;
             while (idx != -1) {
-                result.add(str.substring(prev, idx));
+                add(result, str.substring(prev, idx));
                 prev = idx + skip;
                 idx = str.indexOf(separator, prev);
             }
-            result.add(str.substring(prev));
+            add(result, str.substring(prev));
         }
     }
 
+    private void add(List<String> result, String str) {
+        if (trim) {
+            str = str.trim();
+        }
+        if (skipEmpty && str.isEmpty()) {
+            return;
+        }
+        result.add(str);
+    }
 }

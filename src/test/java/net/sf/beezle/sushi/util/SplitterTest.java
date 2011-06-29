@@ -26,11 +26,26 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class SplitterTest {
+    @Test(expected=IllegalArgumentException.class)
+    public void empty() {
+        Splitter.on("");
+    }
+
     @Test
     public void normal() {
         check(Splitter.on(" ").split(""));
         check(Splitter.on(" ").split("1"), "1");
         check(Splitter.on(" ").split("a b"), "a", "b");
+    }
+
+    @Test
+    public void trim() {
+        check(Splitter.on(",").trim().split("a, b,c , d ,"), "a", "b", "c", "d", "");
+    }
+
+    @Test
+    public void skipEmpty() {
+        check(Splitter.on(",").trim().skipEmpty().split("a,, ,"), "a");
     }
 
     private void check(List<String> actual, String ... expected) {

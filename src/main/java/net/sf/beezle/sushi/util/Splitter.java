@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 /**
  * Splits strings on a separator. A reverse Joiner. Similar to Google's Splitter
- * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Splitter.html), but it's not
- * immutable, configuration uses side-effects. However, once configured, you can use instances concurrently.
+ * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Splitter.html).
+ * Immutable, configuration methods return new instances.
  */
 public class Splitter {
     /** skip empty because I want to ignore heading/tailing whitespace */
@@ -36,8 +36,8 @@ public class Splitter {
     //--
 
     private final Pattern separator;
-    private boolean trim;
-    private boolean skipEmpty;
+    private final boolean trim;
+    private final boolean skipEmpty;
 
     public Splitter(Pattern separator, boolean trim, boolean skipEmpty) {
         if (separator.matcher("").find()) {
@@ -55,13 +55,11 @@ public class Splitter {
     //-- configuration
 
     public Splitter trim() {
-        trim = true;
-        return this;
+        return new Splitter(separator, true, skipEmpty);
     }
 
     public Splitter skipEmpty() {
-        skipEmpty  = true;
-        return this;
+        return new Splitter(separator, trim, true);
     }
 
     //--

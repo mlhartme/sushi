@@ -4,8 +4,8 @@ import java.io.IOException;
 
 /**
  * Joins objects on a separator. A reverse Splitter. Similar to Google's Joiner
- * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Joiner.html), but it's not
- * immutable, configuration uses side-effects. However, once configured, you can use instances concurrently.
+ * (http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Joiner.html).
+ * Immutable, configuration methods return new instances.
  */
 public class Joiner {
     public static final Joiner SPACE = Joiner.on(' ');
@@ -24,10 +24,10 @@ public class Joiner {
     //--
 
     private final String separator;
-    private boolean trim;
-    private boolean skipNulls;
-    private Object useForNull;
-    private boolean skipEmpty;
+    private final boolean trim;
+    private final boolean skipNulls;
+    private final Object useForNull;
+    private final boolean skipEmpty;
 
     public Joiner(String separator, boolean trim, boolean skipNulls, Object useForNull, boolean skipEmpty) {
         this.separator = separator;
@@ -44,24 +44,20 @@ public class Joiner {
     //-- configuration
 
     public Joiner trim() {
-        trim = true;
-        return this;
+        return new Joiner(separator, true, skipNulls, useForNull, skipEmpty);
     }
 
     public Joiner skipNulls() {
-        skipNulls = true;
-        return this;
+        return new Joiner(separator, trim, true, useForNull, skipEmpty);
     }
 
     /** has precedence over skipNulls */
     public Joiner useForNull(Object forNull) {
-        this.useForNull = forNull;
-        return this;
+        return new Joiner(separator, trim, skipNulls, forNull, skipEmpty);
     }
 
     public Joiner skipEmpty() {
-        skipEmpty = true;
-        return this;
+        return new Joiner(separator, trim, skipNulls, useForNull, true);
     }
 
     //-- joining

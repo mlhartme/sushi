@@ -2,25 +2,26 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2011-06-29" version="2.6.0">
-      <action dev="mlhartme" type="update">
-        Merged Joiner and Splitter into Separator. Changed Settings.lineSeparator from String to Separator.
-        Renamed Filesystem.SEPARATOR to SEPARATOR_STRING; SEPARATOR is a Separator now.
-        Dump OS.listSeparatorChar, change listSeparator from String to Separator.
-        Changes OS.lineSeparator from String to Separator.
-      </action>
-      <action dev="mlhartme" type="update">
-        Replaced Strings.join by a new Joiner class.
-        Change former Strings.join(separator, args) calls to Joiner.on(separator).join(args).
-      </action>
-      <action dev="mlhartme" type="update">
-        Replaced Strings.split and Strings.trim by a new Splitter class.
-        Change former Strings.split(separator, arg) calls to Split.on(separator).split(arg).
+      <action dev="mlhartme" type="add">
+        Added a Separator class to split Strings and join Objects.
       </action>
       <action dev="mlhartme" type="remove">
-        Removed Settings.join, added lineJoiner instead.
+        Removed Strings.split, Strings.join and Strings.trim. Use the new Splitter class instead:
+        change Strings.split(separator, arg) calls to Separator.on(separator).split(arg);
+        change Strings.join(separator, args) calls to Separator.on(separator).join(args).
+      </action>
+      <action dev="mlhartme" type="update">
+        Renamed Filesystem.SEPARATOR to SEPARATOR_STRING; added a new Separator SEPARATOR.
+      </action>
+      <action dev="mlhartme" type="update">
+        Dump OS.listSeparatorChar, changed listSeparator from String to Separator.
+        Also changed OS.lineSeparator from String to Separator.
+      </action>
+      <action dev="mlhartme" type="updated">
+        Removed Settings.join and changed Settings.lineSeparator from String to Separator.
       </action>
       <action dev="mlhartme" type="remove">
-        Removed Filesystem.split, use Splitter.SLASH.split instead.
+        Removed Filesystem.split(), use Filesystem.SEPARATOR.split() instead.
       </action>
       <action dev="mlhartme" type="remove">
         Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.

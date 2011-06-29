@@ -31,27 +31,27 @@ public class Diff {
 	private final String lineSeparator;
 
     public Diff(boolean brief) {
-    	this(brief, OS.CURRENT.lineSeparator);
+    	this(brief, OS.CURRENT.lineSeparator.getSeparator());
     }
-    
+
     public Diff(boolean brief, String lineSeparator) {
         this.brief = brief;
         this.lineSeparator = lineSeparator;
     }
 
     //-- scan directories for relevant files
-    
+
     public List<String> paths(Node dir, Filter filter) throws IOException {
     	List<String> result;
-    	
+
     	result = new ArrayList<String>();
     	paths(dir, filter, result);
     	return result;
     }
-    
+
     public void paths(Node dir, Filter filter, List<String> result) throws IOException {
     	String path;
-    	
+
     	for (Node node : dir.find(filter)) {
     		path = node.getRelative(dir);
     		if (!result.contains(path)) {
@@ -61,24 +61,24 @@ public class Diff {
     }
 
     //-- diff
-    
+
     public String directory(Node leftdir, Node rightdir, Filter filter) throws IOException {
     	List<String> paths;
-    	
+
     	paths = paths(leftdir, filter);
     	paths(rightdir, filter, paths);
     	return directory(leftdir, rightdir, paths);
     }
-    
+
     public String directory(Node leftdir, Node rightdir, String ... paths) throws IOException {
     	return directory(leftdir, rightdir, Arrays.asList(paths));
     }
-    
+
     public String directory(Node leftdir, Node rightdir, List<String> paths) throws IOException {
         StringBuilder result;
         Node left;
         Node right;
-        
+
         result = new StringBuilder();
         leftdir.checkDirectory();
         rightdir.checkDirectory();
@@ -113,10 +113,10 @@ public class Diff {
             fileNormal(left, cmp, relative, result);
         }
     }
-    
+
     public void fileNormal(Node left, Node right, String relative, StringBuilder result) throws IOException {
         String str;
-        
+
         if (!left.exists()) {
             right.checkFile();
             header("###", relative, result);
@@ -129,7 +129,7 @@ public class Diff {
             }
         }
     }
-    
+
     public void header(Node left, Node right, String relative, StringBuilder result) throws IOException {
         if (!left.exists()) {
             right.checkFile();
@@ -138,7 +138,7 @@ public class Diff {
             header('R', relative, result);
         } else if (left.diff(right)) {
             header('M', relative, result);
-        } else if (left.getRoot().getFilesystem().getFeatures().modes 
+        } else if (left.getRoot().getFilesystem().getFeatures().modes
         		&& left.getMode() != right.getMode()) {
             header('m', relative, result);
         } else {

@@ -6,6 +6,7 @@
         Merged Joiner and Splitter into Separator. Changed Settings.lineSeparator from String to Separator.
         Renamed Filesystem.SEPARATOR to SEPARATOR_STRING; SEPARATOR is a Separator now.
         Dump OS.listSeparatorChar, change listSeparator from String to Separator.
+        Changes OS.lineSeparator from String to Separator.
       </action>
       <action dev="mlhartme" type="update">
         Replaced Strings.join by a new Joiner class.

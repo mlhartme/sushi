@@ -288,7 +288,7 @@ public abstract class Node {
         for (i = 0; i < ups; i++) {
             result.append("..").append(Filesystem.SEPARATOR_STRING);
         }
-        result.append(Strings.replace(destpath, getWorld().os.lineSeparator, "" + getWorld().os.lineSeparator));
+        result.append(destpath);
         return result.toString();
     }
 

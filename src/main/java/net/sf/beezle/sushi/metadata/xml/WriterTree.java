@@ -29,9 +29,9 @@ public class WriterTree extends Tree {
     private final String lineSeparator;
 
     public WriterTree(Writer dest, boolean strict) {
-    	this(dest, strict, OS.CURRENT.lineSeparator);
+    	this(dest, strict, OS.CURRENT.lineSeparator.getSeparator());
     }
-    
+
     public WriterTree(Writer dest, boolean strict, String lineSeparator) {
         this.dest = dest;
         this.indent = 0;
@@ -110,7 +110,7 @@ public class WriterTree extends Tree {
             dest.write('\'');
         }
     }
-    
+
     private void indent() throws IOException {
         for (int i = 0; i < indent; i++) {
             dest.write("  ");

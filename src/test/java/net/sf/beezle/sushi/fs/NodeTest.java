@@ -579,8 +579,8 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.appendLines("", "xyz");
         file.appendString("1");
         file.appendChars('A', 'B');
-        assertEquals("ab" + OS.CURRENT.lineSeparator + "xyz" +
-        		OS.CURRENT.lineSeparator + "1AB", file.readString());
+        assertEquals("ab" + OS.CURRENT.lineSeparator.getSeparator() + "xyz" +
+        		OS.CURRENT.lineSeparator.getSeparator() + "1AB", file.readString());
     }
 
     @Test

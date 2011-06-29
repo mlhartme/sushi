@@ -53,25 +53,19 @@ public enum OS {
 
     public final Separator listSeparator;
 
-    public final String lineSeparator;
-    public final Separator lineSep;
+    public final Separator lineSeparator;
 
     public final String[] mode;
     public final String[] uid;
     public final String[] gid;
 
     private OS(String substring, String variablePrefix, String variableSuffix,
-            char listSeparatorChar, String lineSeparator,
-            String[] mode, String[] uid, String[] gid) {
+            char listSeparatorChar, String lineSeparator, String[] mode, String[] uid, String[] gid) {
         this.substring = substring;
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
-
         this.listSeparator = Separator.on(listSeparatorChar);
-
-        this.lineSeparator = lineSeparator;
-        this.lineSep = Separator.on(lineSeparator);
-
+        this.lineSeparator = Separator.on(lineSeparator);
         this.mode = mode;
         this.uid = uid;
         this.gid = gid;
@@ -83,7 +77,7 @@ public enum OS {
     	result = new StringBuilder();
     	for (String line : lines) {
     		result.append(line);
-    		result.append(lineSeparator);
+    		result.append(lineSeparator.getSeparator());
     	}
     	return result.toString();
     }

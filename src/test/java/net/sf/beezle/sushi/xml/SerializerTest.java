@@ -36,7 +36,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 public class SerializerTest {
-    private static final String LF = OS.CURRENT.lineSeparator;
+    private static final String LF = OS.CURRENT.lineSeparator.getSeparator();
 
     private static final Builder BUILDER = new Builder();
     private static final Selector SELECTOR = new Selector();

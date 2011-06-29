@@ -3,6 +3,9 @@
   <body>
     <release date="2011-06-29" version="2.6.0">
       <action dev="mlhartme" type="update">
+        Merged Joiner and Splitter into Separator. Changed Settings.lineSeparator from String to Separator.
+      </action>
+      <action dev="mlhartme" type="update">
         Replaced Strings.join by a new Joiner class.
         Change former Strings.join(separator, args) calls to Joiner.on(separator).join(args).
       </action>

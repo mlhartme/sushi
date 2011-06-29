@@ -36,8 +36,7 @@ public class Settings {
     private static final byte[] BYTES = { 65 };
 
     public final String encoding;
-    public final String lineSeparator;
-    public final Separator lineSep;
+    public final Separator lineSeparator;
     public final LineFormat lineFormat;
 
     /** Create a Buffer with UTF-8 encoding */
@@ -56,8 +55,7 @@ public class Settings {
             throw new IllegalArgumentException(encoding, e);
         }
         this.encoding = encoding;
-        this.lineSeparator = lineSeparator;
-        this.lineSep = Separator.on(lineSeparator);
+        this.lineSeparator = Separator.on(lineSeparator);
         this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)));
     }
 

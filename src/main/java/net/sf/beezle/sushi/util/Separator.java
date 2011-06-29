@@ -9,14 +9,14 @@ import java.util.regex.Pattern;
 /**
  * Splits and joins strings on a separator. Similar to Google's Splitter
  * http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Splitter.html and
- * Joiner http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Joiner.html
+ * Joiner http://guava-libraries.googlecode.com/svn/tags/release09/javadoc/com/google/common/base/Joiner.html.
  * Immutable, configuration methods return new instances.
  */
 public class Separator {
-    /** skip empty because I want to ignore heading/tailing whitespace */
+    /** Whitespace delimited lists. Skip empty because I want to ignore heading/tailing whitespace */
     public static final Separator SPACE = Separator.on(" ", Pattern.compile("\\s+", Pattern.MULTILINE)).skipEmpty();
 
-    /** to parse user-supplied lists */
+    /** Separator in user-supplied lists. */
     public static final Separator LIST = Separator.on(',').trim().skipEmpty().forNull("null");
 
     public static Separator on(char c) {

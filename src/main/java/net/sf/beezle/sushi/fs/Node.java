@@ -783,7 +783,7 @@ public abstract class Node {
     private Node lines(Writer dest, List<String> lines) throws IOException {
         String separator;
 
-        separator = getWorld().getSettings().lineSeparator;
+        separator = getWorld().getSettings().lineSeparator.getSeparator();
         for (String line : lines) {
             dest.write(line);
             dest.write(separator);

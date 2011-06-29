@@ -43,7 +43,7 @@ public class NodeXmlTest {
         src = WORLD.memoryNode("<foo><bar/></foo>");
         dest = WORLD.memoryNode("");
         src.xslt(t, dest);
-        assertEquals(WORLD.getSettings().lineSep.join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""),
+        assertEquals(WORLD.getSettings().lineSeparator.join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""),
                 dest.readString());
     }
 }

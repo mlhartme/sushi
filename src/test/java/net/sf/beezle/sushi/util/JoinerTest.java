@@ -43,6 +43,11 @@ public class JoinerTest {
     }
 
     @Test
+    public void useForNullSkip() {
+        assertEquals("null, null, 3", Joiner.on(", ").skipNulls().useForNull("null").join(null, null, 3));
+    }
+
+    @Test
     public void trim() {
         assertEquals("a\nb\nc\n", Joiner.on('\n').trim().join(" a", "b", "c ", " "));
     }

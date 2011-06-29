@@ -44,6 +44,7 @@ public class Joiner {
         return this;
     }
 
+    /** has precedence over skipNulls */
     public Joiner useForNull(Object forNull) {
         this.useForNull = forNull;
         return this;
@@ -95,13 +96,13 @@ public class Joiner {
 
         for (Object obj : lst) {
             if (obj == null) {
-                if (skipNulls) {
+                if (useForNull != null) {
+                    obj = useForNull;
+                } else if (skipNulls) {
                     continue;
-                }
-                if (useForNull == null) {
+                } else {
                     throw new NullPointerException();
                 }
-                obj = useForNull;
             }
             str = obj.toString();
             if (trim) {

@@ -37,6 +37,8 @@ public class Joiner {
         this.skipEmpty = skipEmpty;
     }
 
+    //-- configuration
+
     public Joiner trim() {
         trim = true;
         return this;
@@ -58,8 +60,18 @@ public class Joiner {
         return this;
     }
 
+    //-- joining
+
     public String join(Object[] array) {
         return join(java.util.Arrays.asList(array));
+    }
+
+    public String join(Iterable<?> lst) {
+        StringBuilder result;
+
+        result = new StringBuilder();
+        appendTo(result, lst);
+        return result.toString();
     }
 
     public String join(Object first, Object second, Object ... rest) {
@@ -77,13 +89,7 @@ public class Joiner {
         return result.toString();
     }
 
-    public String join(Iterable<?> lst) {
-        StringBuilder result;
-
-        result = new StringBuilder();
-        appendTo(result, lst);
-        return result.toString();
-    }
+    //--
 
     public void appendTo(StringBuilder dest, Iterable<?> lst) {
         try {

@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.xml;
 
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 import org.w3c.dom.Element;
@@ -153,7 +154,7 @@ public class Selector {
 
         steps = simples.get(path);
         if (steps == null) {
-            steps = Strings.toArray(Splitter.SLASH.split(path));
+            steps = Strings.toArray(Filesystem.SPLITTER.split(path));
             simples.put(path, steps);
         }
         return Dom.getChildElements(context, steps);

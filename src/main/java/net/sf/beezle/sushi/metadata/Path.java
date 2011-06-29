@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.metadata;
 
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 
@@ -176,7 +177,7 @@ public class Path {
         List<Step> result;
 
         result = new ArrayList<Step>();
-        for (String step : Splitter.SLASH.split(path)) {
+        for (String step : Filesystem.SPLITTER.split(path)) {
             result.add(Step.parse(step));
         }
         return result;

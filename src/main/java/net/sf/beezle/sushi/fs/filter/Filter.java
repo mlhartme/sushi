@@ -19,7 +19,6 @@ package net.sf.beezle.sushi.fs.filter;
 
 import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 
@@ -137,7 +136,7 @@ public class Filter {
 
     public Filter includeName(String... names) {
         for (String name : names) {
-            include(Joiner.SLASH.join("**", name));
+            include(Filesystem.JOINER.join("**", name));
         }
         return this;
     }
@@ -156,7 +155,7 @@ public class Filter {
 
     public Filter excludeName(String... names) {
         for (String name : names) {
-            exclude(Joiner.SLASH.join("**", name));
+            exclude(Filesystem.JOINER.join("**", name));
         }
         return this;
     }
@@ -178,7 +177,7 @@ public class Filter {
     private Object[] compile(String path) {
         List<String> lst;
 
-        lst = Splitter.SLASH.split(path);
+        lst = Filesystem.SPLITTER.split(path);
         if (lst.size() == 0) {
             throw new IllegalArgumentException("empty path: " + path);
         }

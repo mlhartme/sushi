@@ -13,8 +13,6 @@ public class Joiner {
     /** to turn arbitrary lists into strings */
     public static final Joiner LIST = Joiner.on(", ").trim().useForNull("null");
 
-    public static final Joiner SLASH = Joiner.on('/');
-
     public static Joiner on(char c) {
         return on(Character.toString(c));
     }

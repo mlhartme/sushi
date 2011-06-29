@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
+import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Splitter;
 import net.sf.beezle.sushi.util.Strings;
 
@@ -29,13 +30,18 @@ public abstract class Filesystem {
      * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
-	public static final String SEPARATOR = "/";
+	public static final char SEPARATOR_CHAR = '/';
 
     /**
      * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
-	public static final char SEPARATOR_CHAR = '/';
+	public static final String SEPARATOR = Character.toString(SEPARATOR_CHAR);
+
+    public static final Joiner JOINER = Joiner.on(SEPARATOR_CHAR);
+    public static final Splitter SPLITTER = Splitter.on(SEPARATOR_CHAR);
+
+    //--
 
     private final World world;
     private final Features features;

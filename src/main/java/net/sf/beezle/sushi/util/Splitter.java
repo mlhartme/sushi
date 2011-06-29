@@ -17,8 +17,6 @@ public class Splitter {
     /** to parse user-supplied lists */
     public static final Splitter LIST = Splitter.on(',').trim().skipEmpty();
 
-    public static final Splitter SLASH = Splitter.on('/');
-
     public static Splitter on(char c) {
         return on(Character.toString(c));
     }

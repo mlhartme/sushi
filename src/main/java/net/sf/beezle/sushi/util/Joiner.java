@@ -9,8 +9,10 @@ import java.io.IOException;
  */
 public class Joiner {
     public static final Joiner SPACE = Joiner.on(' ');
-    public static final Joiner COMMA = Joiner.on(',');
+
+    /** to turn arbitrary lists into strings */
     public static final Joiner LIST = Joiner.on(", ").trim().useForNull("null");
+
     public static final Joiner SLASH = Joiner.on('/');
 
     public static Joiner on(char c) {

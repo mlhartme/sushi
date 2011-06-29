@@ -12,10 +12,12 @@ import java.util.regex.Pattern;
  */
 public class Splitter {
     /** skip empty because I want to ignore heading/tailing whitespace */
-    public static final Splitter WHITESPACE = Splitter.onPattern("\\s+").skipEmpty();
+    public static final Splitter SPACE = Splitter.onPattern("\\s+").skipEmpty();
+
+    /** to parse user-supplied lists */
+    public static final Splitter LIST = Splitter.on(',').trim().skipEmpty();
 
     public static final Splitter SLASH = Splitter.on('/');
-    public static final Splitter LIST = Splitter.on(',').trim();
 
     public static Splitter on(char c) {
         return on(Character.toString(c));

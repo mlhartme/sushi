@@ -19,6 +19,7 @@ package net.sf.beezle.sushi.fs;
 
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.util.Joiner;
+import net.sf.beezle.sushi.util.Splitter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +39,7 @@ public class Settings {
     public final String encoding;
     public final String lineSeparator;
     public final Joiner lineJoiner;
+    public final Splitter lineSplitter;
     public final LineFormat lineFormat;
 
     /** Create a Buffer with UTF-8 encoding */
@@ -58,6 +60,7 @@ public class Settings {
         this.encoding = encoding;
         this.lineSeparator = lineSeparator;
         this.lineJoiner = Joiner.on(lineSeparator);
+        this.lineSplitter = Splitter.on(lineSeparator);
         this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)));
     }
 

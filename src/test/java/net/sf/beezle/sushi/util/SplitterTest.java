@@ -19,8 +19,6 @@ package net.sf.beezle.sushi.util;
 
 import org.junit.Test;
 
-import javax.tools.JavaCompiler;
-
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -54,9 +52,9 @@ public class SplitterTest {
 
     @Test
     public void whitespace() {
-        check(Splitter.WHITESPACE.split(""));
-        check(Splitter.WHITESPACE.split(" a"), "a");
-        check(Splitter.WHITESPACE.split("a b  c\td\n e "), "a", "b", "c", "d", "e");
+        check(Splitter.SPACE.split(""));
+        check(Splitter.SPACE.split(" a"), "a");
+        check(Splitter.SPACE.split("a b  c\td\n e "), "a", "b", "c", "d", "e");
     }
 
     //--

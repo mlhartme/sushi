@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.filter;
 
+import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.util.Joiner;
 import net.sf.beezle.sushi.util.Strings;
@@ -41,13 +42,10 @@ import java.util.regex.Pattern;
  * separator, i.e they have to be relative. Paths remain relative until the filter is actually
  * applied to a tree. Paths must not end with a separator either. </p>
  *
- * <p>Names use the familar glob syntax. Filters do not know about extensions. </p>
+ * <p>Names use the familiar glob syntax. Filters do not know about extensions. </p>
  */
 public class Filter {
     public static final int DEPTH_INFINITE = Integer.MAX_VALUE;
-
-    public static final char SEPARATOR_CHAR = '/';
-    public static final String SEPARATOR = "" + SEPARATOR_CHAR;
 
     //--
 
@@ -138,7 +136,7 @@ public class Filter {
 
     public Filter includeName(String... names) {
         for (String name : names) {
-            include(Joiner.on(SEPARATOR).join("**", name));
+            include(Joiner.SLASH.join("**", name));
         }
         return this;
     }
@@ -157,7 +155,7 @@ public class Filter {
 
     public Filter excludeName(String... names) {
         for (String name : names) {
-            exclude(Joiner.on(SEPARATOR).join("**", name));
+            exclude(Joiner.SLASH.join("**", name));
         }
         return this;
     }
@@ -179,7 +177,7 @@ public class Filter {
     private Object[] compile(String path) {
         List<String> lst;
 
-        lst = Strings.split(SEPARATOR, path);
+        lst = Strings.split(Filesystem.SEPARATOR, path);
         if (lst.size() == 0) {
             throw new IllegalArgumentException("empty path: " + path);
         }

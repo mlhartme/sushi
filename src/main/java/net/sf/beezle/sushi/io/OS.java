@@ -17,19 +17,21 @@
 
 package net.sf.beezle.sushi.io;
 
+import net.sf.beezle.sushi.util.Joiner;
+
 public enum OS {
-    LINUX("Linux", "$", "", ':', "\n", 
+    LINUX("Linux", "$", "", ':', "\n",
     		new String[] { "--format", "%a"},
-            new String[] { "--format", "%u"}, 
+            new String[] { "--format", "%u"},
             new String[] { "--format", "%g"}),
-    MAC("Mac", "$", "", ':', "\n", 
+    MAC("Mac", "$", "", ':', "\n",
     		new String[] { "-f", "%Op"},
-    		new String[] { "-f", "%u"}, 
-    		new String[] { "-f", "%g"}), 
-    WINDOWS("Windows", "%", "%", ';', "\r\n", 
-    		new String[] { "/f", "%a" }, 
-    		new String[] { "/f", "%u" }, 
-    		new String[] { "/f", "%g" }); 
+    		new String[] { "-f", "%u"},
+    		new String[] { "-f", "%g"}),
+    WINDOWS("Windows", "%", "%", ';', "\r\n",
+    		new String[] { "/f", "%a" },
+    		new String[] { "/f", "%u" },
+    		new String[] { "/f", "%g" });
 
     private static OS detect() {
         String name;
@@ -51,12 +53,13 @@ public enum OS {
     public final char listSeparatorChar;
     public final String listSeparator;
     public final String lineSeparator;
+    public final Joiner lineJoiner;
     public final String[] mode;
     public final String[] uid;
     public final String[] gid;
-    
-    private OS(String substring, String variablePrefix, String variableSuffix, 
-            char listSeparatorChar, String lineSeparator, 
+
+    private OS(String substring, String variablePrefix, String variableSuffix,
+            char listSeparatorChar, String lineSeparator,
             String[] mode, String[] uid, String[] gid) {
         this.substring = substring;
         this.variablePrefix = variablePrefix;
@@ -64,6 +67,7 @@ public enum OS {
         this.listSeparatorChar = listSeparatorChar;
         this.listSeparator = Character.toString(listSeparatorChar);
         this.lineSeparator = lineSeparator;
+        this.lineJoiner = Joiner.on(lineSeparator);
         this.mode = mode;
         this.uid = uid;
         this.gid = gid;
@@ -71,7 +75,7 @@ public enum OS {
 
     public String lines(String ... lines) {
     	StringBuilder result;
-    	
+
     	result = new StringBuilder();
     	for (String line : lines) {
     		result.append(line);

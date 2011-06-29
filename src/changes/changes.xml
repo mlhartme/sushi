@@ -1,8 +1,13 @@
-<document xmlns="http://maven.apache.org/changes/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release version="2.6.0" date="2011-06-28">
+    <release date="2011-06-29" version="2.6.0">
+      <action date="2011-06-29" dev="mlhartme" type="remove">
+        Removed Settings.join, added lineJoiner instead.
+      </action>
+      <action date="2011-06-29" dev="mlhartme" type="remove">
+        Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.
+      </action>
       <action dev="mlhartme" type="update">
         Replaced Strings.join and Strings.trim methods by a new Joiner class.
         Change former Strings.join(separator, args) to Joiner.on(separator).join(args).
@@ -17,7 +22,7 @@
         Launcher: fix PumpStream to copy more than one line.
       </action>
     </release>
-    <release version="2.5.1" date="2011-06-24">
+    <release date="2011-06-24" version="2.5.1">
       <action dev="mlhartme" type="add">
         Configurable namespace context for xml selector.
       </action>
@@ -25,7 +30,7 @@
         Fix indentation in xml serializer (2 spaces, was 0).
       </action>
     </release>
-    <release version="2.5.0" date="2011-06-20">
+    <release date="2011-06-20" version="2.5.0">
       <action dev="matiam" type="fix">
         Fix missing authentication on exporting from an SvnNode - now uses AuthenticationManager supplied to backing SVNRepository.
       </action>
@@ -42,7 +47,7 @@
         SvnNode.fromWorkspace(arg) also works for file args now.
       </action>
     </release>
-    <release version="2.4.1" date="2011-05-27">
+    <release date="2011-05-27" version="2.4.1">
       <action dev="mlhartme" type="fix">
         Fix "Target server failed to respond", caused by a HEAD method that tries to read the response body.
       </action>
@@ -56,7 +61,7 @@
         SshNode.delete() failed for deeply nested directories because every level opened a new channel.
       </action>
     </release>
-    <release version="2.4.0" date="2011-05-11">
+    <release date="2011-05-11" version="2.4.0">
       <action dev="mlhartme" type="update">
         Always use / in paths; World.file() methods expect filePaths (with platform separators), not paths.
       </action>
@@ -86,7 +91,7 @@
         Moved ZipNode.encodePath and decodePath to Node.
       </action>
     </release>
-    <release version="2.3.0" date="2011-04-06">
+    <release date="2011-04-06" version="2.3.0">
       <action dev="mlhartme" type="update">
         Merge Misc class into Util.
       </action>
@@ -115,7 +120,7 @@
         Fix Filesystem.join(String ...) to skip empty parts.
       </action>
     </release>
-    <release version="2.2.2" date="2011-03-11">
+    <release date="2011-03-11" version="2.2.2">
       <action dev="mlhartme" type="fix">
         ZipNode.isDirectory() fixed.
       </action>
@@ -127,12 +132,12 @@
         Properly report unknown scheme if jsch dependency is not available (only for specific Java versions).
       </action>
     </release>
-    <release version="2.2.1" date="2011-03-04">
+    <release date="2011-03-04" version="2.2.1">
       <action dev="mlhartme" type="fix">
         Properly report unknown scheme if http core client dependency is not available.
       </action>
     </release>
-    <release version="2.2.0" date="2011-02-15">
+    <release date="2011-02-15" version="2.2.0">
       <action dev="mlhartme" type="update">
         Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
         Bumped minor version number to indicate this incompatible change.
@@ -141,7 +146,7 @@
         OnShutdown.deleteNow() added.
       </action>
     </release>
-    <release version="2.1.0" date="2011-02-08">
+    <release date="2011-02-08" version="2.1.0">
       <action dev="mlhartme" type="add">
         Added Node.resolveLink().
       </action>
@@ -214,15 +219,15 @@
         Fix globbing characters in SshNode file names.
       </action>
       <action dev="mlhartme" type="fix">
-        Fix typo unkown -> unknown in various string constants.
+        Fix typo unkown -&gt; unknown in various string constants.
       </action>
     </release>
-    <release version="2.0.6" date="2010-08-18">
+    <release date="2010-08-18" version="2.0.6">
       <action dev="mlhartme" type="add">
         Some methods added to Dom class.
       </action>
     </release>
-    <release version="2.0.5" date="2010-07-02">
+    <release date="2010-07-02" version="2.0.5">
       <action dev="mlhartme" type="update">
         pom.xml: use fixed plugin versions.
       </action>
@@ -233,7 +238,7 @@
         Fix WebdavNode.getType() for Nexus 1.7.0 servers.
       </action>
     </release>
-    <release version="2.0.4" date="2010-06-18">
+    <release date="2010-06-18" version="2.0.4">
       <action dev="mlhartme" type="fix">
         metadata.Type.loadXml: Fix systemId used to parse xml files.
       </action>
@@ -241,12 +246,12 @@
         Cli parser: a single "-" is always a value now, not an option with empty name.
       </action>
     </release>
-    <release version="2.0.3" date="2010-04-23">
+    <release date="2010-04-23" version="2.0.3">
       <action dev="mlhartme" type="update">
         SvnFilesystem.setCredentials() renamed to setDefaultCredentials().
       </action>
     </release>
-    <release version="2.0.2" date="2010-04-13">
+    <release date="2010-04-13" version="2.0.2">
       <action dev="mlhartme" type="update">
         String Node.getLocator() changed to URI Node.getURI(). FileNode.toURI() dumped.
       </action>
@@ -307,12 +312,12 @@
         LineCollector: make result array configurable.
       </action>
     </release>
-    <release version="2.0.1" date="2010-02-12">
+    <release date="2010-02-12" version="2.0.1">
       <action dev="mlhartme" type="fix">
         IO.node() created node in parent directory of the current working directory.
       </action>
     </release>
-    <release version="2.0.0" date="2010-02-02">
+    <release date="2010-02-02" version="2.0.0">
       <action dev="mlhartme" type="update">
         Moved all packages from org.qooxdoo.sushi to de.ui.sushi.
       </action>
@@ -440,4 +445,3 @@
     </release>
   </body>
 </document>
-

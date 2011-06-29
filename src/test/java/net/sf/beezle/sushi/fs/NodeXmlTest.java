@@ -34,7 +34,7 @@ public class NodeXmlTest {
         Transformer t;
         MemoryNode src;
         MemoryNode dest;
-        
+
         t = WORLD.memoryNode(
                 "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>" +
                 "  <xsl:output method='xml' indent='yes'/>" +
@@ -43,7 +43,7 @@ public class NodeXmlTest {
         src = WORLD.memoryNode("<foo><bar/></foo>");
         dest = WORLD.memoryNode("");
         src.xslt(t, dest);
-        assertEquals(WORLD.getSettings().join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""),
+        assertEquals(WORLD.getSettings().lineJoiner.join("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<out/>", ""),
                 dest.readString());
     }
 }

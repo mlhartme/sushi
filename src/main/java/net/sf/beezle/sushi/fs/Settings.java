@@ -37,6 +37,7 @@ public class Settings {
 
     public final String encoding;
     public final String lineSeparator;
+    public final Joiner lineJoiner;
     public final LineFormat lineFormat;
 
     /** Create a Buffer with UTF-8 encoding */
@@ -56,11 +57,8 @@ public class Settings {
         }
         this.encoding = encoding;
         this.lineSeparator = lineSeparator;
+        this.lineJoiner = Joiner.on(lineSeparator);
         this.lineFormat = new LineFormat(Pattern.compile(Pattern.quote(lineSeparator)));
-    }
-
-    public String join(String ... lines) {
-        return Joiner.on(lineSeparator).join(lines);
     }
 
     public String string(byte[] bytes) {

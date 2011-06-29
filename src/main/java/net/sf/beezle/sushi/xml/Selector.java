@@ -153,7 +153,7 @@ public class Selector {
 
         steps = simples.get(path);
         if (steps == null) {
-            steps = Strings.toArray(Filesystem.SPLITTER.split(path));
+            steps = Strings.toArray(Filesystem.SEP.split(path));
             simples.put(path, steps);
         }
         return Dom.getChildElements(context, steps);

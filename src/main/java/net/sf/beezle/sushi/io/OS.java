@@ -17,8 +17,7 @@
 
 package net.sf.beezle.sushi.io;
 
-import net.sf.beezle.sushi.util.Joiner;
-import net.sf.beezle.sushi.util.Splitter;
+import net.sf.beezle.sushi.util.Separator;
 
 public enum OS {
     LINUX("Linux", "$", "", ':', "\n",
@@ -54,12 +53,10 @@ public enum OS {
 
     public final char listSeparatorChar;
     public final String listSeparator;
-    public final Joiner listJoiner;
-    public final Splitter listSplitter;
+    public final Separator listSep;
 
     public final String lineSeparator;
-    public final Joiner lineJoiner;
-    public final Splitter lineSplitter;
+    public final Separator lineSep;
 
     public final String[] mode;
     public final String[] uid;
@@ -74,12 +71,10 @@ public enum OS {
 
         this.listSeparatorChar = listSeparatorChar;
         this.listSeparator = Character.toString(listSeparatorChar);
-        this.listJoiner = Joiner.on(listSeparatorChar);
-        this.listSplitter = Splitter.on(listSeparatorChar);
+        this.listSep = Separator.on(listSeparatorChar);
 
         this.lineSeparator = lineSeparator;
-        this.lineJoiner = Joiner.on(lineSeparator);
-        this.lineSplitter = Splitter.on(lineSeparator);
+        this.lineSep = Separator.on(lineSeparator);
 
         this.mode = mode;
         this.uid = uid;

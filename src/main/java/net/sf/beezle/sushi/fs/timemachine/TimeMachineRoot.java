@@ -87,7 +87,7 @@ public class TimeMachineRoot implements Root<TimeMachineNode> {
             throw new IllegalArgumentException(encodedQuery);
         }
         node = root;
-        for (String segment : Filesystem.SPLITTER.split(path)) {
+        for (String segment : Filesystem.SEP.split(path)) {
             try {
                 node = resolve(node.join(segment));
             } catch (IOException e) {

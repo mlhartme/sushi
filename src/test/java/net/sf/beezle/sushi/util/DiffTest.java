@@ -104,10 +104,10 @@ public class DiffTest {
             } catch (ExitCode e) {
                 expected = e.output;
             }
-            lines = Splitter.on('\n').split(expected);
+            lines = Separator.on('\n').split(expected);
             lines.remove(0);
             lines.remove(0);
-            expected = Joiner.on('\n').join(lines);
+            expected = Separator.on('\n').join(lines);
             actual = Diff.diff(left.readString(), right.readString(), true, 3);
             assertEquals(left.getPath(), expected, actual);
         }

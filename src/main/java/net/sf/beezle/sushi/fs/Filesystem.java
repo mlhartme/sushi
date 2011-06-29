@@ -17,8 +17,7 @@
 
 package net.sf.beezle.sushi.fs;
 
-import net.sf.beezle.sushi.util.Joiner;
-import net.sf.beezle.sushi.util.Splitter;
+import net.sf.beezle.sushi.util.Separator;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -37,8 +36,7 @@ public abstract class Filesystem {
      */
 	public static final String SEPARATOR = Character.toString(SEPARATOR_CHAR);
 
-    public static final Joiner JOINER = Joiner.on(SEPARATOR_CHAR);
-    public static final Splitter SPLITTER = Splitter.on(SEPARATOR_CHAR);
+    public static final Separator SEP = Separator.on(SEPARATOR_CHAR);
 
     //--
 

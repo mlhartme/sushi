@@ -80,18 +80,25 @@
 
   <build>
     <plugins>
-        <plugin>
-            <groupId>com.mycila.maven-license-plugin</groupId>
-            <artifactId>maven-license-plugin</artifactId>
-            <version>1.9.0</version>
-            <configuration>
-              <header>src/header.txt</header>
-              <strictCheck>false</strictCheck>
-              <includes>
-                <include>src/**/*.java</include>
-              </includes>
-          </configuration>
-        </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.9.0</version>
+        <configuration>
+          <header>src/header.txt</header>
+          <strictCheck>false</strictCheck><!-- TODO: setting this to true rejects every single source file!? -->
+          <includes>
+            <include>src/**/*.java</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

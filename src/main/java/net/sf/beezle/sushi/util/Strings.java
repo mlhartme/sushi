@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class Strings {
     //
@@ -288,38 +287,6 @@ public class Strings {
         }
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
-
-    // TODO: dump?
-    public static String next(String all, int[] idxResult, String ... delimiters) {
-        int start;
-        int tmp;
-        int end;
-        int next;
-
-        start = idxResult[0];
-        end = all.length();
-        next = end; // dummy
-        for (String delim : delimiters) {
-            tmp = all.indexOf(delim, start);
-            if (tmp != -1 && tmp < end) {
-                end = tmp;
-                next = tmp + delim.length();
-            }
-        }
-        if (end == all.length()) {
-            // not changed
-            if (start == all.length()) {
-                return null;
-            } else {
-                idxResult[0] = all.length();
-                return all.substring(start);
-            }
-        } else {
-            idxResult[0] = next;
-            return all.substring(start, end);
-        }
-    }
-
 
     //-- string collections or arrays
 

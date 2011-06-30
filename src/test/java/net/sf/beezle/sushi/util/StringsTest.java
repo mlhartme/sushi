@@ -69,6 +69,14 @@ public class StringsTest {
         assertEquals("1", Strings.decapitalize("1"));
     }
 
+    @Test
+    public void excape() {
+        assertEquals("", Strings.escape(""));
+        assertEquals("Hello, world", Strings.escape("Hello, world"));
+        assertEquals("a\\nb", Strings.escape("a\nb"));
+        assertEquals("\\\\\\n\\r\\t", Strings.escape("\\\n\r\t"));
+    }
+
     //---
 
     @Test
@@ -100,35 +108,6 @@ public class StringsTest {
     public void blockToSmall() {
         assertEquals("foo", Strings.block("", "foo", 0, ""));
         assertEquals("foo-bar-", Strings.block("", "foo bar", 0, "-"));
-    }
-
-    //--
-
-    @Test
-    public void next1() {
-        int[] idx = { 0 };
-
-        assertEquals("", Strings.next("abc", idx, "a", "b"));
-        assertEquals("", Strings.next("abc", idx, "a", "b"));
-        assertEquals("c", Strings.next("abc", idx, "a", "b"));
-        assertEquals(null, Strings.next("abc", idx, "a", "b"));
-    }
-
-    @Test
-    public void next2() {
-        int[] idx = { 0 };
-
-        assertEquals("", Strings.next("abc", idx, "ab", "c"));
-        assertEquals("", Strings.next("abc", idx, "ab", "c"));
-        assertEquals(null, Strings.next("abc", idx, "ab", "c"));
-    }
-
-    @Test
-    public void excape() {
-        assertEquals("", Strings.escape(""));
-        assertEquals("Hello, world", Strings.escape("Hello, world"));
-        assertEquals("a\\nb", Strings.escape("a\nb"));
-        assertEquals("\\\\\\n\\r\\t", Strings.escape("\\\n\r\t"));
     }
 }
 

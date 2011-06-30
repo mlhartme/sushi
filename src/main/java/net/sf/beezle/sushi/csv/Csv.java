@@ -17,6 +17,8 @@
 
 package net.sf.beezle.sushi.csv;
 
+import net.sf.beezle.sushi.fs.LineFormat;
+import net.sf.beezle.sushi.fs.LineReader;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.util.Strings;
 
@@ -29,23 +31,23 @@ import java.util.List;
 
 /** A list of lines. http://de.wikipedia.org/wiki/CSV-Datei. */
 public class Csv implements Iterable<Line> {
-    public static Csv read(Format format, Node src) throws IOException {
+    public static Csv read(Format format, Node node) throws IOException {
         StringBuilder msg;
-        int[] idx = new int[1];
-        String str;
-        String line;
+        LineReader src;
         Csv csv;
-        int no;
+        String line;
 
-        no = 1;
-        idx[0] = 0;
-        str = src.readString();
+        src = new LineReader(node.createReader(), new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.SEPARATOR));
         csv = new Csv(format);
         msg = new StringBuilder();
         while (true) {
-            line = Strings.next(str, idx, "\r\n", "\n", "\r");
+            line = src.next();
             if (line == null) {
-                break;
+                src.getReader().close();
+                if (msg.length() > 0) {
+                    throw new CsvExceptions(msg.toString());
+                }
+                return csv;
             }
             try {
                 csv.add(line);
@@ -53,21 +55,16 @@ public class Csv implements Iterable<Line> {
                 if (msg.length() > 0) {
                     msg.append('\n');
                 }
-                msg.append(src.toString()).append(":").append(no).append(": ").append(e.getMessage());
+                msg.append(src.toString()).append(":").append(src.getLine()).append(": ").append(e.getMessage());
             }
-            no++;
         }
-        if (msg.length() > 0) {
-            throw new CsvExceptions(msg.toString());
-        }
-        return csv;
     }
 
     //--
 
     private final Format format;
     private final List<Line> lines;
-    
+
     public Csv(Format format) {
         this.format = format;
         this.lines = new ArrayList<Line>();
@@ -76,19 +73,19 @@ public class Csv implements Iterable<Line> {
     public Format getFormat() {
         return format;
     }
-    
+
     public int size() {
         return lines.size();
     }
-    
+
     public Line get(int line) {
         return lines.get(line);
     }
-    
+
     public Iterator<Line> iterator() {
         return lines.iterator();
     }
-    
+
     public void add(Line current) {
         if (format.merged && current.size() > 0) {
             for (Line line : lines) {
@@ -107,16 +104,16 @@ public class Csv implements Iterable<Line> {
         }
         return this;
     }
-    
+
     public Csv add(String line) throws CsvLineException {
         add(format.read(line));
         return this;
     }
-    
-    
+
+
     public void write(Node file) throws IOException {
         Writer dest;
-        
+
         dest = file.createWriter();
         write(dest);
         dest.close();
@@ -128,11 +125,11 @@ public class Csv implements Iterable<Line> {
         }
         dest.flush();
     }
-    
+
     @Override
     public String toString() {
         StringWriter dest;
-        
+
         dest = new StringWriter();
         try {
             write(dest);

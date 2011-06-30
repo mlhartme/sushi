@@ -94,6 +94,11 @@ public class SeparatorTest {
         check(Separator.SPACE.split("a b  c\td\n e "), "a", "b", "c", "d", "e");
     }
 
+    @Test
+    public void splitLines() {
+        check(Separator.LINE.split("1\r2\n3\r\n4"), "1", "2", "3", "4");
+    }
+
     //--
 
     private void check(List<String> actual, String ... expected) {

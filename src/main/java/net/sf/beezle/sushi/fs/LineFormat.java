@@ -21,7 +21,8 @@ import java.util.regex.Pattern;
 
 public class LineFormat {
     // order is important
-    public static final Pattern GENERIC_SEPARATOR = Pattern.compile(Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r"));
+    public static final String GENERIC_SEPARATOR_STR = Pattern.quote("\n\r") + "|" + Pattern.quote("\r\n")  + "|" + Pattern.quote("\n") + "|" + Pattern.quote("\r");
+    public static final Pattern GENERIC_SEPARATOR = Pattern.compile(GENERIC_SEPARATOR_STR);
     public static final Pattern LF_SEPARATOR = Pattern.compile(Pattern.quote("\n"));
 
     /** how to trim lines before they are returned by next() */

@@ -6,7 +6,7 @@
         Added a Separator class to split Strings and join Objects.
       </action>
       <action dev="mlhartme" type="remove">
-        Removed Strings.split, Strings.join and Strings.trim. Use the new Splitter class instead:
+        Removed Strings.split, Strings.join, Strings.trim and Strings.next. Use the new Separator class instead:
         change Strings.split(separator, arg) calls to Separator.on(separator).split(arg);
         change Strings.join(separator, args) calls to Separator.on(separator).join(args).
       </action>

@@ -17,6 +17,8 @@
 
 package net.sf.beezle.sushi.util;
 
+import net.sf.beezle.sushi.fs.LineFormat;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,8 @@ public class Separator {
 
     /** Separator in user-supplied lists. */
     public static final Separator COMMA = Separator.on(',').trim().skipEmpty().forNull("null");
+
+    public static final Separator LINE = Separator.on("\n", Pattern.compile(LineFormat.GENERIC_SEPARATOR_STR, Pattern.MULTILINE));
 
     public static Separator on(char c) {
         return on(Character.toString(c));

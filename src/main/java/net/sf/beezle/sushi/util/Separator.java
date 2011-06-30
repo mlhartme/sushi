@@ -96,7 +96,7 @@ public class Separator {
         StringBuilder result;
 
         result = new StringBuilder();
-        appendTo(result, lst);
+        joinTo(result, lst);
         return result.toString();
     }
 
@@ -106,9 +106,9 @@ public class Separator {
 
         result = new StringBuilder();
         try {
-            count = appendTo(result, 0, java.util.Arrays.asList(first));
-            count = appendTo(result, count, java.util.Arrays.asList(second));
-            appendTo(result, count, java.util.Arrays.asList(rest));
+            count = joinTo(result, 0, java.util.Arrays.asList(first));
+            count = joinTo(result, count, java.util.Arrays.asList(second));
+            joinTo(result, count, java.util.Arrays.asList(rest));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -117,16 +117,16 @@ public class Separator {
 
     //--
 
-    public void appendTo(StringBuilder dest, Iterable<?> lst) {
+    public void joinTo(StringBuilder dest, Iterable<?> lst) {
         try {
-            appendTo(dest, 0, lst);
+            joinTo(dest, 0, lst);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
     /** @return number of objects appended */
-    public int appendTo(Appendable dest, int count, Iterable<?> lst) throws IOException {
+    public int joinTo(Appendable dest, int count, Iterable<?> lst) throws IOException {
         String str;
 
         for (Object obj : lst) {
@@ -161,11 +161,11 @@ public class Separator {
         List<String> lst;
 
         lst = new ArrayList<String>();
-        appendTo(lst, str);
+        splitTo(lst, str);
         return lst;
     }
 
-    public void appendTo(List<String> result, String str) {
+    public void splitTo(List<String> dest, String str) {
         int length;
         Matcher matcher;
         int prev;
@@ -177,11 +177,11 @@ public class Separator {
         matcher = pattern.matcher(str);
         prev = 0;
         while (matcher.find()) {
-            add(result, str.substring(prev, matcher.start()));
+            add(dest, str.substring(prev, matcher.start()));
             prev = matcher.end();
         }
         if (prev <= length) {
-            add(result, str.substring(prev, length));
+            add(dest, str.substring(prev, length));
         }
     }
 

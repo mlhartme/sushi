@@ -96,7 +96,7 @@ public class SeparatorTest {
 
     @Test
     public void splitLines() {
-        check(Separator.LINE.split("1\r2\n3\r\n4"), "1", "2", "3", "4");
+        check(Separator.LINE.split("1abc\r2\n3\r\n  4\n\r"), "1abc", "2", "3", "  4", "");
     }
 
     //--

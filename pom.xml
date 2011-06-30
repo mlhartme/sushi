@@ -7,10 +7,7 @@
   </parent>
 
   <name>Sushi</name>
-  <description>Sushi is a collection of general purpose code like Apache Commons. A good part of it is for scripting tasks
-    like copying files or file sets where others would prefer scripting languages or Ant. Another part is a file system
-    abstraction with ssh, svn and webdav support. In general, I add code here if it does not fit into a more specific
-    library.</description>
+  <description>See ${project.url}.</description>
   <url>https://sourceforge.net/apps/trac/beezle/wiki/Sushi</url>
   <inceptionYear>2004</inceptionYear>
   <licenses>

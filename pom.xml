@@ -77,4 +77,21 @@
       <url>scp://shell.sourceforge.net/home/project-web/beezle/htdocs/sushi/site</url>
     </site>
   </distributionManagement>
+
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>com.mycila.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <version>1.9.0</version>
+            <configuration>
+              <header>src/header.txt</header>
+              <strictCheck>false</strictCheck>
+              <includes>
+                <include>src/**/*.java</include>
+              </includes>
+          </configuration>
+        </plugin>
+    </plugins>
+  </build>
 </project>

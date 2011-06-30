@@ -24,6 +24,9 @@
         Removed Filesystem.split(), use Filesystem.SEPARATOR.split() instead.
       </action>
       <action dev="mlhartme" type="remove">
+        Removed Strings.separator(), use Separator.split instead.
+      </action>
+      <action dev="mlhartme" type="remove">
         Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.
       </action>
       <action dev="mlhartme" type="update">

@@ -289,22 +289,6 @@ public class Strings {
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
 
-    //-- TODO: dump?
-    public static String[] separate(String str, char delim) {
-        int i;
-        StringTokenizer tokenizer;
-        int max;
-        String[] result;
-
-        tokenizer = new StringTokenizer(str, "" + delim);
-        max = tokenizer.countTokens();
-        result = new String[max];
-        for (i = 0; i < max; i++) {
-            result[i] = tokenizer.nextToken();
-        }
-        return result;
-    }
-
     // TODO: dump?
     public static String next(String all, int[] idxResult, String ... delimiters) {
         int start;

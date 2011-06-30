@@ -33,19 +33,19 @@ import java.util.regex.Pattern;
  */
 public class Separator {
     /** Whitespace delimited lists. Skip empty because I want to ignore heading/tailing whitespace */
-    public static final Separator SPACE = Separator.on(" ", Pattern.compile("\\s+", Pattern.MULTILINE)).skipEmpty();
+    public static final Separator SPACE = Separator.on(" ", Pattern.compile("\\s+")).skipEmpty();
 
     /** Separator in user-supplied lists. */
     public static final Separator COMMA = Separator.on(',').trim().skipEmpty().forNull("null");
 
-    public static final Separator LINE = Separator.on("\n", Pattern.compile(LineFormat.GENERIC_SEPARATOR_STR, Pattern.MULTILINE));
+    public static final Separator LINE = Separator.on("\n", LineFormat.GENERIC_SEPARATOR);
 
     public static Separator on(char c) {
         return on(Character.toString(c));
     }
 
     public static Separator on(String separator) {
-        return new Separator(separator, Pattern.compile(separator, Pattern.MULTILINE | Pattern.LITERAL));
+        return new Separator(separator, Pattern.compile(Pattern.quote(separator)));
     }
 
     public static Separator on(String separator, Pattern pattern) {
@@ -66,8 +66,14 @@ public class Separator {
     }
 
     public Separator(String separator, Pattern pattern, boolean trim, boolean skipEmpty, String forNull, boolean skipNull) {
+        if (separator.isEmpty()) {
+            throw new IllegalArgumentException("Empty separator");
+        }
         if (pattern.matcher("").find()) {
             throw new IllegalArgumentException(pattern.pattern() + " matches the empty string");
+        }
+        if (!pattern.matcher(separator).find()) {
+            throw new IllegalArgumentException("Separtor " + separator + " does not match pattern " + pattern.pattern());
         }
         this.separator = separator;
         this.pattern = pattern;

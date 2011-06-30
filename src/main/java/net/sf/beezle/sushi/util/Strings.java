@@ -103,6 +103,8 @@ public class Strings {
         }
     }
 
+    //--
+
     public static String stripExtension(String f) {
         int dotP;
 

@@ -157,7 +157,7 @@ public class Separator {
 
     //-- split
 
-    public List<String> split(String str) {
+    public List<String> split(CharSequence str) {
         List<String> lst;
 
         lst = new ArrayList<String>();
@@ -165,7 +165,7 @@ public class Separator {
         return lst;
     }
 
-    public void splitTo(List<String> dest, String str) {
+    public void splitTo(List<String> dest, CharSequence str) {
         int length;
         Matcher matcher;
         int prev;
@@ -177,15 +177,18 @@ public class Separator {
         matcher = pattern.matcher(str);
         prev = 0;
         while (matcher.find()) {
-            add(dest, str.substring(prev, matcher.start()));
+            add(dest, str.subSequence(prev, matcher.start()));
             prev = matcher.end();
         }
         if (prev <= length) {
-            add(dest, str.substring(prev, length));
+            add(dest, str.subSequence(prev, length));
         }
     }
 
-    private void add(List<String> result, String str) {
+    private void add(List<String> result, CharSequence cs) {
+        String str;
+
+        str = cs.toString();
         if (trim) {
             str = str.trim();
         }

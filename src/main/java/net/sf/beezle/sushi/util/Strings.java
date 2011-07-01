@@ -41,6 +41,8 @@ public class Strings {
         }
     }
 
+    //--
+    
     public static String removeStart(String str, String start) {
         String result;
 
@@ -79,6 +81,30 @@ public class Strings {
         }
     }
 
+    //-- padding
+
+    public static String padLeft(String str, int count) {
+        return padLeft(str, count, ' ');
+    }
+
+    public static String padLeft(String str, int count, char ch) {
+        for (count -= str.length(); count > 0; count--) {
+            str = ch + str;
+        }
+        return str;
+    }
+
+    public static String padRight(String str, int count) {
+        return padRight(str, count, ' ');
+    }
+
+    public static String padRight(String str, int count, char ch) {
+        for (count -= str.length(); count > 0; count--) {
+            str = str + ch;
+        }
+        return str;
+    }
+
     //--
 
     public static String indent(String str, String space) {
@@ -92,27 +118,7 @@ public class Strings {
         return builder.toString();
     }
 
-    public static String lfill(int count, String str) {
-        return lfill(' ', count, str);
-    }
-
-    public static String lfill(char ch, int count, String str) {
-        for (count -= str.length(); count > 0; count--) {
-            str = ch + str;
-        }
-        return str;
-    }
-
-    public static String rfill(int count, String str) {
-        return rfill(' ', count, str);
-    }
-
-    public static String rfill(char ch, int count, String str) {
-        for (count -= str.length(); count > 0; count--) {
-            str = str + ch;
-        }
-        return str;
-    }
+    //--
 
     public static String times(char ch, int count) {
         StringBuilder buffer;
@@ -341,7 +347,7 @@ public class Strings {
                     break;
                 default:
                     if (c < 32) {
-                        result.append("\\u").append(Strings.lfill('0', Integer.toHexString(c)));
+                        result.append("\\u").append(Strings.padLeft(Integer.toHexString(c), '0'));
                     } else {
                         result.append(c);
                     }

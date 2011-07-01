@@ -39,6 +39,9 @@
       <action dev="mlhartme" type="update">
         Moved Strings.getFileExtension to Node.getExtension.
       </action>
+      <action dev="mlhartme" type="update">
+        Renamed Strings.lfill() and rfill() to padLeft() and padRight(); aligned arguments with remove methods.
+      </action>
 
       <action dev="mlhartme" type="update">
         Launcher: stdin is configurable now (and defaults to System.in).

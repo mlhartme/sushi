@@ -10,6 +10,9 @@
         change Strings.split(separator, arg) calls to Separator.on(separator).split(arg);
         change Strings.join(separator, args) calls to Separator.on(separator).join(args).
       </action>
+      <action dev="mlhartme" type="remove">
+        Removed Strings.lines(), use Separator.RAW_LINE.split() instead.
+      </action>
       <action dev="mlhartme" type="update">
         Renamed Filesystem.SEPARATOR to SEPARATOR_STRING; added a new Separator SEPARATOR.
       </action>

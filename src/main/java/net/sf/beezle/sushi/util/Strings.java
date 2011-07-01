@@ -20,7 +20,6 @@ package net.sf.beezle.sushi.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class Strings {
     //
@@ -40,29 +39,6 @@ public class Strings {
             result.append(Integer.toString(b >> 4 & 0xf, 16));
             result.append(Integer.toString(b & 0xf, 16));
         }
-    }
-
-    // TODO
-    private static final char SEPARATOR = '\n';
-
-    public static List<String> lines(String all) {
-        int ofs;
-        int prev;
-        List<String> result;
-
-        ofs = all.indexOf(SEPARATOR);
-        prev = 0;
-        result = new ArrayList<String>();
-        while (ofs != -1) {
-            ofs++;
-            result.add(all.substring(prev, ofs));
-            prev = ofs;
-            ofs = all.indexOf(SEPARATOR, prev);
-        }
-        if (prev < all.length()) {
-            result.add(all.substring(prev));
-        }
-        return result;
     }
 
     public static String removeStart(String str, String start) {
@@ -129,7 +105,7 @@ public class Strings {
         StringBuilder builder;
 
         builder = new StringBuilder();
-        for (String line : lines(str)) {
+        for (String line : Separator.RAW_LINE.split(str)) {
             builder.append(space);
             builder.append(line);
         }

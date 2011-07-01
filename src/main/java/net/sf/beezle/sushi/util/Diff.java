@@ -31,11 +31,11 @@ public class Diff {
     public static String diff(String leftStr, String rightStr, boolean range, int context) {
         return diff(leftStr, rightStr, range, context, false);
     }
-    
+
     public static String diff(String leftStr, String rightStr, boolean range, int context, boolean escape) {
-        return diff(Strings.lines(leftStr), Strings.lines(rightStr), range, context, escape);
+        return diff(Separator.RAW_LINE.split(leftStr), Separator.RAW_LINE.split(rightStr), range, context, escape);
     }
-    
+
     public static String diff(List<String> left, List<String> right, boolean range, int context, boolean escape) {
         List<String> commons;
         List<Chunk> chunks;
@@ -43,7 +43,7 @@ public class Diff {
         StringBuilder result;
         int ci;
         Chunk last;
-        
+
         commons = Lcs.compute(left, right);
         chunks = diff(left, commons, right);
         result = new StringBuilder();
@@ -115,7 +115,7 @@ public class Diff {
         int lmax;
         int rmax;
         String common;
-        
+
         result = new ArrayList<Chunk>();
         lmax = left.size();
         rmax = right.size();
@@ -129,7 +129,7 @@ public class Diff {
                 do {
                     li++;
                 } while (li < lmax && !left.get(li).equals(common));
-                chunk.delete = li - chunk.left; 
+                chunk.delete = li - chunk.left;
             } else {
                 // definite assignment
                 chunk = null;
@@ -157,7 +157,7 @@ public class Diff {
         int leftCount;
         int rightStart;
         int rightCount;
-        
+
         first = chunks.get(ofs);
         leftStart = Math.max(first.left - context, 0);
         rightStart = Math.max(first.right - context, 0);
@@ -191,27 +191,27 @@ public class Diff {
             result.append(',').append(count);
         }
     }
-    
+
     private static class Chunk {
         public final int left;
         public final int common;
         public final int right;
         public int delete;
         public final List<String> add;
-        
+
         public Chunk(int left, int common, int right) {
             this.left = left;
             this.right = right;
             this.common = common;
             this.add = new ArrayList<String>();
         }
-        
+
         public boolean touches(Chunk chunk, int context) {
             return Math.abs(common - chunk.common) <= context * 2;
         }
-        
+
         public String range() {
-            return "@@ -" + (left + 1) + "," + delete + " +" + (right + 1) + "," + add.size() + " @@\n"; 
+            return "@@ -" + (left + 1) + "," + delete + " +" + (right + 1) + "," + add.size() + " @@\n";
         }
     }
 }

@@ -126,6 +126,6 @@ public class DiffTest {
     }
 
     private void lines(String str, String ... lines) {
-        assertEquals(Arrays.asList(lines), Strings.lines(str));
+        assertEquals(Arrays.asList(lines), Separator.RAW_LINE.split(str));
     }
 }

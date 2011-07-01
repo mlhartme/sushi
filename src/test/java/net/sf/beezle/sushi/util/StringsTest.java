@@ -25,6 +25,12 @@ import static org.junit.Assert.assertTrue;
 
 public class StringsTest {
     @Test
+    public void indent() {
+        assertEquals("  a", Strings.indent("a", "  "));
+        assertEquals("  a\n   b", Strings.indent("a\n b", "  "));
+    }
+
+    @Test
     public void remove() {
         final String STARTX = "startx";
 

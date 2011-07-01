@@ -38,7 +38,8 @@ public class Separator {
     /** Separator in user-supplied lists. */
     public static final Separator COMMA = Separator.on(',').trim().skipEmpty().forNull("null");
 
-    public static final Separator LINE = Separator.on("\n", LineFormat.GENERIC_SEPARATOR);
+    /** Skip empty remove the last line */
+    public static final Separator RAW_LINE = Separator.on("\n", LineFormat.GENERIC_SEPARATOR).trim(LineFormat.Trim.NOTHING).skipEmpty();
 
     public static Separator on(char c) {
         return on(Character.toString(c));
@@ -56,16 +57,16 @@ public class Separator {
 
     private final String separator;
     private final Pattern pattern;
-    private final boolean trim;
+    private final LineFormat.Trim trim;
     private final boolean skipEmpty;
     private final String forNull;
     private final boolean skipNull;
 
     public Separator(String separator, Pattern pattern) {
-        this(separator, pattern, false, false, null, false);
+        this(separator, pattern, LineFormat.Trim.SEPARATOR, false, null, false);
     }
 
-    public Separator(String separator, Pattern pattern, boolean trim, boolean skipEmpty, String forNull, boolean skipNull) {
+    public Separator(String separator, Pattern pattern, LineFormat.Trim trim, boolean skipEmpty, String forNull, boolean skipNull) {
         if (separator.isEmpty()) {
             throw new IllegalArgumentException("Empty separator");
         }
@@ -97,7 +98,12 @@ public class Separator {
 
     /** Trim elements before joining or after splitting */
     public Separator trim() {
-        return new Separator(separator, pattern, true, skipEmpty, forNull, skipNull);
+        return trim(LineFormat.Trim.ALL);
+    }
+
+    /** Trim elements before joining or after splitting */
+    public Separator trim(LineFormat.Trim trim) {
+        return new Separator(separator, pattern, trim, skipEmpty, forNull, skipNull);
     }
 
     /** Do not join empty elements and to not return them from splitting. */
@@ -167,7 +173,7 @@ public class Separator {
                 }
             }
             str = obj.toString();
-            if (trim) {
+            if (trim == LineFormat.Trim.ALL) {
                 str = str.trim();
             }
             if (skipEmpty && str.isEmpty()) {
@@ -204,7 +210,7 @@ public class Separator {
         matcher = pattern.matcher(str);
         prev = 0;
         while (matcher.find()) {
-            add(dest, str.subSequence(prev, matcher.start()));
+            add(dest, str.subSequence(prev, trim == LineFormat.Trim.NOTHING ? matcher.end() : matcher.start()));
             prev = matcher.end();
         }
         if (prev <= length) {
@@ -216,7 +222,7 @@ public class Separator {
         String str;
 
         str = cs.toString();
-        if (trim) {
+        if (trim == LineFormat.Trim.ALL) {
             str = str.trim();
         }
         if (skipEmpty && str.isEmpty()) {

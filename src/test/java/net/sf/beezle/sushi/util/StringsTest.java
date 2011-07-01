@@ -42,6 +42,16 @@ public class StringsTest {
         assertSame(STARTX, Strings.removeStartOpt(STARTX, "t"));
     }
 
+    @Test
+    public void pad() {
+        assertEquals("a", Strings.padLeft("a", 0));
+        assertEquals("a", Strings.padLeft("a", 1));
+        assertEquals(" a", Strings.padLeft("a", 2));
+        assertEquals("b", Strings.padRight("b", 0));
+        assertEquals("b", Strings.padRight("b", 1));
+        assertEquals("b ", Strings.padRight("b", 2));
+    }
+
     //--
 
     @Test

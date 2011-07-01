@@ -127,6 +127,16 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     //--
 
     @Test
+    public void extension() {
+        assertEquals("bar", work.join("foo.bar").getExtension());
+        assertEquals("baz", work.join("foo.bar.baz").getExtension());
+        assertEquals("", work.join("foo.").getExtension());
+        assertEquals("", work.join("foo").getExtension());
+    }
+
+    //--
+
+    @Test
     public void listAndBase() throws Exception {
         List<? extends Node> lst;
 

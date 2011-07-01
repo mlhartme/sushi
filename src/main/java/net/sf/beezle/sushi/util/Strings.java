@@ -81,16 +81,6 @@ public class Strings {
 
     //--
 
-    public static String getFileExtension(String f) {
-        int idx;
-
-        idx = f.lastIndexOf('.');
-        if (idx <= 0 || idx == f.length() - 1) {
-            return "";
-        }
-        return f.substring(idx + 1);
-    }
-
     public static String indent(String str, String space) {
         StringBuilder builder;
 

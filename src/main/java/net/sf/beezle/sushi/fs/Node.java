@@ -220,6 +220,19 @@ public abstract class Node {
         return path.substring(path.lastIndexOf(Filesystem.SEPARATOR_CHAR) + 1);
     }
 
+    public String getExtension() {
+        String name;
+        int idx;
+
+        name = getName();
+        idx = name.lastIndexOf('.');
+        if (idx <= 0 || idx == name.length() - 1) {
+            return "";
+        }
+        return name.substring(idx + 1);
+    }
+
+
     public abstract Node getParent();
     protected Node doGetParent() {
         String path;

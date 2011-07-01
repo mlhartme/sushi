@@ -32,6 +32,9 @@
       <action dev="mlhartme" type="remove">
         Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.
       </action>
+      <action dev="mlhartme" type="remove">
+        Removed Stings.stripExtension(name, extWithoutDot), use Strings.removeEndOpt(name, extWithDot) instead.
+      </action>
       <action dev="mlhartme" type="update">
         Launcher: stdin is configurable now (and defaults to System.in).
       </action>

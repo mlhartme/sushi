@@ -42,19 +42,6 @@ public class StringsTest {
         assertSame(STARTX, Strings.removeStartOpt(STARTX, "t"));
     }
 
-    @Test
-    public void stripExtension() {
-        String f1 = "abc.xml";
-        String f2 = ".xml";
-        String f3 = "abc";
-        String f4 = "abc.def.xml";
-
-        assertTrue("abc".equals(Strings.stripExtension(f1)));
-        assertTrue(".xml".equals(Strings.stripExtension(f2)));
-        assertTrue("abc".equals(Strings.stripExtension(f3)));
-        assertTrue("abc.def".equals(Strings.stripExtension(f4)));
-    }
-
     //--
 
     @Test

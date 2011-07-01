@@ -81,16 +81,6 @@ public class Strings {
 
     //--
 
-    public static String stripExtension(String f) {
-        int dotP;
-
-        dotP = f.lastIndexOf('.');
-        if (dotP <= 0) {
-            return f;
-        }
-        return f.substring(0, dotP);
-    }
-
     public static String getFileExtension(String f) {
         int idx;
 

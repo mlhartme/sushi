@@ -34,12 +34,12 @@ public class StringsTest {
     public void remove() {
         final String STARTX = "startx";
 
-        assertEquals("start", Strings.removeEnd(STARTX, "x"));
-        assertEquals("start", Strings.removeEndOpt(STARTX, "x"));
-        assertEquals(STARTX, Strings.removeEndOpt(STARTX, "y"));
-        assertEquals("tartx", Strings.removeStart(STARTX, "s"));
-        assertEquals("tartx", Strings.removeStartOpt(STARTX, "s"));
-        assertSame(STARTX, Strings.removeStartOpt(STARTX, "t"));
+        assertEquals("start", Strings.removeRight(STARTX, "x"));
+        assertEquals("start", Strings.removeRightOpt(STARTX, "x"));
+        assertEquals(STARTX, Strings.removeRightOpt(STARTX, "y"));
+        assertEquals("tartx", Strings.removeLeft(STARTX, "s"));
+        assertEquals("tartx", Strings.removeLeftOpt(STARTX, "s"));
+        assertSame(STARTX, Strings.removeLeftOpt(STARTX, "t"));
     }
 
     @Test

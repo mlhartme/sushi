@@ -33,6 +33,10 @@
         Removed Filter.SEPARATOR and SEPARATOR_CHAR; use Filesystem constants instead.
       </action>
 
+      <action dev="mlhartme" type="update">
+        Renamed Strings.removeStart, removeStartOpt, removeEnd and removeEndOpt to
+        removeLeft, removeLeftOpt, removeRight and removeRightOpt.
+      </action>
       <action dev="mlhartme" type="remove">
         Removed Stings.stripExtension(name, extWithoutDot), use Strings.removeEndOpt(name, extWithDot) instead.
       </action>

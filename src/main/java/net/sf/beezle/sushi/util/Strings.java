@@ -43,39 +43,39 @@ public class Strings {
 
     //--
     
-    public static String removeStart(String str, String start) {
+    public static String removeLeft(String str, String left) {
         String result;
 
-        result = removeStartOpt(str, start);
+        result = removeLeftOpt(str, left);
         if (result != str) {
             return result;
         } else {
-            throw new IllegalArgumentException("'" + str + "' does not start with '" + start + "'");
+            throw new IllegalArgumentException("'" + str + "' does not start with '" + left + "'");
         }
     }
 
-    public static String removeStartOpt(String str, String start) {
-        if (str.startsWith(start)) {
-            return str.substring(start.length());
+    public static String removeLeftOpt(String str, String left) {
+        if (str.startsWith(left)) {
+            return str.substring(left.length());
         } else {
             return str;
         }
     }
 
-    public static String removeEnd(String str, String end) {
+    public static String removeRight(String str, String right) {
         String result;
 
-        result = removeEndOpt(str, end);
+        result = removeRightOpt(str, right);
         if (result != str) {
             return result;
         } else {
-            throw new IllegalArgumentException("'" + str + "' does not end with '" + end + "'");
+            throw new IllegalArgumentException("'" + str + "' does not end with '" + right + "'");
         }
     }
 
-    public static String removeEndOpt(String str, String end) {
-        if (str.endsWith(end)) {
-            return str.substring(0, str.length() - end.length());
+    public static String removeRightOpt(String str, String right) {
+        if (str.endsWith(right)) {
+            return str.substring(0, str.length() - right.length());
         } else {
             return str;
         }

@@ -98,7 +98,7 @@ public class DiffTest {
         world = new World();
         dir = world.guessProjectHome(getClass()).join("src/test/resources/diff");
         for (Node left : dir.find("*.left")) {
-            right = dir.join(Strings.removeEnd(left.getName(), ".left") + ".right");
+            right = dir.join(Strings.removeRight(left.getName(), ".left") + ".right");
             try {
                 expected = new Launcher((FileNode) world.getHome(), "diff", "-u", ((FileNode) left).getAbsolute(), right.getAbsolute()).exec();
             } catch (ExitCode e) {

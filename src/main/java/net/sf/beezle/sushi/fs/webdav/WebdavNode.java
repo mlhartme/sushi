@@ -461,7 +461,7 @@ public class WebdavNode extends Node {
 		if (dir) {
 		    childPath = childPath.substring(0, childPath.length() - 1);
 		}
-        childPath = Strings.removeStart(childPath, "/");
+        childPath = Strings.removeLeft(childPath, "/");
         if (!childPath.startsWith(path)) {
             throw new IllegalStateException();
         }

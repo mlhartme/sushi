@@ -265,7 +265,7 @@ public class World {
         if (root != null) {
             filePath = filePath.substring(root.getAbsolute().length());
         }
-        filePath = Strings.removeEndOpt(filePath, File.separator);
+        filePath = Strings.removeRightOpt(filePath, File.separator);
    		path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
         if (root == null) {
             if (working == null) {

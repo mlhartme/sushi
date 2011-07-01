@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.launcher;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,15 +38,23 @@ public class InputPumpStream extends Thread {
     public void run() {
         try {
             while (true) {
-                while (!finishing && in.available() == 0) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        throw new Interrupted(e);
+                try {
+                    while (!finishing && in.available() == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            throw new Interrupted(e);
+                        }
                     }
-                }
-                if (finishing) {
-                    return;
+                    if (finishing) {
+                        return;
+                    }
+                } catch (IOException e) {
+                    if (in instanceof BufferedInputStream && "Stream closed".equals(e.getMessage())) {
+                        // I'd expected BufferdInputStream.available to return 0 for a closed stream,
+                        // but they prefer to throw this exception
+                        return;
+                    }
                 }
                 out.write(in.read());
                 out.flush();

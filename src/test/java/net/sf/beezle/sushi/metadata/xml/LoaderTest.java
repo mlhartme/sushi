@@ -203,13 +203,9 @@ public class LoaderTest extends ModelBase {
 
     //--
 
-    @Test
-    public void malformed() {
-        try {
-            str("<string>");
-        } catch (LoaderException e) {
-            one(e, "must start");
-        }
+    @Test(expected=LoaderException.class)
+    public void malformed() throws LoaderException {
+        str("<string>");
     }
 
     @Test

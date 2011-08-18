@@ -24,7 +24,7 @@ public enum OS {
     		new String[] { "--format", "%a"},
             new String[] { "--format", "%u"},
             new String[] { "--format", "%g"}),
-    MAC("Mac", "$", "", ':', "\n",
+    MAC(new String[] { "Mac" /* official Apple Jdks */, "Darwin" /* OpenJdk 7 for Mac OS BSD Port */ }, "$", "", ':', "\n",
     		new String[] { "-f", "%Op"},
     		new String[] { "-f", "%u"},
     		new String[] { "-f", "%g"}),
@@ -38,8 +38,10 @@ public enum OS {
 
         name = System.getProperty("os.name");
         for (OS os : values()) {
-            if (name.contains(os.substring)) {
-                return os;
+            for (String substring : os.substrings) {
+                if (name.contains(substring)) {
+                    return os;
+                }
             }
         }
         throw new IllegalArgumentException("unknown os:" + name);
@@ -47,7 +49,7 @@ public enum OS {
 
     public static final OS CURRENT = detect();
 
-    private final String substring;
+    private final String[] substrings;
     private final String variablePrefix;
     private final String variableSuffix;
 
@@ -61,7 +63,12 @@ public enum OS {
 
     private OS(String substring, String variablePrefix, String variableSuffix,
             char listSeparatorChar, String lineSeparator, String[] mode, String[] uid, String[] gid) {
-        this.substring = substring;
+        this(new String[] { substring }, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator,  mode, uid, gid);
+    }
+
+    private OS(String[] substrings, String variablePrefix, String variableSuffix,
+            char listSeparatorChar, String lineSeparator, String[] mode, String[] uid, String[] gid) {
+        this.substrings = substrings;
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
         this.listSeparator = Separator.on(listSeparatorChar);

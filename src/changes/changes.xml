@@ -5,6 +5,9 @@
       <action dev="mlhartme" type="fix">
         Fix OS detection when running on OpenJdk 7 for Mac OS/X BSD Port.
       </action>
+      <action dev="mlhartme" type="fix">
+        Fix FileNode.delete() for links pointing to files or directories that you cannot change.
+      </action>
     </release>
     <release date="2011-07-04" version="2.6.0">
       <action dev="mlhartme" type="add">

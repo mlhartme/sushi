@@ -420,35 +420,12 @@ public class FileNode extends Node {
     }
 
     private static void deleteLink(World io, File link) throws IOException {
-        File target; // where the link point to
-        File dir;
-        File renamed;
-        boolean wasDeleted;
-
-        if (!link.exists()) {
-        	// broken link
-        	new Launcher(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
-        } else {
-        	target = link.getCanonicalFile();
-        	dir = target.getAbsoluteFile().getParentFile();
-        	renamed = File.createTempFile("link", ".tmp", dir);
-        	delete(io, renamed);
-        	try {
-        		rename(target, renamed);
-        	} catch (IOException e) {
-        		throw new IOException("Cannot delete link " + link + ": rename target " + target + " -> " + renamed
-                    + " failed: " + e.getMessage());
-        	}
-        	wasDeleted = link.delete();
-        	try {
-        		rename(renamed, target);
-        	} catch (IOException e) {
-        		throw new IOException("Couldn't return target " + renamed + " to its original name " + target
-                                  + ":\n THE RESOURCE'S NAME ON DISK HAS BEEN CHANGED BY THIS ERROR!\n" + e);
-        	}
-        	if (!wasDeleted) {
-        		throw new IOException("Couldn't delete link: " + link + " (was it a real file? is this not a UNIX system?)");
-        	}
+        // I used to do this in pure java (for none-broken links at least), but the java code was unable
+        // to delete symlinks pointing to protected files or directories
+      	new Launcher(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
+        // force java to update it's cache
+        if (link.delete()) {
+            throw new IllegalStateException(link.toString());
         }
     }
 

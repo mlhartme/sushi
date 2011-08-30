@@ -111,6 +111,32 @@ public class FileNodeTest extends NodeTest<FileNode> {
     }
 
     @Test
+    public void symlinkToProtectedDirectory() throws IOException {
+        if (OS.CURRENT == OS.WINDOWS) {
+            return; // TODO: is it save to delete root?
+        }
+
+        FileNode link;
+
+        link = work.join("link");
+        work.getRootNode().link(link);
+        link.delete();
+    }
+
+    @Test
+    public void symlinkToProtectedFile() throws IOException {
+        if (OS.CURRENT == OS.WINDOWS) {
+            return; // TODO: is it save to delete root?
+        }
+
+        FileNode link;
+
+        link = work.join("link");
+        work.getRootNode().join("etc/passwd").link(link);
+        link.delete();
+    }
+
+    @Test
     public void modeFile() throws IOException {
         checkMode(WORLD.getTemp().createTempFile());
     }

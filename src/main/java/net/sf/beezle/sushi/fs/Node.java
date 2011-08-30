@@ -461,6 +461,7 @@ public abstract class Node {
     /**
      * Creates an absolute link. The signature of this method resembles the copy method.
      *
+     * @param dest symlink to be created
      * @return dest;
      */
     public Node link(Node dest) throws LinkException {

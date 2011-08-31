@@ -882,30 +882,38 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         }
     }
 
+    @Test(expected = DeleteException.class)
+    public void deleteDirectoryNotFound() throws IOException {
+        work.join("somedir").delete();
+    }
+
     @Test
-    public void deleteDirectory() throws IOException {
+    public void deleteDirectoryEmpty() throws IOException {
         Node dir;
-        Node child;
 
         dir = work.join("mydir");
-        try {
-            dir.delete();
-            fail();
-        } catch (DeleteException e) {
-            // ok
-        }
+        dir.mkdir();
+        dir.delete();
+        assertFalse(dir.exists());
+    }
+
+    @Test
+    public void deleteDirectoryNoneEmpty() throws IOException {
+        Node dir;
+        Node child;
+        Node subchild;
+
+        dir = work.join("mydir");
         dir.mkdir();
         child = dir.join("file").writeBytes();
+        subchild = dir.join("sub/file2");
+        subchild.getParent().mkdir();
+        subchild.writeBytes();
 
         dir.delete();
         assertFalse(dir.exists());
         assertFalse(child.exists());
-        try {
-            dir.delete();
-            fail();
-        } catch (DeleteException e) {
-            assertTrue(e.getCause() instanceof FileNotFoundException);
-        }
+        assertFalse(subchild.exists());
     }
 
     //-- move

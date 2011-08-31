@@ -236,6 +236,8 @@ public class SshNode extends Node {
             // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
             stat = sftp.lstat(escape(slashPath));
             if (stat.isDir()) {
+                // http://tools.ietf.org/html/draft-ietf-secsh-filexfer-05 does not mention that the directory has to be empty
+                // ... but testing showed that it fails with none-empty directories.
                 for (SshNode child : list()) {
                     child.doDelete(sftp);
                 }

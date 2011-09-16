@@ -69,6 +69,9 @@ public class FileRoot implements Root<FileNode> {
     	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
     		path = path.replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
     	}
+        if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
+            throw new IllegalArgumentException();
+        }
         return new FileNode(this, new File(file, path));
     }
 }

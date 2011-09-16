@@ -55,6 +55,9 @@ public class SshNode extends Node {
         if (root == null) {
             throw new IllegalArgumentException();
         }
+        if (path.startsWith("/")) {
+            throw new IllegalArgumentException();
+        }
         this.root = root;
         this.slashPath = "/" + path;
     }

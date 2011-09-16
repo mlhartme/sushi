@@ -6,6 +6,9 @@
         Fix OS detection when running on OpenJdk 7 for Mac OS/X BSD Port.
       </action>
       <action dev="mlhartme" type="fix">
+        MkfileException messages fixed (was mkdir failed).
+      </action>
+      <action dev="mlhartme" type="fix">
         Fix FileNode.delete() for links pointing to files or directories that you cannot change.
       </action>
     </release>

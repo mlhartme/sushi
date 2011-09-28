@@ -18,6 +18,7 @@
 package net.sf.beezle.sushi.fs.zip;
 
 import net.sf.beezle.sushi.fs.DeleteException;
+import net.sf.beezle.sushi.fs.LengthException;
 import net.sf.beezle.sushi.fs.ListException;
 import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.MoveException;
@@ -65,8 +66,14 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public long length() {
-        return root.getZip().getEntry(path).getSize();
+    public long length() throws LengthException {
+        ZipEntry entry;
+
+        entry = root.getZip().getEntry(path);
+        if (entry == null) {
+            throw new LengthException(this, new IOException("file expected"));
+        }
+        return entry.getSize();
     }
 
     @Override

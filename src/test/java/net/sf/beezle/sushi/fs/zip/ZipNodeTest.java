@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.zip;
 
+import net.sf.beezle.sushi.fs.LengthException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.file.FileNode;
@@ -33,7 +34,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /** Accesses external hosts and might need proxy configuration => Full test */
 public class ZipNodeTest {
@@ -149,22 +149,38 @@ public class ZipNodeTest {
         temp.delete();
     }
 
-    @Test
-    public void readNonexisting() throws IOException {
+    @Test(expected=FileNotFoundException.class)
+    public void createInputStreamNoneExisting() throws IOException {
         FileNode jar;
         Node node;
 
         jar = world.locateClasspathItem(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
-        try {
-            node.createInputStream();
-            fail();
-        } catch (FileNotFoundException e) {
-            // ok
-        }
+        node.createInputStream();
     }
 
+    @Test(expected=FileNotFoundException.class)
+    public void readBytesNoneExisting() throws IOException {
+        FileNode jar;
+        Node node;
+
+        jar = world.locateClasspathItem(Object.class);
+        node = jar.openZip().getRoot().node("nosuchfile", null);
+        assertFalse(node.exists());
+        node.readBytes();
+    }
+
+    @Test(expected=LengthException.class)
+    public void lengthNoneExisting() throws IOException {
+        FileNode jar;
+        Node node;
+
+        jar = world.locateClasspathItem(Object.class);
+        node = jar.openZip().getRoot().node("nosuchfile", null);
+        assertFalse(node.exists());
+        node.length();
+    }
 
     @Test
     public void manifest() throws IOException {

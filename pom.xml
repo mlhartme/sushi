@@ -3,7 +3,7 @@
   <parent>
     <groupId>net.sf.beezle.maven.poms</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
   </parent>
 
   <name>Sushi</name>

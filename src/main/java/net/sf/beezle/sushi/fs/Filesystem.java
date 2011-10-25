@@ -95,7 +95,7 @@ public abstract class Filesystem {
             throw new NodeInstantiationException(uri, "unexpected query");
         }
         if (!uri.isOpaque()) {
-            throw new NodeInstantiationException(uri, "uri is not opqaue");
+            throw new NodeInstantiationException(uri, "uri is not opaque");
         }
     }
 

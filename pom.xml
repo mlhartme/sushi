@@ -12,6 +12,7 @@
   <description>See ${project.url}.</description>
   <url>https://sourceforge.net/apps/trac/beezle/wiki/Sushi</url>
   <inceptionYear>2004</inceptionYear>
+
   <licenses>
     <license>
       <name>GNU Lesser General Public License, Version 2.1</name>

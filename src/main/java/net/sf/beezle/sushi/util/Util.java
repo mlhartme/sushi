@@ -19,7 +19,6 @@ package net.sf.beezle.sushi.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,26 +43,6 @@ public class Util {
 
     public static boolean eq(Object a, Object b) {
         return (a == null)? b == null : a.equals(b);
-    }
-
-    public static String[] split(String str, char c) {
-        List<String> lst;
-        int idx;
-        int prev;
-        String[] ar;
-
-        lst = new ArrayList<String>();
-        idx = str.indexOf(c);
-        prev = 0;
-        while (idx != -1) {
-            lst.add(str.substring(prev, idx));
-            prev = idx + 1;
-            idx = str.indexOf(c, prev);
-        }
-        lst.add(str.substring(prev));
-        ar = new String[lst.size()];
-        lst.toArray(ar);
-        return ar;
     }
 
     public static int find(List<?>[] as, Object a) {

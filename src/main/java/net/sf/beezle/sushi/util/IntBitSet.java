@@ -45,6 +45,16 @@ import java.util.List;
  */
 
 public class IntBitSet implements IntCollection, Serializable {
+    public static IntBitSet with(int ... elements) {
+        IntBitSet result;
+
+        result = new IntBitSet();
+        for (int e : elements) {
+            result.add(e);
+        }
+        return result;
+    }
+
     /** Number to shift in order to switch from an index to an
         element. */
     private static final int SHIFT = 5;
@@ -263,7 +273,7 @@ public class IntBitSet implements IntCollection, Serializable {
     public int hashCode() {
         return size();
     }
-    
+
     /**
      * Comparison.
      * @param   obj  the Object to compare with
@@ -477,7 +487,7 @@ public class IntBitSet implements IntCollection, Serializable {
          StringBuilder buf;
          int ele;
          int max;
-         
+
          max = symbols.size();
          buf = new StringBuilder("{");
          for (ele = first(); ele != -1; ele = next(ele)) {

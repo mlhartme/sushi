@@ -467,7 +467,6 @@ public class SvnNode extends Node {
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {
-        workspace.join(".svn").checkExists();
         return extract(workspace.exec("svn", "info"), "URL:");
     }
 

@@ -22,13 +22,13 @@
   </licenses>
   <groupId>net.sf.beezle.sushi</groupId>
   <artifactId>sushi</artifactId>
-  <version>2.6.3-SNAPSHOT</version>
+  <version>2.6.3</version>
   <packaging>jar</packaging>
 
   <scm>
-    <connection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/trunk</connection>
-    <developerConnection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/trunk</developerConnection>
-    <url>http://beezle.svn.sourceforge.net/viewvc/beezle/sushi/trunk</url>
+    <connection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/tags/sushi-2.6.3</connection>
+    <developerConnection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/tags/sushi-2.6.3</developerConnection>
+    <url>http://beezle.svn.sourceforge.net/viewvc/beezle/sushi/tags/sushi-2.6.3</url>
   </scm>
 
   <dependencies>

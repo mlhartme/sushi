@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
+    <release date="2012-06-??" version="2.6.4">
+      <action date="2012-05-10" dev="mhm" type="update">
+        SshNode.get renamed to writeTo, skip argument tested.
+      </action>
+    </release>
     <release date="2012-05-10" version="2.6.3">
       <action date="2012-05-10" dev="mhm" type="fix">
         Fix SvnNode.urlFromWorkspace: svn 1.7 does not necessarily have an .svn directory.

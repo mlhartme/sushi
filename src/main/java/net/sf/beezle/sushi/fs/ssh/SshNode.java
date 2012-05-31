@@ -602,7 +602,7 @@ public class SshNode extends Node {
         ByteArrayOutputStream out;
 
         out = new ByteArrayOutputStream();
-        get(out);
+        writeTo(out);
         return out.toByteArray();
     }
 
@@ -613,7 +613,7 @@ public class SshNode extends Node {
 
         tmp = getWorld().getTemp().createTempFile();
         out = tmp.createOutputStream();
-        get(out);
+        writeTo(out);
         out.close();
         return new FilterInputStream(tmp.createInputStream()) {
             @Override
@@ -642,18 +642,22 @@ public class SshNode extends Node {
         };
     }
 
+    public void writeTo(OutputStream out) throws IOException {
+        writeTo(out, 0);
+    }
+
     /**
-     * This is the core funktion to get a file.
+     * This is the core funktion to read an ssh node. Does not close out.
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public void get(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out, long skip) throws IOException {
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
             try {
-                sftp.get(escape(slashPath), out);
+                sftp.get(escape(slashPath), out, null, ChannelSftp.OVERWRITE, skip);
             } finally {
                 free(sftp);
             }

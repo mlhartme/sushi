@@ -384,6 +384,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         dir.createInputStream();
     }
 
+    @Test
     public void lengthFile() throws IOException {
         Node file;
 

@@ -653,7 +653,7 @@ public class SshNode extends Node {
         try {
             sftp = alloc();
             try {
-                sftp.get(escape(slashPath), dest, null, ChannelSftp.OVERWRITE, skip);
+                sftp.get(escape(slashPath), dest, null, ChannelSftp.RESUME, skip);
             } finally {
                 free(sftp);
             }

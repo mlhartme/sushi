@@ -483,6 +483,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
     }
+
     @Test
     public void readerWriter() throws IOException {
         Node file;

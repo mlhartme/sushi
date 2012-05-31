@@ -208,6 +208,10 @@ public class ZipNode extends Node {
         return zip.getInputStream(entry);
     }
 
+    public void writeTo(OutputStream dest, long skip) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     public OutputStream createOutputStream(boolean append) {
         throw unsupported("createOutputStream(" + append + ")");

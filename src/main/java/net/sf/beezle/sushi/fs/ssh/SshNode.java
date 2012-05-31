@@ -599,22 +599,22 @@ public class SshNode extends Node {
 
     @Override
     public byte[] readBytes() throws IOException {
-        ByteArrayOutputStream out;
+        ByteArrayOutputStream dest;
 
-        out = new ByteArrayOutputStream();
-        writeTo(out);
-        return out.toByteArray();
+        dest = new ByteArrayOutputStream();
+        writeTo(dest);
+        return dest.toByteArray();
     }
 
     @Override
     public InputStream createInputStream() throws IOException {
         final FileNode tmp;
-        OutputStream out;
+        OutputStream dest;
 
         tmp = getWorld().getTemp().createTempFile();
-        out = tmp.createOutputStream();
-        writeTo(out);
-        out.close();
+        dest = tmp.createOutputStream();
+        writeTo(dest);
+        dest.close();
         return new FilterInputStream(tmp.createInputStream()) {
             @Override
             public void close() throws IOException {
@@ -642,22 +642,18 @@ public class SshNode extends Node {
         };
     }
 
-    public void writeTo(OutputStream out) throws IOException {
-        writeTo(out, 0);
-    }
-
     /**
      * This is the core funktion to read an ssh node. Does not close out.
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public void writeTo(OutputStream out, long skip) throws IOException {
+    public void writeTo(OutputStream dest, long skip) throws IOException {
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
             try {
-                sftp.get(escape(slashPath), out, null, ChannelSftp.OVERWRITE, skip);
+                sftp.get(escape(slashPath), dest, null, ChannelSftp.OVERWRITE, skip);
             } finally {
                 free(sftp);
             }

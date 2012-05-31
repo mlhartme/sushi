@@ -170,6 +170,10 @@ public class TimeMachineNode extends Node {
         return node.createInputStream();
     }
 
+    public void writeTo(OutputStream dest, long skip) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
         throw unsupported("createOutputStream(boolean)");

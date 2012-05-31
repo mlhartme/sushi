@@ -44,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -224,6 +225,18 @@ public class FileNode extends Node {
     @Override
     public FileInputStream createInputStream() throws IOException {
         return new FileInputStream(file);
+    }
+
+    public void writeTo(OutputStream dest, long skip) throws IOException {
+        FileInputStream src;
+        long alreadySkipped;
+
+        src = createInputStream();
+        alreadySkipped = 0;
+        while (alreadySkipped < skip) {
+            alreadySkipped += src.skip(skip - alreadySkipped);
+        }
+        getWorld().getBuffer().copy(src, dest);
     }
 
     @Override

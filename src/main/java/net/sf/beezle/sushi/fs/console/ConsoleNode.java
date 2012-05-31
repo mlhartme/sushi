@@ -67,6 +67,10 @@ public class ConsoleNode extends Node {
         return System.in;
     }
 
+    public void writeTo(OutputStream dest, long skip) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     /** @parem append is ignored */
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {

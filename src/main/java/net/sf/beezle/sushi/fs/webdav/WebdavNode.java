@@ -356,6 +356,10 @@ public class WebdavNode extends Node {
         }
     }
 
+    public void writeTo(OutputStream dest, long skip) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
         byte[] add;

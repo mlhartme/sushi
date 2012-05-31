@@ -356,7 +356,7 @@ public class WebdavNode extends Node {
         }
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         throw new UnsupportedOperationException();
     }
 

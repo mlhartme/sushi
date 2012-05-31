@@ -208,7 +208,7 @@ public class ZipNode extends Node {
         return zip.getInputStream(entry);
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         throw new UnsupportedOperationException();
     }
 

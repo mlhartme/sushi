@@ -146,9 +146,9 @@ public class Buffer {
      * 
      * @return number of bytes actually copied
      */
-    public int copy(InputStream in, Node dest) throws IOException {
+    public long copy(InputStream in, Node dest) throws IOException {
         OutputStream out;
-        int result;
+        long result;
         
         out = dest.createOutputStream();
         result = copy(in, out);
@@ -161,7 +161,7 @@ public class Buffer {
      * 
      * @return number of bytes actually copied
      */
-    public int copy(InputStream in, OutputStream out) throws IOException {
+    public long copy(InputStream in, OutputStream out) throws IOException {
         return copy(in, out, Integer.MAX_VALUE);
     }
     
@@ -170,15 +170,16 @@ public class Buffer {
      * 
      * @return number of bytes actually copied
      */
-    public int copy(InputStream in, OutputStream out, int max) throws IOException {
+    public long copy(InputStream in, OutputStream out, long max) throws IOException {
         int chunk;
-        int all;
-        int remaining;
+        long all;
+        long remaining;
         
         remaining = max;
         all = 0;
         while (remaining > 0) {
-            chunk = in.read(buffer, 0, Math.min(remaining, buffer.length));
+            // cast is save because the buffer.length is an integer
+            chunk = in.read(buffer, 0, (int) Math.min(remaining, buffer.length));
             if (chunk < 0) {
                 break;
             }

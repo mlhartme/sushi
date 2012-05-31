@@ -21,6 +21,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.SftpProgressMonitor;
 import net.sf.beezle.sushi.fs.DeleteException;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.GetLastModifiedException;
@@ -642,21 +643,42 @@ public class SshNode extends Node {
         };
     }
 
+    private static class Progress implements SftpProgressMonitor {
+        public long sum = 0;
+
+        @Override
+        public void init(int op, String src, String dest, long max) {
+        }
+
+        @Override
+        public boolean count(long count) {
+            sum += count;
+            return true;
+        }
+
+        @Override
+        public void end() {
+        }
+    }
+
     /**
      * This is the core funktion to read an ssh node. Does not close out.
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         ChannelSftp sftp;
+        Progress monitor;
 
         try {
             sftp = alloc();
+            monitor = new Progress();
             try {
                 sftp.get(escape(slashPath), dest, null, ChannelSftp.RESUME, skip);
             } finally {
                 free(sftp);
             }
+            return monitor.sum - skip;
         } catch (SftpException e) {
             if (e.id == 2 || e.id == 4) {
                 throw new FileNotFoundException(getPath());

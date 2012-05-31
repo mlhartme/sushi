@@ -77,7 +77,7 @@ public class BufferTest {
         Buffer buffer;
         InputStream src;
         ByteArrayOutputStream dest;
-        int length;
+        long length;
         byte[] found;
 
         buffer = new Buffer(1);

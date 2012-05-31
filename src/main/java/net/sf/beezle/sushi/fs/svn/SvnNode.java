@@ -200,7 +200,7 @@ public class SvnNode extends Node {
         return tmp.createInputStream();
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         throw new UnsupportedOperationException();
     }
 

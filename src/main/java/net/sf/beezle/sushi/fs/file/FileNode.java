@@ -227,7 +227,7 @@ public class FileNode extends Node {
         return new FileInputStream(file);
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         FileInputStream src;
         long alreadySkipped;
 
@@ -236,7 +236,7 @@ public class FileNode extends Node {
         while (alreadySkipped < skip) {
             alreadySkipped += src.skip(skip - alreadySkipped);
         }
-        getWorld().getBuffer().copy(src, dest);
+        return getWorld().getBuffer().copy(src, dest);
     }
 
     @Override

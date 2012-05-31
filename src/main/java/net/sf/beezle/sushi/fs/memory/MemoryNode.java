@@ -233,7 +233,7 @@ public class MemoryNode extends Node {
         return root.open(path);
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         throw new UnsupportedOperationException();
     }
 

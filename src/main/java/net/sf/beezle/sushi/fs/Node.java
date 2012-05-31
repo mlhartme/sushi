@@ -101,18 +101,22 @@ public abstract class Node {
      */
     public abstract InputStream createInputStream() throws IOException;
 
-    /** Writes all bytes of this node to out, without closing out afterwards. */
-    public void writeTo(OutputStream dest) throws IOException {
-        writeTo(dest, 0);
+    /**
+     * Writes all bytes of this node to out, without closing out afterwards.
+     * @return bytes actually written
+     */
+    public long writeTo(OutputStream dest) throws IOException {
+        return writeTo(dest, 0);
     }
 
     /**
      * Writes all bytes except "skip" initial bytes of this node to out. Without closing out afterwards.
      * Writes nothing if this node has less than skip bytes.
      *
+     * @return bytes actually written
      * @throws FileNotFoundException when this node is not a file
      */
-    public abstract void writeTo(OutputStream dest, long skip) throws IOException;
+    public abstract long writeTo(OutputStream dest, long skip) throws IOException;
 
     public OutputStream createOutputStream() throws IOException {
         return createOutputStream(false);

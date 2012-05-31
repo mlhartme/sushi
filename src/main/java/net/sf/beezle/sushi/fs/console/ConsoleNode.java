@@ -67,7 +67,7 @@ public class ConsoleNode extends Node {
         return System.in;
     }
 
-    public void writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws IOException {
         throw new UnsupportedOperationException();
     }
 

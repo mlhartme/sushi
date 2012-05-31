@@ -109,6 +109,8 @@ public abstract class Node {
     /**
      * Writes all bytes except "skip" initial bytes of this node to out. Without closing out afterwards.
      * Writes nothing if this node has less than skip bytes.
+     *
+     * @throws FileNotFoundException when this node is not a file
      */
     public abstract void writeTo(OutputStream dest, long skip) throws IOException;
 

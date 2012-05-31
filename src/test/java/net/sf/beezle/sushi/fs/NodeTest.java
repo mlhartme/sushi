@@ -458,7 +458,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         dest = new CheckedByteArrayOutputStream();
         try {
-            file.writeTo(dest);
+            assertEquals(bytes.length, file.writeTo(dest));
         } catch (UnsupportedOperationException e) {  // TODO: all nodes should support this
             return;
         }
@@ -467,19 +467,19 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         if (bytes.length > 0) {
             dest = new CheckedByteArrayOutputStream();
-            file.writeTo(dest, bytes.length - 1);
+            assertEquals(1, file.writeTo(dest, bytes.length - 1));
             dest.ensureOpen();
             assertEquals(1, dest.toByteArray().length);
             assertEquals(bytes[bytes.length - 1], dest.toByteArray()[0]);
         }
 
         dest = new CheckedByteArrayOutputStream();
-        file.writeTo(dest, bytes.length);
+        assertEquals(0, file.writeTo(dest, bytes.length));
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
 
         dest = new CheckedByteArrayOutputStream();
-        file.writeTo(dest, bytes.length + 3);
+        assertEquals(0, file.writeTo(dest, bytes.length + 3));
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
     }

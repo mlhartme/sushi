@@ -678,7 +678,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-            return monitor.sum - skip;
+            return Math.max(0, monitor.sum - skip);
         } catch (SftpException e) {
             if (e.id == 2 || e.id == 4) {
                 throw new FileNotFoundException(getPath());

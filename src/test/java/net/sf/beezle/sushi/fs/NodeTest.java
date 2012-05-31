@@ -24,6 +24,7 @@ import net.sf.beezle.sushi.fs.multi.Invoker;
 import net.sf.beezle.sushi.fs.multi.TextTarget;
 import net.sf.beezle.sushi.fs.multi.XmlTarget;
 import net.sf.beezle.sushi.fs.webdav.WebdavFilesystem;
+import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -440,6 +441,48 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("some data", file.readString());
     }
 
+    //-- writeTo
+
+    @Test
+    public void writeTo() throws IOException {
+        checkWriteTo();
+        checkWriteTo((byte) 1);
+        checkWriteTo((byte) 2, (byte) 3);
+    }
+
+    private void checkWriteTo(byte ... bytes) throws IOException {
+        Node file;
+        CheckedByteArrayOutputStream dest;
+
+        file = work.join("foo").writeBytes(bytes);
+
+        dest = new CheckedByteArrayOutputStream();
+        try {
+            file.writeTo(dest);
+        } catch (UnsupportedOperationException e) {  // TODO: all nodes should support this
+            return;
+        }
+        dest.ensureOpen();
+        assertTrue(Arrays.equals(bytes, dest.toByteArray()));
+
+        if (bytes.length > 0) {
+            dest = new CheckedByteArrayOutputStream();
+            file.writeTo(dest, bytes.length - 1);
+            dest.ensureOpen();
+            assertEquals(1, dest.toByteArray().length);
+            assertEquals(bytes[bytes.length - 1], dest.toByteArray()[0]);
+        }
+
+        dest = new CheckedByteArrayOutputStream();
+        file.writeTo(dest, bytes.length);
+        dest.ensureOpen();
+        assertEquals(0, dest.toByteArray().length);
+
+        dest = new CheckedByteArrayOutputStream();
+        file.writeTo(dest, bytes.length + 3);
+        dest.ensureOpen();
+        assertEquals(0, dest.toByteArray().length);
+    }
     @Test
     public void readerWriter() throws IOException {
         Node file;

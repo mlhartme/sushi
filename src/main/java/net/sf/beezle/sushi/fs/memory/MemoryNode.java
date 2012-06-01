@@ -234,7 +234,7 @@ public class MemoryNode extends Node {
     }
 
     public long writeTo(OutputStream dest, long skip) throws IOException {
-        throw new UnsupportedOperationException();
+        return writeToImpl(dest, skip);
     }
 
     @Override

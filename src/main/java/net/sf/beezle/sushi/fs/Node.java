@@ -33,6 +33,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -117,6 +118,36 @@ public abstract class Node {
      * @throws FileNotFoundException when this node is not a file
      */
     public abstract long writeTo(OutputStream dest, long skip) throws IOException;
+
+    public long writeToImpl(OutputStream dest, long skip) throws IOException {
+        InputStream src;
+        long step;
+        long alreadySkipped;
+        int c;
+        long result;
+
+        src = createInputStream();
+        alreadySkipped = 0;
+        while (alreadySkipped < skip) {
+            step = src.skip(skip - alreadySkipped);
+            if (step == 0) {
+                // ByteArrayInputStream just return 0 when at end of file
+                c = src.read();
+                if (c < 0) {
+                    // EOF
+                    src.close();
+                    return 0;
+                } else {
+                    alreadySkipped++;
+                }
+            } else {
+                alreadySkipped += step;
+            }
+        }
+        result = getWorld().getBuffer().copy(src, dest);
+        src.close();
+        return result;
+    }
 
     public OutputStream createOutputStream() throws IOException {
         return createOutputStream(false);

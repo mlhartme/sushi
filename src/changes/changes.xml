@@ -5,11 +5,11 @@
       <action date="2012-05-31" dev="mhm" type="add">
         Node.writeTo(OutputStream dest, long skip) added. SshNode.get renamed to writeTo.
       </action>
-      <action date="2012-05-31" dev="mhm" type="update">
-        Buffer methods return counts as long values now.
-      </action>
       <action date="2012-06-01" dev="mhm" type="fix">
         Update jsch 1.42 to 1.48 and fix problems for files with glob characters.
+      </action>
+      <action date="2012-05-31" dev="mhm" type="update">
+        Buffer methods return counts as long values now.
       </action>
     </release>
     <release date="2012-05-10" version="2.6.3">

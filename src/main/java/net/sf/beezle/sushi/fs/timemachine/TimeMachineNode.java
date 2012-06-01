@@ -41,7 +41,7 @@ public class TimeMachineNode extends Node {
     private final TimeMachineRoot root;
     private final FileNode node;
     private final String path;
-    
+
     // CAUTION: url is not checked for url parameter
     public TimeMachineNode(TimeMachineRoot root, FileNode node, String path) {
         this.root = root;
@@ -83,8 +83,8 @@ public class TimeMachineNode extends Node {
     public void setLastModified(long millis) throws SetLastModifiedException {
         throw new SetLastModifiedException(this);
     }
-    
-    @Override 
+
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -93,8 +93,8 @@ public class TimeMachineNode extends Node {
     public void setMode(int mode) {
         throw unsupported("setMode()");
     }
-    
-    @Override 
+
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -104,7 +104,7 @@ public class TimeMachineNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }
@@ -171,7 +171,7 @@ public class TimeMachineNode extends Node {
     }
 
     public long writeTo(OutputStream dest, long skip) throws IOException {
-        throw new UnsupportedOperationException();
+        return writeToImpl(dest, skip);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class TimeMachineNode extends Node {
         List<FileNode> files;
         List<TimeMachineNode> result;
         Filesystem fs;
-        
+
         files = node.list();
         if (files == null) {
             return null;

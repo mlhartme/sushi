@@ -457,11 +457,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file = work.join("foo").writeBytes(bytes);
 
         dest = new CheckedByteArrayOutputStream();
-        try {
-            assertEquals(bytes.length, file.writeTo(dest));
-        } catch (UnsupportedOperationException e) {  // TODO: all nodes should support this
-            return;
-        }
+        assertEquals(bytes.length, file.writeTo(dest));
         dest.ensureOpen();
         assertTrue(Arrays.equals(bytes, dest.toByteArray()));
 

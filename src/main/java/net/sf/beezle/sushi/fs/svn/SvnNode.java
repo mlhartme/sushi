@@ -201,7 +201,8 @@ public class SvnNode extends Node {
     }
 
     public long writeTo(OutputStream dest, long skip) throws IOException {
-        throw new UnsupportedOperationException();
+        // TODO: add skip parameter to load() and use it here
+        return writeToImpl(dest, skip);
     }
 
     @Override

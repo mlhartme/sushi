@@ -115,7 +115,7 @@ public class WebdavNode extends Node {
         }
         return false;
     }
-    
+
     @Override
     public WebdavRoot getRoot() {
         return root;
@@ -357,7 +357,7 @@ public class WebdavNode extends Node {
     }
 
     public long writeTo(OutputStream dest, long skip) throws IOException {
-        throw new UnsupportedOperationException();
+        return writeToImpl(dest, skip);
     }
 
     @Override

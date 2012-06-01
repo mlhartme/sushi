@@ -519,8 +519,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
                     // nothing special - skip
                 } else if (c == '/') {
                     // skip
-                } else if (c == '\\') {
-                    // skip
                 } else {
                     checkFilename("before" + c + "after" + c);
                     checkDirectory("before" + c + "after" + c);

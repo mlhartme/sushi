@@ -674,7 +674,7 @@ public class SshNode extends Node {
             sftp = alloc();
             monitor = new Progress();
             try {
-                sftp.get(escape(slashPath), dest, null, ChannelSftp.RESUME, skip);
+                sftp.get(escape(slashPath), dest, monitor, ChannelSftp.RESUME, skip);
             } finally {
                 free(sftp);
             }

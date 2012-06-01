@@ -290,7 +290,8 @@ public class SshNode extends Node {
         try {
             sftp = alloc();
             try {
-                sftp.mkdir(escape(slashPath));
+                // do NOT escape here
+                sftp.mkdir(slashPath);
             } finally {
                 free(sftp);
             }

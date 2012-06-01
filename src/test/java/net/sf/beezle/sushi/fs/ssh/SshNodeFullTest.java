@@ -57,19 +57,6 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         }
     }
 
-    @Test(expected = NullPointerException.class)
-    public void bug() throws Exception {
-        FileNode file;
-
-        file = root.getFilesystem().getWorld().file("/tmp/sushisshworkdir/before\\*after");
-        file.mkdir();
-        try {
-            super.setUp();
-        } finally {
-            file.delete();
-        }
-    }
-
     @Test
     public void recursiveDelete() throws Exception {
         // I used to have problems here because every directory level opened a new channel

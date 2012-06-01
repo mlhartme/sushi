@@ -512,16 +512,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         for (char c = 32; c < 127; c++) {
             try {
                 if (c >= '0' && c <='9') {
-                    // skip
+                    // nothing special - skip
                 } else if (c >= 'a' && c <='z') {
-                    // skip
+                    // nothing special - skip
                 } else if (c >= 'A' && c <='Z') {
-                    // skip
+                    // nothing special - skip
                 } else if (c == '/') {
-                    // skip
-                } else if (c == '*') { // TODO: still fails in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
-                    // skip
-                } else if (c == '?') { // TODO: still fails in jsch 0.1.44-1, rm /tmp/sushisshtests to fix
                     // skip
                 } else if (c == '\\') {
                     // skip

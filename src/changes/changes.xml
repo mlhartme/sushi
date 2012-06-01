@@ -9,7 +9,7 @@
         Buffer methods return counts as long values now.
       </action>
       <action date="2012-06-01" dev="mhm" type="fix">
-        Update jsch 1.41 to 1.48 and fix problems for files with glob characters.
+        Update jsch 1.42 to 1.48 and fix problems for files with glob characters.
       </action>
     </release>
     <release date="2012-05-10" version="2.6.3">

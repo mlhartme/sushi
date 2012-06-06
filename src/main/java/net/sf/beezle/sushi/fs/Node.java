@@ -107,10 +107,13 @@ public abstract class Node {
     public abstract InputStream createInputStream() throws IOException;
 
     /**
-     * Writes all bytes of this node to out, without closing out afterwards.
+     * Concenience method for <code>writeTo(dest, 0)</code>.
+     *
      * @return bytes actually written
+     * @throws FileNotFoundException when this node is not a file
+     * @throws WriteToException for other errors
      */
-    public long writeTo(OutputStream dest) throws IOException {
+    public long writeTo(OutputStream dest) throws WriteToException, FileNotFoundException {
         return writeTo(dest, 0);
     }
 
@@ -120,6 +123,7 @@ public abstract class Node {
      *
      * @return bytes actually written
      * @throws FileNotFoundException when this node is not a file
+     * @throws WriteToException for other errors
      */
     public abstract long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException;
 

@@ -33,6 +33,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import java.net.URI;
 
+/** Nodes accessible via svn. Uses svnkit for server-side communication, but not to interact with local checkouts. */
 public class SvnFilesystem extends Filesystem {
     static {
         FSRepositoryFactory.setup();

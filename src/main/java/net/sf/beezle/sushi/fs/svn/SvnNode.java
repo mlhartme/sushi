@@ -42,6 +42,7 @@ import org.tmatesoft.svn.core.wc.SVNCommitClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -280,7 +281,7 @@ public class SvnNode extends Node {
     }
 
     public long load(OutputStream dest) throws SVNException, FileNotFoundException {
-        return load(root.getRepository().getLatestRevision(), dest);
+        return load(-1, dest);
     }
 
     public long load(long revision, OutputStream dest) throws FileNotFoundException, SVNException {

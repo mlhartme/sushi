@@ -24,6 +24,7 @@ import net.sf.beezle.sushi.fs.ListException;
 import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 
 import java.io.FileNotFoundException;
@@ -233,7 +234,7 @@ public class MemoryNode extends Node {
         return root.open(path);
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return writeToImpl(dest, skip);
     }
 

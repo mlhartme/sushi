@@ -29,8 +29,10 @@ import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.ReadLinkException;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.file.FileNode;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -170,7 +172,7 @@ public class TimeMachineNode extends Node {
         return node.createInputStream();
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return writeToImpl(dest, skip);
     }
 

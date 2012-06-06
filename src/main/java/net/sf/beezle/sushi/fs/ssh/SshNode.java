@@ -33,6 +33,7 @@ import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.ReadLinkException;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 
@@ -667,7 +668,7 @@ public class SshNode extends Node {
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         ChannelSftp sftp;
         Progress monitor;
 
@@ -684,9 +685,9 @@ public class SshNode extends Node {
             if (e.id == 2 || e.id == 4) {
                 throw new FileNotFoundException(getPath());
             }
-            throw new IOException(e);
+            throw new WriteToException(this, e);
         } catch (JSchException e) {
-            throw new IOException(e);
+            throw new WriteToException(this, e);
         }
     }
 

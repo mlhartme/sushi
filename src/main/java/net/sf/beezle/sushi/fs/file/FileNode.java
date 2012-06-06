@@ -32,6 +32,7 @@ import net.sf.beezle.sushi.fs.OnShutdown;
 import net.sf.beezle.sushi.fs.ReadLinkException;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
 import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
@@ -227,7 +228,7 @@ public class FileNode extends Node {
         return new FileInputStream(file);
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return writeToImpl(dest, skip);
     }
 

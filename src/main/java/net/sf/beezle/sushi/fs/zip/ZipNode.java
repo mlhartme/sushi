@@ -24,6 +24,7 @@ import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -208,7 +209,7 @@ public class ZipNode extends Node {
         return zip.getInputStream(entry);
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return writeToImpl(dest, skip);
     }
 

@@ -26,6 +26,7 @@ import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.webdav.methods.Delete;
 import net.sf.beezle.sushi.fs.webdav.methods.Get;
 import net.sf.beezle.sushi.fs.webdav.methods.Head;
@@ -356,7 +357,7 @@ public class WebdavNode extends Node {
         }
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return writeToImpl(dest, skip);
     }
 

@@ -630,7 +630,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("more", file.readString());
     }
 
-
     @Test
     public void append() throws IOException {
         Node file;

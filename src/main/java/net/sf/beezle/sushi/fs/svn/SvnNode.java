@@ -229,7 +229,7 @@ public class SvnNode extends Node {
             public void close() throws IOException {
                 super.close();
                 try {
-                    save(toByteArray(), root.getComment());
+                    readFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
                 } catch (SVNException e) {
                     throw new IOException("close failed", e);
                 }
@@ -377,14 +377,8 @@ public class SvnNode extends Node {
         throw new SetLastModifiedException(this);
     }
 
-
     /** @return revision */
-    public long save(byte[] content, String comment) throws SVNException {
-        return save(new ByteArrayInputStream(content), comment);
-    }
-
-    /** @return revision */
-    public long save(InputStream content, String comment) throws SVNException {
+    public long readFrom(InputStream content, String comment) throws SVNException {
     	// does NOT use the CommitClient, because the commit client needs a physical file
         boolean exists;
         ISVNEditor editor;

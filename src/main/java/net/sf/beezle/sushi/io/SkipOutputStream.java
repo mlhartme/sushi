@@ -23,11 +23,18 @@ import java.io.OutputStream;
 /** Filter stream, that skip the specified number of bytes */
 public class SkipOutputStream extends OutputStream {
     private final OutputStream out;
-    private int skip;
+    private long skip;
+    private long count;
 
-    public SkipOutputStream(OutputStream out, int skip) {
+    public SkipOutputStream(OutputStream out, long skip) {
         this.out = out;
         this.skip = skip;
+        this.count = 0;
+    }
+
+    /** @return bytes actually written */
+    public long count() {
+        return count;
     }
 
     public void write(int b) throws IOException {
@@ -35,6 +42,7 @@ public class SkipOutputStream extends OutputStream {
             skip--;
         } else {
             out.write(b);
+            count++;
         }
     }
 
@@ -48,11 +56,12 @@ public class SkipOutputStream extends OutputStream {
                 skip -= len;
                 return;
             }
-            off += len;
+            off += skip;
             len -= skip;
             skip = 0;
         }
         out.write(b, off, len);
+        count += len;
     }
 
     public void flush() throws IOException {

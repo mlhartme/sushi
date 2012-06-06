@@ -26,8 +26,10 @@ import net.sf.beezle.sushi.fs.ListException;
 import net.sf.beezle.sushi.fs.MkdirException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
+import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
+import net.sf.beezle.sushi.io.SkipOutputStream;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
@@ -42,7 +44,6 @@ import org.tmatesoft.svn.core.wc.SVNCommitClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -192,19 +193,23 @@ public class SvnNode extends Node {
 
         tmp = getWorld().getTemp().createTempFile();
         dest = tmp.createOutputStream();
-        try {
-            load(dest);
-        } catch (SVNException e) {
-            throw new IOException("svn failure", e);
-        }
+        writeTo(dest);
         dest.close();
         return tmp.createInputStream();
     }
 
-    public long writeTo(OutputStream dest, long skip) throws IOException {
-        // TODO: add skip parameter to load() and use it here
-        return writeToImpl(dest, skip);
+    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+        SkipOutputStream out;
+
+        out = new SkipOutputStream(dest, skip);
+        try {
+            load(-1, out);
+        } catch (SVNException e) {
+            throw new WriteToException(this, e);
+        }
+        return out.count();
     }
+
 
     @Override
     public OutputStream createOutputStream(boolean append) throws IOException {
@@ -280,10 +285,7 @@ public class SvnNode extends Node {
         throw unsupported("readLink()");
     }
 
-    public long load(OutputStream dest) throws SVNException, FileNotFoundException {
-        return load(-1, dest);
-    }
-
+    /** @return revision */
     public long load(long revision, OutputStream dest) throws FileNotFoundException, SVNException {
         SVNRepository repository;
 

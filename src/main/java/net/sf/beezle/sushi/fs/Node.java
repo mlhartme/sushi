@@ -147,6 +147,8 @@ public abstract class Node {
             }
             result = getWorld().getBuffer().copy(src, dest);
             src.close();
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new WriteToException(this, e);
         }

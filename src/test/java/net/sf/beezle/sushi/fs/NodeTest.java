@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -443,8 +444,18 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- writeTo
 
+    @Test(expected = FileNotFoundException.class)
+    public void writeToNoneExisting() throws IOException {
+        work.join("nosuchfile").writeTo(new ByteArrayOutputStream());
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void writeToDirectory() throws IOException {
+        work.join("dir").mkdir().writeTo(new ByteArrayOutputStream());
+    }
+
     @Test
-    public void writeTo() throws IOException {
+    public void writeToFile() throws IOException {
         checkWriteTo();
         checkWriteTo((byte) 1);
         checkWriteTo((byte) 2, (byte) 3);

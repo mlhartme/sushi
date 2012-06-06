@@ -129,7 +129,9 @@ public abstract class Node {
 
         try {
             src = createInputStream();
-            if (skip(skip, src)) return 0;
+            if (skip(src, skip)) {
+                return 0;
+            }
             result = getWorld().getBuffer().copy(src, dest);
             src.close();
         } catch (FileNotFoundException e) {
@@ -141,14 +143,12 @@ public abstract class Node {
     }
 
     /** @true when EOF was seen */
-    public static boolean skip(long skip, InputStream src) throws IOException {
-        long alreadySkipped;
+    public static boolean skip(InputStream src, long count) throws IOException {
         long step;
         int c;
-        
-        alreadySkipped = 0;
-        while (alreadySkipped < skip) {
-            step = src.skip(skip - alreadySkipped);
+
+        while (count > 0) {
+            step = src.skip(count);
             if (step == 0) {
                 // ByteArrayInputStream just return 0 when at end of file
                 c = src.read();
@@ -157,10 +157,10 @@ public abstract class Node {
                     src.close();
                     return true;
                 } else {
-                    alreadySkipped++;
+                    count--;
                 }
             } else {
-                alreadySkipped += step;
+                count -= step;
             }
         }
         return false;

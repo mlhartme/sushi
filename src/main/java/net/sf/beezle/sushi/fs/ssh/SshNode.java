@@ -635,7 +635,7 @@ public class SshNode extends Node {
             public void close() throws IOException {
                 super.close();
                 try {
-                    put(toByteArray(), append);
+                    readFrom(toByteArray(), append);
                 } catch (JSchException e) {
                     throw new IOException(e);
                 } catch (SftpException e) {
@@ -691,11 +691,11 @@ public class SshNode extends Node {
         }
     }
 
-    public void put(final byte[] data) throws JSchException, SftpException {
-        put(data, false);
+    public void readFrom(byte[] data) throws JSchException, SftpException {
+        readFrom(data, false);
     }
 
-    public void put(final byte[] data, boolean append) throws JSchException, SftpException {
+    public void readFrom(byte[] data, boolean append) throws JSchException, SftpException {
         ChannelSftp sftp;
 
         sftp = alloc();

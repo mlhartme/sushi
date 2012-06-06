@@ -401,16 +401,16 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public List<Node> list() throws ListException {
+    public List<WebdavNode> list() throws ListException {
         PropFind method;
-        List<Node> result;
+        List<WebdavNode> result;
         URI href;
 
         synchronized (tryLock) {
             try {
                 tryDir = true;
                 method = new PropFind(this, Name.DISPLAYNAME, 1);
-                result = new ArrayList<Node>();
+                result = new ArrayList<WebdavNode>();
                 for (MultiStatus response : method.invoke()) {
                     try {
                         href = new URI(response.href);

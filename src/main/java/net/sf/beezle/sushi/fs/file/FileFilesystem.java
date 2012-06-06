@@ -31,7 +31,7 @@ public class FileFilesystem extends Filesystem {
     private final FileRoot[] roots;
 
     public FileFilesystem(World world, String name) {
-        super(world, new Features(true, true, world.os != OS.WINDOWS, world.os != OS.WINDOWS, true, false), name);
+        super(world, new Features(true, true, world.os != OS.WINDOWS, world.os != OS.WINDOWS, true, false, false), name);
 
         File[] rootFiles;
 

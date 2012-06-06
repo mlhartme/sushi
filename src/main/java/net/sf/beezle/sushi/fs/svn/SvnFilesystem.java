@@ -43,7 +43,7 @@ public class SvnFilesystem extends Filesystem {
     private ISVNAuthenticationManager defaultAuthenticationManager;
 
     public SvnFilesystem(World world, String name) {
-        super(world, new Features(true, false, false, false, false, false), name);
+        super(world, new Features(true, false, false, false, false, false, false), name);
 
         this.defaultAuthenticationManager = authenticationManager(null, null);
     }

@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
  */
 public class TimeMachineFilesystem extends Filesystem {
     public TimeMachineFilesystem(World world, String name) {
-        super(world, new Features(false, false, false, false, false, false), name);
+        super(world, new Features(false, false, false, false, false, false, false), name);
     }
 
     public TimeMachineNode node(URI uri, Object extra) throws NodeInstantiationException {

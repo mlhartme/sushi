@@ -38,12 +38,17 @@ public class Features {
     public final boolean atomicMkfile;
     public final boolean atomicMkdir;
 
-    public Features(boolean write, boolean nativeMove, boolean links, boolean modes, boolean atomicMkfile, boolean atomicMkdir) {
+    /** true, when writeTo is more efficient than createInputStream */
+    public final boolean inverseIO;
+
+    public Features(boolean write, boolean nativeMove, boolean links, boolean modes, boolean atomicMkfile,
+                    boolean atomicMkdir, boolean inverseIO) {
         this.write = write;
         this.nativeMove = nativeMove;
         this.links = links;
         this.modes = modes;
         this.atomicMkfile = atomicMkfile;
         this.atomicMkdir = atomicMkdir;
+        this.inverseIO = inverseIO;
     }
 }

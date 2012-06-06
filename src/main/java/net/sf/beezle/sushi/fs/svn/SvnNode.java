@@ -203,7 +203,7 @@ public class SvnNode extends Node {
 
         out = new SkipOutputStream(dest, skip);
         try {
-            load(-1, out);
+            doWriteTo(-1, out);
         } catch (SVNException e) {
             throw new WriteToException(this, e);
         }
@@ -286,7 +286,7 @@ public class SvnNode extends Node {
     }
 
     /** @return revision */
-    public long load(long revision, OutputStream dest) throws FileNotFoundException, SVNException {
+    public long doWriteTo(long revision, OutputStream dest) throws FileNotFoundException, SVNException {
         SVNRepository repository;
 
         repository = root.getRepository();

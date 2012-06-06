@@ -79,7 +79,11 @@ import java.util.zip.GZIPOutputStream;
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
  *
- * <p>As long as you stick to read operations, nodes are thread-save</p>
+ * <p>You can read nodes using traditional InputStream or Writers. In addition to this pull-logic, the writoTo method
+ * provides push logic. Some Node implementations are more efficient when using writeTo(). (I'd appriciate if all
+ * underlying libraries provides pull logic because, push logic can be efficiently implemented on top ...) </p>
+ *
+ * <p>As long as you stick to read operations, nodes are thread-save.</p>
  */
 public abstract class Node {
     protected UnsupportedOperationException unsupported(String op) {
@@ -121,30 +125,11 @@ public abstract class Node {
 
     public long writeToImpl(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         InputStream src;
-        long step;
-        long alreadySkipped;
-        int c;
         long result;
 
         try {
             src = createInputStream();
-            alreadySkipped = 0;
-            while (alreadySkipped < skip) {
-                step = src.skip(skip - alreadySkipped);
-                if (step == 0) {
-                    // ByteArrayInputStream just return 0 when at end of file
-                    c = src.read();
-                    if (c < 0) {
-                        // EOF
-                        src.close();
-                        return 0;
-                    } else {
-                        alreadySkipped++;
-                    }
-                } else {
-                    alreadySkipped += step;
-                }
-            }
+            if (skip(skip, src)) return 0;
             result = getWorld().getBuffer().copy(src, dest);
             src.close();
         } catch (FileNotFoundException e) {
@@ -153,6 +138,32 @@ public abstract class Node {
             throw new WriteToException(this, e);
         }
         return result;
+    }
+
+    /** @true when EOF was seen */
+    public static boolean skip(long skip, InputStream src) throws IOException {
+        long alreadySkipped;
+        long step;
+        int c;
+        
+        alreadySkipped = 0;
+        while (alreadySkipped < skip) {
+            step = src.skip(skip - alreadySkipped);
+            if (step == 0) {
+                // ByteArrayInputStream just return 0 when at end of file
+                c = src.read();
+                if (c < 0) {
+                    // EOF
+                    src.close();
+                    return true;
+                } else {
+                    alreadySkipped++;
+                }
+            } else {
+                alreadySkipped += step;
+            }
+        }
+        return false;
     }
 
     public OutputStream createOutputStream() throws IOException {

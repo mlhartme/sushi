@@ -912,7 +912,11 @@ public abstract class Node {
     }
 
     public Node writeXml(org.w3c.dom.Node node) throws IOException {
-        getWorld().getXml().getSerializer().serialize(node, this);
+        return writeXml(node, true);
+    }
+
+    public Node writeXml(org.w3c.dom.Node node, boolean format) throws IOException {
+        getWorld().getXml().getSerializer().serialize(node, this, format);
         return this;
     }
 

@@ -101,7 +101,7 @@ public class SerializerTest {
 
         };
         try {
-            SERIALIZER.serialize(new DOMSource(BUILDER.parseString("<foo/>")), new StreamResult(stream));
+            SERIALIZER.serialize(new DOMSource(BUILDER.parseString("<foo/>")), new StreamResult(stream), true);
             fail();
         } catch (IOException ex) {
             assertSame(e, ex);
@@ -114,7 +114,7 @@ public class SerializerTest {
 
         doc = BUILDER.parseString("<a><b/></a>");
         file = new World().getTemp().createTempFile();
-        SERIALIZER.serialize(doc, file);
+        SERIALIZER.serialize(doc, file, true);
         assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "  <b/>", "</a>"),
         		file.readString());
     }

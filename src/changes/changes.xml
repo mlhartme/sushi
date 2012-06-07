@@ -5,6 +5,9 @@
       <action date="2012-06-07" dev="mhm" type="add">
         Node.readProperties and Node.writeProperties added.
       </action>
+      <action date="2012-06-07" dev="mhm" type="add">
+        Node.writeXml with format parameter.
+      </action>
       <action date="2012-05-31" dev="mhm" type="add">
         Node.writeTo(OutputStream dest, long skip) added. SshNode.get renamed to writeTo.
       </action>

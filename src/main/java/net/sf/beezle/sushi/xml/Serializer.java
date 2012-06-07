@@ -38,40 +38,57 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+/* Not thread-save! */
 public class Serializer {
-    private final Transformer transformer;
+    private final Transformer format;
+    private final Transformer dumper;
 
     public Serializer() {
-        this.transformer = createPrettyPrinter();
+        this.format = createFormatter();
+        this.dumper = createDumper();
     }
-    
+
+    public void format(Node src, net.sf.beezle.sushi.fs.Node dest) throws IOException {
+        serialize(src, dest, true);
+    }
+
+    public void dump(Node src, net.sf.beezle.sushi.fs.Node dest) throws IOException {
+        serialize(src, dest, false);
+    }
+
     /** Generates an xml/encoding declaration */
-    public void serialize(Node src, net.sf.beezle.sushi.fs.Node dest) throws IOException {
+    public void serialize(Node src, net.sf.beezle.sushi.fs.Node dest, boolean format) throws IOException {
         OutputStream out;
         
         // don't use Writer to allow transformer to decide about encoding */
         out = dest.createOutputStream();
-        serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding);
+        serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding, format);
         out.close();
     }
 
-    public void serialize(Node src, Result dest) throws IOException {
-        serialize(new DOMSource(src), dest);
+    public void serialize(Node src, Result dest, boolean format) throws IOException {
+        serialize(new DOMSource(src), dest, format);
     }
     
-    public void serialize(Source src, Result dest) throws IOException {
-        serialize(src, dest, null);
+    public void serialize(Source src, Result dest, boolean format) throws IOException {
+        serialize(src, dest, null, format);
     }
 
-    public void serialize(Source src, Result dest, String encoding) throws IOException {
+    public void serialize(Source src, Result dest, String encoding, boolean format) throws IOException {
+        Transformer transformer;
         Throwable cause;
-        
-        if (encoding == null) {
-            transformer.getOutputProperties().remove(OutputKeys.ENCODING);
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");            
+
+        if (format) {
+            transformer = this.format;
+            if (encoding == null) {
+                transformer.getOutputProperties().remove(OutputKeys.ENCODING);
+                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            } else {
+                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+                transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
+            }
         } else {
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");            
-            transformer.setOutputProperty(OutputKeys.ENCODING, encoding);            
+            transformer = dumper;
         }
         try {
             transformer.transform(src, dest);
@@ -110,7 +127,7 @@ public class Serializer {
         dest = new StringWriter();
         result = new StreamResult(dest);
         try {
-            serialize(node, result);
+            serialize(node, result, true);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -220,14 +237,14 @@ public class Serializer {
         "  </xsl:template>" +
         "</xsl:stylesheet>";
 
-    private static final Templates TEMPLATES;
-    
+    private static final Templates FORMATTER;
+
     static {
         Source src;
 
         src = new SAXSource(new InputSource(new StringReader(ID)));
         try {
-            TEMPLATES = templates(src);
+            FORMATTER = templates(src);
         } catch (TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -237,19 +254,28 @@ public class Serializer {
         // CAUTION: Always use Jre's xalan because Saxon 6.5.x fails in serializeChildren 
         return new com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl().newTemplates(src);
     }
-    
-    private static synchronized Transformer createPrettyPrinter() {
+
+    private static synchronized Transformer createFormatter() {
         Transformer result;
 
+        Transformer result1;
         try {
-            result = TEMPLATES.newTransformer();
+            result1 = FORMATTER.newTransformer();
         } catch (TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
-        result.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        result = result1;
         result.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         // TODO: ignored by both jdk 1.4 and 1.5's xalan (honored by Saxon)
-        result.setOutputProperty(OutputKeys.INDENT, "yes");  
+        result.setOutputProperty(OutputKeys.INDENT, "yes");
         return result;
+    }
+
+    private static synchronized Transformer createDumper() {
+        try {
+            return new com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl().newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

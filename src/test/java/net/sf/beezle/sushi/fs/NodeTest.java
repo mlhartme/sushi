@@ -702,6 +702,19 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
+    public void readWriteXmlDumped() throws IOException, SAXException {
+        String str;
+        Document doc;
+        Node file;
+
+        str = "<a><b/></a>";
+        doc = WORLD.getXml().getBuilder().literal(str);
+        file = work.join("foo");
+        file.writeXml(doc, false);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + str, file.readString());
+    }
+
+    @Test
     public void writeToNonexistingDirectory() {
         try {
             work.join("nosuchdir/file").writeString("");

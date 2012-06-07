@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 import java.net.URI;
@@ -48,6 +49,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -441,6 +443,18 @@ public abstract class Node {
     /** @return lines without tailing line separator */
     public List<String> readLines(LineFormat format) throws IOException {
         return new LineReader(createReader(), format).collect();
+    }
+
+    /** Reads properties with the encoding for this node */
+    public Properties readProperties() throws IOException {
+        Properties p;
+        Reader src;
+
+        src = createReader();
+        p = new Properties();
+        p.load(src);
+        src.close();
+        return p;
     }
 
     public Object readObject() throws IOException {
@@ -871,6 +885,19 @@ public abstract class Node {
             dest.write(line);
             dest.write(separator);
         }
+        dest.close();
+        return this;
+    }
+
+    public Node writeProperties(Properties p) throws IOException {
+        return writeProperties(p, null);
+    }
+
+    public Node writeProperties(Properties p, String comment) throws IOException {
+        Writer dest;
+
+        dest = createWriter();
+        p.store(dest, comment);
         dest.close();
         return this;
     }

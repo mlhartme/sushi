@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -663,6 +664,28 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file = work.join("foo");
         file.writeLines(data);
         assertEquals(Arrays.asList(data), file.readLines());
+    }
+
+    @Test
+    public void readWriteProperties() throws IOException {
+        Properties p;
+        Properties copy;
+        Node node;
+
+        try {
+            work.join("notfound").readProperties();
+            fail();
+        } catch (FileNotFoundException e) {
+            // ok
+        }
+        p = new Properties();
+        p.put("a", "1");
+        p.put("äöü", "€");
+        node = work.join("file");
+        node.writeProperties(p);
+        copy = node.readProperties();
+        assertEquals(2, copy.size());
+        assertEquals(p, copy);
     }
 
     @Test

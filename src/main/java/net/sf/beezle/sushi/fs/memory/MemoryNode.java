@@ -49,7 +49,7 @@ public class MemoryNode extends Node {
     private long lastModified;
 
     /** Do not call - use create instead. */
-    public MemoryNode(MemoryRoot root, String path, Type type, byte[] data) {
+    public MemoryNode(MemoryRoot root, String path, Type type) {
         this.root = root;
         this.path = path;
         this.type = type;

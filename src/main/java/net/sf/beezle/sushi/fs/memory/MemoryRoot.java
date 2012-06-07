@@ -42,7 +42,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         this.id = id;
         this.nodes = new HashMap<String, MemoryNode>();
         this.store = new HashMap<String, Object>();
-        add(new MemoryNode(this, "", Type.DIRECTORY, null));
+        add(new MemoryNode(this, "", Type.DIRECTORY));
     }
 
     public MemoryFilesystem getFilesystem() {
@@ -61,7 +61,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         }
         node = nodes.get(path);
         if (node == null) {
-            node = new MemoryNode(this, path, Type.NONE, null);
+            node = new MemoryNode(this, path, Type.NONE);
             nodes.put(node.getPath(), node);
         }
         return node;

@@ -946,18 +946,11 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     //-- delete method
 
     @Test
-    public void deleteFile() throws IOException {
+    public void deleteTreeFile() throws IOException {
         Node node;
-        byte[] data = {};
 
         node = work.join("myfile");
-        try {
-            node.deleteTree();
-            fail();
-        } catch (DeleteException e) {
-            // ok
-        }
-        node.writeBytes(data);
+        node.writeBytes();
         node.deleteTree();
         assertFalse(node.exists());
         try {
@@ -969,12 +962,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test(expected = DeleteException.class)
-    public void deleteDirectoryNotFound() throws IOException {
+    public void deleteTreeDirectoryNotFound() throws IOException {
         work.join("somedir").deleteTree();
     }
 
     @Test
-    public void deleteDirectoryEmpty() throws IOException {
+    public void deleteTreeDirectoryEmpty() throws IOException {
         Node dir;
 
         dir = work.join("mydir");
@@ -984,7 +977,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
-    public void deleteDirectoryNoneEmpty() throws IOException {
+    public void deleteTreeDirectoryNoneEmpty() throws IOException {
         Node dir;
         Node child;
         Node subchild;

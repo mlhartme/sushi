@@ -225,9 +225,10 @@ public abstract class Node {
      */
     public abstract Node deleteTree() throws DeleteException;
 
-    public abstract Node deleteFile() throws DeleteException, ExistsException, FileNotFoundException;
+    /** @throws DeleteException if this is not file */
+    public abstract Node deleteFile() throws DeleteException;
 
-    /** @throws DeleteException if this directory is not empty */
+    /** @throws DeleteException if this is not a directory or the directory is not empty */
     public abstract Node deleteDirectory() throws DeleteException;
 
     /**

@@ -123,8 +123,18 @@ public class TimeMachineNode extends Node {
 
 
     @Override
+    public Node deleteFile() throws DeleteException {
+        throw unsupported("deleteFile()");
+    }
+
+    @Override
+    public Node deleteDirectory() throws DeleteException {
+        throw unsupported("deleteDirectory()");
+    }
+
+    @Override
     public Node deleteTree() throws DeleteException {
-        throw unsupported("delete()");
+        throw unsupported("deleteTree()");
     }
 
     @Override

@@ -3,7 +3,7 @@
   <body>
     <release date="2012-06-xx" version="2.7.0">
       <action date="2012-06-08" dev="mhm" type="update">
-        Node.delete and deleteOpt renamed to deleteTree and deleteTreeOpt.
+        Node.deleteFile and deleteDirectory added. Node.delete and deleteOpt renamed to deleteTree and deleteTreeOpt.
       </action>
       <action date="2012-06-07" dev="mhm" type="add">
         Node.readProperties and Node.writeProperties added.

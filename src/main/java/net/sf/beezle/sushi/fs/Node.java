@@ -225,6 +225,11 @@ public abstract class Node {
      */
     public abstract Node deleteTree() throws DeleteException;
 
+    public abstract Node deleteFile() throws DeleteException, ExistsException, FileNotFoundException;
+
+    /** @throws DeleteException if this directory is not empty */
+    public abstract Node deleteDirectory() throws DeleteException;
+
     /**
      * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
      * This method is a default implementation with copy and delete, derived classes should override it with a native

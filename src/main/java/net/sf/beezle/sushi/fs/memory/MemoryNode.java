@@ -186,6 +186,26 @@ public class MemoryNode extends Node {
         throw unsupported("readLink()");
     }
 
+    @Override
+    public MemoryNode deleteFile() throws DeleteException {
+        if (type != Type.FILE) {
+            throw new DeleteException(this, "file expected");
+        }
+        type = Type.NONE;
+        return this;
+    }
+
+    @Override
+    public MemoryNode deleteDirectory() throws DeleteException {
+        if (type != Type.DIRECTORY) {
+            throw new DeleteException(this, "directory expected");
+        }
+        if (root.list(path).size() > 0) {
+            throw new DeleteException(this, "directory is not empty");
+        }
+        type = Type.NONE;
+        return this;
+    }
 
     @Override
     public MemoryNode deleteTree() throws DeleteException {

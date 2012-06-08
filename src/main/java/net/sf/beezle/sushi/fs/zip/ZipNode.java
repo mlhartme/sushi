@@ -118,6 +118,16 @@ public class ZipNode extends Node {
     }
 
     @Override
+    public Node deleteFile() throws DeleteException {
+        throw new DeleteException(this);
+    }
+
+    @Override
+    public Node deleteDirectory() throws DeleteException {
+        throw new DeleteException(this);
+    }
+
+    @Override
     public Node deleteTree() throws DeleteException {
         throw new DeleteException(this);
     }

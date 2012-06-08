@@ -246,6 +246,43 @@ public class WebdavNode extends Node {
     }
 
     @Override
+    public Node deleteFile() throws DeleteException {
+        try {
+            synchronized (tryLock) {
+                tryDir = false;
+                try {
+                    new Delete(this).invoke();
+                } catch (MovedException e) {
+                    throw new DeleteException(this, "file expected");
+                }
+            }
+        } catch (IOException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
+    @Override
+    public Node deleteDirectory() throws DeleteException {
+        try {
+            if (list().size() > 0) {
+                throw new DeleteException(this, "directory is not empty");
+            }
+            synchronized (tryLock) {
+                try {
+                    new Delete(this).invoke();
+                } catch (MovedException e) {
+                    tryDir = !tryDir;
+                    new Delete(this).invoke();
+                }
+            }
+        } catch (IOException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
+    @Override
     public Node deleteTree() throws DeleteException {
         try {
             synchronized (tryLock) {

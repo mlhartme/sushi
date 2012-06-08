@@ -238,6 +238,41 @@ public class SvnNode extends Node {
     }
 
     @Override
+    public SvnNode deleteFile() throws DeleteException {
+        try {
+            if (!isFile()) {
+                throw new DeleteException(this, new FileNotFoundException());
+            }
+            delete("sushi delete");
+        } catch (ExistsException e) {
+            throw new DeleteException(this, e);
+        } catch (SVNException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
+    @Override
+    public SvnNode deleteDirectory() throws DeleteException {
+        try {
+            if (!isDirectory()) {
+                throw new DeleteException(this, new FileNotFoundException());
+            }
+            if (list().size() > 0) {
+                throw new DeleteException(this, "directory is not empty");
+            }
+            delete("sushi delete");
+        } catch (ExistsException e) {
+            throw new DeleteException(this, e);
+        } catch (ListException e) {
+            throw new DeleteException(this, e);
+        } catch (SVNException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
+    @Override
     public SvnNode deleteTree() throws DeleteException {
         try {
             if (!exists()) {

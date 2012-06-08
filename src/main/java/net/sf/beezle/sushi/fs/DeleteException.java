@@ -19,7 +19,11 @@ package net.sf.beezle.sushi.fs;
 
 public class DeleteException extends NodeException {
     public DeleteException(Node node) {
-        super(node, "delete failed");
+        this(node, "delete failed");
+    }
+
+    public DeleteException(Node node, String msg) {
+        super(node, msg);
     }
 
     public DeleteException(Node node, Throwable cause) {

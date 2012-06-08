@@ -214,6 +214,58 @@ public class SshNode extends Node {
     //--
 
     @Override
+    public SshNode deleteFile() throws DeleteException {
+        ChannelSftp sftp;
+
+        try {
+            sftp = alloc();
+        } catch (JSchException e) {
+            throw new DeleteException(this, e);
+        }
+        try {
+            sftp.rmdir(escape(slashPath));
+        } catch (SftpException e) {
+            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
+                throw new DeleteException(this, new FileNotFoundException());
+            }
+            throw new DeleteException(this, e);
+        } finally {
+            try {
+                free(sftp);
+            } catch (JSchException e) {
+                throw new DeleteException(this, e);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public SshNode deleteDirectory() throws DeleteException {
+        ChannelSftp sftp;
+
+        try {
+            sftp = alloc();
+        } catch (JSchException e) {
+            throw new DeleteException(this, e);
+        }
+        try {
+            sftp.rm(escape(slashPath));
+        } catch (SftpException e) {
+            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
+                throw new DeleteException(this, new FileNotFoundException());
+            }
+            throw new DeleteException(this, e);
+        } finally {
+            try {
+                free(sftp);
+            } catch (JSchException e) {
+                throw new DeleteException(this, e);
+            }
+        }
+        return this;
+    }
+
+    @Override
     public SshNode deleteTree() throws DeleteException {
         ChannelSftp sftp;
 

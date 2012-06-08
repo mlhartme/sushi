@@ -390,6 +390,34 @@ public class FileNode extends Node {
 
     //-- delete
 
+    public FileNode deleteFile() throws DeleteException {
+        try {
+            checkFile();
+            delete(getWorld(), file);
+        } catch (IOException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
+    public FileNode deleteDirectory() throws DeleteException {
+        String[] files;
+
+        try {
+            files = file.list();
+            if (files == null) {
+                throw new DeleteException(this, "not a directory");
+            }
+            if (files.length != 0) {
+                throw new DeleteException(this, "directory is not empty");
+            }
+            delete(getWorld(), file);
+        } catch (IOException e) {
+            throw new DeleteException(this, e);
+        }
+        return this;
+    }
+
     /**
      * Deletes a file or directory. Directories are deleted recursively. Handles Links.
      *

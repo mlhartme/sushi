@@ -281,7 +281,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertTrue(file.exists());
         assertTrue(file.isFile());
         assertFalse(file.isDirectory());
-        file.delete();
+        file.deleteTree();
         assertFalse(file.exists());
         assertFalse(file.isFile());
         assertFalse(file.isDirectory());
@@ -299,7 +299,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertTrue(dir.exists());
         assertFalse(dir.isFile());
         assertTrue(dir.isDirectory());
-        dir.delete();
+        dir.deleteTree();
         assertFalse(dir.exists());
         assertFalse(dir.isFile());
         assertFalse(dir.isDirectory());
@@ -552,7 +552,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         alias = file.getRoot().node(file.getPath(), null);
         assertEquals(file, alias);
         assertEquals(content, alias.readString());
-        file.delete();
+        file.deleteTree();
     }
 
     private void checkDirectory(String name) throws IOException {
@@ -562,7 +562,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.mkdir();
         assertTrue(file.isDirectory());
         assertEquals(Collections.singletonList(file), file.getParent().list());
-        file.delete();
+        file.deleteTree();
     }
 
     private static final String ALL_CHARS;
@@ -952,16 +952,16 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         node = work.join("myfile");
         try {
-            node.delete();
+            node.deleteTree();
             fail();
         } catch (DeleteException e) {
             // ok
         }
         node.writeBytes(data);
-        node.delete();
+        node.deleteTree();
         assertFalse(node.exists());
         try {
-            node.delete();
+            node.deleteTree();
             fail();
         } catch (DeleteException e) {
             assertTrue(e.getCause() instanceof FileNotFoundException);
@@ -970,7 +970,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test(expected = DeleteException.class)
     public void deleteDirectoryNotFound() throws IOException {
-        work.join("somedir").delete();
+        work.join("somedir").deleteTree();
     }
 
     @Test
@@ -979,7 +979,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         dir = work.join("mydir");
         dir.mkdir();
-        dir.delete();
+        dir.deleteTree();
         assertFalse(dir.exists());
     }
 
@@ -996,7 +996,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         subchild.getParent().mkdir();
         subchild.writeBytes();
 
-        dir.delete();
+        dir.deleteTree();
         assertFalse(dir.exists());
         assertFalse(child.exists());
         assertFalse(subchild.exists());
@@ -1268,7 +1268,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         link.writeString("third");
         assertEquals("third", orig.readString());
 
-        link.delete();
+        link.deleteTree();
         assertTrue(orig.exists());
         assertFalse(link.exists());
         assertFalse(link.isLink());
@@ -1298,7 +1298,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertTrue(link.isLink());
         assertEquals(orig, link.resolveLink());
 
-        link.delete();
+        link.deleteTree();
         assertTrue(orig.exists());
         assertFalse(link.exists());
         assertFalse(link.isLink());
@@ -1320,7 +1320,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertFalse(link.isFile());
         assertFalse(link.isDirectory());
 
-        link.delete();
+        link.deleteTree();
         assertFalse(link.exists());
         assertFalse(link.isLink());
     }
@@ -1352,7 +1352,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         link = work.join("link");
         file.link(link);
         assertEquals("foo", link.readString());
-        link.delete();
+        link.deleteTree();
         assertFalse(link.isFile());
         assertTrue(file.isFile());
     }

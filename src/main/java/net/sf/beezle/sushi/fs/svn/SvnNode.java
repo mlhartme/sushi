@@ -238,7 +238,7 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public SvnNode delete() throws DeleteException {
+    public SvnNode deleteTree() throws DeleteException {
         try {
             if (!exists()) {
                 throw new DeleteException(this, new FileNotFoundException());

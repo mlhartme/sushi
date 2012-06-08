@@ -118,7 +118,7 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public Node delete() throws DeleteException {
+    public Node deleteTree() throws DeleteException {
         throw new DeleteException(this);
     }
 

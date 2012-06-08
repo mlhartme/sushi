@@ -396,7 +396,7 @@ public class FileNode extends Node {
      * @throws IOException if a file cannot be deleted
      */
     @Override
-    public FileNode delete() throws DeleteException {
+    public FileNode deleteTree() throws DeleteException {
         try {
             delete(getWorld(), file);
         } catch (IOException e) {

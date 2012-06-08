@@ -133,7 +133,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         
         old = store.get(path);
         if (old instanceof FileNode) {
-            ((FileNode) old).delete();
+            ((FileNode) old).deleteTree();
         }
         if (used > filesystem.maxInMemorySize) {
             file = filesystem.getWorld().getTemp().createTempFile();

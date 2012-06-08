@@ -214,7 +214,7 @@ public class SshNode extends Node {
     //--
 
     @Override
-    public SshNode delete() throws DeleteException {
+    public SshNode deleteTree() throws DeleteException {
         ChannelSftp sftp;
 
         try {
@@ -623,7 +623,7 @@ public class SshNode extends Node {
             public void close() throws IOException {
                 super.close();
                 // opt because it may be closed twice:
-                tmp.deleteOpt();
+                tmp.deleteTreeOpt();
             }
         };
     }

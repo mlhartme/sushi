@@ -107,7 +107,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
         } catch (IOException e) {
             // ok
         }
-        file.delete();
+        file.deleteTree();
     }
 
     @Test
@@ -120,7 +120,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
 
         link = work.join("link");
         work.getRootNode().link(link);
-        link.delete();
+        link.deleteTree();
     }
 
     @Test
@@ -133,7 +133,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
 
         link = work.join("link");
         work.getRootNode().join("etc/passwd").link(link);
-        link.delete();
+        link.deleteTree();
     }
 
     @Test

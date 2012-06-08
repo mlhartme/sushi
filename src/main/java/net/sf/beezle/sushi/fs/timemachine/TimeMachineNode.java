@@ -123,7 +123,7 @@ public class TimeMachineNode extends Node {
 
 
     @Override
-    public Node delete() throws DeleteException {
+    public Node deleteTree() throws DeleteException {
         throw unsupported("delete()");
     }
 

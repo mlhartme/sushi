@@ -49,7 +49,7 @@ public class WebdavReadWriteFullTest extends NodeTest<WebdavNode> {
 
     @Override
     protected WebdavNode createWork() throws IOException {
-        return (WebdavNode) WORLD.validNode(uri).deleteOpt().mkdir();
+        return (WebdavNode) WORLD.validNode(uri).deleteTreeOpt().mkdir();
     }
 
     public void validateDeallocation() {

@@ -146,7 +146,7 @@ public class ZipNodeTest {
         assertEquals(1, zip.find(clazz).size());
         assertNotNull(world.validNode("zip:" + copy.getURI() + "!/" + clazz).readBytes());
         assertNotNull(world.validNode("jar:" + copy.getURI() + "!/" + clazz).readBytes());
-        temp.delete();
+        temp.deleteTree();
     }
 
     @Test(expected=FileNotFoundException.class)

@@ -188,14 +188,14 @@ public class MemoryNode extends Node {
 
 
     @Override
-    public MemoryNode delete() throws DeleteException {
+    public MemoryNode deleteTree() throws DeleteException {
         if (type == Type.NONE) {
             throw new DeleteException(this, new FileNotFoundException(getPath()));
         }
         if (type == Type.DIRECTORY) {
             try {
                 for (MemoryNode obj : list()) {
-                    obj.delete();
+                    obj.deleteTree();
                 }
             } catch (ListException e) {
                 throw new DeleteException(this, e);

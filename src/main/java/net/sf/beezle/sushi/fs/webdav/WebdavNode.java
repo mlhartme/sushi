@@ -246,7 +246,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node delete() throws DeleteException {
+    public Node deleteTree() throws DeleteException {
         try {
             synchronized (tryLock) {
                 try {

@@ -33,7 +33,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -224,7 +223,7 @@ public abstract class Node {
      *
      * @return this
      */
-    public abstract Node delete() throws DeleteException;
+    public abstract Node deleteTree() throws DeleteException;
 
     /**
      * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
@@ -237,7 +236,7 @@ public abstract class Node {
         try {
             dest.checkNotExists();
             copy(dest);
-            delete();
+            deleteTree();
         } catch (IOException e) {
             throw new MoveException(this, dest, "move failed", e);
         }
@@ -716,9 +715,9 @@ public abstract class Node {
 
     //--
 
-    public Node deleteOpt() throws IOException {
+    public Node deleteTreeOpt() throws IOException {
         if (exists()) {
-            delete();
+            deleteTree();
         }
         return this;
     }

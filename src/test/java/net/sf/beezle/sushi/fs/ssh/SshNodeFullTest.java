@@ -19,7 +19,6 @@ package net.sf.beezle.sushi.fs.ssh;
 
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.NodeTest;
-import net.sf.beezle.sushi.fs.file.FileNode;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -64,7 +63,7 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
 
         dir = work.join("a").mkdir();
         dir.join("a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p").mkdirs();
-        dir.delete();
+        dir.deleteTree();
     }
 
     @Test
@@ -94,7 +93,7 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         SshNode node;
 
         node = create("tmp/sushisshworkdir");
-        node.deleteOpt();
+        node.deleteTreeOpt();
         node.mkdir();
         return node;
     }
@@ -120,6 +119,6 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         lst = root.list();
         assertEquals(1, lst.size());
         broken = lst.get(0);
-        broken.delete();
+        broken.deleteTree();
     }
 }

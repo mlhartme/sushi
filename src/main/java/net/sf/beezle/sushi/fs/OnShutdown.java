@@ -140,7 +140,7 @@ public class OnShutdown extends Thread {
     private boolean tryDelete(FileNode node) {
         try {
             if (node.exists()) {
-                node.delete();
+                node.deleteTree();
             }
             return true;
         } catch (IOException e) {

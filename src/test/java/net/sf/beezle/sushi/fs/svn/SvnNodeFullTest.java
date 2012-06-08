@@ -41,7 +41,7 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
         FileNode repo;
 
         repo = WORLD.guessProjectHome(SvnNodeFullTest.class).join("target/svnrepo");
-        repo.deleteOpt();
+        repo.deleteTreeOpt();
         URL = SVNRepositoryFactory.createLocalRepository(repo.getFile(), null, true, true, true);
     }
 
@@ -50,7 +50,7 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
         SvnNode node;
 
         node = create(URL + "/work");
-        node.deleteOpt();
+        node.deleteTreeOpt();
         node.mkdir();
         return node;
     }

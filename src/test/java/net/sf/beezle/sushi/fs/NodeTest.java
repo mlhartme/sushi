@@ -946,6 +946,75 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     //-- delete method
 
     @Test
+    public void deleteFileFile() throws IOException {
+        Node node;
+
+        node = work.join("myfile");
+        node.writeBytes();
+        node.deleteFile();
+        assertFalse(node.exists());
+        try {
+            node.deleteFile();
+            fail();
+        } catch (DeleteException e) {
+            // ok
+        }
+    }
+
+    @Test(expected = DeleteException.class)
+    public void deleteFileNotFound() throws IOException {
+        work.join("somedir").deleteFile();
+    }
+
+    @Test(expected = DeleteException.class)
+    public void deleteFileDirectory() throws IOException {
+        Node dir;
+
+        dir = work.join("mydir");
+        dir.mkdir();
+        dir.deleteFile();
+    }
+
+    @Test(expected = DeleteException.class)
+    public void deleteDirectoryFile() throws IOException {
+        Node node;
+
+        node = work.join("myfile");
+        node.writeBytes();
+        node.deleteDirectory();
+    }
+
+    @Test(expected = DeleteException.class)
+    public void deleteDirectoryNotFound() throws IOException {
+        work.join("somedir").deleteDirectory();
+    }
+
+    @Test
+    public void deleteDirectoryEmpty() throws IOException {
+        Node dir;
+
+        dir = work.join("mydir");
+        dir.mkdir();
+        dir.deleteDirectory();
+        assertFalse(dir.exists());
+    }
+
+    @Test(expected = DeleteException.class)
+    public void deleteDirectoryNoneEmpty() throws IOException {
+        Node dir;
+        Node subchild;
+
+        dir = work.join("mydir");
+        dir.mkdir();
+        dir.join("file").writeBytes();
+        subchild = dir.join("sub/file2");
+        subchild.getParent().mkdir();
+        subchild.writeBytes();
+
+        dir.deleteDirectory();
+    }
+
+    @Test
     public void deleteTreeFile() throws IOException {
         Node node;
 

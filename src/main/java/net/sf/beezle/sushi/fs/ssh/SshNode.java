@@ -223,7 +223,7 @@ public class SshNode extends Node {
             throw new DeleteException(this, e);
         }
         try {
-            sftp.rmdir(escape(slashPath));
+            sftp.rm(escape(slashPath));
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
                 throw new DeleteException(this, new FileNotFoundException());
@@ -249,7 +249,7 @@ public class SshNode extends Node {
             throw new DeleteException(this, e);
         }
         try {
-            sftp.rm(escape(slashPath));
+            sftp.rmdir(escape(slashPath));
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
                 throw new DeleteException(this, new FileNotFoundException());

@@ -721,6 +721,20 @@ public abstract class Node {
 
     //--
 
+    public Node deleteFileOpt() throws IOException {
+        if (exists()) {
+            deleteFile();
+        }
+        return this;
+    }
+
+    public Node deleteDirectoryOpt() throws IOException {
+        if (exists()) {
+            deleteDirectory();
+        }
+        return this;
+    }
+
     public Node deleteTreeOpt() throws IOException {
         if (exists()) {
             deleteTree();

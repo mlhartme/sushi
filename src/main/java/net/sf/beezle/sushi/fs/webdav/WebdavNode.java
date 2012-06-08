@@ -264,8 +264,14 @@ public class WebdavNode extends Node {
 
     @Override
     public Node deleteDirectory() throws DeleteException {
+        List<WebdavNode> lst;
+
         try {
-            if (list().size() > 0) {
+            lst = list();
+            if (lst == null) {
+                throw new DeleteException(this, "directory expected");
+            }
+            if (lst.size() > 0) {
                 throw new DeleteException(this, "directory is not empty");
             }
             synchronized (tryLock) {

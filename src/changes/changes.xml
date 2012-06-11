@@ -2,6 +2,9 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2012-06-xx" version="2.7.0">
+      <action date="2012-06-11" dev="mhm" type="update">
+        Use standard TransformerFactory.
+      </action>
       <action date="2012-06-08" dev="mhm" type="update">
         Node.deleteFile and deleteDirectory added. Node.delete and deleteOpt renamed to deleteTree and deleteTreeOpt.
       </action>

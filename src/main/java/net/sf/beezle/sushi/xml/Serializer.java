@@ -30,6 +30,7 @@ import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
@@ -40,6 +41,8 @@ import java.io.StringWriter;
 
 /* Not thread-save! */
 public class Serializer {
+    private static final TransformerFactory FACTORY = TransformerFactory.newInstance();
+
     private final Transformer format;
     private final Transformer dumper;
 
@@ -59,7 +62,7 @@ public class Serializer {
     /** Generates an xml/encoding declaration */
     public void serialize(Node src, net.sf.beezle.sushi.fs.Node dest, boolean format) throws IOException {
         OutputStream out;
-        
+
         // don't use Writer to allow transformer to decide about encoding */
         out = dest.createOutputStream();
         serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding, format);
@@ -69,7 +72,7 @@ public class Serializer {
     public void serialize(Node src, Result dest, boolean format) throws IOException {
         serialize(new DOMSource(src), dest, format);
     }
-    
+
     public void serialize(Source src, Result dest, boolean format) throws IOException {
         serialize(src, dest, null, format);
     }
@@ -137,28 +140,29 @@ public class Serializer {
     public String serializeChildren(Document doc) {
         return serializeChildren(doc.getDocumentElement());
     }
-    
+
     public String serializeChildren(Element element) {
         String str;
         String prefix;
         String suffix;
         String root;
-        
+
         root = element.getTagName();
         str = serialize(element).trim();
-        prefix = "<" + root + ">"; 
-        suffix = "</" + root + ">"; 
+        prefix = "<" + root + ">";
+        suffix = "</" + root + ">";
         if (!str.startsWith(prefix) || !str.endsWith(suffix)) {
             if (str.equals("<" + root + "/>")) {
                 return "";
-            } 
+            }
+            // this happens with saxon 6.5.5:
             throw new IllegalStateException(str);
         }
         return str.substring(prefix.length(), str.length() - suffix.length()).trim();
     }
 
     //--
-    
+
     /**
      * Same method used for attributes and elements ...
      * See http://www.w3.org/TR/REC-xml/#charsets
@@ -223,7 +227,7 @@ public class Serializer {
         }
         return buffer == null ? str : buffer.toString();
     }
-    
+
     //--
 
     // pretty-print script by M. Kay, see
@@ -251,31 +255,28 @@ public class Serializer {
     }
 
     public static Templates templates(Source src) throws TransformerConfigurationException {
-        // CAUTION: Always use Jre's xalan because Saxon 6.5.x fails in serializeChildren 
-        return new com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl().newTemplates(src);
+        return FACTORY.newTemplates(src);
+    }
+
+    private static synchronized Transformer createDumper() {
+        try {
+            return FACTORY.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static synchronized Transformer createFormatter() {
         Transformer result;
 
-        Transformer result1;
         try {
-            result1 = FORMATTER.newTransformer();
+            result = FORMATTER.newTransformer();
         } catch (TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
-        result = result1;
         result.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         // TODO: ignored by both jdk 1.4 and 1.5's xalan (honored by Saxon)
         result.setOutputProperty(OutputKeys.INDENT, "yes");
         return result;
-    }
-
-    private static synchronized Transformer createDumper() {
-        try {
-            return new com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl().newTransformer();
-        } catch (TransformerConfigurationException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

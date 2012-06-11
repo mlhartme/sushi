@@ -703,15 +703,19 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void readWriteXmlDumped() throws IOException, SAXException {
-        String str;
+        checkDump("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a/>");
+        checkDump("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a><b/></a>");
+        checkDump("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a>\n      <b/>  \n</a>");
+    }
+
+    private void checkDump(String str) throws IOException, SAXException {
         Document doc;
         Node file;
 
-        str = "<a><b/></a>";
-        doc = WORLD.getXml().getBuilder().literal(str);
-        file = work.join("foo");
+        file = work.join("foo").writeString(str);
+        doc = file.readXml();
         file.writeXml(doc, false);
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + str, file.readString());
+        assertEquals(str, file.readString());
     }
 
     @Test

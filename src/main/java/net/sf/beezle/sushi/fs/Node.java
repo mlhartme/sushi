@@ -930,10 +930,18 @@ public abstract class Node {
         return this;
     }
 
+    /** Convenience method for writeXml(node, true); */
     public Node writeXml(org.w3c.dom.Node node) throws IOException {
         return writeXml(node, true);
     }
 
+    /**
+     * Write the specified node into this file. Adds indentation/newlines when format is true. Otherwise, writes
+     * the document "as is" (but always prefixes the document with an xml declaration and encloses attributes in
+     * double quotes).
+     *
+     * @return this node
+     */
     public Node writeXml(org.w3c.dom.Node node, boolean format) throws IOException {
         getWorld().getXml().getSerializer().serialize(node, this, format);
         return this;

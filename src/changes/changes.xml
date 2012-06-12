@@ -3,6 +3,9 @@
   <body>
     <release date="2012-06-xx" version="2.7.0">
       <action date="2012-06-11" dev="mhm" type="update">
+        Metadata serialization: No characters entities for chars 128-255.
+      </action>
+      <action date="2012-06-11" dev="mhm" type="update">
         Use standard TransformerFactory.
       </action>
       <action date="2012-06-08" dev="mhm" type="update">

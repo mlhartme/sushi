@@ -51,6 +51,7 @@ public class SerializerTest {
         assertEquals(" \t\r\n", Serializer.escapeEntities(" \t\r\n", true));
         assertEquals("abc", Serializer.escapeEntities("abc", true));
         assertEquals("&lt;", Serializer.escapeEntities("<", true));
+        assertEquals("äöüÄÖÜß", Serializer.escapeEntities("äöüÄÖÜß", true));
         assertEquals("abc&lt;&gt;&amp;&apos;&quot;xyz", Serializer.escapeEntities("abc<>&'\"xyz", true));
         for (char c = 1; c < 128; c++) {
             str = "<doc attr='"

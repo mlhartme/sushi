@@ -204,7 +204,7 @@ public class Serializer {
                             throw new IllegalArgumentException(msg);
                         }
                         entity = "[" + msg + "]";
-                    } else if (ch < 127) {
+                    } else if (ch < 256) {
                         entity = null;
                     } else {
                         entity = "&#" + (int) ch + ";";

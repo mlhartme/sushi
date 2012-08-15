@@ -47,6 +47,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class FileNode extends Node {
     private final FileRoot root;
 
     /** never null and always absolute. */
-    private final File file;
+    private final Path path;
 
     public FileNode(FileRoot root, File file) {
         if (!file.isAbsolute()) {
@@ -67,7 +68,7 @@ public class FileNode extends Node {
             throw new IllegalArgumentException(file.getPath());
         }
         this.root = root;
-        this.file = file;
+        this.path = file.toPath();
     }
 
     @Override
@@ -92,12 +93,12 @@ public class FileNode extends Node {
 
     @Override
     public URI getURI() {
-        return file.toURI();
+        return path.toUri();
     }
 
     /** Avoid calling this method, should be used to interact with 'legacy' code only */
     public File getFile() {
-        return file;
+        return path.toFile();
     }
 
     /** does not include the drive on windows */
@@ -105,37 +106,37 @@ public class FileNode extends Node {
     public String getPath() {
     	String result;
 
-    	result = file.getPath().substring(getRoot().getAbsolute().length());
+    	result = path.toFile().getPath().substring(getRoot().getAbsolute().length());
     	return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     }
 
     public String getAbsolute() {
-        return file.getAbsolutePath();
+        return path.toFile().getAbsolutePath();
     }
 
     //--
 
     @Override
     public boolean exists() {
-        return file.exists() || isNoneExistingBrokenLink(file);
+        return path.toFile().exists() || isNoneExistingBrokenLink(path.toFile());
     }
 
     @Override
     public boolean isFile() {
-        return file.isFile();
+        return path.toFile().isFile();
     }
 
     @Override
     public boolean isDirectory() {
-        return file.isDirectory();
+        return path.toFile().isDirectory();
     }
 
     public boolean canWrite() {
-        return file.canWrite();
+        return path.toFile().canWrite();
     }
 
     public boolean canRead() {
-        return file.canRead();
+        return path.toFile().canRead();
     }
 
     //--
@@ -162,17 +163,17 @@ public class FileNode extends Node {
 
     @Override
     public long length() throws LengthException {
-        if (!file.isFile()) {
+        if (!path.toFile().isFile()) {
             throw new LengthException(this, new IOException("file expected"));
         }
-        return file.length();
+        return path.toFile().length();
     }
 
     @Override
     public long getLastModified() throws GetLastModifiedException {
         long result;
 
-        result = file.lastModified();
+        result = path.toFile().lastModified();
         if (result == 0 && !exists()) {
             throw new GetLastModifiedException(this, new ExistsException(this, null));
         }
@@ -181,7 +182,7 @@ public class FileNode extends Node {
 
     @Override
     public void setLastModified(long time) throws SetLastModifiedException {
-        if (!file.setLastModified(time)) {
+        if (!path.toFile().setLastModified(time)) {
             throw new SetLastModifiedException(this);
         }
     }
@@ -195,12 +196,12 @@ public class FileNode extends Node {
         File[] children;
         List<FileNode> result;
 
-        children = file.listFiles();
+        children = path.toFile().listFiles();
         if (children == null) {
-            if (!file.exists()) {
+            if (!path.toFile().exists()) {
                 throw new ListException(this, new FileNotFoundException(getPath()));
             }
-            if (!file.canRead()) {
+            if (!path.toFile().canRead()) {
                 try {
                     if (isLink()) {
                         // TODO: check link target
@@ -225,7 +226,7 @@ public class FileNode extends Node {
 
     @Override
     public FileInputStream createInputStream() throws IOException {
-        return new FileInputStream(file);
+        return new FileInputStream(path.toFile());
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
@@ -234,7 +235,7 @@ public class FileNode extends Node {
 
     @Override
     public FileOutputStream createOutputStream(boolean append) throws IOException {
-        return new FileOutputStream(file, append);
+        return new FileOutputStream(path.toFile(), append);
     }
 
     //-- create
@@ -243,7 +244,7 @@ public class FileNode extends Node {
     @Override
     public FileNode mkfile() throws MkfileException {
     	try {
-			if (!file.createNewFile()) {
+			if (!path.toFile().createNewFile()) {
 			    throw new MkfileException(this);
 			}
 		} catch (IOException e) {
@@ -254,7 +255,7 @@ public class FileNode extends Node {
 
     @Override
     public FileNode mkdir() throws MkdirException {
-        if (!file.mkdir()) {
+        if (!path.toFile().mkdir()) {
             throw new MkdirException(this);
         }
         return this;
@@ -277,7 +278,7 @@ public class FileNode extends Node {
     @Override
     public String readLink() throws ReadLinkException {
     	try {
-		    return getWorld().getTemp().exec("readlink", file.getAbsolutePath()).trim();
+		    return getWorld().getTemp().exec("readlink", path.toFile().getAbsolutePath()).trim();
 		} catch (IOException e) {
 			throw new ReadLinkException(this, e);
 		}
@@ -286,7 +287,7 @@ public class FileNode extends Node {
     @Override
     public boolean isLink() throws ExistsException {
     	try {
-    		return isLink(file);
+    		return isLink(path.toFile());
     	} catch (IOException e) {
     		throw new ExistsException(this, e);
     	}
@@ -371,7 +372,7 @@ public class FileNode extends Node {
         if (target.exists()) {
             throw new IOException("target exists: " + target);
         }
-        rename(file, target.file);
+        rename(path.toFile(), target.path.toFile());
     }
 
     private static void rename(File src, File target) throws IOException {
@@ -393,7 +394,7 @@ public class FileNode extends Node {
     public FileNode deleteFile() throws DeleteException {
         try {
             checkFile();
-            delete(getWorld(), file);
+            delete(getWorld(), path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -404,14 +405,14 @@ public class FileNode extends Node {
         String[] files;
 
         try {
-            files = file.list();
+            files = path.toFile().list();
             if (files == null) {
                 throw new DeleteException(this, "not a directory");
             }
             if (files.length != 0) {
                 throw new DeleteException(this, "directory is not empty");
             }
-            delete(getWorld(), file);
+            delete(getWorld(), path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -426,7 +427,7 @@ public class FileNode extends Node {
     @Override
     public FileNode deleteTree() throws DeleteException {
         try {
-            delete(getWorld(), file);
+            delete(getWorld(), path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -541,7 +542,7 @@ public class FileNode extends Node {
         if (working != null && hasAnchestor(working)) {
             return getRelative(working).replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
         } else {
-            return file.toString();
+            return path.toFile().toString();
         }
     }
 

@@ -31,7 +31,6 @@ import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.OnShutdown;
 import net.sf.beezle.sushi.fs.ReadLinkException;
 import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.World;
 import net.sf.beezle.sushi.fs.WriteToException;
 import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
@@ -43,7 +42,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -288,34 +286,7 @@ public class FileNode extends Node {
 
     @Override
     public boolean isLink() throws ExistsException {
-    	try {
-    		return isLink(path);
-    	} catch (IOException e) {
-    		throw new ExistsException(this, e);
-    	}
-    }
-
-    private static boolean isLink(Path path) throws IOException {
         return Files.isSymbolicLink(path);
-    }
-
-    private static boolean isNoneExistingBrokenLink(File link) {
-        FilenameFilter filter;
-        final String expected;
-        File parent;
-
-        parent = link.getParentFile();
-        if (!parent.isDirectory()) {
-            return false;
-        }
-    	expected = link.getName();
-    	filter = new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.equals(expected);
-			}
-    	};
-    	return parent.listFiles(filter).length == 1;
     }
 
     //-- move
@@ -416,7 +387,7 @@ public class FileNode extends Node {
     protected static void doDeleteTree(File file) throws IOException {
         File[] files;
 
-        if (!isLink(file.toPath())) {
+        if (!Files.isSymbolicLink(file.toPath())) {
             files = file.listFiles();
             if (files != null) {
                 for (File child : files) {

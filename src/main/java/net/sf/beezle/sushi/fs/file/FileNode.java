@@ -95,7 +95,7 @@ public class FileNode extends Node {
 
     @Override
     public URI getURI() {
-        return path.toUri();
+        return path.toFile().toURI();
     }
 
     /** Avoid calling this method, should be used to interact with 'legacy' code only */
@@ -125,20 +125,20 @@ public class FileNode extends Node {
 
     @Override
     public boolean isFile() {
-        return path.toFile().isFile();
+        return Files.isRegularFile(path);
     }
 
     @Override
     public boolean isDirectory() {
-        return path.toFile().isDirectory();
+        return Files.isDirectory(path);
     }
 
     public boolean canWrite() {
-        return path.toFile().canWrite();
+        return Files.isReadable(path);
     }
 
     public boolean canRead() {
-        return path.toFile().canRead();
+        return Files.isWritable(path);
     }
 
     //--

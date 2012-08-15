@@ -254,7 +254,10 @@ public abstract class Node {
     /** Throws a LengthException if this node is not a file. */
     public abstract long length() throws LengthException;
 
-    /** @return true if the file exists, even if it's a dangling link */
+    /**
+     * Tests if this is a file, directory or link.
+     * @return true if the file exists, even if it's a dangling link.
+     */
     public abstract boolean exists() throws ExistsException;
 
     public abstract boolean isFile() throws ExistsException;

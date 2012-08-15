@@ -165,7 +165,7 @@ public class FileNode extends Node {
 
     @Override
     public long length() throws LengthException {
-        if (!path.toFile().isFile()) {
+        if (!Files.isRegularFile(path)) {
             throw new LengthException(this, new IOException("file expected"));
         }
         return path.toFile().length();
@@ -200,10 +200,10 @@ public class FileNode extends Node {
 
         children = path.toFile().listFiles();
         if (children == null) {
-            if (!path.toFile().exists()) {
+            if (!exists()) {
                 throw new ListException(this, new FileNotFoundException(getPath()));
             }
-            if (!path.toFile().canRead()) {
+            if (!canRead()) {
                 try {
                     if (isLink()) {
                         // TODO: check link target
@@ -217,7 +217,7 @@ public class FileNode extends Node {
                 return null;
             }
         }
-        result = new ArrayList<FileNode>(children.length);
+        result = new ArrayList<>(children.length);
         for (File child : children) {
             result.add(new FileNode(root, child));
         }

@@ -47,6 +47,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +120,7 @@ public class FileNode extends Node {
 
     @Override
     public boolean exists() {
-        return path.toFile().exists() || isNoneExistingBrokenLink(path.toFile());
+        return Files.exists(path, LinkOption.NOFOLLOW_LINKS);
     }
 
     @Override

@@ -381,7 +381,7 @@ public class FileNode extends Node {
     public FileNode deleteFile() throws DeleteException {
         try {
             checkFile();
-            doDeleteTree(path.toFile());
+            Files.delete(path);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -389,17 +389,9 @@ public class FileNode extends Node {
     }
 
     public FileNode deleteDirectory() throws DeleteException {
-        String[] files;
-
         try {
-            files = path.toFile().list();
-            if (files == null) {
-                throw new DeleteException(this, "not a directory");
-            }
-            if (files.length != 0) {
-                throw new DeleteException(this, "directory is not empty");
-            }
-            doDeleteTree(path.toFile());
+            checkDirectory();
+            Files.delete(path);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -424,21 +416,15 @@ public class FileNode extends Node {
     protected static void doDeleteTree(File file) throws IOException {
         File[] files;
 
-        if (isLink(file.toPath())) {
-            Files.delete(file.toPath());
-            return;
-        }
-        files = file.listFiles();
-        if (files != null) {
-            for (File child : files) {
-                doDeleteTree(child);
+        if (!isLink(file.toPath())) {
+            files = file.listFiles();
+            if (files != null) {
+                for (File child : files) {
+                    doDeleteTree(child);
+                }
             }
-        } else {
-            // not a directory
         }
-        if (!file.delete()) {
-            throw new FileNotFoundException("cannot delete file " + file);
-        }
+        Files.delete(file.toPath());
     }
 
     //--

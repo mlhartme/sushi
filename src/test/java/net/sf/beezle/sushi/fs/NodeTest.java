@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1030,7 +1031,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             node.deleteTree();
             fail();
         } catch (DeleteException e) {
-            assertTrue(e.getCause() instanceof FileNotFoundException);
+            assertTrue(e.getCause() instanceof NoSuchFileException);
         }
     }
 

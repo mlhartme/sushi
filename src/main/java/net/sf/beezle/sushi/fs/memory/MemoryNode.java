@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 /** You'll normally use World.memoryNode() to create instances */
@@ -210,7 +211,7 @@ public class MemoryNode extends Node {
     @Override
     public MemoryNode deleteTree() throws DeleteException {
         if (type == Type.NONE) {
-            throw new DeleteException(this, new FileNotFoundException(getPath()));
+            throw new DeleteException(this, new NoSuchFileException(getPath()));
         }
         if (type == Type.DIRECTORY) {
             try {

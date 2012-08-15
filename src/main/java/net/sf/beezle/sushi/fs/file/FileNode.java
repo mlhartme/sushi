@@ -289,29 +289,14 @@ public class FileNode extends Node {
     @Override
     public boolean isLink() throws ExistsException {
     	try {
-    		return isLink(path.toFile());
+    		return isLink(path);
     	} catch (IOException e) {
     		throw new ExistsException(this, e);
     	}
     }
 
-    private static boolean isLink(File file) throws IOException {
-        String name;
-        File parent;
-        File canonical;
-
-        name = file.getName();
-        parent = file.getAbsoluteFile().getParentFile();
-        if (parent == null) {
-            // file is the root directory
-            return false;
-        }
-        canonical = new File(parent.getCanonicalPath(), name);
-        return !canonical.getAbsolutePath().equals(canonical.getCanonicalPath()) ||  isBrokenLink(file);
-    }
-
-    private static boolean isBrokenLink(File link) {
-    	return link.exists() ? false : isNoneExistingBrokenLink(link);
+    private static boolean isLink(Path path) throws IOException {
+        return Files.isSymbolicLink(path);
     }
 
     private static boolean isNoneExistingBrokenLink(File link) {
@@ -396,7 +381,7 @@ public class FileNode extends Node {
     public FileNode deleteFile() throws DeleteException {
         try {
             checkFile();
-            delete(getWorld(), path.toFile());
+            doDeleteTree(path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -414,7 +399,7 @@ public class FileNode extends Node {
             if (files.length != 0) {
                 throw new DeleteException(this, "directory is not empty");
             }
-            delete(getWorld(), path.toFile());
+            doDeleteTree(path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -429,40 +414,30 @@ public class FileNode extends Node {
     @Override
     public FileNode deleteTree() throws DeleteException {
         try {
-            delete(getWorld(), path.toFile());
+            doDeleteTree(path.toFile());
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
         return this;
     }
 
-    protected static void delete(World world, File file) throws IOException {
+    protected static void doDeleteTree(File file) throws IOException {
         File[] files;
 
-        if (isLink(file)) {
-            deleteLink(world, file);
+        if (isLink(file.toPath())) {
+            Files.delete(file.toPath());
             return;
         }
         files = file.listFiles();
         if (files != null) {
             for (File child : files) {
-                delete(world, child);
+                doDeleteTree(child);
             }
         } else {
             // not a directory
         }
         if (!file.delete()) {
             throw new FileNotFoundException("cannot delete file " + file);
-        }
-    }
-
-    private static void deleteLink(World io, File link) throws IOException {
-        // I used to do this in pure java (for none-broken links at least), but the java code was unable
-        // to delete symlinks pointing to protected files or directories
-      	new Launcher(io.getTemp(), "rm", link.getAbsolutePath()).execNoOutput();
-        // force java to update it's cache
-        if (link.delete()) {
-            throw new IllegalStateException(link.toString());
         }
     }
 

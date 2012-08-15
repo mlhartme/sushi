@@ -116,7 +116,7 @@ public class SerializerTest {
         doc = BUILDER.parseString("<a><b/></a>");
         file = new World().getTemp().createTempFile();
         SERIALIZER.serialize(doc, file, true);
-        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<a>", "  <b/>", "</a>"),
+        assertEquals(OS.CURRENT.lines("<?xml version=\"1.0\" encoding=\"UTF-8\"?><a>", "  <b/>", "</a>"),
         		file.readString());
     }
 

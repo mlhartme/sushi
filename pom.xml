@@ -9,7 +9,7 @@
 
   <name>Sushi</name>
   <description>See ${project.url}.</description>
-  <url>https://sourceforge.net/apps/trac/beezle/wiki/Sushi</url>
+  <url>https://github.com/mlhartme/sushi/wiki/sushi</url>
   <inceptionYear>2004</inceptionYear>
 
   <licenses>

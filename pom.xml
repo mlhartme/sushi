@@ -9,7 +9,7 @@
 
   <name>Sushi</name>
   <description>See ${project.url}.</description>
-  <url>https://github.com/mlhartme/sushi/wiki/sushi</url>
+  <url>https://github.com/mlhartme/sushi</url>
   <inceptionYear>2004</inceptionYear>
 
   <licenses>
@@ -25,9 +25,9 @@
   <packaging>jar</packaging>
 
   <scm>
-    <connection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/trunk</connection>
-    <developerConnection>scm:svn:https://beezle.svn.sourceforge.net/svnroot/beezle/sushi/trunk</developerConnection>
-    <url>http://beezle.svn.sourceforge.net/viewvc/beezle/sushi/trunk</url>
+    <connection>scm:git:https://github.com/mlhartme/sushi.git</connection>
+    <developerConnection>scm:git:https://github.com/mlhartme/sushi.git</developerConnection>
+    <url>https://github.com/mlhartme/sushi</url>
   </scm>
 
   <dependencies>
@@ -70,13 +70,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <distributionManagement>
-    <site>
-      <id>sourceforge</id>
-      <url>scp://shell.sourceforge.net/home/project-web/beezle/htdocs/sushi/site</url>
-    </site>
-  </distributionManagement>
 
   <build>
     <plugins>

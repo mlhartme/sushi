@@ -169,7 +169,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             assertNull(nosuchfile.list());
             fail();
         } catch (ListException e) {
-            assertTrue(e.getCause().getClass().getName(), e.getCause() instanceof FileNotFoundException);
+            assertTrue(e.getCause().getClass().getName(), e.getCause() instanceof NoSuchFileException);
         }
     }
 

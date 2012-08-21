@@ -40,10 +40,7 @@ import net.sf.beezle.sushi.launcher.Launcher;
 
 import java.io.*;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -196,31 +193,21 @@ public class FileNode extends Node {
     /** @return null when called for a file; non-null otherwise */
     @Override
     public List<FileNode> list() throws ListException {
-        File[] children;
         List<FileNode> result;
+        DirectoryStream<Path> ds;
 
-        children = path.toFile().listFiles();
-        if (children == null) {
-            if (!exists()) {
-                throw new ListException(this, new FileNotFoundException(getPath()));
-            }
-            if (!canRead()) {
-                try {
-                    if (isLink()) {
-                        // TODO: check link target
-                        throw new ListException(this, new IOException("broken link"));
-                    }
-                } catch (IOException e) {
-                    // fall through
-                }
-                throw new ListException(this, new IOException("permission denied"));
-            } else {
+        try {
+            ds = Files.newDirectoryStream(path);
+        } catch (IOException e) {
+            if (isFile()) {
                 return null;
+            } else {
+                throw new ListException(this, e);
             }
         }
-        result = new ArrayList<>(children.length);
-        for (File child : children) {
-            result.add(new FileNode(root, child.toPath()));
+        result = new ArrayList<>();
+        for (Path child : ds) {
+            result.add(new FileNode(root, child));
         }
         return result;
     }

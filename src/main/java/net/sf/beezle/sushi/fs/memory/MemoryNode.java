@@ -230,7 +230,7 @@ public class MemoryNode extends Node {
     public List<MemoryNode> list() throws ListException {
         switch (type) {
             case NONE:
-                throw new ListException(this, new FileNotFoundException(getPath()));
+                throw new ListException(this, new NoSuchFileException(getPath()));
             case FILE:
                 return null;
             case DIRECTORY:

@@ -72,6 +72,6 @@ public class FileRoot implements Root<FileNode> {
         if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
             throw new IllegalArgumentException();
         }
-        return new FileNode(this, new File(file, path));
+        return new FileNode(this, new File(file, path).toPath());
     }
 }

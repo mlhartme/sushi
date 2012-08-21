@@ -62,7 +62,7 @@ public class FileFilesystem extends Filesystem {
         // note that the URI may contain a tailing slash, but turning it into a file will remove the slash;
         // getAbsolute is needed to add the current drive on windows if the URI path omitted the drive letter
         file = new File(uri).getAbsoluteFile();
-        return new FileNode(getRoot(file), file);
+        return new FileNode(getRoot(file), file.toPath());
     }
 
     public FileRoot getRoot(File file) {

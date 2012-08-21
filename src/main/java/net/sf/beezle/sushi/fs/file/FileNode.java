@@ -57,18 +57,18 @@ import java.util.List;
 public class FileNode extends Node {
     private final FileRoot root;
 
-    /** never null and always absolute. */
+    /** never null, always absolute, never ends with a slash */
     private final Path path;
 
-    public FileNode(FileRoot root, File file) {
-        if (!file.isAbsolute()) {
-            throw new IllegalArgumentException(file.toString());
+    public FileNode(FileRoot root, Path path) {
+        if (!path.isAbsolute()) {
+            throw new IllegalArgumentException(path.toString());
         }
-        if (file.getPath().endsWith(File.separator) && file.getParent() != null) {
-            throw new IllegalArgumentException(file.getPath());
+        if (path.toString().endsWith(File.separator) && path.getNameCount() > 0) {
+            throw new IllegalArgumentException(path.toString());
         }
         this.root = root;
-        this.path = file.toPath();
+        this.path = path;
     }
 
     @Override
@@ -99,6 +99,10 @@ public class FileNode extends Node {
     /** Avoid calling this method, should be used to interact with 'legacy' code only */
     public File getFile() {
         return path.toFile();
+    }
+
+    public Path toPath() {
+        return path;
     }
 
     /** does not include the drive on windows */
@@ -217,7 +221,7 @@ public class FileNode extends Node {
         }
         result = new ArrayList<>(children.length);
         for (File child : children) {
-            result.add(new FileNode(root, child));
+            result.add(new FileNode(root, child.toPath()));
         }
         return result;
     }

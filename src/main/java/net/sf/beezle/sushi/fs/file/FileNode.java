@@ -319,6 +319,11 @@ public class FileNode extends Node {
         return dest;
     }
 
+    /** Returns a launcher with working directory this. */
+    public Launcher launcher(String ... args) {
+        return new Launcher(this, args);
+    }
+
     //-- rename
 
     public void rename(FileNode target) throws IOException {

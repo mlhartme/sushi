@@ -378,7 +378,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.createInputStream();
     }
 
-    @Test(expected=FileNotFoundException.class)
+    @Test(expected=IOException.class)
     public void readDirectory() throws IOException {
         Node dir;
 
@@ -429,7 +429,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test(expected=FileNotFoundException.class)
-    public void readByteNonoExisting() throws IOException {
+    public void readByteNoneExisting() throws IOException {
         work.join("foo").readBytes();
     }
 
@@ -446,12 +446,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- writeTo
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = IOException.class)
     public void writeToNoneExisting() throws IOException {
         work.join("nosuchfile").writeTo(new ByteArrayOutputStream());
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = IOException.class)
     public void writeToDirectory() throws IOException {
         work.join("dir").mkdir().writeTo(new ByteArrayOutputStream());
     }

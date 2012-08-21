@@ -38,16 +38,13 @@ import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.launcher.Launcher;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,12 +106,12 @@ public class FileNode extends Node {
     public String getPath() {
     	String result;
 
-    	result = path.toFile().getPath().substring(getRoot().getAbsolute().length());
+    	result = path.toString().substring(getRoot().getAbsolute().length());
     	return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     }
 
     public String getAbsolute() {
-        return path.toFile().getAbsolutePath();
+        return path.toString();
     }
 
     //--
@@ -174,19 +171,19 @@ public class FileNode extends Node {
 
     @Override
     public long getLastModified() throws GetLastModifiedException {
-        long result;
-
-        result = path.toFile().lastModified();
-        if (result == 0 && !exists()) {
-            throw new GetLastModifiedException(this, new ExistsException(this, null));
+        try {
+            return Files.getLastModifiedTime(path).toMillis();
+        } catch (IOException e) {
+            throw new GetLastModifiedException(this, e);
         }
-        return result;
     }
 
     @Override
     public void setLastModified(long time) throws SetLastModifiedException {
-        if (!path.toFile().setLastModified(time)) {
-            throw new SetLastModifiedException(this);
+        try {
+            Files.setLastModifiedTime(path, FileTime.fromMillis(time));
+        } catch (IOException e) {
+            throw new SetLastModifiedException(this, e);
         }
     }
 
@@ -228,8 +225,9 @@ public class FileNode extends Node {
     //-- read and writeBytes
 
     @Override
-    public FileInputStream createInputStream() throws IOException {
-        return new FileInputStream(path.toFile());
+    public InputStream createInputStream() throws IOException {
+        checkFile();
+        return Files.newInputStream(path);
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
@@ -237,8 +235,12 @@ public class FileNode extends Node {
     }
 
     @Override
-    public FileOutputStream createOutputStream(boolean append) throws IOException {
-        return new FileOutputStream(path.toFile(), append);
+    public OutputStream createOutputStream(boolean append) throws IOException {
+        if (append) {
+            return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+        } else {
+            return Files.newOutputStream(path, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE );
+        }
     }
 
     //-- create

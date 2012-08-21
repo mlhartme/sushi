@@ -163,10 +163,13 @@ public class FileNode extends Node {
 
     @Override
     public long length() throws LengthException {
-        if (!Files.isRegularFile(path)) {
-            throw new LengthException(this, new IOException("file expected"));
+        try {
+            checkFile();
+            return Files.size(path);
+        } catch (IOException e) {
+            throw new LengthException(this, e);
         }
-        return path.toFile().length();
+
     }
 
     @Override

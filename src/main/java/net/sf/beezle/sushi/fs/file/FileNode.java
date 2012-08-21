@@ -290,8 +290,6 @@ public class FileNode extends Node {
     @Override
     public FileNode move(Node destNode) throws MoveException {
     	FileNode dest;
-        Launcher p;
-        String output;
 
         if (!(destNode instanceof FileNode)) {
         	throw new MoveException(this, destNode, "cannot move to none-file-node");
@@ -302,20 +300,11 @@ public class FileNode extends Node {
       	} catch (IOException e) {
       		throw new MoveException(this, dest, "dest exists", e);
       	}
-        if (getWorld().os == OS.WINDOWS) {
-            p = new Launcher(dest.getParent(), "cmd", "/C", "move");
-        } else {
-            p = new Launcher(dest.getParent(), "mv");
-        }
-        p.arg(getAbsolute(), dest.getName());
         try {
-			output = p.exec();
+            Files.move(path, dest.path);
 		} catch (IOException e) {
 			throw new MoveException(this, dest, "os command failed", e);
 		}
-        if (output.length() > 0 && getWorld().os != OS.WINDOWS) {
-            throw new MoveException(this, dest, "unexpected output: " + output);
-        }
         return dest;
     }
 

@@ -17,6 +17,7 @@
 
 package net.sf.beezle.sushi.fs.file;
 
+import net.sf.beezle.sushi.fs.MoveException;
 import net.sf.beezle.sushi.fs.NodeTest;
 import net.sf.beezle.sushi.io.OS;
 import org.junit.Test;
@@ -60,26 +61,27 @@ public class FileNodeTest extends NodeTest<FileNode> {
         assertEquals(WORLD.getWorking(), file.getParent());
     }
 
+    // TODO: move up to NodeTest
     @Test
-    public void renameFile() throws IOException {
+    public void moveFile() throws IOException {
         FileNode src;
         FileNode dest;
 
         src = work.join("src");
         dest = work.join("dest");
         try {
-            src.rename(dest);
+            src.move(dest);
             fail();
-        } catch (FileNotFoundException e) {
+        } catch (MoveException e) {
             // ok
         }
         src.mkfile();
-        src.rename(dest);
+        src.move(dest);
         assertFalse(src.exists());
         assertTrue(dest.exists());
         src.mkfile();
         try {
-            dest.rename(src);
+            dest.move(src);
             fail();
         } catch (IOException e) {
             // ok

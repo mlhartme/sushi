@@ -372,25 +372,24 @@ public class FileNode extends Node {
     @Override
     public FileNode deleteTree() throws DeleteException {
         try {
-            doDeleteTree(path.toFile());
+            doDeleteTree(path);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
         return this;
     }
 
-    protected static void doDeleteTree(File file) throws IOException {
+    protected static void doDeleteTree(Path path) throws IOException {
         File[] files;
 
-        if (!Files.isSymbolicLink(file.toPath())) {
-            files = file.listFiles();
-            if (files != null) {
-                for (File child : files) {
+        if (!Files.isSymbolicLink(path)) {
+            if (Files.isDirectory(path)) {
+                for (Path child : Files.newDirectoryStream(path)) {
                     doDeleteTree(child);
                 }
             }
         }
-        Files.delete(file.toPath());
+        Files.delete(path);
     }
 
     //--

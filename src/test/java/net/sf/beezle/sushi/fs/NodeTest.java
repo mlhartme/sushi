@@ -1289,7 +1289,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             assertEquals("foo", node.toString());
             work.getWorld().setWorking(null);
             if (node instanceof FileNode) {
-                assertEquals(((FileNode) node).getFile().toString(), node.toString());
+                assertEquals(((FileNode) node).toPath().toString(), node.toString());
             } else {
                 assertEquals(node.getURI().toString(), node.toString());
             }

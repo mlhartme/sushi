@@ -54,7 +54,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
     public void relativeFile() throws IOException {
         FileNode file;
 
-        assertEquals(((FileNode) WORLD.getWorking()).getFile(), new File(".").getCanonicalFile());
+        assertEquals(((FileNode) WORLD.getWorking()).toPath(), new File(".").getCanonicalFile().toPath());
         file = WORLD.file("foo");
         assertEquals("foo", file.toString());
         assertEquals(WORLD.getWorking(), file.getParent());
@@ -152,14 +152,14 @@ public class FileNodeTest extends NodeTest<FileNode> {
         }
         checkMode(node, 0644);
         checkMode(node, 0700);
-        assertTrue(node.getFile().canRead());
-        assertTrue(node.getFile().canWrite());
+        assertTrue(node.canRead());
+        assertTrue(node.canWrite());
         checkMode(node, 0000);
-        assertFalse(node.getFile().canRead());
-        assertFalse(node.getFile().canWrite());
+        assertFalse(node.canRead());
+        assertFalse(node.canWrite());
         checkMode(node, 0777);
-        assertTrue(node.getFile().canRead());
-        assertTrue(node.getFile().canWrite());
+        assertTrue(node.canRead());
+        assertTrue(node.canWrite());
     }
 
     private void checkMode(FileNode node, int mode) throws IOException {

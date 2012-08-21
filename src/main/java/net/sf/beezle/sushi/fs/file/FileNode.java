@@ -96,11 +96,10 @@ public class FileNode extends Node {
         return path.toFile().toURI();
     }
 
-    /** Avoid calling this method, should be used to interact with 'legacy' code only */
-    public File getFile() {
-        return path.toFile();
-    }
-
+    /**
+     * Avoid calling this method in your code. Should only be used to interact with libs that do not
+     * Sushi (File) Nodes.
+     */
     public Path toPath() {
         return path;
     }

@@ -72,7 +72,7 @@ public class TimeMachineRoot implements Root<TimeMachineNode> {
         String str;
 
         if (node.isFile() && node.length() == 0) {
-            str = root.exec("stat", "-c", "%h", node.getFile().getAbsolutePath()).trim();
+            str = root.exec("stat", "-c", "%h", node.toPath().toAbsolutePath().toString()).trim();
             if (str.length() > 1) {
                 return shared.join("dir_" + str);
             }

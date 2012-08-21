@@ -77,7 +77,7 @@ public class OnShutdown extends Thread {
     public FileNode createFile(FileNode dir) throws IOException {
         FileNode file;
         
-        file = new FileNode(dir.getRoot(), File.createTempFile(prefix, suffix, dir.getFile()).toPath());
+        file = new FileNode(dir.getRoot(), File.createTempFile(prefix, suffix, dir.toPath().toFile()).toPath());
         deleteAtExit(file);
         return file;
     }

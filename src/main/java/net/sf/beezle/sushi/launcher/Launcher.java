@@ -75,7 +75,7 @@ public class Launcher {
 
     /** initializes the directory to execute the command in */
     public Launcher dir(FileNode dir) {
-        return dir(dir.getFile(), dir.getWorld().getSettings().encoding);
+        return dir(dir.toPath().toFile(), dir.getWorld().getSettings().encoding);
     }
 
     /** You'll normally use the dir(FileNode) method instead. */

@@ -64,7 +64,7 @@ public class SvnRoot implements Root<SvnNode> {
     }
 
     public SVNInfo getInfo(FileNode node) throws SVNException {
-        return clientManager.getWCClient().doInfo(node.getFile(), SVNRevision.WORKING);
+        return clientManager.getWCClient().doInfo(node.toPath().toFile(), SVNRevision.WORKING);
     }
 
     public SvnNode node(String path, String encodedQuery) {

@@ -226,7 +226,7 @@ public class FileNode extends Node {
 
     @Override
     public InputStream createInputStream() throws IOException {
-        checkFile();
+        checkFile(); // otherwise, i get an input stream for directories!
         return Files.newInputStream(path);
     }
 
@@ -249,9 +249,7 @@ public class FileNode extends Node {
     @Override
     public FileNode mkfile() throws MkfileException {
     	try {
-			if (!path.toFile().createNewFile()) {
-			    throw new MkfileException(this);
-			}
+            Files.createFile(path);
 		} catch (IOException e) {
 			throw new MkfileException(this, e);
 		}
@@ -260,7 +258,9 @@ public class FileNode extends Node {
 
     @Override
     public FileNode mkdir() throws MkdirException {
-        if (!path.toFile().mkdir()) {
+        try {
+            Files.createDirectory(path);
+        } catch (IOException e) {
             throw new MkdirException(this);
         }
         return this;
@@ -481,7 +481,7 @@ public class FileNode extends Node {
         if (working != null && hasAnchestor(working)) {
             return getRelative(working).replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
         } else {
-            return path.toFile().toString();
+            return path.toString();
         }
     }
 

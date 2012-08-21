@@ -428,7 +428,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals(0, data.length);
     }
 
-    @Test(expected=FileNotFoundException.class)
+    @Test(expected=IOException.class)
     public void readByteNoneExisting() throws IOException {
         work.join("foo").readBytes();
     }

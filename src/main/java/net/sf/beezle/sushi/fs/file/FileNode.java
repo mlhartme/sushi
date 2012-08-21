@@ -233,6 +233,15 @@ public class FileNode extends Node {
         }
     }
 
+    /**
+     * Determines the files size to allocate the resulting array in one chunk. More efficient than the
+     * default implementation.
+     */
+    @Override
+    public byte[] readBytes() throws IOException {
+        return Files.readAllBytes(path);
+    }
+
     //-- create
 
     /** calls createNewFile */
@@ -311,29 +320,6 @@ public class FileNode extends Node {
     /** Returns a launcher with working directory this. */
     public Launcher launcher(String ... args) {
         return new Launcher(this, args);
-    }
-
-    //-- rename
-
-    public void rename(FileNode target) throws IOException {
-        if (target.exists()) {
-            throw new IOException("target exists: " + target);
-        }
-        rename(path.toFile(), target.path.toFile());
-    }
-
-    private static void rename(File src, File target) throws IOException {
-        if (!src.exists()) {
-            throw new FileNotFoundException("" + src);
-        }
-        // the target may exist, it will be overwritten!
-        File parent = target.getAbsoluteFile().getParentFile();
-        if (parent != null && !parent.isDirectory()) {
-            throw new IOException("not a directory: " + parent);
-        }
-        if (!src.renameTo(target)) {
-            throw new IOException("Failed to rename " + src + " to " + target);
-        }
     }
 
     //-- delete

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 1&1 Internet AG, http://www.1and1.org
  *
  * This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package net.sf.beezle.sushi.util;
 
 import java.io.Serializable;

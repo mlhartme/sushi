@@ -79,7 +79,7 @@
         <version>1.9.0</version>
         <configuration>
           <header>src/header.txt</header>
-          <strictCheck>false</strictCheck><!-- TODO: setting this to true rejects every single source file!? -->
+          <strictCheck>true</strictCheck>
           <includes>
             <include>src/**/*.java</include>
           </includes>

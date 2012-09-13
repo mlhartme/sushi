@@ -22,8 +22,12 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 public class NodeReader extends InputStreamReader {
-    public static NodeReader create(Node node) throws IOException {
-        return new NodeReader(node, node.createInputStream(), node.getWorld().getSettings().encoding);
+    public static NodeReader create(Node node) throws FileNotFoundException, CreateInputStreamException {
+        try {
+            return new NodeReader(node, node.createInputStream(), node.getWorld().getSettings().encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     //--

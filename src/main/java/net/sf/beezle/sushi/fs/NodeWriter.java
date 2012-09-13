@@ -22,8 +22,12 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 public class NodeWriter extends OutputStreamWriter {
-    public static NodeWriter create(Node node, boolean append) throws IOException {
-        return new NodeWriter(node, node.createOutputStream(append), node.getWorld().getSettings().encoding);
+    public static NodeWriter create(Node node, boolean append) throws FileNotFoundException, CreateOutputStreamException {
+        try {
+            return new NodeWriter(node, node.createOutputStream(append), node.getWorld().getSettings().encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     //--

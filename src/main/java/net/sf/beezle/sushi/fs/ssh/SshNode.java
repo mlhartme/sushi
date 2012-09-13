@@ -24,6 +24,7 @@ import com.jcraft.jsch.SftpProgressMonitor;
 import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
+import net.sf.beezle.sushi.launcher.ExitCode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -509,7 +510,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public int getMode() throws IOException {
+    public int getMode() throws ModeException {
         ChannelSftp sftp;
 
         try {
@@ -519,15 +520,13 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new IOException(e);
-        } catch (JSchException e) {
-            throw new IOException(e);
+        } catch (JSchException | SftpException e) {
+            throw new ModeException(this, e);
         }
     }
 
     @Override
-    public void setMode(int mode) throws IOException {
+    public void setMode(int mode) throws ModeException {
         SftpATTRS stat;
         ChannelSftp sftp;
 
@@ -540,15 +539,13 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new IOException(e);
-        } catch (JSchException e) {
-            throw new IOException(e);
+        } catch (SftpException | JSchException e) {
+            throw new ModeException(this, e);
         }
     }
 
     @Override
-    public int getUid() throws IOException {
+    public int getUid() throws ModeException {
         ChannelSftp sftp;
 
         try {
@@ -558,15 +555,13 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new IOException(e);
-        } catch (JSchException e) {
-            throw new IOException(e);
+        } catch (SftpException | JSchException e) {
+            throw new ModeException(this, e);
         }
     }
 
     @Override
-    public void setUid(int uid) throws IOException {
+    public void setUid(int uid) throws ModeException {
         String str;
         SftpATTRS stat;
         ChannelSftp sftp;
@@ -575,7 +570,7 @@ public class SshNode extends Node {
             if (isDirectory()) { // TODO
                 str = getRoot().exec("chown", Integer.toString(uid), escape(slashPath));
                 if (str.length() > 0) {
-                    throw new IOException("chown failed:" + str);
+                    throw new ModeException(this, "chown failed:" + str);
                 }
             } else {
                 sftp = alloc();
@@ -587,15 +582,13 @@ public class SshNode extends Node {
                     free(sftp);
                 }
             }
-        } catch (JSchException e) {
-            throw new IOException(e);
-        } catch (SftpException e) {
-            throw new IOException(e);
+        } catch (ExitCode | NodeException | JSchException | SftpException e) {
+            throw new ModeException(this, e);
         }
     }
 
     @Override
-    public int getGid() throws IOException {
+    public int getGid() throws ModeException {
         ChannelSftp sftp;
 
         try {
@@ -605,15 +598,13 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new IOException(e);
-        } catch (JSchException e) {
-            throw new IOException(e);
+        } catch (SftpException | JSchException e) {
+            throw new ModeException(this, e);
         }
     }
 
     @Override
-    public void setGid(int gid) throws IOException {
+    public void setGid(int gid) throws ModeException {
         String str;
         SftpATTRS stat;
         ChannelSftp sftp;
@@ -622,7 +613,7 @@ public class SshNode extends Node {
             if (isDirectory()) { // TODO
                 str = getRoot().exec("chgrp", Integer.toString(gid), slashPath);
                 if (str.length() > 0) {
-                    throw new IOException("chgrp failed:" + str);
+                    throw new ModeException(this, "chgrp failed:" + str);
                 }
             } else {
                 sftp = alloc();
@@ -634,10 +625,8 @@ public class SshNode extends Node {
                     free(sftp);
                 }
             }
-        } catch (JSchException e) {
-            throw new IOException(e);
-        } catch (SftpException e) {
-            throw new IOException(e);
+        } catch (NodeException | ExitCode | JSchException | SftpException e) {
+            throw new ModeException(this, e);
         }
     }
 

@@ -21,6 +21,7 @@ import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
+import net.sf.beezle.sushi.launcher.Failure;
 import net.sf.beezle.sushi.launcher.Launcher;
 
 import java.io.File;
@@ -386,46 +387,54 @@ public class FileNode extends Node {
     //--
 
     @Override
-    public int getMode() throws IOException {
+    public int getMode() throws ModeException {
         return stat(OS.CURRENT.mode, 8) & 0777;
     }
 
     @Override
-    public void setMode(int mode) throws IOException {
+    public void setMode(int mode) throws ModeException {
         ch("chmod", Integer.toOctalString(mode));
     }
 
     @Override
-    public int getUid() throws IOException {
+    public int getUid() throws ModeException {
         return stat(OS.CURRENT.uid, 10);
     }
 
     @Override
-    public void setUid(int uid) throws IOException {
+    public void setUid(int uid) throws ModeException {
         ch("chown", Integer.toString(uid));
     }
 
     @Override
-    public int getGid() throws IOException {
+    public int getGid() throws ModeException {
         return stat(OS.CURRENT.gid, 10);
     }
 
     @Override
-    public void setGid(int gid) throws IOException {
+    public void setGid(int gid) throws ModeException {
         ch("chgrp", Integer.toString(gid));
     }
 
-    private void ch(String cmd, String n) throws IOException {
-        new Launcher(getParent(), cmd, n, getAbsolute()).execNoOutput();
+    private void ch(String cmd, String n) throws ModeException {
+        try {
+            new Launcher(getParent(), cmd, n, getAbsolute()).execNoOutput();
+        } catch (Failure failure) {
+            throw new ModeException(this, failure);
+        }
     }
 
-    private int stat(String[] args, int radix) throws IOException {
+    private int stat(String[] args, int radix) throws ModeException {
         Launcher stat;
 
         stat = new Launcher(getParent(), "stat");
         stat.arg(args);
         stat.arg(getAbsolute());
-        return Integer.parseInt(stat.exec().trim(), radix);
+        try {
+            return Integer.parseInt(stat.exec().trim(), radix);
+        } catch (Failure failure) {
+            throw new ModeException(this, failure);
+        }
     }
 
     //--

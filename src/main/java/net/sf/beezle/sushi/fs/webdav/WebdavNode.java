@@ -382,10 +382,14 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() throws CreateInputStreamException {
         synchronized (tryLock) {
             tryDir = false;
-            return new Get(this).invoke();
+            try {
+                return new Get(this).invoke();
+            } catch (IOException e) {
+                throw new CreateInputStreamException(this, e);
+            }
         }
     }
 

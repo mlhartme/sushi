@@ -198,7 +198,7 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
         ZipFile zip;
         ZipEntry entry;
 
@@ -207,7 +207,11 @@ public class ZipNode extends Node {
         if (entry == null) {
             throw new FileNotFoundException(this);
         }
-        return zip.getInputStream(entry);
+        try {
+            return zip.getInputStream(entry);
+        } catch (IOException e) {
+            throw new CreateInputStreamException(this, e);
+        }
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {

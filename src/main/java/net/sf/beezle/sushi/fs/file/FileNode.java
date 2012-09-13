@@ -204,9 +204,17 @@ public class FileNode extends Node {
     //-- read and writeBytes
 
     @Override
-    public InputStream createInputStream() throws IOException {
-        checkFile(); // otherwise, i get an input stream for directories!
-        return Files.newInputStream(path);
+    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
+        if (isDirectory()) {
+            throw new FileNotFoundException(this);
+        }
+        try {
+            return Files.newInputStream(path);
+        } catch (NoSuchFileException e) {
+            throw new FileNotFoundException(this, e);
+        } catch (IOException e) {
+            throw new CreateInputStreamException(this, e);
+        }
     }
 
     public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {

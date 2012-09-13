@@ -106,7 +106,7 @@ public abstract class Node {
      * Creates a stream to read this node.
      * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception
      */
-    public abstract InputStream createInputStream() throws IOException;
+    public abstract InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException;
 
     /**
      * Concenience method for <code>writeTo(dest, 0)</code>.

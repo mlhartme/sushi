@@ -58,7 +58,7 @@ public class ConsoleNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() {
         return System.in;
     }
 

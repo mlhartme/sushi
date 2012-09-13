@@ -239,11 +239,15 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
         if (type != Type.FILE) {
             throw new FileNotFoundException(this);
         }
-        return root.open(path);
+        try {
+            return root.open(path);
+        } catch (IOException e) {
+            throw new CreateInputStreamException(this, e);
+        }
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {

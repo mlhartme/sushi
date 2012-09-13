@@ -164,7 +164,7 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
         return node.createInputStream();
     }
 

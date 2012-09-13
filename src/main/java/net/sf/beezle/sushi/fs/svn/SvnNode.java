@@ -176,15 +176,19 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws IOException {
+    public InputStream createInputStream() throws CreateInputStreamException {
         FileNode tmp;
         OutputStream dest;
 
-        tmp = getWorld().getTemp().createTempFile();
-        dest = tmp.createOutputStream();
-        writeTo(dest);
-        dest.close();
-        return tmp.createInputStream();
+        try {
+            tmp = getWorld().getTemp().createTempFile();
+            dest = tmp.createOutputStream();
+            writeTo(dest);
+            dest.close();
+            return tmp.createInputStream();
+        } catch (IOException e) {
+            throw new CreateInputStreamException(this, e);
+        }
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {

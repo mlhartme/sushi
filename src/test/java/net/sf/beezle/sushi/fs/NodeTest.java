@@ -728,7 +728,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
-    public void writeOverExistingFile() throws IOException {
+    public void writeOverFile() throws IOException {
         Node file;
 
         file = work.join("existing");
@@ -737,6 +737,14 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("", file.readString());
     }
 
+    @Test(expected = FileNotFoundException.class)
+    public void writeOverDirectory() throws IOException {
+        Node file;
+
+        file = work.join("existing");
+        file.mkdir();
+        file.createOutputStream();
+    }
     @Test
     public void inputAlreadyClosed() throws IOException {
         Node file;

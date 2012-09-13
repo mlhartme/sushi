@@ -172,18 +172,19 @@ public abstract class Node {
         return false;
     }
 
-    public OutputStream createOutputStream() throws IOException {
+    public OutputStream createOutputStream() throws FileNotFoundException, CreateOutputStreamException {
         return createOutputStream(false);
     }
-    public OutputStream createAppendStream() throws IOException {
+    public OutputStream createAppendStream() throws FileNotFoundException, CreateOutputStreamException {
         return createOutputStream(true);
     }
 
     /**
      * Create a stream to write this node.
      * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
+     * @throws FileNotFoundException if this node is a directory
      */
-    public abstract OutputStream createOutputStream(boolean append) throws IOException;
+    public abstract OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException;
 
     /**
      * Lists child nodes of this node.

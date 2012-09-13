@@ -665,7 +665,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(final boolean append) throws IOException {
+    public OutputStream createOutputStream(final boolean append) {
         return new CheckedByteArrayOutputStream() {
             @Override
             public void close() throws IOException {

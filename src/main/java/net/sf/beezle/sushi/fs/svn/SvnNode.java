@@ -205,29 +205,33 @@ public class SvnNode extends Node {
 
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
+    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException {
         byte[] add;
 
-        if (append) {
-            try {
-                add = readBytes();
-            } catch (FileNotFoundException e) {
+        try {
+            if (append) {
+                try {
+                    add = readBytes();
+                } catch (FileNotFoundException e) {
+                    add = null;
+                }
+            } else {
                 add = null;
             }
-        } else {
-            add = null;
-        }
-        return new CheckedByteArrayOutputStream(add) {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                try {
-                    readFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
-                } catch (SVNException e) {
-                    throw new IOException("close failed", e);
+            return new CheckedByteArrayOutputStream(add) {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    try {
+                        readFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
+                    } catch (SVNException e) {
+                        throw new IOException("close failed", e);
+                    }
                 }
-            }
-        };
+            };
+        } catch (IOException e) {
+            throw new CreateOutputStreamException(this, e);
+        }
     }
 
     @Override

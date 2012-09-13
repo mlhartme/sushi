@@ -173,7 +173,7 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
+    public OutputStream createOutputStream(boolean append) {
         throw unsupported("createOutputStream(boolean)");
     }
 

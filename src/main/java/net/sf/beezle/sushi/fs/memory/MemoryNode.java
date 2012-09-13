@@ -255,28 +255,34 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
+    public OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException {
         byte[] add;
 
-        switch (type) {
-            case DIRECTORY:
-                throw new IOException("cannot write file over directory: " + path);
-            case FILE:
-                add = append ? readBytes() : null;
-                break;
-            default:
-                add = null;
-        }
-        getParent().checkDirectory();
-        return new CheckedByteArrayOutputStream(add) {
-            @Override
-            public void close() throws IOException {
-                type = Type.FILE;
-                root.store(path, this.buf, this.count);
-                super.close();
-                lastModified = System.currentTimeMillis();
+        try {
+            switch (type) {
+                case DIRECTORY:
+                    throw new FileNotFoundException(this, "cannot write file over directory");
+                case FILE:
+                    add = append ? readBytes() : null;
+                    break;
+                default:
+                    add = null;
             }
-        };
+            getParent().checkDirectory();
+            return new CheckedByteArrayOutputStream(add) {
+                @Override
+                public void close() throws IOException {
+                    type = Type.FILE;
+                    root.store(path, this.buf, this.count);
+                    super.close();
+                    lastModified = System.currentTimeMillis();
+                }
+            };
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new CreateOutputStreamException(this, e);
+        }
     }
 
     @Override

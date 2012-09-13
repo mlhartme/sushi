@@ -398,42 +398,46 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
+    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException {
         byte[] add;
         final Put method;
         final WebdavConnection connection;
         OutputStream result;
 
-        if (append) {
-            try {
-                add = readBytes();
-            } catch (FileNotFoundException e) {
+        try {
+            if (append) {
+                try {
+                    add = readBytes();
+                } catch (FileNotFoundException e) {
+                    add = null;
+                }
+            } else {
                 add = null;
             }
-        } else {
-            add = null;
-        }
-        synchronized (tryLock) {
-            tryDir = false;
-            method = new Put(this);
-            connection = method.request();
-            result = new ChunkedOutputStream(connection.getOutputBuffer()) {
-                private boolean closed = false;
-                @Override
-                public void close() throws IOException {
-                    if (closed) {
-                        return;
+            synchronized (tryLock) {
+                tryDir = false;
+                method = new Put(this);
+                connection = method.request();
+                result = new ChunkedOutputStream(connection.getOutputBuffer()) {
+                    private boolean closed = false;
+                    @Override
+                    public void close() throws IOException {
+                        if (closed) {
+                            return;
+                        }
+                        closed = true;
+                        super.close();
+                        method.response(connection);
                     }
-                    closed = true;
-                    super.close();
-                    method.response(connection);
+                };
+                if (add != null) {
+                    result.write(add);
                 }
-            };
-            if (add != null) {
-                result.write(add);
             }
+            return result;
+        } catch (IOException e) {
+            throw new CreateOutputStreamException(this, e);
         }
-        return result;
     }
 
     @Override

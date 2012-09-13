@@ -68,7 +68,7 @@ public class ConsoleNode extends Node {
 
     /** @parem append is ignored */
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
+    public OutputStream createOutputStream(boolean append) {
         return System.out;
     }
 

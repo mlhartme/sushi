@@ -222,11 +222,18 @@ public class FileNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws IOException {
-        if (append) {
-            return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-        } else {
-            return Files.newOutputStream(path, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE );
+    public OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException {
+        try {
+            if (append) {
+                return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+            } else {
+                return Files.newOutputStream(path, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE );
+            }
+        } catch (IOException e) {
+            if (isDirectory()) {
+                throw new FileNotFoundException(this, e);
+            }
+            throw new CreateOutputStreamException(this, e);
         }
     }
 

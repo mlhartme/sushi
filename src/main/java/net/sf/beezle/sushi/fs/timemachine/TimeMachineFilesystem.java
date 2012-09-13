@@ -16,15 +16,9 @@
  */
 package net.sf.beezle.sushi.fs.timemachine;
 
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.Features;
-import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.NodeInstantiationException;
-import net.sf.beezle.sushi.fs.World;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.file.FileNode;
 
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -72,9 +66,7 @@ public class TimeMachineFilesystem extends Filesystem {
         }
         try {
             return TimeMachineRoot.create(this, (FileNode) dir).node(path, null);
-        } catch (FileNotFoundException e) {
-            throw new NodeInstantiationException(uri, e.getMessage(), e);
-        } catch (ExistsException e) {
+        } catch (DirectoryNotFoundException | ExistsException e) {
             throw new NodeInstantiationException(uri, e.getMessage(), e);
         }
     }

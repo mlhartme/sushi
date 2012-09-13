@@ -16,6 +16,7 @@
  */
 package net.sf.beezle.sushi.fs.zip;
 
+import net.sf.beezle.sushi.fs.FileNotFoundException;
 import net.sf.beezle.sushi.fs.LengthException;
 import net.sf.beezle.sushi.fs.Node;
 import net.sf.beezle.sushi.fs.World;
@@ -23,7 +24,6 @@ import net.sf.beezle.sushi.fs.file.FileNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;

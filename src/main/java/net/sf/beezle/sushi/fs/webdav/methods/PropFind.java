@@ -16,6 +16,7 @@
  */
 package net.sf.beezle.sushi.fs.webdav.methods;
 
+import net.sf.beezle.sushi.fs.FileNotFoundException;
 import net.sf.beezle.sushi.fs.webdav.MovedException;
 import net.sf.beezle.sushi.fs.webdav.MultiStatus;
 import net.sf.beezle.sushi.fs.webdav.Name;
@@ -27,7 +28,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.w3c.dom.Document;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class PropFind extends Method<List<MultiStatus>> {
         case HttpStatus.SC_MOVED_PERMANENTLY:
         	throw new MovedException();
         case HttpStatus.SC_NOT_FOUND:
-        	throw new FileNotFoundException(getUri());
+        	throw new FileNotFoundException(resource);
         default:
         	throw new StatusException(response.getStatusLine());
         }

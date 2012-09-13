@@ -16,6 +16,7 @@
  */
 package net.sf.beezle.sushi.fs.webdav.methods;
 
+import net.sf.beezle.sushi.fs.FileNotFoundException;
 import net.sf.beezle.sushi.fs.webdav.MovedException;
 import net.sf.beezle.sushi.fs.webdav.StatusException;
 import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
@@ -23,7 +24,6 @@ import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Delete extends Method<Void> {
@@ -39,7 +39,7 @@ public class Delete extends Method<Void> {
         case HttpStatus.SC_MOVED_PERMANENTLY:
         	throw new MovedException();
         case HttpStatus.SC_NOT_FOUND:
-        	throw new FileNotFoundException(getUri());
+        	throw new FileNotFoundException(resource);
        	default:
         	throw new StatusException(response.getStatusLine());
         }

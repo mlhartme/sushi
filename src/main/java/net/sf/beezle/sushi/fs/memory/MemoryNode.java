@@ -16,17 +16,9 @@
  */
 package net.sf.beezle.sushi.fs.memory;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -241,7 +233,7 @@ public class MemoryNode extends Node {
 
     public byte[] readBytes() throws IOException {
         if (type != Type.FILE) {
-            throw new FileNotFoundException(path);
+            throw new FileNotFoundException(this);
         }
         return root.readBytes(path);
     }
@@ -249,7 +241,7 @@ public class MemoryNode extends Node {
     @Override
     public InputStream createInputStream() throws IOException {
         if (type != Type.FILE) {
-            throw new FileNotFoundException(path);
+            throw new FileNotFoundException(this);
         }
         return root.open(path);
     }

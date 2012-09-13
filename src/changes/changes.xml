@@ -7,6 +7,9 @@
         now, and FileNode.getFile() was replaced by FileNode.toPath().
       </action>
       <action date="2012-08-21" dev="mhm" type="update">
+        Unified not-found and already-exists exceptions.
+      </action>
+      <action date="2012-08-21" dev="mhm" type="update">
         FileNode.move with paths (replacing extra processes); FileNode.rename dumped.
       </action>
       <action date="2012-08-21" dev="mhm" type="update">

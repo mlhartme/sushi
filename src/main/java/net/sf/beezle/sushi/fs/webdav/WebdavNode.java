@@ -16,16 +16,7 @@
  */
 package net.sf.beezle.sushi.fs.webdav;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.webdav.methods.Delete;
 import net.sf.beezle.sushi.fs.webdav.methods.Get;
 import net.sf.beezle.sushi.fs.webdav.methods.Head;
@@ -41,7 +32,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.io.ChunkedOutputStream;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -399,7 +389,7 @@ public class WebdavNode extends Node {
         }
     }
 
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         return writeToImpl(dest, skip);
     }
 

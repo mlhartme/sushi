@@ -16,16 +16,7 @@
  */
 package net.sf.beezle.sushi.fs.svn;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 import net.sf.beezle.sushi.io.SkipOutputStream;
@@ -42,7 +33,6 @@ import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -93,7 +83,7 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public List<SvnNode> list() throws ListException {
+    public List<SvnNode> list() throws DirectoryNotFoundException, ListException {
         List<SVNDirEntry> lst;
         List<SvnNode> result;
         SVNRepository repository;
@@ -115,7 +105,7 @@ public class SvnNode extends Node {
             } else if (kind == SVNNodeKind.FILE) {
                 return null;
             } else {
-                throw new ListException(this, new FileNotFoundException(getPath()));
+                throw new DirectoryNotFoundException(this);
             }
         } catch (SVNException e) {
             throw new ListException(this, e);
@@ -148,7 +138,7 @@ public class SvnNode extends Node {
         List<Long> result;
 
         revisions = (Collection<SVNFileRevision>) root.getRepository().getFileRevisions(path, null, start, end);
-        result = new ArrayList<Long>();
+        result = new ArrayList<>();
         for (SVNFileRevision rev : revisions) {
             result.add(rev.getRevision());
         }
@@ -237,15 +227,13 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public SvnNode deleteFile() throws DeleteException {
+    public SvnNode deleteFile() throws FileNotFoundException, DeleteException {
         try {
             if (!isFile()) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new FileNotFoundException(this);
             }
             delete("sushi delete");
-        } catch (ExistsException e) {
-            throw new DeleteException(this, e);
-        } catch (SVNException e) {
+        } catch (ExistsException | SVNException e) {
             throw new DeleteException(this, e);
         }
         return this;
@@ -255,32 +243,26 @@ public class SvnNode extends Node {
     public SvnNode deleteDirectory() throws DeleteException {
         try {
             if (!isDirectory()) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new DirectoryNotFoundException(this);
             }
             if (list().size() > 0) {
                 throw new DeleteException(this, "directory is not empty");
             }
             delete("sushi delete");
-        } catch (ExistsException e) {
-            throw new DeleteException(this, e);
-        } catch (ListException e) {
-            throw new DeleteException(this, e);
-        } catch (SVNException e) {
+        } catch (ExistsException | DirectoryNotFoundException | ListException | SVNException e) {
             throw new DeleteException(this, e);
         }
         return this;
     }
 
     @Override
-    public SvnNode deleteTree() throws DeleteException {
+    public SvnNode deleteTree() throws NodeNotFoundException, DeleteException {
         try {
             if (!exists()) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new NodeNotFoundException(this);
             }
             delete("sushi delete");
-        } catch (ExistsException e) {
-            throw new DeleteException(this, e);
-        } catch (SVNException e) {
+        } catch (ExistsException | SVNException e) {
             throw new DeleteException(this, e);
         }
         return this;
@@ -325,7 +307,7 @@ public class SvnNode extends Node {
 
         repository = root.getRepository();
         if (repository.checkPath(path, revision) != SVNNodeKind.FILE) {
-            throw new FileNotFoundException("no such file: " + path + ", revision " + revision);
+            throw new FileNotFoundException(this, "no such file in revision " + revision);
         }
         return repository.getFile(path, revision, null, dest);
     }

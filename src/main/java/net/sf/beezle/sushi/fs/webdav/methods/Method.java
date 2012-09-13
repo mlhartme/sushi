@@ -42,7 +42,7 @@ public abstract class Method<T> {
 
     //--
 
-    protected final WebdavRoot root;
+    protected final WebdavNode resource;
 
     private final BasicHttpEntityEnclosingRequest request;
 
@@ -53,7 +53,7 @@ public abstract class Method<T> {
     }
 
     public Method(String method, WebdavNode resource, boolean head) {
-        this.root = resource.getRoot();
+        this.resource = resource;
         this.head = head;
         this.request = new BasicHttpEntityEnclosingRequest(method, resource.getAbsPath());
     }
@@ -83,7 +83,7 @@ public abstract class Method<T> {
     }
 
     public Xml getXml() {
-        return root.getFilesystem().getWorld().getXml();
+        return resource.getRoot().getFilesystem().getWorld().getXml();
     }
 
     //--
@@ -101,15 +101,15 @@ public abstract class Method<T> {
         setRequestHeader("Cache-store", "no-store");
         setRequestHeader(HTTP.USER_AGENT, "Sushi Webdav");
         setContentHeader();
-        conn = root.allocate();
-        root.send(conn, request);
+        conn = resource.getRoot().allocate();
+        resource.getRoot().send(conn, request);
         return conn;
     }
 
     public T response(WebdavConnection connection) throws IOException {
         HttpResponse response;
 
-        response = root.receive(connection, head);
+        response = resource.getRoot().receive(connection, head);
         try {
             return processResponse(connection, response);
         } finally {
@@ -143,6 +143,6 @@ public abstract class Method<T> {
 
     /** called after processResponse finished normally or with an exception */
     protected void processResponseFinally(HttpResponse response, WebdavConnection conn) throws IOException {
-    	root.free(response, conn);
+    	resource.getRoot().free(response, conn);
     }
 }

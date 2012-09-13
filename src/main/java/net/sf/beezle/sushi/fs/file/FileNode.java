@@ -16,28 +16,17 @@
  */
 package net.sf.beezle.sushi.fs.file;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.Filesystem;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.LinkException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MkfileException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.OnShutdown;
-import net.sf.beezle.sushi.fs.ReadLinkException;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.zip.ZipFilesystem;
 import net.sf.beezle.sushi.fs.zip.ZipNode;
 import net.sf.beezle.sushi.io.Buffer;
 import net.sf.beezle.sushi.io.OS;
 import net.sf.beezle.sushi.launcher.Launcher;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.*;
 import java.nio.file.attribute.FileTime;
@@ -219,7 +208,7 @@ public class FileNode extends Node {
         return Files.newInputStream(path);
     }
 
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         return writeToImpl(dest, skip);
     }
 

@@ -16,13 +16,13 @@
  */
 package net.sf.beezle.sushi.fs.webdav.methods;
 
+import net.sf.beezle.sushi.fs.FileNotFoundException;
 import net.sf.beezle.sushi.fs.webdav.StatusException;
 import net.sf.beezle.sushi.fs.webdav.WebdavConnection;
 import net.sf.beezle.sushi.fs.webdav.WebdavNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
-import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +46,7 @@ public class Get extends Method<InputStream> {
         		public void close() throws IOException {
                     if (!freed) {
                         freed = true;
-                        root.free(response, connection);
+                        resource.getRoot().free(response, connection);
                     }
                     super.close();
         		}
@@ -54,10 +54,10 @@ public class Get extends Method<InputStream> {
         case HttpStatus.SC_NOT_FOUND:
         case HttpStatus.SC_GONE:
         case HttpStatus.SC_MOVED_PERMANENTLY:
-            root.free(response, connection);
-            throw new FileNotFoundException(getUri());
+            resource.getRoot().free(response, connection);
+            throw new FileNotFoundException(resource);
         default:
-            root.free(response, connection);
+            resource.getRoot().free(response, connection);
         	throw new StatusException(response.getStatusLine());
         }
     }

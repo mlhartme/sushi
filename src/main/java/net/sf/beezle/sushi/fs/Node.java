@@ -32,7 +32,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -84,6 +83,9 @@ import java.util.zip.GZIPOutputStream;
  * underlying libraries provides pull logic because, push logic can be efficiently implemented on top ...) </p>
  *
  * <p>As long as you stick to read operations, nodes are thread-save.</p>
+ *
+ * <p>Exception handling: throws NodeNotFoundException, FileNotFoundException, DirectoryNotFoundException to indicate
+ * a node, file or directory is expected to exist, but it does not.</p>
  */
 public abstract class Node {
     protected UnsupportedOperationException unsupported(String op) {
@@ -113,7 +115,7 @@ public abstract class Node {
      * @throws FileNotFoundException when this node is not a file
      * @throws WriteToException for other errors
      */
-    public long writeTo(OutputStream dest) throws WriteToException, FileNotFoundException {
+    public long writeTo(OutputStream dest) throws FileNotFoundException, WriteToException {
         return writeTo(dest, 0);
     }
 
@@ -125,9 +127,9 @@ public abstract class Node {
      * @throws FileNotFoundException when this node is not a file
      * @throws WriteToException for other errors
      */
-    public abstract long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException;
+    public abstract long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
 
-    public long writeToImpl(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long writeToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         InputStream src;
         long result;
 
@@ -191,7 +193,7 @@ public abstract class Node {
      * @throws ListException if this does not exist (in this case, cause is set to a FileNotFoundException),
      *    permission is denied, or another IO problem occurs.
      */
-    public abstract List<? extends Node> list() throws ListException;
+    public abstract List<? extends Node> list() throws ListException, DirectoryNotFoundException;
 
     /**
      * Fails if the directory already exists. Features define whether is operation is atomic.
@@ -222,13 +224,13 @@ public abstract class Node {
      *
      * @return this
      */
-    public abstract Node deleteTree() throws DeleteException;
+    public abstract Node deleteTree() throws NodeNotFoundException, DeleteException;
 
     /** @throws DeleteException if this is not file */
-    public abstract Node deleteFile() throws DeleteException;
+    public abstract Node deleteFile() throws FileNotFoundException, DeleteException;
 
     /** @throws DeleteException if this is not a directory or the directory is not empty */
-    public abstract Node deleteDirectory() throws DeleteException;
+    public abstract Node deleteDirectory() throws DirectoryNotFoundException, DeleteException;
 
     /**
      * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
@@ -510,28 +512,28 @@ public abstract class Node {
 
     //--
 
-    public Node checkExists() throws IOException {
+    public Node checkExists() throws ExistsException, NodeNotFoundException {
         if (!exists()) {
-            throw new IOException("no such file or directory: " + this);
+            throw new NodeNotFoundException(this);
         }
         return this;
     }
 
-    public Node checkNotExists() throws IOException {
+    public Node checkNotExists() throws ExistsException, NodeAlreadyExistsException {
         if (exists()) {
-            throw new IOException("file or directory already exists: " + this);
+            throw new NodeAlreadyExistsException(this);
         }
         return this;
     }
 
-    public Node checkDirectory() throws ExistsException, FileNotFoundException {
+    public Node checkDirectory() throws ExistsException, DirectoryNotFoundException {
         if (isDirectory()) {
             return this;
         }
         if (exists()) {
-            throw new FileNotFoundException("directory expected: " + this);
+            throw new DirectoryNotFoundException(this, "directory not found - this is a file");
         } else {
-            throw new FileNotFoundException("no such directory: " + this);
+            throw new DirectoryNotFoundException(this);
         }
     }
 
@@ -540,9 +542,9 @@ public abstract class Node {
             return this;
         }
         if (exists()) {
-            throw new FileNotFoundException("file expected: " + this);
+            throw new FileNotFoundException(this, "file not found - this is a directory");
         } else {
-            throw new FileNotFoundException("no such file: " + this);
+            throw new FileNotFoundException(this);
         }
     }
 
@@ -698,7 +700,7 @@ public abstract class Node {
 
         found = findOpt(include);
         if (found == null) {
-            throw new FileNotFoundException(toString() + ": not found: " + include);
+            throw new FileNotFoundException(this, "nothing matches this pattern: " + include);
         }
         return found;
     }

@@ -16,16 +16,8 @@
  */
 package net.sf.beezle.sushi.fs.zip;
 
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -213,7 +205,7 @@ public class ZipNode extends Node {
         zip = root.getZip();
         entry = zip.getEntry(path);
         if (entry == null) {
-            throw new FileNotFoundException(path);
+            throw new FileNotFoundException(this);
         }
         return zip.getInputStream(entry);
     }
@@ -228,7 +220,7 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public List<ZipNode> list() throws ListException {
+    public List<ZipNode> list() throws DirectoryNotFoundException, ListException {
         List<String> paths;
         List<ZipNode> result;
 
@@ -237,7 +229,7 @@ public class ZipNode extends Node {
         }
         paths = root.list(path);
         if (paths.size() == 0 && root.getZip().getEntry(path + "/") == null) {
-            throw new ListException(this, new FileNotFoundException(path));
+            throw new DirectoryNotFoundException(this);
         }
         result = new ArrayList<ZipNode>();
         for (String path : paths) {

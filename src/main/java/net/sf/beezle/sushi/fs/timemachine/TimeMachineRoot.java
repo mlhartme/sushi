@@ -16,16 +16,16 @@
  */
 package net.sf.beezle.sushi.fs.timemachine;
 
+import net.sf.beezle.sushi.fs.DirectoryNotFoundException;
 import net.sf.beezle.sushi.fs.ExistsException;
 import net.sf.beezle.sushi.fs.Filesystem;
 import net.sf.beezle.sushi.fs.Root;
 import net.sf.beezle.sushi.fs.file.FileNode;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TimeMachineRoot implements Root<TimeMachineNode> {
-    public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, FileNotFoundException {
+    public static TimeMachineRoot create(TimeMachineFilesystem fs, FileNode root) throws ExistsException, DirectoryNotFoundException {
         return new TimeMachineRoot(fs,
                 root.join("Backups.backupdb"), root.join(".HFS+ Private Directory Data\r"));
     }
@@ -34,7 +34,7 @@ public class TimeMachineRoot implements Root<TimeMachineNode> {
     private final FileNode root;
     private final FileNode shared;
 
-    public TimeMachineRoot(TimeMachineFilesystem filesystem, FileNode root, FileNode shared) throws ExistsException, FileNotFoundException {
+    public TimeMachineRoot(TimeMachineFilesystem filesystem, FileNode root, FileNode shared) throws ExistsException, DirectoryNotFoundException {
         root.checkDirectory();
         shared.checkDirectory();
 

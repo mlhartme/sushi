@@ -21,24 +21,12 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
-import net.sf.beezle.sushi.fs.DeleteException;
-import net.sf.beezle.sushi.fs.ExistsException;
-import net.sf.beezle.sushi.fs.GetLastModifiedException;
-import net.sf.beezle.sushi.fs.LengthException;
-import net.sf.beezle.sushi.fs.LinkException;
-import net.sf.beezle.sushi.fs.ListException;
-import net.sf.beezle.sushi.fs.MkdirException;
-import net.sf.beezle.sushi.fs.MoveException;
-import net.sf.beezle.sushi.fs.Node;
-import net.sf.beezle.sushi.fs.ReadLinkException;
-import net.sf.beezle.sushi.fs.SetLastModifiedException;
-import net.sf.beezle.sushi.fs.WriteToException;
+import net.sf.beezle.sushi.fs.*;
 import net.sf.beezle.sushi.fs.file.FileNode;
 import net.sf.beezle.sushi.io.CheckedByteArrayOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,7 +155,7 @@ public class SshNode extends Node {
     //--
 
     @Override
-    public List<SshNode> list() throws ListException {
+    public List<SshNode> list() throws DirectoryNotFoundException, ListException {
         List<SshNode> nodes;
         ChannelSftp.LsEntry entry;
         String name;
@@ -175,7 +163,7 @@ public class SshNode extends Node {
         ChannelSftp sftp;
 
         try {
-            nodes = new ArrayList<SshNode>();
+            nodes = new ArrayList<>();
             dir = false;
             sftp = alloc();
             try {
@@ -202,7 +190,7 @@ public class SshNode extends Node {
             }
         } catch (SftpException e) {
             if (e.id == 2) {
-                throw new ListException(this, new FileNotFoundException(getPath()));
+                throw new DirectoryNotFoundException(this);
             }
             throw new ListException(this, e);
         } catch (JSchException e) {
@@ -213,7 +201,7 @@ public class SshNode extends Node {
     //--
 
     @Override
-    public SshNode deleteFile() throws DeleteException {
+    public SshNode deleteFile() throws FileNotFoundException, DeleteException {
         ChannelSftp sftp;
 
         try {
@@ -225,7 +213,7 @@ public class SshNode extends Node {
             sftp.rm(escape(slashPath));
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new FileNotFoundException(this);
             }
             throw new DeleteException(this, e);
         } finally {
@@ -239,7 +227,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public SshNode deleteDirectory() throws DeleteException {
+    public SshNode deleteDirectory() throws DirectoryNotFoundException, DeleteException {
         ChannelSftp sftp;
 
         try {
@@ -251,7 +239,7 @@ public class SshNode extends Node {
             sftp.rmdir(escape(slashPath));
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new DirectoryNotFoundException(this);
             }
             throw new DeleteException(this, e);
         } finally {
@@ -303,8 +291,10 @@ public class SshNode extends Node {
             }
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
-                throw new DeleteException(this, new FileNotFoundException());
+                throw new DeleteException(this);
             }
+            throw new DeleteException(this, e);
+        } catch (DirectoryNotFoundException e) {
             throw new DeleteException(this, e);
         } catch (ListException e) {
             throw new DeleteException(this, e);
@@ -719,7 +709,7 @@ public class SshNode extends Node {
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         ChannelSftp sftp;
         Progress monitor;
 
@@ -734,7 +724,7 @@ public class SshNode extends Node {
             return Math.max(0, monitor.sum - skip);
         } catch (SftpException e) {
             if (e.id == 2 || e.id == 4) {
-                throw new FileNotFoundException(getPath());
+                throw new FileNotFoundException(this);
             }
             throw new WriteToException(this, e);
         } catch (JSchException e) {

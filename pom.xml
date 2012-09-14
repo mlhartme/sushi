@@ -12,6 +12,11 @@
   <url>https://github.com/mlhartme/sushi</url>
   <inceptionYear>2004</inceptionYear>
 
+  <groupId>net.sf.beezle.sushi</groupId>
+  <artifactId>sushi</artifactId>
+  <version>3.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <properties>
     <oneandone.java.source>1.7</oneandone.java.source>
     <oneandone.java.target>1.7</oneandone.java.target>
@@ -30,18 +35,6 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License, Version 2.1</name>
-      <url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <groupId>net.sf.beezle.sushi</groupId>
-  <artifactId>sushi</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <scm>
     <connection>scm:git:https://github.com/mlhartme/sushi.git</connection>

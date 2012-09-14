@@ -11,7 +11,7 @@
   <body>
     <links>
       <item name="Changes" href="changes-report.html"/>
-      <item name="Sourceforge" href="http://sourceforge.net/apps/trac/beezle/wiki/Sushi"/>
+      <item name="Github" href="http://github.com/mlhartme/sushi"/>
     </links>
     
     <menu name="Documentation">

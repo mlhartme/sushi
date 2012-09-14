@@ -255,7 +255,7 @@
     </release>
     <release date="2011-02-15" version="2.2.0">
       <action dev="mlhartme" type="update">
-        Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
+        Changed groupId and packages from com.oneandone.sushi to net.oneandone.sushi.
         Bumped minor version number to indicate this incompatible change.
       </action>
       <action dev="mlhartme" type="add">

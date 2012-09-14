@@ -6,12 +6,12 @@
     <section name="Sushi">
       <p>Examples:</p>
       <p>
-        <a href="xref-test/net/sf/beezle/sushi/FsSample.html">Filesystem</a>,
-        <a href="xref-test/net/sf/beezle/sushi/XmlSample.html">Xml</a>,
-        <a href="xref-test/net/sf/beezle/sushi/CliSample.html">Cli</a>,
-        <a href="xref-test/net/sf/beezle/sushi/MetadataSample.html">Metadata</a>,
-        <a href="xref-test/net/sf/beezle/sushi/PropertiesSample.html">Properties</a>,
-        <a href="xref-test/net/sf/beezle/sushi/CsvSample.html">Csv</a>
+        <a href="xref-test/net/oneandone/sushi/FsSample.html">Filesystem</a>,
+        <a href="xref-test/net/oneandone/sushi/XmlSample.html">Xml</a>,
+        <a href="xref-test/net/oneandone/sushi/CliSample.html">Cli</a>,
+        <a href="xref-test/net/oneandone/sushi/MetadataSample.html">Metadata</a>,
+        <a href="xref-test/net/oneandone/sushi/PropertiesSample.html">Properties</a>,
+        <a href="xref-test/net/oneandone/sushi/CsvSample.html">Csv</a>
       </p>
     </section>
   </body>

@@ -2,11 +2,14 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2012-08-xx" version="3.0.0">
+      <action date="2012-09-14" dev="mhm" type="update">
+        Renamed net.sf.beezle.sushi to net.oneandone.sushi.
+      </action>
       <action date="2012-08-21" dev="mhm" type="update">
         FileNode changed to operate on paths, not files now. Consequently, the constructor takes a path argument
         now, and FileNode.getFile() was replaced by FileNode.toPath().
       </action>
-      <action date="2012-08-21" dev="mhm" type="update">
+      <action date="2012-09-14" dev="mhm" type="update">
         Unified not-found and already-exists exceptions.
       </action>
       <action date="2012-08-21" dev="mhm" type="update">
@@ -255,7 +258,7 @@
     </release>
     <release date="2011-02-15" version="2.2.0">
       <action dev="mlhartme" type="update">
-        Changed groupId and packages from com.oneandone.sushi to net.oneandone.sushi.
+        Changed groupId and packages from com.oneandone.sushi to net.sf.beezle.sushi.
         Bumped minor version number to indicate this incompatible change.
       </action>
       <action dev="mlhartme" type="add">

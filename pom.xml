@@ -12,7 +12,7 @@
   <url>https://github.com/mlhartme/sushi</url>
   <inceptionYear>2004</inceptionYear>
 
-  <groupId>net.oneandone.sushi</groupId>
+  <groupId>net.oneandone</groupId>
   <artifactId>sushi</artifactId>
   <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -28,7 +28,7 @@
       <name>Michael Hartmeier</name>
       <url>http://github.com/mlhartme/</url>
       <organization>1 &amp; 1 Internet AG</organization>
-      <organizationUrl>https://github.com/mlhartme/sushi</organizationUrl>
+      <organizationUrl>https://github.com/1and1</organizationUrl>
       <roles>
         <role>developer</role>
       </roles>

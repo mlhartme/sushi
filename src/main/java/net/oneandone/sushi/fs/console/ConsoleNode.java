@@ -24,10 +24,10 @@ import java.util.List;
 
 public class ConsoleNode extends Node {
     private final ConsoleFilesystem root;
-    
+
     public ConsoleNode(ConsoleFilesystem root) {
         super();
-        
+
         this.root = root;
     }
 
@@ -35,7 +35,7 @@ public class ConsoleNode extends Node {
     public ConsoleFilesystem getRoot() {
         return root;
     }
-    
+
     @Override
     public ConsoleNode getParent() {
         return (ConsoleNode) doGetParent();
@@ -65,7 +65,7 @@ public class ConsoleNode extends Node {
         throw new UnsupportedOperationException();
     }
 
-    /** @parem append is ignored */
+    /** @param append is ignored */
     @Override
     public OutputStream createOutputStream(boolean append) {
         return System.out;
@@ -130,8 +130,8 @@ public class ConsoleNode extends Node {
     public void setLastModified(long millis) throws SetLastModifiedException {
         throw new SetLastModifiedException(this);
     }
-    
-    @Override 
+
+    @Override
     public int getMode() {
         throw unsupported("getMode()");
     }
@@ -141,7 +141,7 @@ public class ConsoleNode extends Node {
         throw unsupported("setMode()");
     }
 
-    @Override 
+    @Override
     public int getUid() {
         throw unsupported("getUid()");
     }
@@ -151,7 +151,7 @@ public class ConsoleNode extends Node {
         throw unsupported("setUid()");
     }
 
-    @Override 
+    @Override
     public int getGid() {
         throw unsupported("getGid()");
     }

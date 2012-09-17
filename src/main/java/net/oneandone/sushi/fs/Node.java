@@ -147,7 +147,7 @@ public abstract class Node {
         return result;
     }
 
-    /** @true when EOF was seen */
+    /** @return true when EOF was seen */
     public static boolean skip(InputStream src, long count) throws IOException {
         long step;
         int c;
@@ -419,7 +419,6 @@ public abstract class Node {
      * Derived classes should override it if they can provide a more efficient implementation, e.g. by determining
      * the length first if getting the length is cheap.
      *
-     * @return
      * @throws IOException
      */
     public byte[] readBytes() throws IOException {

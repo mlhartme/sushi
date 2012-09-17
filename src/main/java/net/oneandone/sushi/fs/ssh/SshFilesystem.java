@@ -129,7 +129,7 @@ public class SshFilesystem extends Filesystem {
         return root(host, user, credentials, defaultTimeout);
     }
 
-    /** @user null to use current user */
+    /** @param user null to use current user */
     public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException {
         if (credentials == null) {
             throw new IllegalArgumentException();

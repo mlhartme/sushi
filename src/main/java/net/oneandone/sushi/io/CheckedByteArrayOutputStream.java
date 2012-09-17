@@ -25,7 +25,7 @@ public class CheckedByteArrayOutputStream extends ByteArrayOutputStream {
         closed = false;
     }
 
-    /** @add may be null */
+    /** @param add may be null */
     public CheckedByteArrayOutputStream(byte[] add) throws IOException {
         this();
         if (add != null) {
@@ -50,7 +50,7 @@ public class CheckedByteArrayOutputStream extends ByteArrayOutputStream {
         closed = true;
         super.close();
     }
-    
+
     public void ensureOpen() {
         if (closed) {
             throw new IllegalStateException();

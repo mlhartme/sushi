@@ -58,9 +58,7 @@ public class ChildMethod {
         
         try {
             return meth.invoke(obj);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
             cause = e.getCause();

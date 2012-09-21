@@ -29,9 +29,7 @@ public class MethodType extends SimpleType {
     public Object newInstance() {
         try {
             return Object.class.getDeclaredMethod("toString", new Class[0]);
-        } catch (SecurityException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

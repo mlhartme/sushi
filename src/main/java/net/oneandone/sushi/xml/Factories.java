@@ -55,9 +55,7 @@ public class Factories {
             parser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
             parser.setProperty(JAXP_SCHEMA_SOURCE, new ByteArrayInputStream(schema.readBytes()));
             return parser;
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
     }
@@ -70,9 +68,7 @@ public class Factories {
         factory.setNamespaceAware(false);
         try {
             return factory.newSAXParser();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
     }
@@ -90,9 +86,7 @@ public class Factories {
         try {
             setJaxp13Validating(factory, schema);
             throwable = null;
-        } catch (UnsupportedOperationException e) {
-            throwable = e;
-        } catch (Error e) {
+        } catch (UnsupportedOperationException | Error e) {
             throwable = e;
         }
         if (throwable != null) {

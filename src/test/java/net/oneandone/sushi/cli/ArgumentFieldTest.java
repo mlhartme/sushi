@@ -43,9 +43,7 @@ public class ArgumentFieldTest {
         c = getClass();
         try {
             return c.getDeclaredField(name);
-        } catch (SecurityException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchFieldException e) {
+        } catch (SecurityException | NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
     }

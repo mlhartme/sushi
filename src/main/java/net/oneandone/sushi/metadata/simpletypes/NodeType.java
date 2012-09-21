@@ -47,9 +47,7 @@ public class NodeType extends SimpleType {
     public Object stringToValue(String str) {
         try {
             return world.node(str);
-        } catch (NodeInstantiationException e) {
-            throw new ArgumentException(str, e);
-        } catch (URISyntaxException e) {
+        } catch (NodeInstantiationException | URISyntaxException e) {
             throw new ArgumentException(str, e);
         }
     }

@@ -140,9 +140,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new LengthException(this, e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new LengthException(this, e);
         }
     }
@@ -294,9 +292,7 @@ public class SshNode extends Node {
                 throw new DeleteException(this);
             }
             throw new DeleteException(this, e);
-        } catch (DirectoryNotFoundException e) {
-            throw new DeleteException(this, e);
-        } catch (ListException e) {
+        } catch (DirectoryNotFoundException | ListException e) {
             throw new DeleteException(this, e);
         }
     }
@@ -317,9 +313,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new MoveException(this, dest, "ssh failure", e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new MoveException(this, dest, "ssh failure", e);
         }
         return dest;
@@ -338,9 +332,7 @@ public class SshNode extends Node {
                 free(sftp);
             }
             return this;
-        } catch (SftpException e) {
-            throw new MkdirException(this, e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new MkdirException(this, e);
         }
     }
@@ -367,9 +359,7 @@ public class SshNode extends Node {
                 free(sftp);
             }
             return true;
-        } catch (SftpException e) {
-            return noSuchFile(e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             return noSuchFile(e);
         }
     }
@@ -386,9 +376,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            return noSuchFile(e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             return noSuchFile(e);
         }
     }
@@ -405,9 +393,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            return noSuchFile(e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             return noSuchFile(e);
         }
     }
@@ -424,9 +410,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            return noSuchFile(e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             return noSuchFile(e);
         }
     }
@@ -444,11 +428,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new LinkException(this, e);
-        } catch (JSchException e) {
-            throw new LinkException(this, e);
-        } catch (IOException e) {
+        } catch (SftpException | JSchException | IOException e) {
             throw new LinkException(this, e);
         }
     }
@@ -482,9 +462,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new GetLastModifiedException(this, e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new GetLastModifiedException(this, e);
         }
     }
@@ -501,9 +479,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new SetLastModifiedException(this, e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new SetLastModifiedException(this, e);
         }
     }
@@ -671,9 +647,7 @@ public class SshNode extends Node {
                 super.close();
                 try {
                     readFrom(new ByteArrayInputStream(toByteArray()), append);
-                } catch (JSchException e) {
-                    throw new IOException(e);
-                } catch (SftpException e) {
+                } catch (JSchException | SftpException e) {
                     throw new IOException(e);
                 }
             }

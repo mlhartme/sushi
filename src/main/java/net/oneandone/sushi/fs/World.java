@@ -537,9 +537,7 @@ public class World {
             filename = filename.substring(0, idx);
             try {
 				file = (FileNode) node(filename);
-			} catch (NodeInstantiationException e) {
-				throw new IllegalStateException(filename, e);
-			} catch (URISyntaxException e) {
+			} catch (NodeInstantiationException | URISyntaxException e) {
 				throw new IllegalStateException(filename, e);
 			}
         } else {

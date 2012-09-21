@@ -588,10 +588,7 @@ public class WebdavNode extends Node {
                 } else {
                     result = doTryDirHttp();
                 }
-            } catch (MovedException e) {
-                tryDir = reset;
-                return false;
-            } catch (FileNotFoundException e) {
+            } catch (MovedException | FileNotFoundException e) {
                 tryDir = reset;
                 return false;
             } catch (IOException e) {

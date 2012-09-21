@@ -40,9 +40,7 @@ public class ArgumentMethodTest {
     private Method getMethod() {
         try {
             return getClass().getMethod("setInt", Integer.TYPE);
-        } catch (SecurityException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

@@ -60,12 +60,10 @@ public class Loader extends DefaultHandler {
         elements.clear();
 
         locator = null;
-        storage = new HashMap<String, Object>();
-        exceptions = new ArrayList<SAXException>();
+        storage = new HashMap<>();
+        exceptions = new ArrayList<>();
         try {
             parser.parse(src, this);
-        } catch (SAXParseException e) {
-            exceptions.add(e);
         } catch (SAXException e) {
             exceptions.add(e);
         }

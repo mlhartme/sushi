@@ -129,16 +129,13 @@ public abstract class Node {
     public abstract long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
 
     public long writeToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
-        InputStream src;
         long result;
 
-        try {
-            src = createInputStream();
+        try (InputStream src = createInputStream()) {
             if (skip(src, skip)) {
                 return 0;
             }
             result = getWorld().getBuffer().copy(src, dest);
-            src.close();
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
@@ -422,17 +419,14 @@ public abstract class Node {
      * @throws IOException
      */
     public byte[] readBytes() throws IOException {
-        InputStream src;
-        byte[] result;
         Buffer buffer;
 
-        src = createInputStream();
-        buffer = getWorld().getBuffer();
-        synchronized (buffer) {
-            result = buffer.readBytes(src);
+        try (InputStream src = createInputStream()) {
+            buffer = getWorld().getBuffer();
+            synchronized (buffer) {
+                return buffer.readBytes(src);
+            }
         }
-        src.close();
-        return result;
     }
 
     /**
@@ -456,26 +450,22 @@ public abstract class Node {
     /** Reads properties with the encoding for this node */
     public Properties readProperties() throws IOException {
         Properties p;
-        Reader src;
 
-        src = createReader();
-        p = new Properties();
-        p.load(src);
-        src.close();
+        try (Reader src = createReader()) {
+            p = new Properties();
+            p.load(src);
+        }
         return p;
     }
 
     public Object readObject() throws IOException {
-        ObjectInputStream src;
         Object result;
 
-        src = createObjectInputStream();
-        try {
+        try (ObjectInputStream src = createObjectInputStream()) {
             result = src.readObject();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        src.close();
         return result;
     }
 
@@ -489,24 +479,19 @@ public abstract class Node {
     }
 
     public Transformer readXsl() throws IOException, TransformerConfigurationException {
-        InputStream in;
         Templates templates;
 
-        in = createInputStream();
-        templates = Serializer.templates(new SAXSource(new InputSource(in)));
-        in.close();
+        try (InputStream in = createInputStream()) {
+            templates = Serializer.templates(new SAXSource(new InputSource(in)));
+        }
         return templates.newTransformer();
     }
 
     public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
-        InputStream in;
-        OutputStream out;
-
-        in = createInputStream();
-        out = dest.createOutputStream();
-        transformer.transform(new StreamSource(in), new StreamResult(out));
-        out.close();
-        in.close();
+        try (InputStream in = createInputStream();
+             OutputStream out = dest.createOutputStream()) {
+            transformer.transform(new StreamSource(in), new StreamResult(out));
+        }
     }
 
     //--
@@ -614,12 +599,8 @@ public abstract class Node {
      * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
-        InputStream in;
-
-        try {
-            in = createInputStream();
+        try (InputStream in = createInputStream()) {
             getWorld().getBuffer().copy(in, dest);
-            in.close();
             return dest;
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
@@ -659,8 +640,6 @@ public abstract class Node {
 
     /** cheap diff if you only need a yes/no answer */
     public boolean diff(Node right, Buffer rightBuffer) throws IOException {
-        InputStream leftSrc;
-        InputStream rightSrc;
         Buffer leftBuffer;
         int leftChunk;
         int rightChunk;
@@ -669,21 +648,20 @@ public abstract class Node {
         boolean result;
 
         leftBuffer = getWorld().getBuffer();
-        leftSrc = createInputStream();
-        leftEof = new boolean[] { false };
-        rightSrc = right.createInputStream();
-        rightEof = new boolean[] { false };
-        result = false;
-        do {
-            leftChunk = leftEof[0] ? 0 : leftBuffer.fill(leftSrc, leftEof);
-            rightChunk = rightEof[0] ? 0 : rightBuffer.fill(rightSrc, rightEof);
-            if (leftChunk != rightChunk || leftBuffer.diff(rightBuffer, leftChunk)) {
-                result = true;
-                break;
-            }
-        } while (leftChunk > 0);
-    	leftSrc.close();
-    	rightSrc.close();
+        try (InputStream leftSrc = createInputStream();
+             InputStream rightSrc = right.createInputStream()) {
+            leftEof = new boolean[] { false };
+            rightEof = new boolean[] { false };
+            result = false;
+            do {
+                leftChunk = leftEof[0] ? 0 : leftBuffer.fill(leftSrc, leftEof);
+                rightChunk = rightEof[0] ? 0 : rightBuffer.fill(rightSrc, rightEof);
+                if (leftChunk != rightChunk || leftBuffer.diff(rightBuffer, leftChunk)) {
+                    result = true;
+                    break;
+                }
+            } while (leftChunk > 0);
+        }
         return result;
     }
 

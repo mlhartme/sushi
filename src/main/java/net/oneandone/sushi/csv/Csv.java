@@ -21,6 +21,7 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.util.Strings;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -31,31 +32,32 @@ import java.util.List;
 public class Csv implements Iterable<Line> {
     public static Csv read(Format format, Node node) throws IOException {
         StringBuilder msg;
-        LineReader src;
         Csv csv;
         String line;
 
-        src = new LineReader(node.createReader(), new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.SEPARATOR));
-        csv = new Csv(format);
-        msg = new StringBuilder();
-        while (true) {
-            line = src.next();
-            if (line == null) {
-                src.getReader().close();
-                if (msg.length() > 0) {
-                    throw new CsvExceptions(msg.toString());
+        try (Reader orig = node.createReader();
+             LineReader src = new LineReader(orig, new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.SEPARATOR))) {
+            csv = new Csv(format);
+            msg = new StringBuilder();
+            while (true) {
+                line = src.next();
+                if (line == null) {
+                    if (msg.length() > 0) {
+                        throw new CsvExceptions(msg.toString());
+                    }
+                    return csv;
                 }
-                return csv;
-            }
-            try {
-                csv.add(line);
-            } catch (CsvLineException e) {
-                if (msg.length() > 0) {
-                    msg.append('\n');
+                try {
+                    csv.add(line);
+                } catch (CsvLineException e) {
+                    if (msg.length() > 0) {
+                        msg.append('\n');
+                    }
+                    msg.append(src.toString()).append(":").append(src.getLine()).append(": ").append(e.getMessage());
                 }
-                msg.append(src.toString()).append(":").append(src.getLine()).append(": ").append(e.getMessage());
             }
         }
+
     }
 
     //--
@@ -110,11 +112,9 @@ public class Csv implements Iterable<Line> {
 
 
     public void write(Node file) throws IOException {
-        Writer dest;
-
-        dest = file.createWriter();
-        write(dest);
-        dest.close();
+        try (Writer dest = file.createWriter()) {
+            write(dest);
+        }
     }
 
     public void write(Writer dest) throws IOException {

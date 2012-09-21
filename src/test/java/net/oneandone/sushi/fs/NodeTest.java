@@ -493,21 +493,18 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void readerWriter() throws IOException {
         Node file;
-        NodeWriter writer;
-        NodeReader reader;
 
         file = work.join("foo");
-        writer = file.createWriter();
-        assertSame(file, writer.getNode());
-        writer.write("hi");
-        writer.close();
-
-        reader = file.createReader();
-        assertSame(file, reader.getNode());
-        assertEquals('h', reader.read());
-        assertEquals('i', reader.read());
-        assertEquals(-1, reader.read());
-        reader.close();
+        try (NodeWriter writer = file.createWriter()) {
+            assertSame(file, writer.getNode());
+            writer.write("hi");
+        }
+        try (NodeReader reader = file.createReader()) {
+            assertSame(file, reader.getNode());
+            assertEquals('h', reader.read());
+            assertEquals('i', reader.read());
+            assertEquals(-1, reader.read());
+        }
     }
 
     @Test
@@ -578,7 +575,6 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     @Test
     public void readerEncoding() throws IOException {
         Node file;
-        Reader src;
         int c;
         StringBuilder str;
         int max;
@@ -587,33 +583,32 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("foo");
         file.writeBytes(ALL_CHARS.getBytes(file.getWorld().getSettings().encoding));
-        src = file.createReader();
-        str = new StringBuilder();
-        while (true) {
-            c = src.read();
-            if (c == -1) {
-                break;
+        try (Reader src = file.createReader()) {
+            str = new StringBuilder();
+            while (true) {
+                c = src.read();
+                if (c == -1) {
+                    break;
+                }
+                str.append((char) c);
             }
-            str.append((char) c);
+            max = Math.max(ALL_CHARS.length(), str.length());
+            for (int i = 0; i < max; i++) {
+                left = i < ALL_CHARS.length() ? ALL_CHARS.charAt(i) : -1;
+                right = i < str.length() ? str.charAt(i) : - 1;
+                assertEquals("idx=" + i, left, right);
+            }
         }
-        max = Math.max(ALL_CHARS.length(), str.length());
-        for (int i = 0; i < max; i++) {
-            left = i < ALL_CHARS.length() ? ALL_CHARS.charAt(i) : -1;
-            right = i < str.length() ? str.charAt(i) : - 1;
-            assertEquals("idx=" + i, left, right);
-        }
-        src.close();
     }
 
     @Test
     public void writerEncoding() throws IOException {
         Node file;
-        Writer dest;
 
         file = work.join("foo");
-        dest = file.createWriter();
-        dest.write(ALL_CHARS);
-        dest.close();
+        try (Writer dest = file.createWriter()) {
+            dest.write(ALL_CHARS);
+        }
         assertTrue(Arrays.equals(ALL_CHARS.getBytes(file.getWorld().getSettings().encoding), file.readBytes()));
     }
 

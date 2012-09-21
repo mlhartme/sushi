@@ -108,12 +108,11 @@ public class ZipRoot implements Root<ZipNode> {
     }
 
     public Manifest readManifest() throws IOException {
-        InputStream src;
         Manifest result;
 
-        src = node(Archive.MANIFEST, null).createInputStream();
-        result = new Manifest(src);
-        src.close();
+        try (InputStream src = node(Archive.MANIFEST, null).createInputStream()) {
+            result = new Manifest(src);
+        }
         return result;
     }
 }

@@ -62,6 +62,7 @@ public class MultiOutputStream extends OutputStream {
 
     @Override
     public void close() throws IOException {
+        // TODO close as many as possible
         for (OutputStream dest : dests) {
             dest.close();
         }

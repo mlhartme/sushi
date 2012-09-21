@@ -55,11 +55,9 @@ public class Dump {
     }
     
     public static void dump(Object obj, Node dest, int maxDepth) throws IOException {
-        Writer writer;
-
-        writer = dest.createWriter();
-        dump(dest.getWorld(), obj, writer, maxDepth);
-        writer.close();
+        try (Writer writer = dest.createWriter()) {
+            dump(dest.getWorld(), obj, writer, maxDepth);
+        }
     }
 
     public static void dump(World world, Object obj, Writer dest, int maxDepth) throws IOException {

@@ -102,14 +102,12 @@ public class Instance<T> {
     }
 
     public void toXml(Node dest) throws IOException {
-        NodeWriter writer;
-        
-        writer = dest.createWriter();
-        writer.write("<?xml version='1.0' encoding='");
-        writer.write(writer.getEncoding());
-        writer.write("'?>\n");
-        toXml(writer);
-        writer.close();
+        try (NodeWriter writer = dest.createWriter()) {
+            writer.write("<?xml version='1.0' encoding='");
+            writer.write(writer.getEncoding());
+            writer.write("'?>\n");
+            toXml(writer);
+        }
     }
     
     public void toXml(Element parent) throws IOException {

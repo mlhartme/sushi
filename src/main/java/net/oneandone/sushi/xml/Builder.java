@@ -68,17 +68,14 @@ public class Builder {
     }
 
     public Document parse(net.oneandone.sushi.fs.Node node) throws SAXException, IOException {
-        InputStream stream;
         InputSource src;
-        Document doc;
-        
-        stream = node.createInputStream();
-        src = new InputSource();
-        src.setSystemId(node.toString());
-        src.setByteStream(stream);
-        doc = parse(src);
-        stream.close();
-        return doc;
+
+        try (InputStream stream = node.createInputStream()) {
+            src = new InputSource();
+            src.setSystemId(node.toString());
+            src.setByteStream(stream);
+            return parse(src);
+        }
     }
     
     public Document parse(Reader reader) throws SAXException, IOException {

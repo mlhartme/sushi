@@ -617,13 +617,12 @@ public class SshNode extends Node {
     @Override
     public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
         final FileNode tmp;
-        OutputStream dest;
 
         try {
             tmp = getWorld().getTemp().createTempFile();
-            dest = tmp.createOutputStream();
-            writeTo(dest);
-            dest.close();
+            try (OutputStream dest = tmp.createOutputStream()) {
+                writeTo(dest);
+            }
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {

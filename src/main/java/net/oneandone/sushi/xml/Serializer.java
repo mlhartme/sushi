@@ -59,12 +59,10 @@ public class Serializer {
 
     /** Generates an xml/encoding declaration */
     public void serialize(Node src, net.oneandone.sushi.fs.Node dest, boolean format) throws IOException {
-        OutputStream out;
-
         // don't use Writer to allow transformer to decide about encoding */
-        out = dest.createOutputStream();
-        serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding, format);
-        out.close();
+        try (OutputStream out = dest.createOutputStream()) {
+            serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding, format);
+        }
     }
 
     public void serialize(Node src, Result dest, boolean format) throws IOException {

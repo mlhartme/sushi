@@ -177,13 +177,12 @@ public class SvnNode extends Node {
     @Override
     public InputStream createInputStream() throws CreateInputStreamException {
         FileNode tmp;
-        OutputStream dest;
 
         try {
             tmp = getWorld().getTemp().createTempFile();
-            dest = tmp.createOutputStream();
-            writeTo(dest);
-            dest.close();
+            try (OutputStream dest = tmp.createOutputStream()) {
+                writeTo(dest);
+            }
             return tmp.createInputStream();
         } catch (IOException e) {
             throw new CreateInputStreamException(this, e);

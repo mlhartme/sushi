@@ -22,11 +22,9 @@ import java.io.IOException;
 public class MultiOutputStreamTest {
     @Test
     public void nll() throws IOException {
-        MultiOutputStream dest;
-        
-        dest = MultiOutputStream.createNullStream();
-        dest.write(0);
-        dest.flush();
-        dest.close();
+        try (MultiOutputStream dest  = MultiOutputStream.createNullStream()) {
+            dest.write(0);
+            dest.flush();
+        }
     }
 }

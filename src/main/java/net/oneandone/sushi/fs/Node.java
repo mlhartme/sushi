@@ -961,7 +961,7 @@ public abstract class Node {
                 synchronized (buffer) {
                     buffer.digest(src, digest);
                 }
-             return digest.digest();
+                return digest.digest();
             }
         }
     }

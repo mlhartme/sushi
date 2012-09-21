@@ -145,12 +145,11 @@ public class Buffer {
      * @return number of bytes actually copied
      */
     public long copy(InputStream in, Node dest) throws IOException {
-        OutputStream out;
         long result;
-        
-        out = dest.createOutputStream();
-        result = copy(in, out);
-        out.close();
+
+        try (OutputStream out = dest.createOutputStream()) {
+            result = copy(in, out);
+        }
         return result;
     }
     

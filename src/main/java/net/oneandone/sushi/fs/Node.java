@@ -789,11 +789,9 @@ public abstract class Node {
     }
 
     public Node writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
-        OutputStream out;
-
-        out = createOutputStream(append);
-        out.write(bytes, ofs, len);
-        out.close();
+        try (OutputStream out = createOutputStream(append)) {
+            out.write(bytes, ofs, len);
+        }
         return this;
     }
 
@@ -806,29 +804,23 @@ public abstract class Node {
     }
 
     public Node writeChars(char[] chars, int ofs, int len, boolean append) throws IOException {
-        Writer out;
-
-        out = createWriter(append);
-        out.write(chars, ofs, len);
-        out.close();
+        try (Writer out = createWriter(append)) {
+            out.write(chars, ofs, len);
+        }
         return this;
     }
 
     public Node writeString(String txt) throws IOException {
-        Writer w;
-
-        w = createWriter();
-        w.write(txt);
-        w.close();
+        try (Writer w = createWriter()) {
+            w.write(txt);
+        }
         return this;
     }
 
     public Node appendString(String txt) throws IOException {
-        Writer w;
-
-        w = createAppender();
-        w.write(txt);
-        w.close();
+        try (Writer w = createAppender()) {
+            w.write(txt);
+        }
         return this;
     }
 
@@ -894,20 +886,16 @@ public abstract class Node {
     }
 
     public Node writeProperties(Properties p, String comment) throws IOException {
-        Writer dest;
-
-        dest = createWriter();
-        p.store(dest, comment);
-        dest.close();
+        try (Writer dest = createWriter()) {
+            p.store(dest, comment);
+        }
         return this;
     }
 
     public Node writeObject(Serializable obj) throws IOException {
-        ObjectOutputStream out;
-
-        out = createObjectOutputStream();
-        out.writeObject(obj);
-        out.close();
+        try (ObjectOutputStream out = createObjectOutputStream()) {
+            out.writeObject(obj);
+        }
         return this;
     }
 
@@ -931,25 +919,19 @@ public abstract class Node {
     //-- other
 
     public void gzip(Node dest) throws IOException {
-        InputStream in;
-        OutputStream out;
-
-        in = createInputStream();
-        out = new GZIPOutputStream(dest.createOutputStream());
-        getWorld().getBuffer().copy(in, out);
-        in.close();
-        out.close();
+        try (InputStream in = createInputStream();
+             OutputStream rawOut = dest.createOutputStream();
+             OutputStream out = new GZIPOutputStream(rawOut)) {
+            getWorld().getBuffer().copy(in, out);
+        }
     }
 
     public void gunzip(Node dest) throws IOException {
-        InputStream in;
-        OutputStream out;
-
-        in = new GZIPInputStream(createInputStream());
-        out = dest.createOutputStream();
-        getWorld().getBuffer().copy(in, out);
-        in.close();
-        out.close();
+        try (InputStream rawIn = createInputStream();
+             InputStream in = new GZIPInputStream(rawIn);
+             OutputStream out = dest.createOutputStream()) {
+            getWorld().getBuffer().copy(in, out);
+        }
     }
 
     public String sha() throws IOException {
@@ -969,19 +951,18 @@ public abstract class Node {
     }
 
     public byte[] digestBytes(String name) throws IOException, NoSuchAlgorithmException {
-        InputStream src;
         MessageDigest digest;
         Buffer buffer;
 
-        src =  createInputStream();
-        digest = MessageDigest.getInstance(name);
-        synchronized (digest) {
-            buffer = getWorld().getBuffer();
-            synchronized (buffer) {
-                buffer.digest(src, digest);
+        try (InputStream src =  createInputStream()) {
+            digest = MessageDigest.getInstance(name);
+            synchronized (digest) {
+                buffer = getWorld().getBuffer();
+                synchronized (buffer) {
+                    buffer.digest(src, digest);
+                }
+             return digest.digest();
             }
-            src.close();
-            return digest.digest();
         }
     }
 

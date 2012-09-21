@@ -77,33 +77,32 @@ public class Archive {
     /** @return this */
     public Archive read(Node file) throws IOException {
         Buffer buffer;
-        ZipInputStream zip;
         ZipEntry entry;
         Node node;
         
         buffer = file.getWorld().getBuffer();
-        zip = new ZipInputStream(file.createInputStream());
-        while (true) {
-            entry = zip.getNextEntry();
-            if (entry == null) {
-                break;
-            }
-            node = data.join(getPath(entry));
-            if ("".equals(node.getPath())) {
-                continue;
-            }
-            if (entry.isDirectory()) {
-                node.mkdirsOpt();
-            } else if (isManifest(node)) {
-                mergeManifest(new Manifest(zip));
-                zip.closeEntry();
-            } else {
-                node.getParent().mkdirsOpt();
-                buffer.copy(zip, node);
-                zip.closeEntry();
+        try (ZipInputStream zip = new ZipInputStream(file.createInputStream())) {
+            while (true) {
+                entry = zip.getNextEntry();
+                if (entry == null) {
+                    break;
+                }
+                node = data.join(getPath(entry));
+                if ("".equals(node.getPath())) {
+                    continue;
+                }
+                if (entry.isDirectory()) {
+                    node.mkdirsOpt();
+                } else if (isManifest(node)) {
+                    mergeManifest(new Manifest(zip));
+                    zip.closeEntry();
+                } else {
+                    node.getParent().mkdirsOpt();
+                    buffer.copy(zip, node);
+                    zip.closeEntry();
+                }
             }
         }
-        zip.close();
         return this;
     }
 
@@ -128,47 +127,43 @@ public class Archive {
     }
 
     public Archive save(Node dest) throws IOException {
-        OutputStream out;
-        
-        out = dest.createOutputStream();
-        save(out);
-        out.close();
+        try (OutputStream out = dest.createOutputStream()) {
+            save(out);
+        }
         return this;
     }
 
     public Archive save(OutputStream dest) throws IOException {
-        ZipOutputStream out;
-        InputStream in;
         List<Node> content;
         List<Node> files;
         
-        out = new ZipOutputStream(dest);
-        if (manifest != null) {
-            out.putNextEntry(new ZipEntry(MANIFEST));
-            manifest.write(out);
-            out.closeEntry();
-        }
-        content = data.find("**/*");
-        files = new ArrayList<Node>();
-        // directories first - jar does not extract files into non-existing directories
-        for (Node node : content) {
-            if (isManifest(node)) {
-                throw new ArchiveException("manifest file not allowed");
-            } else if (node.isFile()) {
-                files.add(node);
-            } else {
-                out.putNextEntry(new ZipEntry(node.getPath() + "/"));
+        try (ZipOutputStream out = new ZipOutputStream(dest)) {
+            if (manifest != null) {
+                out.putNextEntry(new ZipEntry(MANIFEST));
+                manifest.write(out);
                 out.closeEntry();
             }
+            content = data.find("**/*");
+            files = new ArrayList<>();
+            // directories first - jar does not extract files into non-existing directories
+            for (Node node : content) {
+                if (isManifest(node)) {
+                    throw new ArchiveException("manifest file not allowed");
+                } else if (node.isFile()) {
+                    files.add(node);
+                } else {
+                    out.putNextEntry(new ZipEntry(node.getPath() + "/"));
+                    out.closeEntry();
+                }
+            }
+            for (Node file : files) {
+                try (InputStream in = file.createInputStream()) {
+                    out.putNextEntry(new ZipEntry(file.getPath()));
+                    file.getWorld().getBuffer().copy(in, out);
+                    out.closeEntry();
+                }
+            }
         }
-        for (Node file : files) {
-            in = file.createInputStream();
-            out.putNextEntry(new ZipEntry(file.getPath()));
-            file.getWorld().getBuffer().copy(in, out);
-            out.closeEntry();
-            in.close();
-        }
-        out.close();
         return this;
     }
 }

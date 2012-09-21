@@ -78,19 +78,18 @@ public class TestProperties {
         World world;
         Node home;
         Node p;
-        Reader src;
 
         result = new Properties();
         world = new World();
         home = world.guessProjectHome(TestProperties.class);
-        src = home.join("test.properties").createReader();
-        result.load(src);
-        src.close();
+        try (Reader src = home.join("test.properties").createReader()) {
+            result.load(src);
+        }
         p = home.join("test.private.properties");
         if (p.exists()) {
-            src = p.createReader();
-            result.load(src);
-            src.close();
+            try (Reader src = p.createReader()) {
+                result.load(src);
+            }
         }
         return result;
     }

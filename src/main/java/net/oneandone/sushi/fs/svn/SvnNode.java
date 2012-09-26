@@ -93,9 +93,9 @@ public class SvnNode extends Node {
         try {
             kind = repository.checkPath(path, -1);
             if (kind == SVNNodeKind.DIR) {
-                lst = new ArrayList<SVNDirEntry>();
+                lst = new ArrayList<>();
                 repository.getDir(path, -1, false, lst);
-                result = new ArrayList<SvnNode>(lst.size());
+                result = new ArrayList<>(lst.size());
                 for (SVNDirEntry entry : lst) {
                     child = new SvnNode(root, doJoin(path, entry.getRelativePath()));
                     result.add(child);
@@ -175,7 +175,7 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws CreateInputStreamException {
+    public InputStream createInputStream() throws CreateInputStreamException, FileNotFoundException {
         FileNode tmp;
 
         try {
@@ -184,6 +184,8 @@ public class SvnNode extends Node {
                 writeTo(dest);
             }
             return tmp.createInputStream();
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new CreateInputStreamException(this, e);
         }
@@ -203,9 +205,16 @@ public class SvnNode extends Node {
 
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException {
+    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException, FileNotFoundException {
         byte[] add;
 
+        try {
+            if (isDirectory()) {
+                throw new FileNotFoundException(this);
+            }
+        } catch (ExistsException e) {
+            throw new CreateOutputStreamException(this, e);
+        }
         try {
             if (append) {
                 try {

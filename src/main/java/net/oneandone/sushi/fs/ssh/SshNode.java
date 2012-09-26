@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -289,7 +290,7 @@ public class SshNode extends Node {
             }
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
-                throw new DeleteException(this);
+                throw new DeleteException(this, new NoSuchFileException(toString()));
             }
             throw new DeleteException(this, e);
         } catch (DirectoryNotFoundException | ListException e) {
@@ -639,7 +640,14 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(final boolean append) {
+    public OutputStream createOutputStream(final boolean append) throws FileNotFoundException {
+        try {
+            if (isDirectory()) {
+                throw new FileNotFoundException(this);
+            }
+        } catch (ExistsException e) {
+            throw new FileNotFoundException(this, e);
+        }
         return new CheckedByteArrayOutputStream() {
             @Override
             public void close() throws IOException {

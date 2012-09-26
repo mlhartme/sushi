@@ -116,7 +116,7 @@ public class SvnNode extends Node {
         SVNDirEntry dir;
 
         if (root.getRepository().checkPath(path, -1) == SVNNodeKind.DIR) {
-            dir = root.getRepository().getDir(path, -1, false, new ArrayList<Object>());
+            dir = root.getRepository().getDir(path, -1, false, new ArrayList<>());
             return dir.getRevision();
         } else {
             revs = getRevisions();

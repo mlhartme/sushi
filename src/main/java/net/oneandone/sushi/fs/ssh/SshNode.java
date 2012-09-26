@@ -640,13 +640,13 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(final boolean append) throws FileNotFoundException {
+    public OutputStream createOutputStream(final boolean append) throws FileNotFoundException, CreateOutputStreamException {
         try {
             if (isDirectory()) {
                 throw new FileNotFoundException(this);
             }
         } catch (ExistsException e) {
-            throw new FileNotFoundException(this, e);
+            throw new CreateOutputStreamException(this, e);
         }
         return new CheckedByteArrayOutputStream() {
             @Override

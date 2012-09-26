@@ -210,7 +210,11 @@ public class SshNode extends Node {
         try {
             sftp.rm(escape(slashPath));
         } catch (SftpException e) {
-            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_PERMISSION_DENIED/* for directory */) {
+            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE) {
+                throw new FileNotFoundException(this);
+            }
+            if (e.id == ChannelSftp.SSH_FX_PERMISSION_DENIED /* for directory */) {
+                // TODO: check that its not a file with other permissions
                 throw new FileNotFoundException(this);
             }
             throw new DeleteException(this, e);

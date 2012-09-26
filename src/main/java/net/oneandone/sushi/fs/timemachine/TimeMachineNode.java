@@ -177,7 +177,7 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public List<TimeMachineNode> list() throws ListException {
+    public List<TimeMachineNode> list() throws ListException, DirectoryNotFoundException {
         List<FileNode> files;
         List<TimeMachineNode> result;
         Filesystem fs;
@@ -186,7 +186,7 @@ public class TimeMachineNode extends Node {
         if (files == null) {
             return null;
         }
-        result = new ArrayList<TimeMachineNode>(files.size());
+        result = new ArrayList<>(files.size());
         fs = root.getFilesystem();
         for (FileNode file : files) {
             try {

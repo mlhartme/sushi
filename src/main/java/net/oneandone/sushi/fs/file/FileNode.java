@@ -180,7 +180,7 @@ public class FileNode extends Node {
 
     /** @return null when called for a file; non-null otherwise */
     @Override
-    public List<FileNode> list() throws ListException {
+    public List<FileNode> list() throws ListException, DirectoryNotFoundException {
         List<FileNode> result;
         DirectoryStream<Path> ds;
 
@@ -190,7 +190,7 @@ public class FileNode extends Node {
             if (isFile()) {
                 return null;
             } else {
-                throw new ListException(this, e);
+                throw new DirectoryNotFoundException(this, e);
             }
         }
         result = new ArrayList<>();

@@ -208,7 +208,7 @@ public class MemoryNode extends Node {
                 for (MemoryNode obj : list()) {
                     obj.deleteTree();
                 }
-            } catch (ListException e) {
+            } catch (ListException | DirectoryNotFoundException e) {
                 throw new DeleteException(this, e);
             }
         }
@@ -217,10 +217,10 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public List<MemoryNode> list() throws ListException {
+    public List<MemoryNode> list() throws ListException, DirectoryNotFoundException {
         switch (type) {
             case NONE:
-                throw new ListException(this, new NoSuchFileException(getPath()));
+                throw new DirectoryNotFoundException(this);
             case FILE:
                 return null;
             case DIRECTORY:

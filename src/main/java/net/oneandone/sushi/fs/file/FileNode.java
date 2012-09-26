@@ -327,20 +327,24 @@ public class FileNode extends Node {
 
     //-- delete
 
-    public FileNode deleteFile() throws DeleteException {
+    public FileNode deleteFile() throws DeleteException, FileNotFoundException {
         try {
             checkFile();
             Files.delete(path);
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
         return this;
     }
 
-    public FileNode deleteDirectory() throws DeleteException {
+    public FileNode deleteDirectory() throws DeleteException, DirectoryNotFoundException {
         try {
             checkDirectory();
             Files.delete(path);
+        } catch (DirectoryNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -353,7 +357,10 @@ public class FileNode extends Node {
      * @throws IOException if a file cannot be deleted
      */
     @Override
-    public FileNode deleteTree() throws DeleteException {
+    public FileNode deleteTree() throws DeleteException, NodeNotFoundException {
+        if (!exists()) {
+            throw new NodeNotFoundException(this);
+        }
         try {
             doDeleteTree(path);
         } catch (IOException e) {
@@ -363,8 +370,6 @@ public class FileNode extends Node {
     }
 
     protected static void doDeleteTree(Path path) throws IOException {
-        File[] files;
-
         if (!Files.isSymbolicLink(path)) {
             if (Files.isDirectory(path)) {
                 for (Path child : Files.newDirectoryStream(path)) {

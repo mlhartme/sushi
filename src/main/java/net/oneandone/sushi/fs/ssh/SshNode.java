@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,7 +210,7 @@ public class SshNode extends Node {
         try {
             sftp.rm(escape(slashPath));
         } catch (SftpException e) {
-            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
+            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_PERMISSION_DENIED/* for directory */) {
                 throw new FileNotFoundException(this);
             }
             throw new DeleteException(this, e);
@@ -237,7 +236,7 @@ public class SshNode extends Node {
         try {
             sftp.rmdir(escape(slashPath));
         } catch (SftpException e) {
-            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
+            if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE) {
                 throw new DirectoryNotFoundException(this);
             }
             throw new DeleteException(this, e);
@@ -252,7 +251,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public SshNode deleteTree() throws DeleteException {
+    public SshNode deleteTree() throws DeleteException, NodeNotFoundException {
         ChannelSftp sftp;
 
         try {
@@ -272,7 +271,7 @@ public class SshNode extends Node {
         return this;
     }
 
-    private void doDelete(ChannelSftp sftp) throws DeleteException {
+    private void doDelete(ChannelSftp sftp) throws DeleteException, NodeNotFoundException {
         SftpATTRS stat;
 
         try {
@@ -290,7 +289,7 @@ public class SshNode extends Node {
             }
         } catch (SftpException e) {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE || e.id == ChannelSftp.SSH_FX_FAILURE) {
-                throw new DeleteException(this, new NoSuchFileException(toString()));
+                throw new NodeNotFoundException(this);
             }
             throw new DeleteException(this, e);
         } catch (DirectoryNotFoundException | ListException e) {

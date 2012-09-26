@@ -255,16 +255,19 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public SvnNode deleteDirectory() throws DeleteException {
+    public SvnNode deleteDirectory() throws DeleteException, DirectoryNotFoundException {
+        List<SvnNode> lst;
+
         try {
-            if (!isDirectory()) {
+            lst = list();
+            if (lst == null) {
                 throw new DirectoryNotFoundException(this);
             }
-            if (list().size() > 0) {
+            if (lst.size() > 0) {
                 throw new DeleteException(this, "directory is not empty");
             }
             delete("sushi delete");
-        } catch (ExistsException | DirectoryNotFoundException | ListException | SVNException e) {
+        } catch (ListException | SVNException e) {
             throw new DeleteException(this, e);
         }
         return this;

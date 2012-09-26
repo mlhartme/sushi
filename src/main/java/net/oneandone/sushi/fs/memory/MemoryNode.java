@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 /** You'll normally use World.memoryNode() to create instances */
@@ -178,18 +177,20 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public MemoryNode deleteFile() throws DeleteException {
-        if (type != Type.FILE) {
-            throw new DeleteException(this, "file expected");
+    public MemoryNode deleteFile() throws DeleteException, FileNotFoundException {
+        try {
+            checkFile();
+        } catch (ExistsException e) {
+            throw new DeleteException(this, e);
         }
         type = Type.NONE;
         return this;
     }
 
     @Override
-    public MemoryNode deleteDirectory() throws DeleteException {
+    public MemoryNode deleteDirectory() throws DeleteException, DirectoryNotFoundException {
         if (type != Type.DIRECTORY) {
-            throw new DeleteException(this, "directory expected");
+            throw new DirectoryNotFoundException(this);
         }
         if (root.list(path).size() > 0) {
             throw new DeleteException(this, "directory is not empty");
@@ -199,9 +200,9 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public MemoryNode deleteTree() throws DeleteException {
+    public MemoryNode deleteTree() throws DeleteException, NodeNotFoundException {
         if (type == Type.NONE) {
-            throw new DeleteException(this, new NoSuchFileException(getPath()));
+            throw new NodeNotFoundException(this);
         }
         if (type == Type.DIRECTORY) {
             try {

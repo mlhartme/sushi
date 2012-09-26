@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -961,17 +960,17 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         try {
             node.deleteFile();
             fail();
-        } catch (DeleteException e) {
+        } catch (FileNotFoundException e) {
             // ok
         }
     }
 
-    @Test(expected = DeleteException.class)
+    @Test(expected = FileNotFoundException.class)
     public void deleteFileNotFound() throws IOException {
         work.join("somedir").deleteFile();
     }
 
-    @Test(expected = DeleteException.class)
+    @Test(expected = FileNotFoundException.class)
     public void deleteFileDirectory() throws IOException {
         Node dir;
 
@@ -980,7 +979,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         dir.deleteFile();
     }
 
-    @Test(expected = DeleteException.class)
+    @Test(expected = DirectoryNotFoundException.class)
     public void deleteDirectoryFile() throws IOException {
         Node node;
 
@@ -989,7 +988,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         node.deleteDirectory();
     }
 
-    @Test(expected = DeleteException.class)
+    @Test(expected = DirectoryNotFoundException.class)
     public void deleteDirectoryNotFound() throws IOException {
         work.join("somedir").deleteDirectory();
     }
@@ -1030,12 +1029,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         try {
             node.deleteTree();
             fail();
-        } catch (DeleteException e) {
-            assertTrue(e.getCause() instanceof NoSuchFileException);
+        } catch (NodeNotFoundException e) {
+            // ok
         }
     }
 
-    @Test(expected = DeleteException.class)
+    @Test(expected = NodeNotFoundException.class)
     public void deleteTreeDirectoryNotFound() throws IOException {
         work.join("somedir").deleteTree();
     }

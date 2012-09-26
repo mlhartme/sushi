@@ -381,7 +381,12 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws CreateInputStreamException {
+    public InputStream createInputStream() throws CreateInputStreamException, FileNotFoundException {
+        try {
+            checkFile();
+        } catch (ExistsException e) {
+            throw new CreateInputStreamException(this, e);
+        }
         synchronized (tryLock) {
             tryDir = false;
             try {
@@ -397,12 +402,19 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException {
+    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException, FileNotFoundException {
         byte[] add;
         final Put method;
         final WebdavConnection connection;
         OutputStream result;
 
+        try {
+            if (isDirectory()) {
+                throw new FileNotFoundException(this);
+            }
+        } catch (ExistsException e) {
+            throw new CreateOutputStreamException(this, e);
+        }
         try {
             if (append) {
                 try {
@@ -449,7 +461,7 @@ public class WebdavNode extends Node {
             try {
                 tryDir = true;
                 method = new PropFind(this, Name.DISPLAYNAME, 1);
-                result = new ArrayList<WebdavNode>();
+                result = new ArrayList<>();
                 for (MultiStatus response : method.invoke()) {
                     try {
                         href = new URI(response.href);

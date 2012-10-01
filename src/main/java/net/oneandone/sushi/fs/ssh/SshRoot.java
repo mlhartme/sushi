@@ -41,7 +41,11 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, Credentials credentials, int timeout)
+    public SshRoot(SshFilesystem filesystem, String host, String user, Credentials credentials, int timeout) throws JSchException {
+        this(filesystem, host, 22, user, credentials, timeout);
+    }
+
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, Credentials credentials, int timeout)
     throws JSchException {
         if (credentials == null) {
             throw new IllegalArgumentException();

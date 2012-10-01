@@ -36,6 +36,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
 
     private final Credentials credentials;
     private final String host;
+    private final int port;
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
@@ -53,6 +54,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         this.filesystem = filesystem;
         this.user = user;
         this.host = host;
+        this.port = port;
         this.credentials = credentials;
         this.session = login(filesystem.getJSch(), host);
         this.session.connect(timeout);
@@ -174,7 +176,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         Session session;
 
         jsch.addIdentity(credentials.loadIdentity(jsch), null);
-        session = jsch.getSession(user, host);
+        session = jsch.getSession(user, host, port);
         session.setUserInfo(this);
         return session;
     }

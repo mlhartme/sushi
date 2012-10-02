@@ -234,16 +234,16 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node deleteFile() throws DeleteException {
+    public Node deleteFile() throws DeleteException, FileNotFoundException {
         try {
             synchronized (tryLock) {
                 tryDir = false;
-                try {
-                    new Delete(this).invoke();
-                } catch (MovedException e) {
-                    throw new DeleteException(this, "file expected");
-                }
+                new Delete(this).invoke();
             }
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (MovedException e) {
+            throw new FileNotFoundException(this, e);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -251,13 +251,13 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node deleteDirectory() throws DeleteException {
+    public Node deleteDirectory() throws DirectoryNotFoundException, DeleteException {
         List<WebdavNode> lst;
 
         try {
             lst = list();
             if (lst == null) {
-                throw new DeleteException(this, "directory expected");
+                throw new DirectoryNotFoundException(this);
             }
             if (lst.size() > 0) {
                 throw new DeleteException(this, "directory is not empty");
@@ -270,6 +270,8 @@ public class WebdavNode extends Node {
                     new Delete(this).invoke();
                 }
             }
+        } catch (DirectoryNotFoundException | DeleteException e) {
+            throw e;
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -277,7 +279,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node deleteTree() throws DeleteException {
+    public Node deleteTree() throws DeleteException, NodeNotFoundException {
         try {
             synchronized (tryLock) {
                 try {
@@ -287,6 +289,8 @@ public class WebdavNode extends Node {
                     new Delete(this).invoke();
                 }
             }
+        } catch (FileNotFoundException e) {
+            throw new NodeNotFoundException(this, e);
         } catch (IOException e) {
             throw new DeleteException(this, e);
         }
@@ -483,6 +487,8 @@ public class WebdavNode extends Node {
             } catch (MovedException e) {
                 tryDir = false;
                 return null; // this is a file
+            } catch (FileNotFoundException e) {
+                return null;
             } catch (IOException e) {
                 throw new ListException(this, e);
             }

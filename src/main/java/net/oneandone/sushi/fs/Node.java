@@ -41,6 +41,8 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -269,10 +271,10 @@ public abstract class Node {
     public abstract int getMode() throws ModeException;
     public abstract void setMode(int mode) throws ModeException;
 
-    public abstract int getUid() throws ModeException;
-    public abstract void setUid(int id) throws ModeException;
-    public abstract int getGid() throws ModeException;
-    public abstract void setGid(int id) throws ModeException;
+    public abstract UserPrincipal getOwner() throws ModeException;
+    public abstract void setOwner(UserPrincipal owner) throws ModeException;
+    public abstract GroupPrincipal getGroup() throws ModeException;
+    public abstract void setGroup(GroupPrincipal group) throws ModeException;
 
     //-- path functionality
 

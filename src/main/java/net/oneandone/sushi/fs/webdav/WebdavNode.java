@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -197,23 +199,23 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public int getUid() {
-        throw unsupported("getUid()");
+    public UserPrincipal getOwner() {
+        throw unsupported("getOwner()");
     }
 
     @Override
-    public void setUid(int uid) {
-        throw unsupported("setUid()");
+    public void setOwner(UserPrincipal owner) {
+        throw unsupported("setOwner()");
     }
 
     @Override
-    public int getGid() {
-        throw unsupported("getGid()");
+    public GroupPrincipal getGroup() {
+        throw unsupported("getGroup()");
     }
 
     @Override
-    public void setGid(int gid) {
-        throw unsupported("setGid()");
+    public void setGroup(GroupPrincipal group) {
+        throw unsupported("setGroup()");
     }
 
     @Override

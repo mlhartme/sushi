@@ -21,6 +21,8 @@ import net.oneandone.sushi.fs.file.FileNode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,23 +84,23 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public int getUid() {
-        throw unsupported("getUid()");
+    public UserPrincipal getOwner() {
+        throw unsupported("getOwner()");
     }
 
     @Override
-    public void setUid(int uid) {
-        throw unsupported("setUid()");
+    public void setOwner(UserPrincipal owner) {
+        throw unsupported("setOwner()");
     }
 
     @Override
-    public int getGid() {
-        throw unsupported("getGid()");
+    public GroupPrincipal getGroup() {
+        throw unsupported("getGroup()");
     }
 
     @Override
-    public void setGid(int gid) {
-        throw unsupported("setGid()");
+    public void setGroup(GroupPrincipal group) {
+        throw unsupported("setGroup()");
     }
 
     @Override

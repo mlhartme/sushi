@@ -9,6 +9,9 @@
         Renamed net.sf.beezle.sushi to net.oneandone.sushi.
       </action>
       <action date="2012-08-21" dev="mhm" type="update">
+        Changed Node.getGid, setGid, getUid and setUid to getGroup, setGroup, getOwner and setOwner.
+      </action>
+      <action date="2012-08-21" dev="mhm" type="update">
         FileNode changed to operate on paths, not files now. Consequently, the constructor takes a path argument
         now, and FileNode.getFile() was replaced by FileNode.toPath().
       </action>

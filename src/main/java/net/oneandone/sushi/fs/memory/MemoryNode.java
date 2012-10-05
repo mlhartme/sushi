@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
 /** You'll normally use World.memoryNode() to create instances */
@@ -131,22 +133,22 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public int getUid() {
+    public UserPrincipal getOwner() {
         throw unsupported("getUid()");
     }
 
     @Override
-    public void setUid(int uid) {
+    public void setOwner(UserPrincipal owner) {
         throw unsupported("setUid()");
     }
 
     @Override
-    public int getGid() {
+    public GroupPrincipal getGroup() {
         throw unsupported("getGid()");
     }
 
     @Override
-    public void setGid(int gid) {
+    public void setGroup(GroupPrincipal group) {
         throw unsupported("setGid()");
     }
 

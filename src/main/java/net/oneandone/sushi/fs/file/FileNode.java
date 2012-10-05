@@ -29,7 +29,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.*;
+import java.nio.file.attribute.FileOwnerAttributeView;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -416,23 +421,41 @@ public class FileNode extends Node {
     }
 
     @Override
-    public int getUid() throws ModeException {
-        return stat(OS.CURRENT.uid, 10);
+    public UserPrincipal getOwner() throws ModeException {
+        return attributes().owner();
     }
 
     @Override
-    public void setUid(int uid) throws ModeException {
-        ch("chown", Integer.toString(uid));
+    public void setOwner(UserPrincipal owner) throws ModeException {
+        FileOwnerAttributeView view = Files.getFileAttributeView(path, FileOwnerAttributeView.class);
+        try {
+            view.setOwner(owner);
+        } catch (IOException e) {
+            throw new ModeException(this, e);
+        }
     }
 
     @Override
-    public int getGid() throws ModeException {
-        return stat(OS.CURRENT.gid, 10);
+    public GroupPrincipal getGroup() throws ModeException {
+        return attributes().group();
     }
 
     @Override
-    public void setGid(int gid) throws ModeException {
-        ch("chgrp", Integer.toString(gid));
+    public void setGroup(GroupPrincipal group) throws ModeException {
+        PosixFileAttributeView view = Files.getFileAttributeView(path, PosixFileAttributeView.class);
+        try {
+            view.setGroup(group);
+        } catch (IOException e) {
+            throw new ModeException(this, e);
+        }
+    }
+
+    private PosixFileAttributes attributes() throws ModeException {
+        try {
+            return Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        } catch (IOException e) {
+            throw new ModeException(this, e);
+        }
     }
 
     private void ch(String cmd, String n) throws ModeException {

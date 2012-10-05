@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -523,14 +525,15 @@ public class SshNode extends Node {
         }
     }
 
+
     @Override
-    public int getUid() throws ModeException {
+    public SshPrincipal getOwner() throws ModeException {
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
             try {
-                return sftp.stat(escape(slashPath)).getUId();
+                return new SshPrincipal(sftp.stat(escape(slashPath)).getUId());
             } finally {
                 free(sftp);
             }
@@ -540,14 +543,14 @@ public class SshNode extends Node {
     }
 
     @Override
-    public void setUid(int uid) throws ModeException {
+    public void setOwner(UserPrincipal owner) throws ModeException {
         String str;
         SftpATTRS stat;
         ChannelSftp sftp;
 
         try {
             if (isDirectory()) { // TODO
-                str = getRoot().exec("chown", Integer.toString(uid), escape(slashPath));
+                str = getRoot().exec("chown", owner.getName(), escape(slashPath));
                 if (str.length() > 0) {
                     throw new ModeException(this, "chown failed:" + str);
                 }
@@ -555,7 +558,7 @@ public class SshNode extends Node {
                 sftp = alloc();
                 try {
                     stat = sftp.stat(escape(slashPath));
-                    stat.setUIDGID(uid, stat.getGId());
+                    stat.setUIDGID(((SshPrincipal) owner).id, stat.getGId());
                     sftp.setStat(escape(slashPath), stat);
                 } finally {
                     free(sftp);
@@ -567,13 +570,13 @@ public class SshNode extends Node {
     }
 
     @Override
-    public int getGid() throws ModeException {
+    public GroupPrincipal getGroup() throws ModeException {
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
             try {
-                return sftp.stat(escape(slashPath)).getGId();
+                return new SshPrincipal(sftp.stat(escape(slashPath)).getGId());
             } finally {
                 free(sftp);
             }
@@ -583,14 +586,14 @@ public class SshNode extends Node {
     }
 
     @Override
-    public void setGid(int gid) throws ModeException {
+    public void setGroup(GroupPrincipal group) throws ModeException {
         String str;
         SftpATTRS stat;
         ChannelSftp sftp;
 
         try {
             if (isDirectory()) { // TODO
-                str = getRoot().exec("chgrp", Integer.toString(gid), slashPath);
+                str = getRoot().exec("chgrp", group.getName(), slashPath);
                 if (str.length() > 0) {
                     throw new ModeException(this, "chgrp failed:" + str);
                 }
@@ -598,7 +601,7 @@ public class SshNode extends Node {
                 sftp = alloc();
                 try {
                     stat = sftp.stat(escape(slashPath));
-                    stat.setUIDGID(stat.getUId(), gid);
+                    stat.setUIDGID(stat.getUId(), ((SshPrincipal) group).id);
                     sftp.setStat(escape(slashPath), stat);
                 } finally {
                     free(sftp);

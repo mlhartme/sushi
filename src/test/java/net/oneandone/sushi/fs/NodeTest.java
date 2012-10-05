@@ -34,6 +34,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1214,54 +1216,43 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
-    public void uidDir() throws Exception {
-        doUid(work.join("dir").mkdir());
+    public void ownerDir() throws Exception {
+        doOwner(work.join("dir").mkdir());
     }
     @Test
-    public void uidFile() throws Exception {
-        doUid(work.join("file").writeBytes());
+    public void ownerFile() throws Exception {
+        doOwner(work.join("file").writeBytes());
     }
 
-    private void doUid(Node node) throws IOException {
-        int id;
+    private void doOwner(Node node) throws IOException {
+        UserPrincipal id;
 
         if (!work.getRoot().getFilesystem().getFeatures().modes) {
             return;
         }
-        id = node.getUid();
-        node.setUid(id);
-        assertEquals(id, node.getUid());
-        try {
-            node.setUid(0);
-            fail();
-        } catch (IOException e) {
-            // ok
-        }
-        assertEquals(id, node.getUid());
+        id = node.getOwner();
+        node.setOwner(id);
+        assertEquals(id, node.getOwner());
     }
 
     @Test
-    public void gidDir() throws Exception {
-        doGid(work.join("dir").mkdir());
+    public void groupDir() throws Exception {
+        doGroup(work.join("dir").mkdir());
     }
     @Test
-    public void gidFile() throws Exception {
-        doGid(work.join("file").writeBytes());
+    public void groupFile() throws Exception {
+        doGroup(work.join("file").writeBytes());
     }
 
-    private void doGid(Node node) throws IOException {
-        int id;
+    private void doGroup(Node node) throws IOException {
+        GroupPrincipal group;
 
         if (!work.getRoot().getFilesystem().getFeatures().modes) {
             return;
         }
-        id = node.getGid();
-        node.setGid(id);
-        assertEquals(id, node.getGid());
-        if (id == 0) {
-        	return;
-        }
-        assertEquals(id, node.getGid());
+        group = node.getGroup();
+        node.setGroup(group);
+        assertEquals(group, node.getGroup());
     }
 
     //-- Object methods

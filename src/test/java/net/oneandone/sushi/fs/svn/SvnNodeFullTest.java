@@ -136,14 +136,16 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
 
     @Test
     public void fromWorkspace() throws Exception {
-        FileNode ws;
+        SvnNode orig;
+        FileNode dest;
         SvnNode svn;
 
-        ws = WORLD.guessProjectHome(getClass());
-        svn = SvnNode.fromWorkspace(ws);
+        orig = (SvnNode) WORLD.node("svn:https://packlet.svn.sourceforge.net/svnroot/packlet/kinderhaus/site");
+        dest = WORLD.getTemp().createTempDirectory();
+        orig.checkout(dest);
+        svn = SvnNode.fromWorkspace(dest);
         svn.checkDirectory();
-        svn = SvnNode.fromWorkspace(ws.join("pom.xml"));
-        svn.checkFile();
+        assertEquals(svn, orig);
     }
 
     //--

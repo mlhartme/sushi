@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.io.SkipOutputStream;
 import org.tmatesoft.svn.core.SVNCommitInfo;
+import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
@@ -29,7 +30,11 @@ import org.tmatesoft.svn.core.io.ISVNEditor;
 import org.tmatesoft.svn.core.io.SVNFileRevision;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
+import org.tmatesoft.svn.core.wc.SVNRevision;
+import org.tmatesoft.svn.core.wc.SVNUpdateClient;
+import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -481,6 +486,22 @@ public class SvnNode extends Node {
         sub.update(revision, "", true, exporter, exporter);
     }
 
+    public long checkout(FileNode dest) throws IOException, SVNException {
+        long latest;
+
+        latest = getLatestRevision();
+        checkout(dest, latest);
+        return latest;
+    }
+
+    public void checkout(FileNode dest, long revision) throws IOException, SVNException {
+        checkDirectory();
+        dest.checkDirectory();
+        SVNUpdateClient client = getRoot().getClientMananger().getUpdateClient();
+        client.doCheckout(getSvnurl(), dest.toPath().toFile(), SVNRevision.UNDEFINED, SVNRevision.create(revision),
+                SVNDepth.INFINITY, false);
+    }
+
     public SVNURL getSvnurl() {
         try {
             return root.getRepository().getLocation().appendPath(path, false);
@@ -503,22 +524,13 @@ public class SvnNode extends Node {
     }
 
     public static String urlFromWorkspace(FileNode workspace) throws IOException {
-        return extract(workspace.exec("svn", "info"), "URL:");
-    }
+        SVNClientManager clientManager;
 
-    private static String extract(String str, String key) throws IOException {
-        int start;
-        int end;
-
-        start = str.indexOf(key);
-        if (start == - 1) {
-            throw new IOException("missing " + key + " in " + str);
+        clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true));
+        try {
+            return clientManager.getWCClient().doInfo(workspace.toPath().toFile(), SVNRevision.UNDEFINED).getURL().toString();
+        } catch (SVNException e) {
+            throw new IOException("cannot determine workspace url: " + e.getMessage(), e);
         }
-        start += key.length();
-        end = str.indexOf('\n', start);
-        if (end == -1) {
-            throw new IOException("missing newline in " + str);
-        }
-        return str.substring(start, end).trim();
     }
 }

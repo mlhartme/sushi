@@ -276,7 +276,7 @@ public class FileNode extends Node {
             checkNotExists();
             parent = getParent();
             parent.checkDirectory();
-            new Launcher(parent, "ln", "-s", target, getName()).execNoOutput();
+            Files.createSymbolicLink(path, path.getFileSystem().getPath(target));
         } catch (IOException e) {
             throw new LinkException(this, e);
         }
@@ -285,8 +285,8 @@ public class FileNode extends Node {
     @Override
     public String readLink() throws ReadLinkException {
     	try {
-		    return getWorld().getTemp().exec("readlink", path.toFile().getAbsolutePath()).trim();
-		} catch (IOException e) {
+            return Files.readSymbolicLink(path).toString();
+        } catch (IOException e) {
 			throw new ReadLinkException(this, e);
 		}
     }

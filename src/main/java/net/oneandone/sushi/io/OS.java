@@ -18,18 +18,9 @@ package net.oneandone.sushi.io;
 import net.oneandone.sushi.util.Separator;
 
 public enum OS {
-    LINUX("Linux", "$", "", ':', "\n",
-    		new String[] { "--format", "%a"},
-            new String[] { "--format", "%u"},
-            new String[] { "--format", "%g"}),
-    MAC(new String[] { "Mac" /* official Apple Jdks */, "Darwin" /* OpenJdk 7 for Mac OS BSD Port */ }, "$", "", ':', "\n",
-    		new String[] { "-f", "%Op"},
-    		new String[] { "-f", "%u"},
-    		new String[] { "-f", "%g"}),
-    WINDOWS("Windows", "%", "%", ';', "\r\n",
-    		new String[] { "/f", "%a" },
-    		new String[] { "/f", "%u" },
-    		new String[] { "/f", "%g" });
+    LINUX("Linux", "$", "", ':', "\n"),
+    MAC(new String[] { "Mac" /* official Apple Jdks */, "Darwin" /* OpenJdk 7 for Mac OS BSD Port */ }, "$", "", ':', "\n"),
+    WINDOWS("Windows", "%", "%", ';', "\r\n");
 
     private static OS detect() {
         String name;
@@ -55,25 +46,17 @@ public enum OS {
 
     public final Separator lineSeparator;
 
-    public final String[] mode;
-    public final String[] uid;
-    public final String[] gid;
-
-    private OS(String substring, String variablePrefix, String variableSuffix,
-            char listSeparatorChar, String lineSeparator, String[] mode, String[] uid, String[] gid) {
-        this(new String[] { substring }, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator,  mode, uid, gid);
+    private OS(String substring, String variablePrefix, String variableSuffix, char listSeparatorChar, String lineSeparator) {
+        this(new String[] { substring }, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator);
     }
 
     private OS(String[] substrings, String variablePrefix, String variableSuffix,
-            char listSeparatorChar, String lineSeparator, String[] mode, String[] uid, String[] gid) {
+            char listSeparatorChar, String lineSeparator) {
         this.substrings = substrings;
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
         this.listSeparator = Separator.on(listSeparatorChar);
         this.lineSeparator = Separator.on(lineSeparator);
-        this.mode = mode;
-        this.uid = uid;
-        this.gid = gid;
     }
 
     public String lines(String ... lines) {

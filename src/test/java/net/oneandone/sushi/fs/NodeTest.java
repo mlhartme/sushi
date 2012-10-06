@@ -1209,10 +1209,10 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         }
         file = work.join("file");
         file.writeBytes();
-        file.setMode(0644);
-        assertEquals(0644, file.getMode());
-        file.setMode(0755);
-        assertEquals(0755, file.getMode());
+        file.setPermissions("rw-r--r--");
+        assertEquals("rw-r--r--", file.getPermissions());
+        file.setPermissions("rwxr-xr-x");
+        assertEquals("rwxr-xr-x", file.getPermissions());
     }
 
     @Test

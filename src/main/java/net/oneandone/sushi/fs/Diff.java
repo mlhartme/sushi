@@ -137,7 +137,7 @@ public class Diff {
         } else if (left.diff(right)) {
             header('M', relative, result);
         } else if (left.getRoot().getFilesystem().getFeatures().modes
-        		&& left.getMode() != right.getMode()) {
+        		&& !left.getPermissions().equals(right.getPermissions())) {
             header('m', relative, result);
         } else {
             // nothing

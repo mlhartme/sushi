@@ -80,13 +80,13 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public int getMode() {
-        throw unsupported("getMode()");
+    public String getPermissions() {
+        throw unsupported("getPermissions()");
     }
 
     @Override
-    public void setMode(int mode) {
-        throw unsupported("setMode()");
+    public void setPermissions(String permissions) {
+        throw unsupported("setPermissions()");
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Copy {
     /** applied to sourcedir */
 	private final Filter filter;
 
-	private final boolean modes;
+	private final boolean permissions;
 	
     private final Substitution path;
     private final Substitution content;
@@ -75,10 +75,10 @@ public class Copy {
                 variables == null ? 0 : DEFAULT_CALL_PREFIX);
     }
 
-    public Copy(Node srcdir, Filter filter, boolean modes, Map<String, String> variables, Substitution path, Substitution content, char contextDelimiter, char callPrefix) {
+    public Copy(Node srcdir, Filter filter, boolean permissions, Map<String, String> variables, Substitution path, Substitution content, char contextDelimiter, char callPrefix) {
 	    this.sourcedir = srcdir;
         this.filter = filter;
-        this.modes = modes;
+        this.permissions = permissions;
 		this.path = path;
 		this.content = content;
 		this.rootVariables = variables;
@@ -166,8 +166,8 @@ public class Copy {
                             src.node.copyFile(dest);
                         }
                     }
-                    if (modes) {
-                        dest.setMode(src.node.getMode());
+                    if (permissions) {
+                        dest.setPermissions(src.node.getPermissions());
                     }
                     result.add(dest);
                     for (Tree child : src.children) {

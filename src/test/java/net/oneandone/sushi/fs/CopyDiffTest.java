@@ -53,14 +53,14 @@ public class CopyDiffTest {
 
         file = copy.getSourceDir().join("file");
         file.writeString("foo");
-        file.setMode(0700);
+        file.setPermissions("rwx------");
         copy.directory(destdir);
-        assertEquals(0700, destdir.join("file").getMode());
+        assertEquals("rwx------", destdir.join("file").getPermissions());
 
-        file.setMode(0655);
+        file.setPermissions("rw-r-xr-x");
         assertEquals(l("m file"), brief(destdir));
         copy.directory(destdir);
-        assertEquals(0655, destdir.join("file").getMode());
+        assertEquals("rw-r-xr-x", destdir.join("file").getPermissions());
     }
     
 	@Test

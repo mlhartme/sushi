@@ -29,12 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.*;
-import java.nio.file.attribute.FileOwnerAttributeView;
-import java.nio.file.attribute.FileTime;
-import java.nio.file.attribute.GroupPrincipal;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFileAttributes;
-import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -411,13 +406,18 @@ public class FileNode extends Node {
     //--
 
     @Override
-    public int getMode() throws ModeException {
-        return stat(OS.CURRENT.mode, 8) & 0777;
+    public String getPermissions() throws ModeException {
+        return PosixFilePermissions.toString(attributes().permissions());
     }
 
     @Override
-    public void setMode(int mode) throws ModeException {
-        ch("chmod", Integer.toOctalString(mode));
+    public void setPermissions(String permissions) throws ModeException {
+        try {
+            Files.getFileAttributeView(path, PosixFileAttributeView.class).setPermissions(
+                    PosixFilePermissions.fromString(permissions));
+        } catch (IOException e) {
+            throw new ModeException(this, e);
+        }
     }
 
     @Override
@@ -455,14 +455,6 @@ public class FileNode extends Node {
             return Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
         } catch (IOException e) {
             throw new ModeException(this, e);
-        }
-    }
-
-    private void ch(String cmd, String n) throws ModeException {
-        try {
-            new Launcher(getParent(), cmd, n, getAbsolute()).execNoOutput();
-        } catch (Failure failure) {
-            throw new ModeException(this, failure);
         }
     }
 

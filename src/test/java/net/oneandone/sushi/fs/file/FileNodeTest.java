@@ -149,21 +149,21 @@ public class FileNodeTest extends NodeTest<FileNode> {
         if (node.getWorld().os == OS.WINDOWS) {
             return; // TODO
         }
-        checkMode(node, 0644);
-        checkMode(node, 0700);
+        checkMode(node, "rw-r--r--");
+        checkMode(node, "rwx------");
         assertTrue(node.canRead());
         assertTrue(node.canWrite());
-        checkMode(node, 0000);
+        checkMode(node, "---------");
         assertFalse(node.canRead());
         assertFalse(node.canWrite());
-        checkMode(node, 0777);
+        checkMode(node, "rwxrwxrwx");
         assertTrue(node.canRead());
         assertTrue(node.canWrite());
     }
 
-    private void checkMode(FileNode node, int mode) throws IOException {
-        node.setMode(mode);
-        assertEquals(mode, node.getMode());
+    private void checkMode(FileNode node, String permissions) throws IOException {
+        node.setPermissions(permissions);
+        assertEquals(permissions, node.getPermissions());
     }
 
     //--

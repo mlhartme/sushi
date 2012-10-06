@@ -268,8 +268,8 @@ public abstract class Node {
     public abstract long getLastModified() throws GetLastModifiedException;
     public abstract void setLastModified(long millis) throws SetLastModifiedException;
 
-    public abstract int getMode() throws ModeException;
-    public abstract void setMode(int mode) throws ModeException;
+    public abstract String getPermissions() throws ModeException;
+    public abstract void setPermissions(String permissions) throws ModeException;
 
     public abstract UserPrincipal getOwner() throws ModeException;
     public abstract void setOwner(UserPrincipal owner) throws ModeException;

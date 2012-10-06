@@ -42,6 +42,16 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         super.setUp();
     }
 
+    @Test
+    public void permissionConversion() {
+        String str;
+
+        for (int i = 0; i < 512; i += 1) {
+            str = SshNode.toPermissions(i);
+            assertEquals(i, SshNode.fromPermissions(str));
+        }
+    }
+
     @Override
     public void validateDeallocation() {
         assertEquals(0, work.getRoot().getAllocated());

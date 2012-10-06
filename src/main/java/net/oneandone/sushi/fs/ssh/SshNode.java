@@ -38,6 +38,10 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.file.attribute.PosixFilePermission.*;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_WRITE;
+
 public class SshNode extends Node {
     private final SshRoot root;
     private final String slashPath;
@@ -491,13 +495,13 @@ public class SshNode extends Node {
     }
 
     @Override
-    public int getMode() throws ModeException {
+    public String getPermissions() throws ModeException {
         ChannelSftp sftp;
 
         try {
             sftp = alloc();
             try {
-                return sftp.stat(escape(slashPath)).getPermissions() & 0777;
+                return toPermissions(sftp.stat(escape(slashPath)).getPermissions() & 0777);
             } finally {
                 free(sftp);
             }
@@ -505,9 +509,8 @@ public class SshNode extends Node {
             throw new ModeException(this, e);
         }
     }
-
     @Override
-    public void setMode(int mode) throws ModeException {
+    public void setPermissions(String permissions) throws ModeException {
         SftpATTRS stat;
         ChannelSftp sftp;
 
@@ -515,7 +518,7 @@ public class SshNode extends Node {
             sftp = alloc();
             try {
                 stat = sftp.stat(escape(slashPath));
-                stat.setPERMISSIONS(mode);
+                stat.setPERMISSIONS(fromPermissions(permissions));
                 sftp.setStat(escape(slashPath), stat);
             } finally {
                 free(sftp);
@@ -739,4 +742,34 @@ public class SshNode extends Node {
         root.freeChannelSftp(channel);
     }
 
+    //--
+
+    public static int fromPermissions(String str) {
+        int result;
+
+        result = 0;
+        for (int i = 0; i < str.length(); i++) {
+            result = result << 1;
+            if (str.charAt(i) != '-') {
+                result |= 1;
+            }
+        }
+        return result;
+    }
+
+    public static String toPermissions(int bits) {
+        StringBuilder builder;
+
+        builder = new StringBuilder(9);
+        builder.append((bits & 0x100) != 0 ? 'r' : '-');
+        builder.append((bits & 0x80) != 0 ? 'w' : '-');
+        builder.append((bits & 0x40) != 0 ? 'x' : '-');
+        builder.append((bits & 0x20) != 0 ? 'r' : '-');
+        builder.append((bits & 0x10) != 0 ? 'w' : '-');
+        builder.append((bits & 0x08) != 0 ? 'x' : '-');
+        builder.append((bits & 0x04) != 0 ? 'r' : '-');
+        builder.append((bits & 0x02) != 0 ? 'w' : '-');
+        builder.append((bits & 0x01) != 0 ? 'x' : '-');
+        return builder.toString();
+    }
 }

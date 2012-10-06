@@ -38,10 +38,6 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.nio.file.attribute.PosixFilePermission.*;
-import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
-import static java.nio.file.attribute.PosixFilePermission.OTHERS_WRITE;
-
 public class SshNode extends Node {
     private final SshRoot root;
     private final String slashPath;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2012-10-09T21:17:08.449">
+<pmd version="4.3" timestamp="2012-10-09T21:36:50.768">
 <file name="/Users/mhm/Projects/github/sushi/src/main/java/net/oneandone/sushi/csv/Csv.java">
 <violation beginline="21" endline="21" begincolumn="1" endcolumn="40" rule="UnusedImports" ruleset="Import Statement Rules" package="net.oneandone.sushi.csv" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'net.oneandone.sushi.util.Strings'

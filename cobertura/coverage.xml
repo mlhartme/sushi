@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="7598" branches-covered="0" branches-valid="2983" complexity="2.4092071611253196" version="1.9.4.1" timestamp="1349810241676">
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="7598" branches-covered="0" branches-valid="2983" complexity="2.4092071611253196" version="1.9.4.1" timestamp="1349811424183">
 	<sources>
 		<source>/Users/mhm/Projects/github/sushi/src/main/java</source>
 		<source>--source</source>

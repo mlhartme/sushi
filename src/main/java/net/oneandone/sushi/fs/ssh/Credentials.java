@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
+import com.jcraft.jsch.HostKey;
+import com.jcraft.jsch.HostKeyRepository;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -29,7 +31,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /** Private key with passphrase */
-public class Credentials implements UserInfo {
+public class Credentials {
     public static Credentials loadDefault(World world) throws IOException {
         Node dir;
         Node file;
@@ -88,11 +90,45 @@ public class Credentials implements UserInfo {
         identity = identity(jsch);
         identity.setPassphrase(passphrase.getBytes());
         jsch.addIdentity(identity, null);
+        jsch.setHostKeyRepository(new HostKeyRepository() {
+            @Override
+            public int check(String host, byte[] key) {
+                return HostKeyRepository.OK;
+            }
+
+            @Override
+            public void add(HostKey hostkey, UserInfo ui) {
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public void remove(String host, String type) {
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public void remove(String host, String type, byte[] key) {
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public String getKnownHostsRepositoryID() {
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public HostKey[] getHostKey() {
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public HostKey[] getHostKey(String host, String type) {
+                throw new IllegalStateException();
+            }
+        });
         session = jsch.getSession(user, host, port);
-        session.setUserInfo(this);
         return session;
     }
-
 
     private Identity identity(JSch jsch) throws JSchException {
         Throwable te;
@@ -114,39 +150,5 @@ public class Credentials implements UserInfo {
         } catch (Exception e) {
             throw new RuntimeException("TODO", e);
         }
-    }
-
-    //-- UserInfo implementation
-
-    public String getPassphrase(String message) {
-        throw new IllegalStateException(message);
-    }
-
-    public String getPassword() {
-        throw new IllegalStateException();
-    }
-
-    public boolean prompt(String str) {
-        throw new IllegalStateException(str);
-    }
-
-    public String getPassphrase() {
-        throw new IllegalStateException();
-    }
-
-    public boolean promptPassphrase(String prompt) {
-        throw new IllegalStateException(prompt);
-    }
-
-    public boolean promptPassword(String prompt) {
-        throw new IllegalStateException(prompt);
-    }
-
-    public boolean promptYesNo(String message) {
-        return true; // access host keys
-    }
-
-    public void showMessage(String message) {
-        System.out.println("showMessage " + message);
     }
 }

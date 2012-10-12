@@ -51,7 +51,7 @@ public class SshFilesystem extends Filesystem {
     /** @return never null */
     public Credentials getDefaultCredentials() throws IOException {
         if (defaultCredentials == null) {
-            defaultCredentials = Credentials.loadDefault(getWorld());
+            defaultCredentials = SshKey.loadDefault(getWorld());
         }
         return defaultCredentials;
     }

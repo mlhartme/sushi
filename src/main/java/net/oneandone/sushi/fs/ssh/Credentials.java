@@ -113,8 +113,7 @@ public class Credentials implements UserInfo {
         }
     }
 
-    //-- UserInfo interface
-    //-- interface implementation
+    //-- UserInfo implementation
 
     public String getPassphrase(String message) {
         throw new IllegalStateException(message);
@@ -133,15 +132,15 @@ public class Credentials implements UserInfo {
     }
 
     public boolean promptPassphrase(String prompt) {
-        return true; // use passphrase auth
+        return true; // Yes, I have a passphrase
     }
 
     public boolean promptPassword(String prompt) {
-        return false; // don't use password
+        throw new IllegalStateException(prompt);
     }
 
     public boolean promptYesNo(String message) {
-        return true;
+        return true; // access host keys
     }
 
     public void showMessage(String message) {

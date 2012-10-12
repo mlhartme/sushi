@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 // TODO: dump UserInfo interface?
-public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
+public class SshRoot implements Root<SshNode>, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 
@@ -56,7 +56,7 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         this.host = host;
         this.port = port;
         this.credentials = credentials;
-        this.session = login(filesystem.getJSch(), host);
+        this.session = credentials.login(filesystem.getJSch(), user, host, port);
         this.session.connect(timeout);
         this.sftp = null;
         OnShutdown.get().onShutdown(this);
@@ -172,52 +172,8 @@ public class SshRoot implements Root<SshNode>, UserInfo, Runnable {
         return user;
     }
 
-    public Session login(JSch jsch, String host) throws JSchException {
-        Session session;
-
-        jsch.addIdentity(credentials.loadIdentity(jsch), null);
-        session = jsch.getSession(user, host, port);
-        session.setUserInfo(this);
-        return session;
-    }
-
-
     public String getHost() {
         return host;
-    }
-
-    //-- interface implementation
-
-    public String getPassphrase(String message) {
-        throw new IllegalStateException(message);
-    }
-
-    public String getPassword() {
-        throw new IllegalStateException();
-    }
-
-    public boolean prompt(String str) {
-        throw new IllegalStateException(str);
-    }
-
-    public String getPassphrase() {
-        return credentials.passphrase;
-    }
-
-    public boolean promptPassphrase(String prompt) {
-        return true; // use passphrase auth
-    }
-
-    public boolean promptPassword(String prompt) {
-        return false; // don't use password
-    }
-
-    public boolean promptYesNo(String message) {
-        return true;
-    }
-
-    public void showMessage(String message) {
-        System.out.println("showMessage " + message);
     }
 
     // executes on shutdown

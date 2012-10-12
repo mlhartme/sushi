@@ -18,6 +18,8 @@ package net.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.UserInfo;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
 
@@ -27,7 +29,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /** Private key with passphrase */
-public class Credentials {
+public class Credentials implements UserInfo {
     public static Credentials loadDefault(World world) throws IOException {
         Node dir;
         Node file;
@@ -79,7 +81,17 @@ public class Credentials {
         this.passphrase = passphrase;
     }
 
-    public Identity loadIdentity(JSch jsch) throws JSchException {
+    public Session login(JSch jsch, String user, String host, int port) throws JSchException {
+        Session session;
+
+        jsch.addIdentity(identity(jsch), null);
+        session = jsch.getSession(user, host, port);
+        session.setUserInfo(this);
+        return session;
+    }
+
+
+    private Identity identity(JSch jsch) throws JSchException {
         Throwable te;
         Class<?> clz;
         Method m;
@@ -99,5 +111,40 @@ public class Credentials {
         } catch (Exception e) {
             throw new RuntimeException("TODO", e);
         }
+    }
+
+    //-- UserInfo interface
+    //-- interface implementation
+
+    public String getPassphrase(String message) {
+        throw new IllegalStateException(message);
+    }
+
+    public String getPassword() {
+        throw new IllegalStateException();
+    }
+
+    public boolean prompt(String str) {
+        throw new IllegalStateException(str);
+    }
+
+    public String getPassphrase() {
+        return passphrase;
+    }
+
+    public boolean promptPassphrase(String prompt) {
+        return true; // use passphrase auth
+    }
+
+    public boolean promptPassword(String prompt) {
+        return false; // don't use password
+    }
+
+    public boolean promptYesNo(String message) {
+        return true;
+    }
+
+    public void showMessage(String message) {
+        System.out.println("showMessage " + message);
     }
 }

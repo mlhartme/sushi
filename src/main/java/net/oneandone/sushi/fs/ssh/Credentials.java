@@ -82,9 +82,12 @@ public class Credentials implements UserInfo {
     }
 
     public Session login(JSch jsch, String user, String host, int port) throws JSchException {
+        Identity identity;
         Session session;
 
-        jsch.addIdentity(identity(jsch), null);
+        identity = identity(jsch);
+        identity.setPassphrase(passphrase.getBytes());
+        jsch.addIdentity(identity, null);
         session = jsch.getSession(user, host, port);
         session.setUserInfo(this);
         return session;
@@ -128,11 +131,11 @@ public class Credentials implements UserInfo {
     }
 
     public String getPassphrase() {
-        return passphrase;
+        throw new IllegalStateException();
     }
 
     public boolean promptPassphrase(String prompt) {
-        return true; // Yes, I have a passphrase
+        throw new IllegalStateException(prompt);
     }
 
     public boolean promptPassword(String prompt) {

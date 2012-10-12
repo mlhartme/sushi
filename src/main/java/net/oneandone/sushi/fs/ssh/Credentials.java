@@ -15,13 +15,10 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
-import com.jcraft.jsch.HostKey;
-import com.jcraft.jsch.HostKeyRepository;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
 
@@ -90,42 +87,7 @@ public class Credentials {
         identity = identity(jsch);
         identity.setPassphrase(passphrase.getBytes());
         jsch.addIdentity(identity, null);
-        jsch.setHostKeyRepository(new HostKeyRepository() {
-            @Override
-            public int check(String host, byte[] key) {
-                return HostKeyRepository.OK;
-            }
-
-            @Override
-            public void add(HostKey hostkey, UserInfo ui) {
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public void remove(String host, String type) {
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public void remove(String host, String type, byte[] key) {
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public String getKnownHostsRepositoryID() {
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public HostKey[] getHostKey() {
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public HostKey[] getHostKey(String host, String type) {
-                throw new IllegalStateException();
-            }
-        });
+        jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
         session = jsch.getSession(user, host, port);
         return session;
     }
@@ -151,4 +113,5 @@ public class Credentials {
             throw new RuntimeException("TODO", e);
         }
     }
+
 }

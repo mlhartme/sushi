@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs.webdav.methods;
 
 import net.oneandone.sushi.fs.webdav.WebdavConnection;
 import net.oneandone.sushi.fs.webdav.WebdavNode;
-import net.oneandone.sushi.fs.webdav.WebdavRoot;
 import net.oneandone.sushi.xml.Namespace;
 import net.oneandone.sushi.xml.Serializer;
 import net.oneandone.sushi.xml.Xml;

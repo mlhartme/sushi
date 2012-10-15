@@ -388,15 +388,12 @@ public class WebdavNode extends Node {
 
     @Override
     public InputStream createInputStream() throws CreateInputStreamException, FileNotFoundException {
-        try {
-            checkFile();
-        } catch (ExistsException e) {
-            throw new CreateInputStreamException(this, e);
-        }
         synchronized (tryLock) {
             tryDir = false;
             try {
                 return new Get(this).invoke();
+            } catch (FileNotFoundException e) {
+                throw e;
             } catch (IOException e) {
                 throw new CreateInputStreamException(this, e);
             }

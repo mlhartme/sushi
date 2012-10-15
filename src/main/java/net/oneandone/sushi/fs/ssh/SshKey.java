@@ -27,20 +27,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/** Private key with passphrase */
+/** Private/publish key, with optional passphrase */
 public class SshKey implements Credentials {
     public static SshKey loadDefault(World world) throws IOException {
+        return loadDefault(world, null);
+    }
+
+    /** @param passphrase null to try to load passphrase from ~/.ssh/passphrase file */
+    public static SshKey loadDefault(World world, String passphrase) throws IOException {
         Node dir;
         Node file;
         Node key;
-        String passphrase;
 
         dir = world.getHome().join(".ssh");
         file = dir.join("passphrase");
-        if (file.exists()) {
+        if (passphrase == null && file.exists()) {
             passphrase = file.readString().trim();
-        } else {
-            passphrase = "";
         }
         key = dir.join("id_dsa");
         if (!key.exists()) {
@@ -56,25 +58,22 @@ public class SshKey implements Credentials {
     }
 
     public static SshKey load(Node node) throws IOException {
-        return load(node, "");
+        return load(node, null);
     }
 
     public static SshKey load(Node node, String passphrase) throws IOException {
         return new SshKey(node.toString(), node.readBytes(), passphrase);
     }
 
-    public final String name;
-    public final byte[] privateKey;
-    public final String passphrase;
+    private final String name;
+    private final byte[] privateKey;
+    private final String passphrase;
 
     public SshKey(String name, byte[] privateKey) {
-        this(name, privateKey, "");
+        this(name, privateKey, null);
     }
 
     public SshKey(String name, byte[] privateKey, String passphrase) {
-        if (passphrase == null) {
-            throw new IllegalArgumentException();
-        }
         this.name = name;
         this.privateKey = privateKey;
         this.passphrase = passphrase;
@@ -82,14 +81,14 @@ public class SshKey implements Credentials {
 
     public Session login(JSch jsch, String user, String host, int port) throws JSchException {
         Identity identity;
-        Session session;
 
         identity = identity(jsch);
-        identity.setPassphrase(passphrase.getBytes());
+        if (passphrase != null) {
+            identity.setPassphrase(passphrase.getBytes());
+        }
         jsch.addIdentity(identity, null);
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
-        session = jsch.getSession(user, host, port);
-        return session;
+        return jsch.getSession(user, host, port);
     }
 
     private Identity identity(JSch jsch) throws JSchException {
@@ -113,5 +112,4 @@ public class SshKey implements Credentials {
             throw new RuntimeException("TODO", e);
         }
     }
-
 }

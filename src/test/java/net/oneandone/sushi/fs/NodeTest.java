@@ -164,7 +164,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         nosuchfile = work.join("nosuchfile");
         assertFalse(nosuchfile.exists());
         try {
-            assertNull(nosuchfile.list());
+            nosuchfile.list();
             fail();
         } catch (DirectoryNotFoundException e) {
             // ok

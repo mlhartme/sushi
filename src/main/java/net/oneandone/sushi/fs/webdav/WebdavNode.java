@@ -455,7 +455,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public List<WebdavNode> list() throws ListException {
+    public List<WebdavNode> list() throws ListException, DirectoryNotFoundException {
         PropFind method;
         List<WebdavNode> result;
         URI href;
@@ -487,7 +487,7 @@ public class WebdavNode extends Node {
                 tryDir = false;
                 return null; // this is a file
             } catch (FileNotFoundException e) {
-                return null;
+                throw new DirectoryNotFoundException(this);
             } catch (IOException e) {
                 throw new ListException(this, e);
             }

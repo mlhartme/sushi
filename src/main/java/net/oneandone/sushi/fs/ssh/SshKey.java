@@ -56,50 +56,19 @@ public class SshKey {
         return load(jsch, key, passphrase);
     }
 
-    public static Identity load(JSch jsch, Node node) throws IOException, JSchException {
-        return load(jsch, node, null);
-    }
-
-    public static Identity load(JSch jsch, Node node, String passphrase) throws IOException, JSchException {
-        return new SshKey(node.toString(), node.readBytes(), passphrase).login(jsch);
-    }
-
-    private final String name;
-    private final byte[] privateKey;
-    private final String passphrase;
-
-    public SshKey(String name, byte[] privateKey, String passphrase) {
-        this.name = name;
-        this.privateKey = privateKey;
-        this.passphrase = passphrase;
-    }
-
-    private Identity login(JSch jsch) throws JSchException {
+    public static Identity load(JSch jsch, Node privateKey, String passphrase) throws IOException, JSchException {
         Identity identity;
-
-        identity = identity(jsch);
-        if (passphrase != null) {
-            if (!identity.setPassphrase(passphrase.getBytes())) {
-                throw new JSchException("invalid passphrase");
-            }
-        } else {
-            if (!identity.setPassphrase(null)) {
-                throw new JSchException("missing passphrase");
-            }
-        }
-        return identity;
-    }
-
-    private Identity identity(JSch jsch) throws JSchException {
         Throwable te;
         Class<?> clz;
         Method m;
+        byte[] bytes;
 
+        bytes = privateKey.readBytes();
         try {
             clz = Class.forName("com.jcraft.jsch.IdentityFile");
             m = clz.getDeclaredMethod("newInstance", String.class, byte[].class, byte[].class, JSch.class);
             m.setAccessible(true);
-            return (Identity) m.invoke(null, name, Arrays.copyOf(privateKey, privateKey.length), null, jsch);
+            identity = (Identity) m.invoke(null, privateKey.toString(), Arrays.copyOf(bytes, bytes.length), null, jsch);
         } catch (InvocationTargetException e) {
             te = e.getTargetException();
             if (te instanceof JSchException) {
@@ -110,5 +79,15 @@ public class SshKey {
         } catch (Exception e) {
             throw new RuntimeException("TODO", e);
         }
+        if (passphrase != null) {
+            if (!identity.setPassphrase(passphrase.getBytes())) {
+                throw new JSchException("invalid passphrase");
+            }
+        } else {
+            if (!identity.setPassphrase(null)) {
+                throw new JSchException("missing passphrase");
+            }
+        }
+        return identity;
     }
 }

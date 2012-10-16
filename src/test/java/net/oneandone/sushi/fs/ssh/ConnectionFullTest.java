@@ -213,20 +213,14 @@ public class ConnectionFullTest {
     public void invalidPassphrase() throws Exception {
         World world;
         SshFilesystem fs;
-        Identity identity;
-        Throwable cause;
 
         world = new World();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
-        identity = SshKey.loadDefault(world, fs.getJSch(), "invalidpassphrase");
-        fs.setDefaultIdentity(identity);
         try {
-            world.node("ssh://" + user() + "@" + host());
+            SshKey.loadDefault(world, fs.getJSch(), "invalidpassphrase");
             fail();
-        } catch (NodeInstantiationException e) {
-            cause = e.getCause();
-            assertTrue(cause instanceof JSchException);
-            assertEquals("invalid passphrase", cause.getMessage());
+        } catch (JSchException e) {
+            assertEquals("invalid passphrase", e.getMessage());
         }
     }
 

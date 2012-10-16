@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
+import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import net.oneandone.sushi.fs.Features;
@@ -31,7 +32,7 @@ import java.net.URI;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    private Credentials defaultCredentials;
+    private Identity defaultIdentity;
     private int defaultTimeout;
     private final JSch jsch;
 
@@ -39,22 +40,22 @@ public class SshFilesystem extends Filesystem {
         super(world, new Features(true, true, true, true, false, false, true), name);
 
         // initialized lazily
-        defaultCredentials = null;
+        defaultIdentity = null;
         defaultTimeout = 0;
         jsch = new JSch();
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
     }
 
-    public void setDefaultCredentials(Credentials defaultCredentials) {
-        this.defaultCredentials = defaultCredentials;
+    public void setDefaultIdentity(Identity identity) {
+        this.defaultIdentity = defaultIdentity;
     }
 
     /** @return never null */
-    public Credentials getDefaultCredentials() throws IOException {
-        if (defaultCredentials == null) {
-            defaultCredentials = SshKey.loadDefault(getWorld());
+    public Identity getDefaultIdentity() throws IOException, JSchException {
+        if (defaultIdentity == null) {
+            defaultIdentity = SshKey.loadDefault(getWorld(), jsch);
         }
-        return defaultCredentials;
+        return defaultIdentity;
     }
 
     /** millis */
@@ -73,38 +74,38 @@ public class SshFilesystem extends Filesystem {
 
     @Override
     public SshNode node(URI uri, Object extra) throws NodeInstantiationException {
-        Credentials credentials;
+        Identity identity;
 
         if (extra != null) {
-            if (extra instanceof Credentials) {
-                credentials = (Credentials) extra;
+            if (extra instanceof IOException) {
+                identity = (Identity) extra;
             } else {
                 throw new NodeInstantiationException(uri, "unexpected extra argument: " + extra);
             }
         } else {
             try {
-                credentials = getDefaultCredentials();
-            } catch (IOException e) {
+                identity = getDefaultIdentity();
+            } catch (IOException | JSchException e) {
                 throw new NodeInstantiationException(uri, "cannot load credentials", e);
             }
         }
         checkHierarchical(uri);
         try {
-            return root(uri.getAuthority(), credentials).node(getCheckedPath(uri), null);
+            return root(uri.getAuthority(), identity).node(getCheckedPath(uri), null);
         } catch (JSchException | IOException e) {
             throw new NodeInstantiationException(uri, "cannot create root", e);
         }
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getWorld().getWorking().getName(), getDefaultCredentials());
+        return root("localhost", getWorld().getWorking().getName(), getDefaultIdentity());
     }
 
-    public SshRoot root(String root, Credentials credentials) throws JSchException {
-        return root(root, credentials, defaultTimeout);
+    public SshRoot root(String root, Identity identity) throws JSchException {
+        return root(root, identity, defaultTimeout);
     }
 
-    public SshRoot root(String root, Credentials credentials, int timeout) throws JSchException {
+    public SshRoot root(String root, Identity identity, int timeout) throws JSchException {
         int idx;
         String host;
         String user;
@@ -117,25 +118,25 @@ public class SshFilesystem extends Filesystem {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
         }
-        return root(host, user, credentials, timeout);
+        return root(host, user, identity, timeout);
     }
 
     public SshRoot root(String host, String user) throws JSchException, IOException {
-        return root(host, user, getDefaultCredentials());
+        return root(host, user, getDefaultIdentity());
     }
 
-    public SshRoot root(String host, String user, Credentials credentials) throws JSchException {
-        return root(host, user, credentials, defaultTimeout);
+    public SshRoot root(String host, String user, Identity identity) throws JSchException {
+        return root(host, user, identity, defaultTimeout);
     }
 
     /** @param user null to use current user */
-    public SshRoot root(String host, String user, Credentials credentials, int timeout) throws JSchException {
-        if (credentials == null) {
+    public SshRoot root(String host, String user, Identity identity, int timeout) throws JSchException {
+        if (identity == null) {
             throw new IllegalArgumentException();
         }
         if (user == null) {
             user = getWorld().getHome().getName();
         }
-        return new SshRoot(this, host, user, credentials, timeout);
+        return new SshRoot(this, host, user, identity, timeout);
     }
 }

@@ -15,12 +15,7 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
+import com.jcraft.jsch.*;
 import net.oneandone.sushi.fs.OnShutdown;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.io.MultiOutputStream;
@@ -34,7 +29,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 
-    private final Credentials credentials;
+    private final Identity identity;
     private final String host;
     private final int port;
     private final Session session;
@@ -42,21 +37,21 @@ public class SshRoot implements Root<SshNode>, Runnable {
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, Credentials credentials, int timeout) throws JSchException {
-        this(filesystem, host, 22, user, credentials, timeout);
+    public SshRoot(SshFilesystem filesystem, String host, String user, Identity identity, int timeout) throws JSchException {
+        this(filesystem, host, 22, user, identity, timeout);
     }
 
-    public SshRoot(SshFilesystem filesystem, String host, int port, String user, Credentials credentials, int timeout)
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, Identity identity, int timeout)
     throws JSchException {
-        if (credentials == null) {
+        if (identity == null) {
             throw new IllegalArgumentException();
         }
         this.filesystem = filesystem;
         this.user = user;
         this.host = host;
         this.port = port;
-        this.credentials = credentials;
-        filesystem.getJSch().addIdentity(credentials.login(filesystem.getJSch()), null);
+        this.identity = identity;
+        filesystem.getJSch().addIdentity(identity, null);
         this.session = filesystem.getJSch().getSession(user, host, port);
         this.session.connect(timeout);
         this.sftp = null;

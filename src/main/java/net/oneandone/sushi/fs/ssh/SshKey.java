@@ -18,7 +18,6 @@ package net.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
 
@@ -28,13 +27,13 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /** Private/publish key, with optional passphrase */
-public class SshKey implements Credentials {
-    public static SshKey loadDefault(World world) throws IOException {
-        return loadDefault(world, null);
+public class SshKey {
+    public static Identity loadDefault(World world, JSch jsch) throws IOException, JSchException {
+        return loadDefault(world, jsch, null);
     }
 
     /** @param passphrase null to try to load passphrase from ~/.ssh/passphrase file */
-    public static SshKey loadDefault(World world, String passphrase) throws IOException {
+    public static Identity loadDefault(World world, JSch jsch, String passphrase) throws IOException, JSchException {
         Node dir;
         Node file;
         Node key;
@@ -54,24 +53,20 @@ public class SshKey implements Credentials {
         if (!key.isFile()) {
             throw new IOException("private key not found: " + key);
         }
-        return load(key, passphrase);
+        return load(jsch, key, passphrase);
     }
 
-    public static SshKey load(Node node) throws IOException {
-        return load(node, null);
+    public static Identity load(JSch jsch, Node node) throws IOException, JSchException {
+        return load(jsch, node, null);
     }
 
-    public static SshKey load(Node node, String passphrase) throws IOException {
-        return new SshKey(node.toString(), node.readBytes(), passphrase);
+    public static Identity load(JSch jsch, Node node, String passphrase) throws IOException, JSchException {
+        return new SshKey(node.toString(), node.readBytes(), passphrase).login(jsch);
     }
 
     private final String name;
     private final byte[] privateKey;
     private final String passphrase;
-
-    public SshKey(String name, byte[] privateKey) {
-        this(name, privateKey, null);
-    }
 
     public SshKey(String name, byte[] privateKey, String passphrase) {
         this.name = name;
@@ -79,7 +74,7 @@ public class SshKey implements Credentials {
         this.passphrase = passphrase;
     }
 
-    public Identity login(JSch jsch) throws JSchException {
+    private Identity login(JSch jsch) throws JSchException {
         Identity identity;
 
         identity = identity(jsch);

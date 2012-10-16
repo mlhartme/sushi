@@ -215,7 +215,7 @@ public class ConnectionFullTest {
         world = new World();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
         try {
-            fs.loadDefaultIdentity("invalidpassphrase");
+            fs.addDefaultIdentity("invalidpassphrase");
             fail();
         } catch (JSchException e) {
             assertEquals("invalid passphrase", e.getMessage());

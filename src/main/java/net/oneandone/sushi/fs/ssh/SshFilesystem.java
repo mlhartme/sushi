@@ -104,19 +104,19 @@ public class SshFilesystem extends Filesystem {
             user = getWorld().getHome().getName();
         }
         if (jsch.getIdentityNames().isEmpty()) {
-            jsch.addIdentity(loadDefaultIdentity(), null);
+            addDefaultIdentity();
         }
         return new SshRoot(this, host, user, timeout);
     }
 
     //--
 
-    public Identity loadDefaultIdentity() throws IOException, JSchException {
-        return loadDefaultIdentity(null);
+    public void addDefaultIdentity() throws IOException, JSchException {
+        addDefaultIdentity(null);
     }
 
     /** @param passphrase null to try to load passphrase from ~/.ssh/passphrase file */
-    public Identity loadDefaultIdentity(String passphrase) throws IOException, JSchException {
+    public void addDefaultIdentity(String passphrase) throws IOException, JSchException {
         Node dir;
         Node file;
         Node key;
@@ -136,10 +136,10 @@ public class SshFilesystem extends Filesystem {
         if (!key.isFile()) {
             throw new IOException("private key not found: " + key);
         }
-        return loadIdentity(key, passphrase);
+        addIdentity(key, passphrase);
     }
 
-    public Identity loadIdentity(Node privateKey, String passphrase) throws IOException, JSchException {
+    public void addIdentity(Node privateKey, String passphrase) throws IOException, JSchException {
         Identity identity;
         Throwable te;
         Class<?> clz;
@@ -171,6 +171,7 @@ public class SshFilesystem extends Filesystem {
                 throw new JSchException("missing passphrase");
             }
         }
-        return identity;
+        jsch.removeIdentity(identity);
+        jsch.addIdentity(identity, null);
     }
 }

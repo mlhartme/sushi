@@ -6,6 +6,7 @@
         Http createInputStream without HEAD requests.
       </action>
       <action date="2012-10-12" dev="mhm" type="update">
+        Propertly detect and report invalid or missing passphrase when creating SshRoots.
         Renamed ssh.Credentials to ssh.SshKey and introduced and ssh.Credentials interface.
       </action>
     </release>

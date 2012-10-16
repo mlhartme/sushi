@@ -84,7 +84,13 @@ public class SshKey implements Credentials {
 
         identity = identity(jsch);
         if (passphrase != null) {
-            identity.setPassphrase(passphrase.getBytes());
+            if (!identity.setPassphrase(passphrase.getBytes())) {
+                throw new JSchException("invalid passphrase");
+            }
+        } else {
+            if (!identity.setPassphrase(null)) {
+                throw new JSchException("missing passphrase");
+            }
         }
         jsch.addIdentity(identity, null);
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());

@@ -17,6 +17,7 @@ package net.oneandone.sushi.fs.ssh;
 
 import com.jcraft.jsch.JSchException;
 import net.oneandone.sushi.TestProperties;
+import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.launcher.ExitCode;
 import org.junit.After;
@@ -35,24 +36,35 @@ public class ConnectionFullTest {
     private static final World WORLD = new World();
 
     public static SshRoot open() throws JSchException, IOException {
+        return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host(), user());
+    }
+
+    public static String host() throws JSchException, IOException {
         String host;
-        String user;
+        InetAddress addr;
 
         host = TestProperties.get("ssh.host");
         if (host == null) {
             try {
-                InetAddress addr = InetAddress.getLocalHost();
+                addr = InetAddress.getLocalHost();
                 host = addr.getHostName();
             } catch (UnknownHostException e) {
                 host = "localhost";
             }
         }
+        return host;
+    }
+
+    public static String user() throws JSchException, IOException {
+        String user;
+
         user = TestProperties.get("ssh.user");
         if (user.isEmpty()) {
             user = System.getProperty("user.name");
         }
-        return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host, user);
+        return user;
     }
+
 
     private SshRoot root;
 
@@ -195,4 +207,24 @@ public class ConnectionFullTest {
         assertTrue(process.duration() >= 2000);
         assertTrue(process.duration() <= 2600);
     }
+
+    @Test
+    public void invalidPassphrase() throws Exception {
+        World world;
+        Credentials credentials;
+        Throwable cause;
+
+        world = new World();
+        credentials = SshKey.loadDefault(world, "invalidpassphrase");
+        world.getFilesystem("ssh", SshFilesystem.class).setDefaultCredentials(credentials);
+        try {
+            world.node("ssh://" + user() + "@" + host());
+            fail();
+        } catch (NodeInstantiationException e) {
+            cause = e.getCause();
+            assertTrue(cause instanceof JSchException);
+            assertEquals("invalid passphrase", cause.getMessage());
+        }
+    }
+
 }

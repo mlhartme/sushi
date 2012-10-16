@@ -15,10 +15,8 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
-import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSchException;
 import net.oneandone.sushi.TestProperties;
-import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.launcher.ExitCode;
 import org.junit.After;
@@ -217,7 +215,7 @@ public class ConnectionFullTest {
         world = new World();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
         try {
-            SshKey.loadDefault(world, fs.getJSch(), "invalidpassphrase");
+            fs.loadDefaultIdentity("invalidpassphrase");
             fail();
         } catch (JSchException e) {
             assertEquals("invalid passphrase", e.getMessage());

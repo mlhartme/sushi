@@ -18,13 +18,13 @@ package net.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import net.oneandone.sushi.fs.Features;
-import net.oneandone.sushi.fs.Filesystem;
-import net.oneandone.sushi.fs.NodeInstantiationException;
-import net.oneandone.sushi.fs.World;
+import net.oneandone.sushi.fs.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
+import java.util.Arrays;
 
 /**
  * Nodes accessible via sftp.
@@ -104,8 +104,73 @@ public class SshFilesystem extends Filesystem {
             user = getWorld().getHome().getName();
         }
         if (jsch.getIdentityNames().isEmpty()) {
-            jsch.addIdentity(SshKey.loadDefault(getWorld(), jsch), null);
+            jsch.addIdentity(loadDefaultIdentity(), null);
         }
         return new SshRoot(this, host, user, timeout);
+    }
+
+    //--
+
+    public Identity loadDefaultIdentity() throws IOException, JSchException {
+        return loadDefaultIdentity(null);
+    }
+
+    /** @param passphrase null to try to load passphrase from ~/.ssh/passphrase file */
+    public Identity loadDefaultIdentity(String passphrase) throws IOException, JSchException {
+        Node dir;
+        Node file;
+        Node key;
+
+        dir = getWorld().getHome().join(".ssh");
+        file = dir.join("passphrase");
+        if (passphrase == null && file.exists()) {
+            passphrase = file.readString().trim();
+        }
+        key = dir.join("id_dsa");
+        if (!key.exists()) {
+            key = dir.join("id_rsa");
+            if (!key.exists()) {
+                key = dir.join("identity");
+            }
+        }
+        if (!key.isFile()) {
+            throw new IOException("private key not found: " + key);
+        }
+        return loadIdentity(key, passphrase);
+    }
+
+    public Identity loadIdentity(Node privateKey, String passphrase) throws IOException, JSchException {
+        Identity identity;
+        Throwable te;
+        Class<?> clz;
+        Method m;
+        byte[] bytes;
+
+        bytes = privateKey.readBytes();
+        try {
+            clz = Class.forName("com.jcraft.jsch.IdentityFile");
+            m = clz.getDeclaredMethod("newInstance", String.class, byte[].class, byte[].class, JSch.class);
+            m.setAccessible(true);
+            identity = (Identity) m.invoke(null, privateKey.toString(), Arrays.copyOf(bytes, bytes.length), null, jsch);
+        } catch (InvocationTargetException e) {
+            te = e.getTargetException();
+            if (te instanceof JSchException) {
+                throw (JSchException) te;
+            } else {
+                throw new IllegalStateException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("TODO", e);
+        }
+        if (passphrase != null) {
+            if (!identity.setPassphrase(passphrase.getBytes())) {
+                throw new JSchException("invalid passphrase");
+            }
+        } else {
+            if (!identity.setPassphrase(null)) {
+                throw new JSchException("missing passphrase");
+            }
+        }
+        return identity;
     }
 }

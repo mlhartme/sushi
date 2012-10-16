@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/** Private/publish key, with optional passphrase */
+/** Helper code zu load default identity */
 public class SshKey {
     public static Identity loadDefault(World world, JSch jsch) throws IOException, JSchException {
         return loadDefault(world, jsch, null);

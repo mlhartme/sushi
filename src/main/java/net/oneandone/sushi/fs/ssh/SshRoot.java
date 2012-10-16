@@ -29,7 +29,6 @@ public class SshRoot implements Root<SshNode>, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 
-    private final Identity identity;
     private final String host;
     private final int port;
     private final Session session;
@@ -37,21 +36,16 @@ public class SshRoot implements Root<SshNode>, Runnable {
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, Identity identity, int timeout) throws JSchException {
-        this(filesystem, host, 22, user, identity, timeout);
+    public SshRoot(SshFilesystem filesystem, String host, String user, int timeout) throws JSchException {
+        this(filesystem, host, 22, user, timeout);
     }
 
-    public SshRoot(SshFilesystem filesystem, String host, int port, String user, Identity identity, int timeout)
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout)
     throws JSchException {
-        if (identity == null) {
-            throw new IllegalArgumentException();
-        }
         this.filesystem = filesystem;
         this.user = user;
         this.host = host;
         this.port = port;
-        this.identity = identity;
-        filesystem.getJSch().addIdentity(identity, null);
         this.session = filesystem.getJSch().getSession(user, host, port);
         this.session.connect(timeout);
         this.sftp = null;

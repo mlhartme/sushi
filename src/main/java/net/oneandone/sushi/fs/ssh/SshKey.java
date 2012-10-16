@@ -79,7 +79,7 @@ public class SshKey implements Credentials {
         this.passphrase = passphrase;
     }
 
-    public Session login(JSch jsch, String user, String host, int port) throws JSchException {
+    public Identity login(JSch jsch) throws JSchException {
         Identity identity;
 
         identity = identity(jsch);
@@ -92,9 +92,7 @@ public class SshKey implements Credentials {
                 throw new JSchException("missing passphrase");
             }
         }
-        jsch.addIdentity(identity, null);
-        jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
-        return jsch.getSession(user, host, port);
+        return identity;
     }
 
     private Identity identity(JSch jsch) throws JSchException {

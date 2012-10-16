@@ -15,10 +15,11 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
+import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public interface Credentials {
-    Session login(JSch jsch, String user, String host, int port) throws JSchException;
+    Identity login(JSch jsch) throws JSchException;
 }

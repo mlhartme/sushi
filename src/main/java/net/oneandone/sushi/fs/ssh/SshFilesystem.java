@@ -42,6 +42,7 @@ public class SshFilesystem extends Filesystem {
         defaultCredentials = null;
         defaultTimeout = 0;
         jsch = new JSch();
+        jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
     }
 
     public void setDefaultCredentials(Credentials defaultCredentials) {

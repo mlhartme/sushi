@@ -56,7 +56,8 @@ public class SshRoot implements Root<SshNode>, Runnable {
         this.host = host;
         this.port = port;
         this.credentials = credentials;
-        this.session = credentials.login(filesystem.getJSch(), user, host, port);
+        filesystem.getJSch().addIdentity(credentials.login(filesystem.getJSch()), null);
+        this.session = filesystem.getJSch().getSession(user, host, port);
         this.session.connect(timeout);
         this.sftp = null;
         OnShutdown.get().onShutdown(this);

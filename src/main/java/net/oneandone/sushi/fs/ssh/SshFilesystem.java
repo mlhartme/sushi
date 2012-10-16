@@ -147,6 +147,10 @@ public class SshFilesystem extends Filesystem {
         byte[] bytes;
 
         bytes = privateKey.readBytes();
+        // CAUTION: I cannot use
+        //   jsch.addIdentity("foo", null, null, null);
+        // because in jsch 1.48, there's no way to obtain the resulting identity and the identity.setPassphrase
+        // result.
         try {
             clz = Class.forName("com.jcraft.jsch.IdentityFile");
             m = clz.getDeclaredMethod("newInstance", String.class, byte[].class, byte[].class, JSch.class);

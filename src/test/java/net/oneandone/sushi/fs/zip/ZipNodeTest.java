@@ -64,7 +64,7 @@ public class ZipNodeTest {
         assertTrue(list.size() > 10);
         assertTrue(list.contains(assrt));
         assertFalse(list.contains(list));
-        assertEquals(2, junit.getParent().list().size());
+        assertEquals(1, junit.getParent().list().size());
         root = junit.getParent().getParent();
         assertEquals("", root.getPath());
         assertTrue(root.isDirectory());
@@ -99,7 +99,7 @@ public class ZipNodeTest {
                 assertFalse(node.isFile());
             }
         }
-        assertEquals(290, count);
+        assertEquals(266, count);
     }
 
     @Test

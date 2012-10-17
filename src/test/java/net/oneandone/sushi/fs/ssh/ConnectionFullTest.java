@@ -208,18 +208,43 @@ public class ConnectionFullTest {
     }
 
     @Test
+    public void correctPassphrase() throws Exception {
+        identity("with-passphrase", "passphrase");
+    }
+
+    @Test
     public void invalidPassphrase() throws Exception {
+        try {
+            identity("with-passphrase", "invalid");
+            fail();
+        } catch (JSchException e) {
+            assertEquals("invalid passphrase", e.getMessage());
+        }
+    }
+
+    @Test
+    public void noPassphrase() throws Exception {
+        identity("without-passphrase", null);
+    }
+
+    @Test
+    public void unexpectedPassphrase() throws Exception {
+        try {
+            identity("without-passphrase", "invalid");
+            fail();
+        } catch (JSchException e) {
+            assertEquals("unexpected passphrase", e.getMessage());
+        }
+    }
+
+    private World identity(String name, String passphrase) throws Exception {
         World world;
         SshFilesystem fs;
 
         world = new World();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
-        try {
-            fs.addDefaultIdentity("invalidpassphrase");
-            fail();
-        } catch (JSchException e) {
-            assertEquals("invalid passphrase", e.getMessage());
-        }
+        fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/" + name + "/id_rsa"), passphrase);
+        return world;
     }
 
 }

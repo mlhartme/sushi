@@ -167,6 +167,9 @@ public class SshFilesystem extends Filesystem {
             throw new RuntimeException("TODO", e);
         }
         if (passphrase != null) {
+            if (!identity.isEncrypted()) {
+                throw new JSchException("unexpected passphrase");
+            }
             if (!identity.setPassphrase(passphrase.getBytes())) {
                 throw new JSchException("invalid passphrase");
             }

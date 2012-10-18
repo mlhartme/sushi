@@ -11,7 +11,7 @@
       <title>File: 214,
              Errors: 15,
              Warnings: 0,
-             Infos: 3157
+             Infos: 3134
       </title>
             <link>https://github.com/mlhartme/sushi/checkstyle.html</link>
       <description>
@@ -32,7 +32,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.NodeInstantiationException.java">net/oneandone/sushi/fs/NodeInstantiationException.java</a>
                 </td>
                 <td>
-                  5
+                  6
                 </td>
                 <td>
                   0
@@ -46,7 +46,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.xml.Element.java">net/oneandone/sushi/metadata/xml/Element.java</a>
                 </td>
                 <td>
-                  16
+                  17
                 </td>
                 <td>
                   0
@@ -74,7 +74,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem.java">net/oneandone/sushi/fs/timemachine/TimeMachineFilesystem.java</a>
                 </td>
                 <td>
-                  6
+                  5
                 </td>
                 <td>
                   0
@@ -116,7 +116,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.io.Buffer.java">net/oneandone/sushi/io/Buffer.java</a>
                 </td>
                 <td>
-                  28
+                  27
                 </td>
                 <td>
                   0
@@ -183,10 +183,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.AcceptAllHostKeyRepository.java">net/oneandone/sushi/fs/ssh/AcceptAllHostKeyRepository.java</a>
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.file.FileFilesystem.java">net/oneandone/sushi/fs/file/FileFilesystem.java</a>
                 </td>
                 <td>
-                  7
+                  6
                 </td>
                 <td>
                   0
@@ -200,7 +214,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.console.ConsoleFilesystem.java">net/oneandone/sushi/fs/console/ConsoleFilesystem.java</a>
                 </td>
                 <td>
-                  5
+                  4
                 </td>
                 <td>
                   0
@@ -214,7 +228,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.filter.CollectAction.java">net/oneandone/sushi/fs/filter/CollectAction.java</a>
                 </td>
                 <td>
-                  7
+                  8
                 </td>
                 <td>
                   0
@@ -228,7 +242,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.file.FileNode.java">net/oneandone/sushi/fs/file/FileNode.java</a>
                 </td>
                 <td>
-                  69
+                  70
                 </td>
                 <td>
                   0
@@ -242,7 +256,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.rss.Channel.java">net/oneandone/sushi/rss/Channel.java</a>
                 </td>
                 <td>
-                  18
+                  17
                 </td>
                 <td>
                   0
@@ -256,7 +270,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.csv.Csv.java">net/oneandone/sushi/csv/Csv.java</a>
                 </td>
                 <td>
-                  19
+                  18
                 </td>
                 <td>
                   0
@@ -382,21 +396,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.io.OS.java">net/oneandone/sushi/io/OS.java</a>
                 </td>
                 <td>
-                  26
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.MkfileException.java">net/oneandone/sushi/fs/MkfileException.java</a>
-                </td>
-                <td>
-                  3
+                  27
                 </td>
                 <td>
                   0
@@ -421,10 +421,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.MkfileException.java">net/oneandone/sushi/fs/MkfileException.java</a>
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.xml.ComplexElement.java">net/oneandone/sushi/metadata/xml/ComplexElement.java</a>
                 </td>
                 <td>
-                  5
+                  4
                 </td>
                 <td>
                   0
@@ -438,7 +452,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.Copy.java">net/oneandone/sushi/fs/Copy.java</a>
                 </td>
                 <td>
-                  70
+                  69
                 </td>
                 <td>
                   0
@@ -466,7 +480,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.store.Reader.java">net/oneandone/sushi/metadata/store/Reader.java</a>
                 </td>
                 <td>
-                  10
+                  11
                 </td>
                 <td>
                   0
@@ -592,7 +606,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.svn.Exporter.java">net/oneandone/sushi/fs/svn/Exporter.java</a>
                 </td>
                 <td>
-                  31
+                  30
                 </td>
                 <td>
                   0
@@ -620,7 +634,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.memory.MemoryFilesystem.java">net/oneandone/sushi/fs/memory/MemoryFilesystem.java</a>
                 </td>
                 <td>
-                  10
+                  9
                 </td>
                 <td>
                   0
@@ -687,10 +701,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.methods.Delete.java">net/oneandone/sushi/fs/webdav/methods/Delete.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.LoggingSessionInputBuffer.java">net/oneandone/sushi/fs/webdav/LoggingSessionInputBuffer.java</a>
                 </td>
                 <td>
-                  8
+                  6
                 </td>
                 <td>
                   0
@@ -701,10 +715,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.LoggingSessionInputBuffer.java">net/oneandone/sushi/fs/webdav/LoggingSessionInputBuffer.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.methods.Delete.java">net/oneandone/sushi/fs/webdav/methods/Delete.java</a>
                 </td>
                 <td>
-                  6
+                  7
                 </td>
                 <td>
                   0
@@ -746,7 +760,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.launcher.ExitCode.java">net/oneandone/sushi/launcher/ExitCode.java</a>
                 </td>
                 <td>
-                  8
+                  7
                 </td>
                 <td>
                   0
@@ -788,7 +802,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshRoot.java">net/oneandone/sushi/fs/ssh/SshRoot.java</a>
                 </td>
                 <td>
-                  39
+                  29
                 </td>
                 <td>
                   0
@@ -953,10 +967,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Strings.java">net/oneandone/sushi/util/Strings.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.FileNodeType.java">net/oneandone/sushi/metadata/simpletypes/FileNodeType.java</a>
                 </td>
                 <td>
-                  55
+                  3
                 </td>
                 <td>
                   0
@@ -981,10 +995,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.FileNodeType.java">net/oneandone/sushi/metadata/simpletypes/FileNodeType.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Strings.java">net/oneandone/sushi/util/Strings.java</a>
                 </td>
                 <td>
-                  3
+                  55
                 </td>
                 <td>
                   0
@@ -1040,7 +1054,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.Selector.java">net/oneandone/sushi/xml/Selector.java</a>
                 </td>
                 <td>
-                  24
+                  25
                 </td>
                 <td>
                   0
@@ -1065,10 +1079,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.XmlException.java">net/oneandone/sushi/xml/XmlException.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshPrincipal.java">net/oneandone/sushi/fs/ssh/SshPrincipal.java</a>
                 </td>
                 <td>
-                  5
+                  6
                 </td>
                 <td>
                   0
@@ -1079,10 +1093,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshPrincipal.java">net/oneandone/sushi/fs/ssh/SshPrincipal.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.XmlException.java">net/oneandone/sushi/xml/XmlException.java</a>
                 </td>
                 <td>
-                  6
+                  5
                 </td>
                 <td>
                   0
@@ -1107,20 +1121,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.NodeException.java">net/oneandone/sushi/fs/NodeException.java</a>
-                </td>
-                <td>
-                  5
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.LineFormat.java">net/oneandone/sushi/fs/LineFormat.java</a>
                 </td>
                 <td>
@@ -1135,10 +1135,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.NodeException.java">net/oneandone/sushi/fs/NodeException.java</a>
+                </td>
+                <td>
+                  5
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.console.ConsoleNode.java">net/oneandone/sushi/fs/console/ConsoleNode.java</a>
                 </td>
                 <td>
-                  9
+                  10
                 </td>
                 <td>
                   0
@@ -1166,7 +1180,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.csv.Format.java">net/oneandone/sushi/csv/Format.java</a>
                 </td>
                 <td>
-                  26
+                  27
                 </td>
                 <td>
                   0
@@ -1180,7 +1194,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.launcher.Launcher.java">net/oneandone/sushi/launcher/Launcher.java</a>
                 </td>
                 <td>
-                  23
+                  24
                 </td>
                 <td>
                   0
@@ -1236,7 +1250,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.PathException.java">net/oneandone/sushi/metadata/PathException.java</a>
                 </td>
                 <td>
-                  3
+                  4
                 </td>
                 <td>
                   0
@@ -1278,7 +1292,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.annotation.AnnotationSchema.java">net/oneandone/sushi/metadata/annotation/AnnotationSchema.java</a>
                 </td>
                 <td>
-                  3
+                  2
                 </td>
                 <td>
                   0
@@ -1292,7 +1306,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Arrays.java">net/oneandone/sushi/util/Arrays.java</a>
                 </td>
                 <td>
-                  7
+                  6
                 </td>
                 <td>
                   0
@@ -1460,21 +1474,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.rss.Feed.java">net/oneandone/sushi/rss/Feed.java</a>
                 </td>
                 <td>
-                  8
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshNode.java">net/oneandone/sushi/fs/ssh/SshNode.java</a>
-                </td>
-                <td>
-                  51
+                  9
                 </td>
                 <td>
                   0
@@ -1499,10 +1499,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshNode.java">net/oneandone/sushi/fs/ssh/SshNode.java</a>
+                </td>
+                <td>
+                  51
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.store.PropertyStore.java">net/oneandone/sushi/metadata/store/PropertyStore.java</a>
                 </td>
                 <td>
-                  6
+                  5
                 </td>
                 <td>
                   0
@@ -1583,10 +1597,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.ClassType.java">net/oneandone/sushi/metadata/simpletypes/ClassType.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.NodeType.java">net/oneandone/sushi/metadata/simpletypes/NodeType.java</a>
                 </td>
                 <td>
-                  2
+                  4
                 </td>
                 <td>
                   0
@@ -1597,10 +1611,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.NodeType.java">net/oneandone/sushi/metadata/simpletypes/NodeType.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.ClassType.java">net/oneandone/sushi/metadata/simpletypes/ClassType.java</a>
                 </td>
                 <td>
-                  3
+                  2
                 </td>
                 <td>
                   0
@@ -1628,7 +1642,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.filter.Action.java">net/oneandone/sushi/fs/filter/Action.java</a>
                 </td>
                 <td>
-                  6
+                  5
                 </td>
                 <td>
                   0
@@ -1765,20 +1779,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Lcs.java">net/oneandone/sushi/util/Lcs.java</a>
-                </td>
-                <td>
-                  4
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ExistsException.java">net/oneandone/sushi/fs/ExistsException.java</a>
                 </td>
                 <td>
@@ -1793,10 +1793,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Lcs.java">net/oneandone/sushi/util/Lcs.java</a>
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.SubstitutionException.java">net/oneandone/sushi/util/SubstitutionException.java</a>
                 </td>
                 <td>
-                  5
+                  6
                 </td>
                 <td>
                   0
@@ -1838,7 +1852,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.cli.Option.java">net/oneandone/sushi/cli/Option.java</a>
                 </td>
                 <td>
-                  3
+                  4
                 </td>
                 <td>
                   0
@@ -2045,10 +2059,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Util.java">net/oneandone/sushi/util/Util.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.SetLastModifiedException.java">net/oneandone/sushi/fs/SetLastModifiedException.java</a>
                 </td>
                 <td>
-                  8
+                  3
                 </td>
                 <td>
                   0
@@ -2059,10 +2073,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.SetLastModifiedException.java">net/oneandone/sushi/fs/SetLastModifiedException.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Util.java">net/oneandone/sushi/util/Util.java</a>
                 </td>
                 <td>
-                  3
+                  8
                 </td>
                 <td>
                   0
@@ -2104,7 +2118,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.simpletypes.BooleanType.java">net/oneandone/sushi/metadata/simpletypes/BooleanType.java</a>
                 </td>
                 <td>
-                  3
+                  2
                 </td>
                 <td>
                   0
@@ -2132,7 +2146,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.annotation.Option.java">net/oneandone/sushi/metadata/annotation/Option.java</a>
                 </td>
                 <td>
-                  2
+                  3
                 </td>
                 <td>
                   0
@@ -2230,7 +2244,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.methods.Method.java">net/oneandone/sushi/fs/webdav/methods/Method.java</a>
                 </td>
                 <td>
-                  32
+                  31
                 </td>
                 <td>
                   0
@@ -2300,7 +2314,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.timemachine.TimeMachineRoot.java">net/oneandone/sushi/fs/timemachine/TimeMachineRoot.java</a>
                 </td>
                 <td>
-                  12
+                  13
                 </td>
                 <td>
                   0
@@ -2342,7 +2356,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.memory.Type.java">net/oneandone/sushi/fs/memory/Type.java</a>
                 </td>
                 <td>
-                  4
+                  5
                 </td>
                 <td>
                   0
@@ -2367,20 +2381,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.Builder.java">net/oneandone/sushi/xml/Builder.java</a>
-                </td>
-                <td>
-                  53
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.Root.java">net/oneandone/sushi/fs/Root.java</a>
                 </td>
                 <td>
@@ -2395,10 +2395,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.Dom.java">net/oneandone/sushi/xml/Dom.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.Builder.java">net/oneandone/sushi/xml/Builder.java</a>
                 </td>
                 <td>
-                  35
+                  52
                 </td>
                 <td>
                   0
@@ -2423,10 +2423,24 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.Dom.java">net/oneandone/sushi/xml/Dom.java</a>
+                </td>
+                <td>
+                  35
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.SshFilesystem.java">net/oneandone/sushi/fs/ssh/SshFilesystem.java</a>
                 </td>
                 <td>
-                  22
+                  24
                 </td>
                 <td>
                   0
@@ -2482,7 +2496,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.cli.Argument.java">net/oneandone/sushi/cli/Argument.java</a>
                 </td>
                 <td>
-                  8
+                  7
                 </td>
                 <td>
                   0
@@ -2577,10 +2591,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.ChildElements.java">net/oneandone/sushi/xml/ChildElements.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.archive.Archive.java">net/oneandone/sushi/archive/Archive.java</a>
                 </td>
                 <td>
-                  10
+                  24
                 </td>
                 <td>
                   0
@@ -2591,10 +2605,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.archive.Archive.java">net/oneandone/sushi/archive/Archive.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.xml.ChildElements.java">net/oneandone/sushi/xml/ChildElements.java</a>
                 </td>
                 <td>
-                  24
+                  10
                 </td>
                 <td>
                   0
@@ -2706,7 +2720,7 @@
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.webdav.methods.Move.java">net/oneandone/sushi/fs/webdav/methods/Move.java</a>
                 </td>
                 <td>
-                  10
+                  11
                 </td>
                 <td>
                   0
@@ -2857,10 +2871,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.ssh.Credentials.java">net/oneandone/sushi/fs/ssh/Credentials.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.SimpleType.java">net/oneandone/sushi/metadata/SimpleType.java</a>
                 </td>
                 <td>
-                  15
+                  7
                 </td>
                 <td>
                   0
@@ -2885,38 +2899,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.SimpleType.java">net/oneandone/sushi/metadata/SimpleType.java</a>
-                </td>
-                <td>
-                  7
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.metadata.Cardinality.java">net/oneandone/sushi/metadata/Cardinality.java</a>
                 </td>
                 <td>
-                  14
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Reflect.java">net/oneandone/sushi/util/Reflect.java</a>
-                </td>
-                <td>
-                  15
+                  13
                 </td>
                 <td>
                   0
@@ -2941,10 +2927,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.csv.CsvLineException.java">net/oneandone/sushi/csv/CsvLineException.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.util.Reflect.java">net/oneandone/sushi/util/Reflect.java</a>
                 </td>
                 <td>
-                  2
+                  15
                 </td>
                 <td>
                   0
@@ -2955,10 +2941,10 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.svn.SvnRoot.java">net/oneandone/sushi/fs/svn/SvnRoot.java</a>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.csv.CsvLineException.java">net/oneandone/sushi/csv/CsvLineException.java</a>
                 </td>
                 <td>
-                  15
+                  2
                 </td>
                 <td>
                   0
@@ -2979,6 +2965,20 @@
                 </td>
                 <td>
                   2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/mlhartme/sushi/checkstyle.html#net.oneandone.sushi.fs.svn.SvnRoot.java">net/oneandone/sushi/fs/svn/SvnRoot.java</a>
+                </td>
+                <td>
+                  16
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
               </tr>
                           <tr>

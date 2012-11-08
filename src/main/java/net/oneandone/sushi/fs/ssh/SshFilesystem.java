@@ -139,6 +139,7 @@ public class SshFilesystem extends Filesystem {
         addIdentity(key, passphrase);
     }
 
+    /** @param passphrase null of none */
     public void addIdentity(Node privateKey, String passphrase) throws IOException, JSchException {
         Identity identity;
         Throwable te;

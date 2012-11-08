@@ -247,4 +247,16 @@ public class ConnectionFullTest {
         return world;
     }
 
+    @Test
+    public void multiplIdentities() throws JSchException, IOException {
+        World world;
+        SshFilesystem fs;
+
+        world = new World();
+        fs = world.getFilesystem("ssh", SshFilesystem.class);
+        fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/without-passphrase/id_rsa"), null);
+        fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/with-passphrase/id_rsa"), "passphrase");
+        fs.addDefaultIdentity();
+        System.out.println(fs.root(host(), user()).exec("ls"));
+    }
 }

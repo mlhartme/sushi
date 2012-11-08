@@ -154,7 +154,6 @@ public class FileNode extends Node {
         } catch (IOException e) {
             throw new LengthException(this, e);
         }
-
     }
 
     @Override
@@ -182,22 +181,22 @@ public class FileNode extends Node {
     @Override
     public List<FileNode> list() throws ListException, DirectoryNotFoundException {
         List<FileNode> result;
-        DirectoryStream<Path> ds;
 
-        try {
-            ds = Files.newDirectoryStream(path);
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(path)) {
+            result = new ArrayList<>();
+            for (Path child : ds) {
+                result.add(new FileNode(root, child));
+            }
+            return result;
         } catch (IOException e) {
             if (isFile()) {
                 return null;
-            } else {
+            }
+            if (!exists()) {
                 throw new DirectoryNotFoundException(this, e);
             }
+            throw new ListException(this, e);
         }
-        result = new ArrayList<>();
-        for (Path child : ds) {
-            result.add(new FileNode(root, child));
-        }
-        return result;
     }
 
     //-- read and writeBytes
@@ -372,8 +371,10 @@ public class FileNode extends Node {
     protected static void doDeleteTree(Path path) throws IOException {
         if (!Files.isSymbolicLink(path)) {
             if (Files.isDirectory(path)) {
-                for (Path child : Files.newDirectoryStream(path)) {
-                    doDeleteTree(child);
+                try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+                    for (Path child : stream) {
+                        doDeleteTree(child);
+                    }
                 }
             }
         }

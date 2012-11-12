@@ -17,7 +17,7 @@ package net.oneandone.sushi.fs;
 
 public class FileNotFoundException extends NodeException {
     public FileNotFoundException(Node node) {
-        this(node, "file node found");
+        this(node, "file not found");
     }
 
     public FileNotFoundException(Node node, String msg) {

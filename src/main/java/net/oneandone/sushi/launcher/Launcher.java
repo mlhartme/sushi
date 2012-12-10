@@ -116,14 +116,13 @@ public class Launcher {
      * @param stderr may be null (which will redirect the error stream to stdout.
      * @param stdin may be null
      */
-    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinSpecial) throws Failure {
+    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinInherit) throws Failure {
         Process process;
         int exit;
         String output;
         PumpStream psout;
         PumpStream pserr;
         PumpStream psin;
-        InputPumpStream psinSpecial;
 
         if (builder.directory() == null) {
             // builder.start() does not check, I would not detect the problem until process.waitFor is called
@@ -145,18 +144,15 @@ public class Launcher {
             pserr = null;
         }
         if (stdin != null) {
-            if (stdinSpecial) {
-                psinSpecial = new InputPumpStream(stdin, process.getOutputStream());
-                psinSpecial.start();
+            if (stdinInherit) {
+                builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 psin = null;
             } else {
                 psin = new PumpStream(stdin, process.getOutputStream(), true);
                 psin.start();
-                psinSpecial = null;
             }
         } else {
             psin = null;
-            psinSpecial = null;
         }
         psout.finish(this);
         if (pserr != null) {
@@ -169,9 +165,6 @@ public class Launcher {
         }
         if (psin != null) {
             psin.finish(this);
-        }
-        if (psinSpecial != null) {
-            psinSpecial.finish(this);
         }
         if (exit != 0) {
             if (stderr == null && stdout instanceof ByteArrayOutputStream) {

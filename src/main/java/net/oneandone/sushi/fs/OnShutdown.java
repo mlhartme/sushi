@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/** 
- * Shutdown hook to delete temporary FileNodes (in particular: directories, because 
+/**
+ * Shutdown hook to delete temporary FileNodes (in particular: directories, because
  * deleteAtExist is restricted to files) and execute arbirary other tasks.
- * 
+ *
  * The implementation is intentionally tied to FileNode, it doesn't support Nodes in general because:
- * 1) I create temp file on disk only - I can't see a use case for other node implementations.   
+ * 1) I create temp file on disk only - I can't see a use case for other node implementations.
  * 2) node.delete() is might fail because server connections might already be closed
  * 3) only java.world.File can create a temp file atomically
  */
@@ -51,14 +51,14 @@ public class OnShutdown extends Thread {
     private final String prefix;
 
     private final String suffix;
-    
+
     // to generate directory names
     private int dirNo;
 
     private final List<Runnable> onShutdown;
-    
+
     public OnShutdown() {
-        this.delete = new ArrayList<FileNode>();
+        this.delete = new ArrayList<>();
         this.prefix = "sushi" + new SimpleDateFormat("MMdd-HHmm").format(new Date()) + "-"
             + (System.currentTimeMillis() % 100)  + "-";
         this.suffix = ".tmp";
@@ -69,12 +69,12 @@ public class OnShutdown extends Thread {
     public synchronized void onShutdown(Runnable runnable) {
         onShutdown.add(runnable);
     }
-    
+
     //--
 
     public FileNode createFile(FileNode dir) throws IOException {
         FileNode file;
-        
+
         file = new FileNode(dir.getRoot(), File.createTempFile(prefix, suffix, dir.toPath().toFile()).toPath());
         deleteAtExit(file);
         return file;
@@ -82,7 +82,7 @@ public class OnShutdown extends Thread {
 
     public FileNode createDirectory(FileNode dir) throws IOException {
         FileNode file;
-    
+
         dir.checkDirectory();
         for (; true; dirNo++) {
             file = dir.join(prefix + dirNo + suffix);
@@ -95,11 +95,11 @@ public class OnShutdown extends Thread {
     }
 
     //--
-    
+
     @Override
     public synchronized void run() {
         List<FileNode> tmp;
-        
+
         tmp = delete;
         delete = null;
         for (FileNode node : tmp) {
@@ -122,16 +122,28 @@ public class OnShutdown extends Thread {
     }
 
     //--
-    
+
     /**
      * @param node  file or directory
      */
-    private synchronized void deleteAtExit(FileNode node) {
+    public synchronized void deleteAtExit(FileNode node) {
         if (delete == null) {
             // already exiting
             tryDelete(node);
         } else {
             delete.add(node);
+        }
+    }
+
+    /**
+     * @param node  file or directory
+     */
+    public synchronized void dontDeleteAtExit(FileNode node) {
+        if (delete == null) {
+            throw new IllegalStateException();
+        }
+        if (!delete.remove(node)) {
+            throw new IllegalArgumentException("not registered: " + node.getAbsolute());
         }
     }
 

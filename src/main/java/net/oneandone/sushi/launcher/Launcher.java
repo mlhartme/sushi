@@ -130,6 +130,9 @@ public class Launcher {
             throw new IllegalStateException("Missing directory. Call dir() before invoking this method");
         }
         builder.redirectErrorStream(stderr == null);
+        if (stdinInherit) {
+            builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
+        }
         try {
             process = builder.start();
         } catch (IOException e) {
@@ -143,14 +146,9 @@ public class Launcher {
         } else {
             pserr = null;
         }
-        if (stdin != null) {
-            if (stdinInherit) {
-                builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
-                psin = null;
-            } else {
-                psin = new PumpStream(stdin, process.getOutputStream(), true);
-                psin.start();
-            }
+        if (stdin != null && !stdinInherit) {
+            psin = new PumpStream(stdin, process.getOutputStream(), true);
+            psin.start();
         } else {
             psin = null;
         }

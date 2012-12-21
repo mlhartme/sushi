@@ -54,14 +54,17 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     //-- Root interface
 
+    @Override
     public SshFilesystem getFilesystem() {
         return filesystem;
     }
 
+    @Override
     public String getId() {
         return "//" + session.getUserName() + "@" + session.getHost() + "/";
     }
 
+    @Override
     public SshNode node(String path, String encodedQuery) {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
@@ -138,7 +141,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
     }
 
     //-- exec methods
-    //    I'd like to align this with Program execution, but I cannot set a working directory in Ssh Execution
+    //    I'd like to align this with Launcher execution, but I cannot set a working directory in Ssh Execution
 
     public String exec(String ... command) throws JSchException, ExitCode {
         return exec(true, command);
@@ -149,11 +152,19 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
         out = new ByteArrayOutputStream();
         try {
-            start(tty, out, command).waitFor();
+            exec(tty, out, command);
         } catch (ExitCode e) {
             throw new ExitCode(e.launcher, e.code, filesystem.getWorld().getSettings().string(out));
         }
         return filesystem.getWorld().getSettings().string(out);
+    }
+
+    public void exec(boolean tty, OutputStream out, String ... command) throws JSchException, ExitCode {
+        try {
+            start(tty, out, command).waitFor();
+        } catch (ExitCode e) {
+            throw new ExitCode(e.launcher, e.code);
+        }
     }
 
     //--

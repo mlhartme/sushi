@@ -203,6 +203,7 @@ public class SshNode extends Node {
     @Override
     public SshNode deleteFile() throws FileNotFoundException, DeleteException {
         ChannelSftp sftp;
+        boolean directory;
 
         try {
             sftp = alloc();
@@ -215,9 +216,14 @@ public class SshNode extends Node {
             if (e.id == ChannelSftp.SSH_FX_NO_SUCH_FILE) {
                 throw new FileNotFoundException(this);
             }
-            if (e.id == ChannelSftp.SSH_FX_PERMISSION_DENIED /* for directory */) {
-                // TODO: check that its not a file with other permissions
-                throw new FileNotFoundException(this);
+            try {
+                directory = isDirectory();
+            } catch (ExistsException e1) {
+                directory = false;
+                // fall-through - report original exception
+            }
+            if (directory) {
+                throw new FileNotFoundException(this, e);
             }
             throw new DeleteException(this, e);
         } finally {
@@ -685,10 +691,11 @@ public class SshNode extends Node {
     }
 
     /**
-     * This is the core funktion to read an ssh node. Does not close out.
+     * This is the core function to read an ssh node. Does not close out.
      *
      * @throws FileNotFoundException if this is not a file
      */
+    @Override
     public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         ChannelSftp sftp;
         Progress monitor;

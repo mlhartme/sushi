@@ -24,13 +24,11 @@ import net.oneandone.sushi.launcher.ExitCode;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
-// TODO: dump UserInfo interface?
 public class SshRoot implements Root<SshNode>, Runnable {
     private final SshFilesystem filesystem;
     private final String user;
 
     private final String host;
-    private final int port;
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
@@ -45,7 +43,6 @@ public class SshRoot implements Root<SshNode>, Runnable {
         this.filesystem = filesystem;
         this.user = user;
         this.host = host;
-        this.port = port;
         this.session = filesystem.getJSch().getSession(user, host, port);
         this.session.connect(timeout);
         this.sftp = null;

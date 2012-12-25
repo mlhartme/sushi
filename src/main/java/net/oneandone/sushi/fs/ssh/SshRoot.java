@@ -43,7 +43,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
     }
 
     public SshRoot(SshFilesystem filesystem, Session session) throws JSchException {
-        if (session.isConnected()) {
+        if (!session.isConnected()) {
             throw new IllegalArgumentException();
         }
         this.filesystem = filesystem;

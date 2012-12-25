@@ -19,6 +19,12 @@ import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.agentproxy.AgentProxy;
+import com.jcraft.jsch.agentproxy.AgentProxyException;
+import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
+import com.jcraft.jsch.agentproxy.USocketFactory;
+import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
+import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
 import net.oneandone.sushi.fs.*;
 
 import java.io.IOException;
@@ -33,13 +39,21 @@ import java.util.Arrays;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
+    public static JSch jsch() {
+        JSch jsch;
+
+        jsch = new JSch();
+        SshAgent.configure(jsch);
+        jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
+        return jsch;
+    }
+
     private int defaultTimeout;
     private final JSch jsch;
 
     public SshFilesystem(World world, String name) {
-        this(world, name, new JSch());
+        this(world, name, jsch());
         this.defaultTimeout = 0;
-        this.jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
     }
 
     public SshFilesystem(World world, String name, JSch jsch) {

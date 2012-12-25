@@ -51,6 +51,46 @@
       <version>0.1.49</version>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.jcraft.jsch.agentproxy</groupId>
+      <artifactId>jsch-agent-proxy-jsch</artifactId>
+      <version>0.0.4</version>
+      <optional>true</optional>
+      <exclusions>
+        <!-- to avoid duplicate classes -->
+        <exclusion>
+          <groupId>com.jcraft.jsch.agentproxy</groupId>
+          <artifactId>jsch-agent-proxy-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft.jsch.agentproxy</groupId>
+      <artifactId>jsch-agent-proxy-sshagent</artifactId>
+      <version>0.0.4</version>
+      <optional>true</optional>
+      <exclusions>
+        <!-- to avoid duplicate classes -->
+        <exclusion>
+          <groupId>com.jcraft.jsch.agentproxy</groupId>
+          <artifactId>jsch-agent-proxy-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft.jsch.agentproxy</groupId>
+      <artifactId>jsch-agent-proxy-usocket-jna</artifactId>
+      <version>0.0.4</version>
+      <optional>true</optional>
+      <exclusions>
+        <!-- to avoid duplicate classes -->
+        <exclusion>
+          <groupId>com.jcraft.jsch.agentproxy</groupId>
+          <artifactId>jsch-agent-proxy-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
 
     <!-- if you want SvnFilesystem: -->
     <dependency>

@@ -36,11 +36,16 @@ public class SshFilesystem extends Filesystem {
     private final JSch jsch;
 
     public SshFilesystem(World world, String name) {
+        this(world, name, new JSch());
+        this.defaultTimeout = 0;
+        this.jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
+    }
+
+    public SshFilesystem(World world, String name, JSch jsch) {
         super(world, new Features(true, true, true, true, false, false, true), name);
 
-        defaultTimeout = 0;
-        jsch = new JSch();
-        jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
+        this.defaultTimeout = 0;
+        this.jsch = jsch;
     }
 
     /** millis */

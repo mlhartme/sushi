@@ -18,6 +18,7 @@ package net.oneandone.sushi.fs.ssh;
 import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 import net.oneandone.sushi.fs.*;
 
 import java.io.IOException;
@@ -46,6 +47,14 @@ public class SshFilesystem extends Filesystem {
 
         this.defaultTimeout = 0;
         this.jsch = jsch;
+    }
+
+    public Session connect(String host, int port, String user, int timeout) throws JSchException {
+        Session session;
+
+        session = jsch.getSession(user, host, port);
+        session.connect(timeout);
+        return session;
     }
 
     /** millis */

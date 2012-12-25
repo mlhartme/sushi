@@ -26,9 +26,8 @@ import java.io.OutputStream;
 
 public class SshRoot implements Root<SshNode>, Runnable {
     private final SshFilesystem filesystem;
-    private final String user;
 
-    private final String host;
+    /** connected session */
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
@@ -40,11 +39,12 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout)
     throws JSchException {
+        this(filesystem, filesystem.connect(host, port, user, timeout));
+    }
+
+    public SshRoot(SshFilesystem filesystem, Session session) throws JSchException {
         this.filesystem = filesystem;
-        this.user = user;
-        this.host = host;
-        this.session = filesystem.getJSch().getSession(user, host, port);
-        this.session.connect(timeout);
+        this.session = session;
         this.sftp = null;
         OnShutdown.get().onShutdown(this);
     }
@@ -87,7 +87,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     @Override
     public String toString() {
-        return "SshNode host=" + host + ", user=" + user;
+        return "SshNode host=" + getHost() + ", user=" + getUser();
     }
 
     //--
@@ -167,11 +167,11 @@ public class SshRoot implements Root<SshNode>, Runnable {
     //--
 
     public String getUser() {
-        return user;
+        return session.getUserName();
     }
 
     public String getHost() {
-        return host;
+        return session.getHost();
     }
 
     // executes on shutdown

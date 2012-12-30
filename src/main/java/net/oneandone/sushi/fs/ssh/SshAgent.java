@@ -22,18 +22,19 @@ import com.jcraft.jsch.agentproxy.USocketFactory;
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
 
+import java.io.IOException;
+
 /** Some documentation: Mac OS: http://www.dribin.org/dave/blog/archives/2007/11/28/ssh_agent_leopard/ */
 
 public class SshAgent {
-    public static void configure(JSch jsch) {
+    public static void configure(JSch jsch) throws IOException {
         USocketFactory factory;
 
         try {
             factory = new JNAUSocketFactory();
             jsch.setIdentityRepository(new RemoteIdentityRepository(new SSHAgentConnector(factory)));
         } catch (AgentProxyException e) {
-            throw new IllegalStateException(e);
+            throw new IOException("cannot connect to ssh-agent", e);
         }
-
     }
 }

@@ -50,7 +50,7 @@ import java.util.Arrays;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    public static JSch jsch() {
+    public static JSch jsch() throws IOException {
         JSch jsch;
 
         jsch = new JSch();
@@ -62,7 +62,7 @@ public class SshFilesystem extends Filesystem {
     private int defaultTimeout;
     private final JSch jsch;
 
-    public SshFilesystem(World world, String name) {
+    public SshFilesystem(World world, String name) throws IOException {
         this(world, name, jsch());
         this.defaultTimeout = 0;
     }

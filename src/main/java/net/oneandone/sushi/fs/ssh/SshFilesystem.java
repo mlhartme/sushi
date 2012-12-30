@@ -36,6 +36,16 @@ import java.util.Arrays;
 /**
  * Nodes accessible via sftp.
  *
+ * You'll usually have a default identity, protected with a passphrase, available in ssh-agent (either automatically
+ * after login or by explicit ssh-add calls).
+ *
+ * If ssh-agent is not accessible (because the optional jsch-agent dependencies are missing) you have the following
+ * - less attractive - options:
+ * 1) use an identity that's not protected with a passphrase
+ * 2) otherwise:
+ *    a) explicitly call addDefaultIdentity with the respective passphrase
+ *    b) store the passphrase in ~/.ssh/passphrase
+ *
  * Uses Jsch:  http://www.jcraft.com/jsch/
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */

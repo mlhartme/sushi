@@ -35,6 +35,7 @@ import java.util.Arrays;
 
 /**
  * Nodes accessible via sftp.
+ *
  * Uses Jsch:  http://www.jcraft.com/jsch/
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
@@ -131,13 +132,18 @@ public class SshFilesystem extends Filesystem {
         if (user == null) {
             user = getWorld().getHome().getName();
         }
-        if (jsch.getIdentityNames().isEmpty()) {
-            addDefaultIdentity();
-        }
+        addDefaultIdentityOpt();
         return new SshRoot(this, host, user, timeout);
     }
 
     //--
+
+    /** adds the default identity if the identity repository is empty */
+    public void addDefaultIdentityOpt() throws IOException, JSchException {
+        if (jsch.getIdentityNames().isEmpty()) {
+            addDefaultIdentity();
+        }
+    }
 
     public void addDefaultIdentity() throws IOException, JSchException {
         addDefaultIdentity(null);
@@ -167,7 +173,13 @@ public class SshFilesystem extends Filesystem {
         addIdentity(key, passphrase);
     }
 
-    /** @param passphrase null of none */
+    /**
+     * Core method to actually add an identity. Identity is a private/public key pair.
+     * Identities are "not interactive" - this method reports missing passphrases or when
+     * a passphrase is specified for an identity that does not need one.
+     *
+     * @param passphrase null of none
+     */
     public void addIdentity(Node privateKey, String passphrase) throws IOException, JSchException {
         Identity identity;
         Throwable te;

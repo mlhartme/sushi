@@ -22,6 +22,8 @@ import com.jcraft.jsch.agentproxy.USocketFactory;
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
 
+/** Some documentation: Mac OS: http://www.dribin.org/dave/blog/archives/2007/11/28/ssh_agent_leopard/ */
+
 public class SshAgent {
     public static void configure(JSch jsch) {
         USocketFactory factory;

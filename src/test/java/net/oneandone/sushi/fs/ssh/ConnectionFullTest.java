@@ -28,6 +28,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -254,9 +255,9 @@ public class ConnectionFullTest {
 
         world = new World();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
+        fs.addDefaultIdentityOpt();
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/without-passphrase/id_rsa"), null);
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/with-passphrase/id_rsa"), "passphrase");
-        fs.addDefaultIdentity();
-        System.out.println(fs.root(host(), user()).exec("ls"));
+        fs.root(host(), user()).exec("ls");
     }
 }

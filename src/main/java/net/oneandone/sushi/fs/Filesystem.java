@@ -26,7 +26,7 @@ import java.util.List;
  */
 public abstract class Filesystem {
     /**
-     * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
+     * Separator in URIs and paths. You'll rarely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
 	public static final char SEPARATOR_CHAR = '/';

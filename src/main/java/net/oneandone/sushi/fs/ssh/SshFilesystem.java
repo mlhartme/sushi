@@ -19,13 +19,11 @@ import com.jcraft.jsch.Identity;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.agentproxy.AgentProxy;
-import com.jcraft.jsch.agentproxy.AgentProxyException;
-import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
-import com.jcraft.jsch.agentproxy.USocketFactory;
-import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
-import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
-import net.oneandone.sushi.fs.*;
+import net.oneandone.sushi.fs.Features;
+import net.oneandone.sushi.fs.Filesystem;
+import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.fs.NodeInstantiationException;
+import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +52,11 @@ public class SshFilesystem extends Filesystem {
         JSch jsch;
 
         jsch = new JSch();
-        SshAgent.configure(jsch);
+        try {
+            SshAgent.configure(jsch);
+        } catch (NoClassDefFoundError e) {
+            // ok -- we have no ssh-agent dependencies
+        }
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
         return jsch;
     }

@@ -205,9 +205,7 @@ public class World {
             try {
                 filesystem = (Filesystem) constructor.newInstance(args);
             } catch (InvocationTargetException e) {
-                // for SshFilesystem for example, if fails with a NoClassDefFoundException on Mac OS
-                // TODO: logging
-                return null;
+                throw new IllegalStateException("cannot create file system", e.getTargetException());
             }
             addFilesystem(filesystem);
             return filesystem;

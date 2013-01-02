@@ -21,6 +21,9 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Filesystem classes built into sushi will fail with NoClassDefFound the optional maven dependencies are not available.
+ */
 public abstract class Filesystem {
     /**
      * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
@@ -29,7 +32,7 @@ public abstract class Filesystem {
 	public static final char SEPARATOR_CHAR = '/';
 
     /**
-     * Separator in URIs and paths. You'll rearely use this constant, in particular, it doesn't make sense to
+     * Separator in URIs and paths. You'll rarely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
 	public static final String SEPARATOR_STRING = Character.toString(SEPARATOR_CHAR);

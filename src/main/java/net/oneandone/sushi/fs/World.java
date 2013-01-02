@@ -85,22 +85,26 @@ public class World {
     private final MemoryFilesystem memoryFilesystem;
 
     public World() {
+        this(true);
+    }
+
+    public World(boolean trySshAgent) {
         this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
-        addStandardFilesystems();
+        addStandardFilesystems(trySshAgent);
     }
 
     public World(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
         this.os = os;
         this.settings = settings;
         this.buffer = buffer;
-        this.filesystems = new HashMap<String, Filesystem>();
+        this.filesystems = new HashMap<>();
         this.fileFilesystem = this.addFilesystem(new FileFilesystem(this, "file"));
         this.memoryFilesystem = this.addFilesystem(new MemoryFilesystem(this, "mem"));
         this.temp = init("java.io.tmpdir");
         this.home = init("user.home");
         this.working = init("user.dir");
         this.xml = new Xml();
-        this.defaultExcludes = new ArrayList<String>(Arrays.asList(defaultExcludes));
+        this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
     }
 
     //-- configuration
@@ -148,12 +152,12 @@ public class World {
 
     //--  filesystems
 
-    public World addStandardFilesystems() {
+    public World addStandardFilesystems(boolean trySshAgent) {
         addFilesystem(new ConsoleFilesystem(this, "console"));
         addFilesystem(new ZipFilesystem(this, "zip"));
         addFilesystem(new ZipFilesystem(this, "jar"));
         addFilesystem(new TimeMachineFilesystem(this, "tm"));
-        addFilesystemOpt("net.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh");
+        addFilesystemOpt("net.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh", trySshAgent);
         addFilesystemOpt("net.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
         addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
         addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
@@ -376,7 +380,7 @@ public class World {
             throw new IllegalArgumentException();
         }
         e = getClass().getClassLoader().getResources(name);
-        result = new ArrayList<Node>();
+        result = new ArrayList<>();
         while (e.hasMoreElements()) {
             try {
                 add = node(e.nextElement().toURI());

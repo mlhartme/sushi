@@ -27,7 +27,7 @@ import java.net.URI;
 import static org.junit.Assert.assertEquals;
 
 public abstract class NodeReadOnlyTest<T extends Node> {
-    protected static final World WORLD = new World(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*").addStandardFilesystems();
+    protected static final World WORLD = new World(OS.CURRENT, new Settings(), new Buffer(), "**/.svn/**/*").addStandardFilesystems(true);
 
     /** creates a new empty directory */
     protected abstract T createWork() throws IOException;

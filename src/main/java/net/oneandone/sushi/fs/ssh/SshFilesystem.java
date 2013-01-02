@@ -48,14 +48,17 @@ import java.util.Arrays;
  * See also: http://tools.ietf.org/id/draft-ietf-secsh-filexfer-13.txt
  */
 public class SshFilesystem extends Filesystem {
-    public static JSch jsch() throws IOException {
+    /** @param trySshAgent disable this if your ssh agent is configured, but you don't want to use it. */
+    public static JSch jsch(boolean trySshAgent) throws IOException {
         JSch jsch;
 
         jsch = new JSch();
-        try {
-            SshAgent.configure(jsch);
-        } catch (NoClassDefFoundError e) {
-            // ok -- we have no ssh-agent dependencies
+        if (trySshAgent) {
+            try {
+                SshAgent.configure(jsch);
+            } catch (NoClassDefFoundError e) {
+                // ok -- we have no ssh-agent dependencies
+            }
         }
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());
         return jsch;
@@ -64,8 +67,8 @@ public class SshFilesystem extends Filesystem {
     private int defaultTimeout;
     private final JSch jsch;
 
-    public SshFilesystem(World world, String name) throws IOException {
-        this(world, name, jsch());
+    public SshFilesystem(World world, String name, boolean trySshAgent) throws IOException {
+        this(world, name, jsch(trySshAgent));
         this.defaultTimeout = 0;
     }
 

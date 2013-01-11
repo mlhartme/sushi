@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.metadata.store;
+package net.oneandone.sushi.metadata.properties;
 
 public class StoreException extends RuntimeException {
     private static final long serialVersionUID = 1L;

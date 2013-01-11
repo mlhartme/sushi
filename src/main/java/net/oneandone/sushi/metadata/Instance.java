@@ -140,7 +140,7 @@ public class Instance<T> {
     }
     
     public void toProperties(Properties props, String name) {
-        net.oneandone.sushi.metadata.store.Writer.write(getType(), get(), name, props);
+        net.oneandone.sushi.metadata.properties.Writer.write(getType(), get(), name, props);
     }
     
     public void exportCsv(View view, Csv dest, String ... selection) {

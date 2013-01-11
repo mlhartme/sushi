@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.metadata.store;
+package net.oneandone.sushi.metadata.properties;
 
 import net.oneandone.sushi.metadata.Cardinality;
 import net.oneandone.sushi.metadata.ComplexType;
@@ -21,9 +21,7 @@ import net.oneandone.sushi.metadata.Item;
 import net.oneandone.sushi.metadata.SimpleType;
 import net.oneandone.sushi.metadata.Type;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 /**

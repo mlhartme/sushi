@@ -109,7 +109,7 @@ public abstract class Type {
     public <T> Instance<T> loadProperties(Properties props, String name) {
         T obj;
         
-        obj = (T) new net.oneandone.sushi.metadata.store.Reader(props).read(name, this);
+        obj = (T) new net.oneandone.sushi.metadata.properties.Reader(props).read(name, this);
         return instance(obj);
     }
     

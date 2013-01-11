@@ -26,17 +26,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Helper class to read and write properties. You'll usually not use this class directly,
- * use Type.loadProperties and Data.toProperties instead. 
+ * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.
  */
 public class Writer {
-    public static void write(Type type, Object obj, String name, final Store dest) {
+    public static void write(Type type, Object obj, String name, final PropertyStore dest) {
         new Writer(dest).write(new ArrayList<Item<?>>(), type, obj, name);
     }
 
-    private final Store dest;
+    private final PropertyStore dest;
     
-    public Writer(Store dest) {
+    public Writer(PropertyStore dest) {
         this.dest = dest;
     }
 

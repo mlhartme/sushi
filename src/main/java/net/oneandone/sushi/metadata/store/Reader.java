@@ -27,10 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Helper class to read properties. You'll usually not use this class directly, use Instance.toProperties instead.
+ */
 public class Reader {
-    private final Store src;
+    private final PropertyStore src;
     
-    public Reader(Store src) {
+    public Reader(PropertyStore src) {
         this.src = src;
     }
 

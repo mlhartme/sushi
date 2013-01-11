@@ -20,13 +20,14 @@ import net.oneandone.sushi.metadata.Item;
 import java.util.List;
 import java.util.Properties;
 
-public class PropertyStore implements Store {
+public class PropertyStore {
     private final Properties props;
     
     public PropertyStore(Properties props) {
         this.props = props;
     }
-    
+
+    /** @return null if not found */
     public String read(List<Item<?>> parents, String path) {
         return props.getProperty(path);
     }

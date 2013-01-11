@@ -21,6 +21,7 @@ import net.oneandone.sushi.metadata.Item;
 import net.oneandone.sushi.metadata.SimpleType;
 import net.oneandone.sushi.metadata.SimpleTypeException;
 import net.oneandone.sushi.metadata.Type;
+import net.oneandone.sushi.util.Separator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,41 +44,49 @@ public class Loader {
         loader = new Loader(src);
         result = loader.read(path, type);
         if (!src.isEmpty()) {
-            throw new LoadException("unused properties: " + src.keySet());
+            loader.error("unused properties: " + src.keySet());
+        }
+        if (!loader.errors.isEmpty()) {
+            throw new LoadException(result, Separator.RAW_LINE.join(loader.errors));
         }
         return result;
     }
 
     private final Properties src;
+    private final List<String> errors;
 
     private Loader(Properties src) {
         this.src = src;
+        this.errors = new ArrayList<>();
     }
 
-    private Object read(String path, Type type) throws LoadException {
+    private Object read(String path, Type type) {
         ComplexType parent;
-        String data;
+        String value;
         Object obj;
         String childPath;
         Cardinality card;
         Collection<?> col;
         
-        data = eatValue(path);
+        value = eatValue(path);
         if (type instanceof SimpleType) {
-            if (data == null) {
-                throw new LoadException(path + ": value not found");
+            if (value == null) {
+                error(path + ": value not found");
+                return type.newInstance();
             }
             try {
-                return ((SimpleType) type).stringToValue(data);
+                return ((SimpleType) type).stringToValue(value);
             } catch (SimpleTypeException e) {
-                throw new LoadException(path + ": invalid value: " + e.getMessage(), e);
+                error(path + ": invalid value '" + value + "': " + e.getMessage());
+                return type.newInstance();
             }
         } else {
-            if (data != null) {
+            if (value != null) {
                 try {
-                    type = type.getSchema().type(Class.forName(data));
+                    type = type.getSchema().type(Class.forName(value));
                 } catch (ClassNotFoundException e) {
-                    throw new LoadException(path + ": class not found: " + data, e);
+                    error(path + ": class not found: " + value);
+                    return type.newInstance();
                 }
             } else {
                 // type as specified in schema
@@ -93,18 +102,22 @@ public class Loader {
                     col = readNormal(childPath, item.getType());
                 }
                 if (col.size() < card.min) {
-                    throw new LoadException(childPath + ": missing values: expected " + card.min + ", got " + col.size());
+                    error(childPath + ": missing values: expected " + card.min + ", got " + col.size());
+                } else if (col.size() > card.max) {
+                    error(childPath + ": to many values: expected " + card.max + ", got " + col.size());
+                } else {
+                    item.set(obj, col);
                 }
-                if (col.size() > card.max) {
-                    throw new LoadException(childPath + ": to many values: expected " + card.max + ", got " + col.size());
-                }
-                item.set(obj, col);
             }
             return obj;
         }
     }
 
-    private Collection<?> readIndexed(String path, Type type) throws LoadException {
+    private void error(String message) {
+        errors.add(message);
+    }
+
+    private Collection<?> readIndexed(String path, Type type) {
         List<Object> col;
         String childPath;
         
@@ -118,7 +131,7 @@ public class Loader {
         }
     }
 
-    private Collection<?> readNormal(String path, Type type) throws LoadException {
+    private Collection<?> readNormal(String path, Type type) {
         if (contains(path)) {
             return Collections.singleton(read(path, type));
         } else {

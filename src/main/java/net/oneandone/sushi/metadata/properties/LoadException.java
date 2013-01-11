@@ -18,13 +18,10 @@ package net.oneandone.sushi.metadata.properties;
 import java.io.IOException;
 
 public class LoadException extends IOException {
-    private static final long serialVersionUID = 1L;
+    public final Object result;
 
-    public LoadException(String msg) {
+    public LoadException(Object result, String msg) {
         super(msg);
-    }
-    public LoadException(String msg, Exception cause) {
-        this(msg);
-        initCause(cause);
+        this.result = result;
     }
 }

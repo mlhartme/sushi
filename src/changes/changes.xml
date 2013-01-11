@@ -2,7 +2,14 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2012-12-xx" version="2.8.5">
-      <action date="2012-12-21" dev="mhm" type="add">
+      <action date="2012-12-21" dev="mhm" type="update">
+        Improved property loading:
+        * changed package from metadata.store to metadata.properties
+        * improved naming
+        * simplified
+        * load exception reports the best possible result
+      </action>
+      <action date="2012-01-11" dev="mhm" type="add">
         Instance.toProperties() added.
       </action>
       <action date="2012-12-21" dev="mhm" type="update">

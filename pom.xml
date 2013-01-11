@@ -52,27 +52,27 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-core</artifactId>
-      <version>0.0.4</version>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.core</artifactId>
+      <version>0.0.5</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-jsch</artifactId>
-      <version>0.0.4</version>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.jsch</artifactId>
+      <version>0.0.5</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-sshagent</artifactId>
-      <version>0.0.4</version>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.sshagent</artifactId>
+      <version>0.0.5</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-usocket-jna</artifactId>
-      <version>0.0.4</version>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.usocket-jna</artifactId>
+      <version>0.0.5</version>
       <optional>true</optional>
     </dependency>
 

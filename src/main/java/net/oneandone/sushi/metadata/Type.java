@@ -16,6 +16,7 @@
 package net.oneandone.sushi.metadata;
 
 import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.metadata.properties.LoadException;
 import net.oneandone.sushi.metadata.xml.Loader;
 import net.oneandone.sushi.metadata.xml.LoaderException;
 import org.xml.sax.InputSource;
@@ -102,11 +103,11 @@ public abstract class Type {
         return instance(obj);
     }
 
-    public <T> Instance<T> loadProperties(Properties props) {
+    public <T> Instance<T> loadProperties(Properties props) throws LoadException {
         return loadProperties(props, "");
     }
     
-    public <T> Instance<T> loadProperties(Properties props, String name) {
+    public <T> Instance<T> loadProperties(Properties props, String name) throws LoadException {
         T obj;
         
         obj = (T) new net.oneandone.sushi.metadata.properties.Reader(props).read(name, this);

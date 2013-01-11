@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ReaderWriterTest extends ModelBase {
     @Test
-    public void readEngine() {
+    public void readEngine() throws LoadException {
         Properties p;
         Engine engine;
         
@@ -41,7 +41,7 @@ public class ReaderWriterTest extends ModelBase {
     }
     
     @Test
-    public void readPrefixedEngine() {
+    public void readPrefixedEngine() throws LoadException {
         Properties p;
         Engine engine;
         
@@ -55,7 +55,7 @@ public class ReaderWriterTest extends ModelBase {
     }
     
     @Test
-    public void vendor() {
+    public void vendor() throws LoadException {
         Instance<Vendor> i;
         Instance<Vendor> clone;
         Properties p;

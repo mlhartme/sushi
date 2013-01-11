@@ -15,13 +15,15 @@
  */
 package net.oneandone.sushi.metadata.properties;
 
-public class StoreException extends RuntimeException {
+import java.io.IOException;
+
+public class LoadException extends IOException {
     private static final long serialVersionUID = 1L;
 
-    public StoreException(String msg) {
+    public LoadException(String msg) {
         super(msg);
     }
-    public StoreException(String msg, Exception cause) {
+    public LoadException(String msg, Exception cause) {
         this(msg);
         initCause(cause);
     }

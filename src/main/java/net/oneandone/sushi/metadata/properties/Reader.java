@@ -38,11 +38,11 @@ public class Reader {
         this.src = src;
     }
 
-    public Object read(Type type) throws StoreException {
+    public Object read(Type type) throws LoadException {
         return read("", type);
     }
 
-    public Object read(String path, Type type) throws StoreException {
+    public Object read(String path, Type type) throws LoadException {
         ComplexType parent;
         String data;
         Object obj;
@@ -53,19 +53,19 @@ public class Reader {
         data = readValue(path);
         if (type instanceof SimpleType) {
             if (data == null) {
-                throw new StoreException(path + ": value not found");
+                throw new LoadException(path + ": value not found");
             }
             try {
                 return ((SimpleType) type).stringToValue(data);
             } catch (SimpleTypeException e) {
-                throw new StoreException(path + ": invalid value: " + e.getMessage(), e);
+                throw new LoadException(path + ": invalid value: " + e.getMessage(), e);
             }
         } else {
             if (data != null) {
                 try {
                     type = type.getSchema().type(Class.forName(data));
                 } catch (ClassNotFoundException e) {
-                    throw new StoreException(path + ": class not found: " + data, e);
+                    throw new LoadException(path + ": class not found: " + data, e);
                 }
             } else {
                 // type as specified in schema
@@ -81,10 +81,10 @@ public class Reader {
                     col = readNormal(childPath, item.getType());
                 }
                 if (col.size() < card.min) {
-                    throw new StoreException(childPath + ": missing values: expected " + card.min + ", got " + col.size());
+                    throw new LoadException(childPath + ": missing values: expected " + card.min + ", got " + col.size());
                 }
                 if (col.size() > card.max) {
-                    throw new StoreException(childPath + ": to many values: expected " + card.max + ", got " + col.size());
+                    throw new LoadException(childPath + ": to many values: expected " + card.max + ", got " + col.size());
                 }
                 item.set(obj, col);
             }
@@ -92,7 +92,7 @@ public class Reader {
         }
     }
 
-    private Collection<?> readIndexed(String path, Type type) throws StoreException {
+    private Collection<?> readIndexed(String path, Type type) throws LoadException {
         List<Object> col;
         String childPath;
         
@@ -106,7 +106,7 @@ public class Reader {
         }
     }
 
-    private Collection<?> readNormal(String path, Type type) throws StoreException {
+    private Collection<?> readNormal(String path, Type type) throws LoadException {
         if (contains(path)) {
             return Collections.singleton(read(path, type));
         } else {
@@ -114,11 +114,11 @@ public class Reader {
         }
     }
     
-    private String readValue(String path) throws StoreException {
+    private String readValue(String path) {
         return src.getProperty(path);
     }
 
-    private boolean contains(String prefix) throws StoreException {
+    private boolean contains(String prefix) {
         String prefixSlash;
         String str;
 

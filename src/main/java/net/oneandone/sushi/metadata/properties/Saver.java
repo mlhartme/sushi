@@ -27,14 +27,14 @@ import java.util.Properties;
 /**
  * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.
  */
-public class Writer {
+public class Saver {
     public static void write(Type type, Object obj, String name, final Properties dest) {
-        new Writer(dest).write(type, obj, name);
+        new Saver(dest).write(type, obj, name);
     }
 
     private final Properties dest;
     
-    public Writer(Properties dest) {
+    public Saver(Properties dest) {
         this.dest = dest;
     }
 

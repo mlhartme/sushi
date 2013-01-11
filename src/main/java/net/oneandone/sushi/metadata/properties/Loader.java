@@ -31,10 +31,10 @@ import java.util.Properties;
 /**
  * Helper class to read properties. You'll usually not use this class directly, use Instance.toProperties instead.
  */
-public class Reader {
+public class Loader {
     private final Properties src;
     
-    public Reader(Properties src) {
+    public Loader(Properties src) {
         this.src = src;
     }
 

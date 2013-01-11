@@ -110,7 +110,7 @@ public abstract class Type {
     public <T> Instance<T> loadProperties(Properties props, String name) throws LoadException {
         T obj;
         
-        obj = (T) new net.oneandone.sushi.metadata.properties.Reader(props).read(name, this);
+        obj = (T) new net.oneandone.sushi.metadata.properties.Loader(props).read(name, this);
         return instance(obj);
     }
     

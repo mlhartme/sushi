@@ -76,7 +76,7 @@ public class Writer {
         } else {
             // instanceof ComplexType
             clazz = obj.getClass();
-            if (!type.getType().equals(clazz)) {
+            if (needsMarker(type, clazz)) {
                 dest.setProperty(path, clazz.getName());
             }
         }
@@ -84,5 +84,12 @@ public class Writer {
 
     private String join(String first, String second) {
         return first.length() == 0 ? second : first + "/" + second;
+    }
+
+    private static boolean needsMarker(Type type, Class<?> clazz) {
+        if (!type.getType().equals(clazz)) {
+            return true;
+        }
+        return ((type instanceof ComplexType) && ((ComplexType) type).items().isEmpty());
     }
 }

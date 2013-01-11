@@ -96,10 +96,10 @@ public class Reader {
         List<Object> col;
         String childPath;
         
-        col = new ArrayList<Object>();
+        col = new ArrayList<>();
         for (int i = 0; true; i++) {
             childPath = path + "[" + Integer.toString(i) + "]";
-            if (readValue(childPath) == null) {
+            if (!contains(childPath)) {
                 return col;
             }
             col.add(read(childPath, type));

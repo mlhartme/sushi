@@ -37,12 +37,12 @@ public class Loader {
         return run(src, type, "");
     }
 
-    public static Object run(Properties src, Type type, String path) throws LoadException {
+    public static Object run(Properties src, Type type, String key) throws LoadException {
         Loader loader;
         Object result;
 
         loader = new Loader(src);
-        result = loader.read(path, type);
+        result = loader.load(key, type);
         if (!src.isEmpty()) {
             loader.error("unused properties: " + src.keySet());
         }
@@ -60,24 +60,24 @@ public class Loader {
         this.errors = new ArrayList<>();
     }
 
-    private Object read(String path, Type type) {
+    private Object load(String key, Type type) {
         ComplexType parent;
         String value;
         Object obj;
-        String childPath;
+        String childKey;
         Cardinality card;
         Collection<?> col;
         
-        value = eatValue(path);
+        value = eat(key);
         if (type instanceof SimpleType) {
             if (value == null) {
-                error(path + ": value not found");
+                error(key + ": value not found");
                 return type.newInstance();
             }
             try {
                 return ((SimpleType) type).stringToValue(value);
             } catch (SimpleTypeException e) {
-                error(path + ": invalid value '" + value + "': " + e.getMessage());
+                error(key + ": invalid value '" + value + "': " + e.getMessage());
                 return type.newInstance();
             }
         } else {
@@ -85,7 +85,7 @@ public class Loader {
                 try {
                     type = type.getSchema().type(Class.forName(value));
                 } catch (ClassNotFoundException e) {
-                    error(path + ": class not found: " + value);
+                    error(key + ": class not found: " + value);
                     return type.newInstance();
                 }
             } else {
@@ -94,17 +94,17 @@ public class Loader {
             parent = (ComplexType) type;
             obj = parent.newInstance();
             for (Item item : parent.items()) {
-                childPath = join(path, item.getName());
+                childKey = join(key, item.getName());
                 card = item.getCardinality();
                 if (item.getCardinality() == Cardinality.SEQUENCE) {
-                    col = readIndexed(childPath, item.getType());
+                    col = loadIndexed(childKey, item.getType());
                 } else {
-                    col = readNormal(childPath, item.getType());
+                    col = loadNormal(childKey, item.getType());
                 }
                 if (col.size() < card.min) {
-                    error(childPath + ": missing values: expected " + card.min + ", got " + col.size());
+                    error(childKey + ": missing values: expected " + card.min + ", got " + col.size());
                 } else if (col.size() > card.max) {
-                    error(childPath + ": to many values: expected " + card.max + ", got " + col.size());
+                    error(childKey + ": to many values: expected " + card.max + ", got " + col.size());
                 } else {
                     item.set(obj, col);
                 }
@@ -117,30 +117,30 @@ public class Loader {
         errors.add(message);
     }
 
-    private Collection<?> readIndexed(String path, Type type) {
+    private Collection<?> loadIndexed(String key, Type type) {
         List<Object> col;
-        String childPath;
+        String childKey;
         
         col = new ArrayList<>();
         for (int i = 0; true; i++) {
-            childPath = path + "[" + Integer.toString(i) + "]";
-            if (!contains(childPath)) {
+            childKey = key + "[" + Integer.toString(i) + "]";
+            if (!contains(childKey)) {
                 return col;
             }
-            col.add(read(childPath, type));
+            col.add(load(childKey, type));
         }
     }
 
-    private Collection<?> readNormal(String path, Type type) {
-        if (contains(path)) {
-            return Collections.singleton(read(path, type));
+    private Collection<?> loadNormal(String key, Type type) {
+        if (contains(key)) {
+            return Collections.singleton(load(key, type));
         } else {
             return Collections.EMPTY_LIST;
         }
     }
     
-    private String eatValue(String path) {
-        return (String) src.remove(path);
+    private String eat(String key) {
+        return (String) src.remove(key);
     }
 
     private boolean contains(String prefix) {

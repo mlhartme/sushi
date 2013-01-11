@@ -51,20 +51,24 @@ public class Reader {
         Collection<?> col;
         
         data = readValue(path);
-        if (data == null) {
-            throw new StoreException(path + ": value not found");
-        }
         if (type instanceof SimpleType) {
+            if (data == null) {
+                throw new StoreException(path + ": value not found");
+            }
             try {
                 return ((SimpleType) type).stringToValue(data);
             } catch (SimpleTypeException e) {
                 throw new StoreException(path + ": invalid value: " + e.getMessage(), e);
             }
         } else {
-            try {
-                type = type.getSchema().type(Class.forName(data));
-            } catch (ClassNotFoundException e) {
-                throw new StoreException(path + ": class not found: " + data, e);
+            if (data != null) {
+                try {
+                    type = type.getSchema().type(Class.forName(data));
+                } catch (ClassNotFoundException e) {
+                    throw new StoreException(path + ": class not found: " + data, e);
+                }
+            } else {
+                // type as specified in schema
             }
             parent = (ComplexType) type;
             obj = parent.newInstance();
@@ -103,7 +107,7 @@ public class Reader {
     }
 
     private Collection<?> readNormal(String path, Type type) throws StoreException {
-        if (readValue(path) != null) {
+        if (contains(path)) {
             return Collections.singleton(read(path, type));
         } else {
             return Collections.EMPTY_LIST;
@@ -111,13 +115,25 @@ public class Reader {
     }
     
     private String readValue(String path) throws StoreException {
-        try {
-            return src.getProperty(path);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new StoreException(path + ": read failed: " + e.getMessage(), e);
+        return src.getProperty(path);
+    }
+
+    private boolean contains(String prefix) throws StoreException {
+        String prefixSlash;
+        String str;
+
+        prefixSlash = prefix + "/";
+        // TODO: expensive
+        for (Object key : src.keySet()) {
+            str = (String) key;
+            if (str.equals(prefix)) {
+                return true;
+            }
+            if (str.startsWith(prefixSlash)) {
+                return true;
+            }
         }
+        return false;
     }
 
     private static String join(String first, String second) {

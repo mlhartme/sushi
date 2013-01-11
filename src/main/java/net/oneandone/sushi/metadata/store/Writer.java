@@ -67,21 +67,18 @@ public class Writer {
     }
 
     protected void writeThis(Type type, Object obj, String path) {
-        String value;
-        
+        Class<?> clazz;
+
         if (type instanceof SimpleType) {
-            value = ((SimpleType) type).valueToString(obj);
+            dest.setProperty(path, ((SimpleType) type).valueToString(obj));
         } else if (obj == null) {
-            value = type.getType().getName();
+            dest.setProperty(path, type.getType().getName());
         } else {
-            value = obj.getClass().getName(); 
-        }
-        try {
-            dest.setProperty(path, value);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new StoreException(path + ": write failed: " + e.getMessage(), e);
+            // instanceof ComplexType
+            clazz = obj.getClass();
+            if (!type.getType().equals(clazz)) {
+                dest.setProperty(path, clazz.getName());
+            }
         }
     }
 

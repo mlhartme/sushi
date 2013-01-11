@@ -17,12 +17,9 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
-import net.oneandone.sushi.metadata.Instance;
 import net.oneandone.sushi.metadata.Type;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
-import net.oneandone.sushi.metadata.xml.ComplexElement;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
 import java.io.IOException;
 import java.util.Properties;
 

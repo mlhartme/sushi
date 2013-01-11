@@ -32,17 +32,29 @@ import java.util.Properties;
  * Helper class to read properties. You'll usually not use this class directly, use Instance.toProperties instead.
  */
 public class Loader {
+    public static Object run(Properties src, Type type) throws LoadException {
+        return run(src, type, "");
+    }
+
+    public static Object run(Properties src, Type type, String path) throws LoadException {
+        Loader loader;
+        Object result;
+
+        loader = new Loader(src);
+        result = loader.read(path, type);
+        if (!src.isEmpty()) {
+            throw new LoadException("unused properties: " + src.keySet());
+        }
+        return result;
+    }
+
     private final Properties src;
-    
-    public Loader(Properties src) {
+
+    private Loader(Properties src) {
         this.src = src;
     }
 
-    public Object read(Type type) throws LoadException {
-        return read("", type);
-    }
-
-    public Object read(String path, Type type) throws LoadException {
+    private Object read(String path, Type type) throws LoadException {
         ComplexType parent;
         String data;
         Object obj;
@@ -50,7 +62,7 @@ public class Loader {
         Cardinality card;
         Collection<?> col;
         
-        data = readValue(path);
+        data = eatValue(path);
         if (type instanceof SimpleType) {
             if (data == null) {
                 throw new LoadException(path + ": value not found");
@@ -114,8 +126,8 @@ public class Loader {
         }
     }
     
-    private String readValue(String path) {
-        return src.getProperty(path);
+    private String eatValue(String path) {
+        return (String) src.remove(path);
     }
 
     private boolean contains(String prefix) {

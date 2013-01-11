@@ -20,7 +20,9 @@ import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.metadata.Instance;
 import net.oneandone.sushi.metadata.Type;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
+import net.oneandone.sushi.metadata.xml.ComplexElement;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -58,14 +60,16 @@ public class PropertiesSample {
 
         public int number;
         public String string;
-        
+        public Complex complex;
+
         public Config() {
-            this(0, "");
+            this(0, "", new Complex());
         }
 
-        public Config(int number, String string) {
+        public Config(int number, String string, Complex complex) {
             this.number = number;
             this.string = string;
+            this.complex = complex;
         }
 
         public void save(Node file) throws IOException {
@@ -76,5 +80,10 @@ public class PropertiesSample {
         public String toString() {
             return "number=" + number + ",string=" + string;
         }
+    }
+
+    public static class Complex {
+        public int left;
+        public int right;
     }
 }

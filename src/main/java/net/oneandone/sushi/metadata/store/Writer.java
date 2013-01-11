@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class Writer {
     public static void write(Type type, Object obj, String name, final PropertyStore dest) {
-        new Writer(dest).write(new ArrayList<Item<?>>(), type, obj, name);
+        new Writer(dest).write(type, obj, name);
     }
 
     private final PropertyStore dest;
@@ -39,11 +39,11 @@ public class Writer {
         this.dest = dest;
     }
 
-    public Type write(List<Item<?>> parents, Type type, Object obj, String path) {
+    public Type write(Type type, Object obj, String path) {
         if (obj != null) {
             type = type.getSchema().type(obj.getClass());
         }
-        writeThis(parents, type, obj, path);
+        writeThis(type, obj, path);
         if (type instanceof ComplexType) {
             ComplexType complex;
             String childName;
@@ -53,22 +53,20 @@ public class Writer {
             complex = (ComplexType) type;
             for (Item item : complex.items()) {
                 children = item.get(obj);
-                parents.add(item);
                 idx = 0;
                 for (Object child : children) {
                     childName = join(path, item.getName());
                     if (item.getCardinality() == Cardinality.SEQUENCE) {
                         childName = childName + "[" + Integer.toString(idx++) + "]";
                     }
-                    write(parents, item.getType(), child, childName);
+                    write(item.getType(), child, childName);
                 }
-                parents.remove(parents.size() - 1);
             }
         }
         return type;
     }
 
-    protected void writeThis(List<Item<?>> parents, Type type, Object obj, String path) {
+    protected void writeThis(Type type, Object obj, String path) {
         String value;
         
         if (type instanceof SimpleType) {
@@ -79,7 +77,7 @@ public class Writer {
             value = obj.getClass().getName(); 
         }
         try {
-            dest.write(parents, path, value);
+            dest.write(path, value);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

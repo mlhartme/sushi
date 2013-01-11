@@ -42,10 +42,6 @@ public class Reader {
     }
 
     public Object read(String path, Type type) throws StoreException {
-        return read(new ArrayList<Item<?>>(), path, type);
-    }
-    
-    private Object read(List<Item<?>> parents, String path, Type type) throws StoreException {
         ComplexType parent;
         String data;
         Object obj;
@@ -53,7 +49,7 @@ public class Reader {
         Cardinality card;
         Collection<?> col;
         
-        data = readValue(parents, path);
+        data = readValue(path);
         if (data == null) {
             throw new StoreException(path + ": value not found");
         }
@@ -72,13 +68,12 @@ public class Reader {
             parent = (ComplexType) type;
             obj = parent.newInstance();
             for (Item item : parent.items()) {
-                parents.add(item);
                 childPath = join(path, item.getName());
                 card = item.getCardinality();
                 if (item.getCardinality() == Cardinality.SEQUENCE) {
-                    col = readIndexed(parents, childPath, item.getType());
+                    col = readIndexed(childPath, item.getType());
                 } else {
-                    col = readNormal(parents, childPath, item.getType());
+                    col = readNormal(childPath, item.getType());
                 }
                 if (col.size() < card.min) {
                     throw new StoreException(childPath + ": missing values: expected " + card.min + ", got " + col.size());
@@ -87,37 +82,36 @@ public class Reader {
                     throw new StoreException(childPath + ": to many values: expected " + card.max + ", got " + col.size());
                 }
                 item.set(obj, col);
-                parents.remove(parents.size() - 1);
             }
             return obj;
         }
     }
 
-    private Collection<?> readIndexed(List<Item<?>> parents, String path, Type type) throws StoreException {
+    private Collection<?> readIndexed(String path, Type type) throws StoreException {
         List<Object> col;
         String childPath;
         
         col = new ArrayList<Object>();
         for (int i = 0; true; i++) {
             childPath = path + "[" + Integer.toString(i) + "]";
-            if (readValue(parents, childPath) == null) {
+            if (readValue(childPath) == null) {
                 return col;
             }
-            col.add(read(parents, childPath, type));
+            col.add(read(childPath, type));
         }
     }
 
-    private Collection<?> readNormal(List<Item<?>> parents, String path, Type type) throws StoreException {
-        if (readValue(parents, path) != null) {
-            return Collections.singleton(read(parents, path, type));
+    private Collection<?> readNormal(String path, Type type) throws StoreException {
+        if (readValue(path) != null) {
+            return Collections.singleton(read(path, type));
         } else {
             return Collections.EMPTY_LIST;
         }
     }
     
-    private String readValue(List<Item<?>> parents, String path) throws StoreException {
+    private String readValue(String path) throws StoreException {
         try {
-            return src.read(parents, path);
+            return src.read(path);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

@@ -28,11 +28,11 @@ public class PropertyStore {
     }
 
     /** @return null if not found */
-    public String read(List<Item<?>> parents, String path) {
+    public String read(String path) {
         return props.getProperty(path);
     }
 
-    public void write(List<Item<?>> parents, String path, String value) {
+    public void write(String path, String value) {
         props.put(path, value);
     }
 }

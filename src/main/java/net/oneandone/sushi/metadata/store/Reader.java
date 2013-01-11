@@ -26,14 +26,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Helper class to read properties. You'll usually not use this class directly, use Instance.toProperties instead.
  */
 public class Reader {
-    private final PropertyStore src;
+    private final Properties src;
     
-    public Reader(PropertyStore src) {
+    public Reader(Properties src) {
         this.src = src;
     }
 
@@ -111,7 +112,7 @@ public class Reader {
     
     private String readValue(String path) throws StoreException {
         try {
-            return src.read(path);
+            return src.getProperty(path);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

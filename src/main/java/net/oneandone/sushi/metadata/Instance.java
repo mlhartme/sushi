@@ -20,7 +20,6 @@ import net.oneandone.sushi.csv.View;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeWriter;
 import net.oneandone.sushi.fs.World;
-import net.oneandone.sushi.metadata.store.PropertyStore;
 import net.oneandone.sushi.metadata.xml.DomTree;
 import net.oneandone.sushi.metadata.xml.LoaderException;
 import net.oneandone.sushi.metadata.xml.Serializer;
@@ -141,7 +140,7 @@ public class Instance<T> {
     }
     
     public void toProperties(Properties props, String name) {
-        net.oneandone.sushi.metadata.store.Writer.write(getType(), get(), name, new PropertyStore(props));
+        net.oneandone.sushi.metadata.store.Writer.write(getType(), get(), name, props);
     }
     
     public void exportCsv(View view, Csv dest, String ... selection) {

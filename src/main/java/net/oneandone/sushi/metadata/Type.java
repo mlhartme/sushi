@@ -16,7 +16,6 @@
 package net.oneandone.sushi.metadata;
 
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.metadata.store.PropertyStore;
 import net.oneandone.sushi.metadata.xml.Loader;
 import net.oneandone.sushi.metadata.xml.LoaderException;
 import org.xml.sax.InputSource;
@@ -110,7 +109,7 @@ public abstract class Type {
     public <T> Instance<T> loadProperties(Properties props, String name) {
         T obj;
         
-        obj = (T) new net.oneandone.sushi.metadata.store.Reader(new PropertyStore(props)).read(name, this);
+        obj = (T) new net.oneandone.sushi.metadata.store.Reader(props).read(name, this);
         return instance(obj);
     }
     

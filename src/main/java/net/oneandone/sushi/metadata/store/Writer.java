@@ -24,18 +24,19 @@ import net.oneandone.sushi.metadata.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.
  */
 public class Writer {
-    public static void write(Type type, Object obj, String name, final PropertyStore dest) {
+    public static void write(Type type, Object obj, String name, final Properties dest) {
         new Writer(dest).write(type, obj, name);
     }
 
-    private final PropertyStore dest;
+    private final Properties dest;
     
-    public Writer(PropertyStore dest) {
+    public Writer(Properties dest) {
         this.dest = dest;
     }
 
@@ -77,7 +78,7 @@ public class Writer {
             value = obj.getClass().getName(); 
         }
         try {
-            dest.write(path, value);
+            dest.setProperty(path, value);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

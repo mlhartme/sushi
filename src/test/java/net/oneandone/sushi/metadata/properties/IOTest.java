@@ -25,7 +25,19 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
-public class ReaderWriterTest extends ModelBase {
+public class IOTest extends ModelBase {
+    @Test
+    public void external() {
+        check("", "");
+        check("java.home", "javaHome");
+        check(".f.o.o", "FOO");
+    }
+
+    private void check(String external, String internal) {
+        assertEquals(external, IO.toExternal(internal));
+        assertEquals(internal, IO.fromExternal(external));
+    }
+
     @Test
     public void readEngine() throws LoadException {
         Properties p;

@@ -29,7 +29,7 @@ import java.util.Properties;
  */
 public class Saver {
     public static void write(Type type, Object obj, String name, final Properties dest) {
-        new Saver(dest).write(type, obj, name);
+        new Saver(dest).write(type, obj, IO.toExternal(name));
     }
 
     private final Properties dest;
@@ -38,14 +38,14 @@ public class Saver {
         this.dest = dest;
     }
 
-    public void write(Type type, Object obj, String path) {
+    public void write(Type type, Object obj, String key) {
         if (obj != null) {
             type = type.getSchema().type(obj.getClass());
         }
-        writeThis(type, obj, path);
+        writeThis(type, obj, key);
         if (type instanceof ComplexType) {
             ComplexType complex;
-            String childName;
+            String childKey;
             Collection<?> children;
             int idx;
 
@@ -54,28 +54,28 @@ public class Saver {
                 children = item.get(obj);
                 idx = 0;
                 for (Object child : children) {
-                    childName = join(path, item.getName());
+                    childKey = join(key, IO.toExternal(item.getName()));
                     if (item.getCardinality() == Cardinality.SEQUENCE) {
-                        childName = childName + "[" + Integer.toString(idx++) + "]";
+                        childKey = childKey + "[" + Integer.toString(idx++) + "]";
                     }
-                    write(item.getType(), child, childName);
+                    write(item.getType(), child, childKey);
                 }
             }
         }
     }
 
-    protected void writeThis(Type type, Object obj, String path) {
+    protected void writeThis(Type type, Object obj, String key) {
         Class<?> clazz;
 
         if (type instanceof SimpleType) {
-            dest.setProperty(path, ((SimpleType) type).valueToString(obj));
+            dest.setProperty(key, ((SimpleType) type).valueToString(obj));
         } else if (obj == null) {
-            dest.setProperty(path, type.getType().getName());
+            dest.setProperty(key, type.getType().getName());
         } else {
             // instanceof ComplexType
             clazz = obj.getClass();
             if (needsMarker(type, clazz)) {
-                dest.setProperty(path, clazz.getName());
+                dest.setProperty(key, clazz.getName());
             }
         }
     }

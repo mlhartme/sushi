@@ -37,12 +37,12 @@ public class Loader {
         return run(src, type, "");
     }
 
-    public static Object run(Properties src, Type type, String key) throws LoadException {
+    public static Object run(Properties src, Type type, String name) throws LoadException {
         Loader loader;
         Object result;
 
         loader = new Loader(src);
-        result = loader.load(key, type);
+        result = loader.load(IO.toExternal(name), type);
         if (!src.isEmpty()) {
             loader.error("unused properties: " + src.keySet());
         }
@@ -94,7 +94,7 @@ public class Loader {
             parent = (ComplexType) type;
             obj = parent.newInstance();
             for (Item item : parent.items()) {
-                childKey = join(key, item.getName());
+                childKey = join(key, IO.toExternal(item.getName()));
                 card = item.getCardinality();
                 if (item.getCardinality() == Cardinality.SEQUENCE) {
                     col = loadIndexed(childKey, item.getType());

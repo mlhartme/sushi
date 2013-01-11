@@ -38,8 +38,8 @@ public class PropertiesSample {
         System.out.println("default config created:");
         System.out.println(file.readString());
 
-        config.number = 2;
-        config.string = "changed";
+        config.javaHome = "changed";
+        config.version = 2;
         config.save(file);
         System.out.println("saved changes:");
         System.out.println(file.readString());
@@ -55,17 +55,17 @@ public class PropertiesSample {
             return (Config) TYPE.loadProperties(file.readProperties()).get();
         }
 
-        public int number;
-        public String string;
+        public String javaHome;
+        public int version;
         public Complex complex;
 
         public Config() {
-            this(0, "", new Complex());
+            this("", 0, new Complex());
         }
 
-        public Config(int number, String string, Complex complex) {
-            this.number = number;
-            this.string = string;
+        public Config(String javaHome, int version, Complex complex) {
+            this.javaHome = javaHome;
+            this.version = version;
             this.complex = complex;
         }
 
@@ -75,7 +75,7 @@ public class PropertiesSample {
 
         @Override
         public String toString() {
-            return "number=" + number + ",string=" + string;
+            return "javaHome=" + javaHome + ", version=" + version;
         }
     }
 

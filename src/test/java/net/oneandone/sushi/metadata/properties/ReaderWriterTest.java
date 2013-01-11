@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
-public class PropertyStoreTest extends ModelBase {
+public class ReaderWriterTest extends ModelBase {
     @Test
     public void readEngine() {
         Properties p;

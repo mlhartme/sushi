@@ -24,27 +24,28 @@ import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import java.io.IOException;
 import java.util.Properties;
 
+/** Demonstrates how to save and load a class "Config" to and from property files. */
 public class PropertiesSample {
     private static final World world = new World();
 
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws IOException {
-        Node propfile;
+        Node file;
         Config config;
 
-        propfile = world.getTemp().createTempFile();
+        file = world.getTemp().createTempFile();
         config = new Config();
-        config.save(propfile);
+        config.save(file);
         System.out.println("default config created:");
-        System.out.println(propfile.readString());
+        System.out.println(file.readString());
 
         config.number = 2;
         config.string = "changed";
-        config.save(propfile);
-        System.out.println("saved changed:");
-        System.out.println(propfile.readString());
+        config.save(file);
+        System.out.println("saved changes:");
+        System.out.println(file.readString());
 
-        config = Config.load(propfile);
+        config = Config.load(file);
         System.out.println("loaded config: " + config);
     }
     
@@ -52,7 +53,7 @@ public class PropertiesSample {
         private static final Type TYPE = new ReflectSchema(world).type(Config.class);
 
         public static Config load(Node file) throws IOException {
-            return (Config) TYPE.loadProperties(file.readProperties(), "config").get();
+            return (Config) TYPE.loadProperties(file.readProperties()).get();
         }
 
         public int number;
@@ -68,7 +69,7 @@ public class PropertiesSample {
         }
 
         public void save(Node file) throws IOException {
-            file.writeProperties(TYPE.instance(this).toProperties("config"));
+            file.writeProperties(TYPE.instance(this).toProperties());
         }
 
         @Override

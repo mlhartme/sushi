@@ -128,6 +128,10 @@ public class Instance<T> {
         tree.done();
     }
 
+    public Properties toProperties() {
+        return toProperties("");
+    }
+
     public Properties toProperties(String name) {
         Properties props;
         

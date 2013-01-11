@@ -40,7 +40,7 @@ public class Writer {
         this.dest = dest;
     }
 
-    public Type write(Type type, Object obj, String path) {
+    public void write(Type type, Object obj, String path) {
         if (obj != null) {
             type = type.getSchema().type(obj.getClass());
         }
@@ -64,7 +64,6 @@ public class Writer {
                 }
             }
         }
-        return type;
     }
 
     protected void writeThis(Type type, Object obj, String path) {

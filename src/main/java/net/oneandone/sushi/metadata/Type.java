@@ -73,7 +73,7 @@ public abstract class Type {
     public abstract Object newInstance();
 
     public <T> Instance<T> instance(T obj) {
-        return new Instance<T>(this, obj);
+        return new Instance<>(this, obj);
     }
     
     //--

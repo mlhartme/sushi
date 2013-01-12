@@ -39,8 +39,7 @@ public class ListItem<T> extends Item<T> {
         elementType = field.getAnnotation(Sequence.class).value();
         return new ListItem(singular,  
                 metadata.type(elementType), 
-                lookup(field.getDeclaringClass(), name),
-                field);
+                lookup(field.getDeclaringClass(), name));
     }
     
     private static final String[] PLURALS = { "List", "s" };
@@ -58,8 +57,8 @@ public class ListItem<T> extends Item<T> {
     
     private final Method list;
     
-    public ListItem(String name, Type type, Method list, AnnotatedElement definition) {
-        super(name, Cardinality.SEQUENCE, type, definition);
+    public ListItem(String name, Type type, Method list) {
+        super(name, Cardinality.SEQUENCE, type);
         if (list.getParameterTypes().length != 0) {
             fail(list);
         }

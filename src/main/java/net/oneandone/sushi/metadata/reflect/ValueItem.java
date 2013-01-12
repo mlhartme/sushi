@@ -27,7 +27,7 @@ public class ValueItem<T> extends Item<T> {
     private final Field field;
     
     public ValueItem(Field field, Type type) {
-        super(field.getName(), Cardinality.VALUE, type, field);
+        super(field.getName(), Cardinality.VALUE, type);
 
         this.field = field;
     }

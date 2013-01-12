@@ -37,16 +37,15 @@ public class OptionItem<T> extends Item<T> {
         type = field.getDeclaringClass();
         fieldType = field.getType();
         return new OptionItem<T>(name, fieldType, metadata.type(fieldType), 
-                lookup(type, "get" + name), lookup(type, "set" + name),
-                field);
+                lookup(type, "get" + name), lookup(type, "set" + name));
     }
     
     
     private final Method getter;
     private final Method setter;
     
-    public OptionItem(String name, Class<?> typeRaw, Type type, Method getter, Method setter, AnnotatedElement definition) {
-        super(name, Cardinality.OPTION, type, definition);
+    public OptionItem(String name, Class<?> typeRaw, Type type, Method getter, Method setter) {
+        super(name, Cardinality.OPTION, type);
         
         if (typeRaw.isPrimitive()) {
             throw new IllegalArgumentException("primitive type is not allowed for options: " + typeRaw);

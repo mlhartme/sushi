@@ -37,16 +37,15 @@ public class ValueItem<T> extends Item<T> {
         type = field.getDeclaringClass();
         fieldType = field.getType();
         return new ValueItem(name, fieldType,  metadata.type(fieldType), 
-                lookup(type, "get" + name), lookup(type, "set" + name),
-                field);
+                lookup(type, "get" + name), lookup(type, "set" + name));
     }
     
     
     private final Method getter;
     private final Method setter;
     
-    public ValueItem(String name, Class typeRaw, Type type, Method getter, Method setter, AnnotatedElement definition) {
-        super(name, Cardinality.VALUE, type, definition);
+    public ValueItem(String name, Class typeRaw, Type type, Method getter, Method setter) {
+        super(name, Cardinality.VALUE, type);
         
         checkSetter(typeRaw, setter);
         checkGetter(typeRaw, getter);

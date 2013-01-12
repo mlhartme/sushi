@@ -26,7 +26,7 @@ public class CollectionItem extends Item<Object> {
     private final Field field;
     
     public CollectionItem(Field field, Type type) {
-        super(field.getName(), Cardinality.SEQUENCE, type, field);
+        super(field.getName(), Cardinality.SEQUENCE, type);
 
         this.field = field;
     }

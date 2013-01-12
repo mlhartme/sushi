@@ -30,7 +30,7 @@ public class ArrayItem<T> extends Item<T> {
     private final Field field;
     
     public ArrayItem(Field field, Type componentType) {
-        super(field.getName(), Cardinality.SEQUENCE, componentType, field);
+        super(field.getName(), Cardinality.SEQUENCE, componentType);
 
         this.field = field;
     }

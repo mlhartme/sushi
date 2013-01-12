@@ -108,13 +108,11 @@ public abstract class Item<T> {
     private final String name;
     private final Cardinality cardinality;
     private final Type type;
-    private final AnnotatedElement definition;
-    
-    public Item(String name, Cardinality cardinality, Type type, AnnotatedElement definition) {
+
+    public Item(String name, Cardinality cardinality, Type type) {
         this.name = name;
         this.cardinality = cardinality;
         this.type = type;
-        this.definition = definition;
     }
     
     public String getName() {
@@ -133,10 +131,6 @@ public abstract class Item<T> {
         return type;
     }
     
-    public AnnotatedElement getDefinition() {
-        return definition;
-    }
-
     public abstract Collection<T> get(Object src);
     public abstract void set(Object dest, Collection<T> values);
 

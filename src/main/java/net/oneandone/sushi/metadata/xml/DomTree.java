@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** You'll normally not use this class directly, use Data.toXml instead */
+/** You'll normally not use this class directly, use Instance.toXml instead */
 public class DomTree extends Tree {
     private final List<Element> parents;
     

@@ -63,13 +63,13 @@ public class TestProperties {
     }
 
     public static List<Object[]> getParameterList(String key) {
-        List<Object[]> data;
+        List<Object[]> objects;
 
-        data = new ArrayList<Object[]>();
+        objects = new ArrayList<>();
         for (String uri : getList(key)) {
-            data.add(new Object[] { uri });
+            objects.add(new Object[]{uri});
         }
-        return data;
+        return objects;
     }
 
 

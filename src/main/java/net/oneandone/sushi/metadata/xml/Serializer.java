@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** 
- * You'll normally not use this class directly, use Data.toXml instead.
+ * You'll normally not use this class directly, use Instance.toXml instead.
  * TODO: clearify name against DomSerializer. 
  */
 public class Serializer {
@@ -36,7 +36,7 @@ public class Serializer {
     public Serializer(Tree tree, List<Object> ids) {
         this.tree = tree;
         this.ids = ids;
-        this.idrefs = new ArrayList<Object>();
+        this.idrefs = new ArrayList<>();
     }
 
     public void run(String name, Type declaredType, Object obj) throws IOException {

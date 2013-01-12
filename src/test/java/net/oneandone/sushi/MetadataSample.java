@@ -24,14 +24,14 @@ public class MetadataSample {
     private static final World WORLD = new World();
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws Exception {
-        Instance<Obj> data;
+        Instance<Obj> instance;
         Obj obj;
         
-        data = TYPE.loadXml(WORLD.memoryNode("<obj><number>2</number><string>str</string></obj>"));
-        obj = data.get();
+        instance = TYPE.loadXml(WORLD.memoryNode("<obj><number>2</number><string>str</string></obj>"));
+        obj = instance.get();
         System.out.println("object:\n" + obj);
         obj.number = 3;
-        System.out.println("xml:\n" + data.toXml());
+        System.out.println("xml:\n" + instance.toXml());
     }
     
     private static final Type TYPE = new ReflectSchema(WORLD).type(Obj.class);

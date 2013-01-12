@@ -34,23 +34,23 @@ public class CsvSample {
         All all;
         View view;
         Csv csv;
-        Instance<All> data;
+        Instance<All> instance;
         
         all = new All();
 
         System.out.println("object:\n" + all);
         
-        data = TYPE.instance(all);
+        instance = TYPE.instance(all);
         csv = new Csv(new Format());
         view = View.fromXml(WORLD.memoryNode("<view>" +
                 "  <scope>items</scope>" +
                 "  <field><name>Id</name><path>id</path></field>" +
                 "  <field><name>String</name><path>string</path></field>" +
                 "</view>"));
-        data.exportCsv(view, csv, "7", "2");
+        instance.exportCsv(view, csv, "7", "2");
         System.out.println("orig\n" + csv);
         csv.get(2).get(1).set(0, "two");
-        data.importCsv(view, csv);
+        instance.importCsv(view, csv);
         System.out.println("modified\n" + csv);
     }
     

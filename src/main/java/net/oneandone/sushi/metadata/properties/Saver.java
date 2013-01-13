@@ -40,7 +40,11 @@ public class Saver {
 
     public void write(Type type, Object obj, String key) {
         if (obj != null) {
-            type = type.getSchema().type(obj.getClass());
+            if (type instanceof SimpleType) {
+                // as-is
+            } else {
+                type = type.getSchema().type(obj.getClass());
+            }
         }
         writeThis(type, obj, key);
         if (type instanceof ComplexType) {

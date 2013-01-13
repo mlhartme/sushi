@@ -123,7 +123,7 @@ public class Loader {
         
         col = new ArrayList<>();
         for (int i = 0; true; i++) {
-            childKey = key + "[" + Integer.toString(i) + "]";
+            childKey = key + "." + Integer.toString(i);
             if (!contains(childKey)) {
                 return col;
             }

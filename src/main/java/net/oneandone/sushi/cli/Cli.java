@@ -29,13 +29,19 @@ import java.util.Locale;
 public abstract class Cli {
     protected final Console console;
     protected final Schema schema;
-    
+    protected boolean exception;
+
     @Option("-pretend")
     protected boolean pretend;
 
     @Option("v")
     public void setVerbose(boolean v) {
         console.setVerbose(v);
+    }
+
+    @Option("e")
+    public void setException(boolean e) {
+        exception = e;
     }
 
     public Cli() {
@@ -73,11 +79,15 @@ public abstract class Cli {
         } catch (ArgumentException e) {
             console.error.println(e.getMessage());
             console.info.println("Specify 'help' to get a usage message.");
-            e.printStackTrace(console.verbose);
+            e.printStackTrace(exception ? console.error : console.verbose);
+            return -1;
+        } catch (RuntimeException e) {
+            console.error.println(e.getMessage());
+            e.printStackTrace(console.error);
             return -1;
         } catch (Exception e) {
             console.error.println(e.getMessage());
-            e.printStackTrace(console.error);
+            e.printStackTrace(exception ? console.error : console.verbose);
             return -1;
         }
         return 0;

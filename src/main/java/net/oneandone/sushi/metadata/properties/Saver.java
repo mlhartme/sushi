@@ -57,7 +57,7 @@ public class Saver {
                 for (Object child : children) {
                     childKey = join(key, IO.toExternal(item.getName()));
                     if (item.getCardinality() == Cardinality.SEQUENCE) {
-                        childKey = childKey + "." + Integer.toString(idx++);
+                        childKey = childKey + "." + Integer.toString(++idx);
                     }
                     save(item.getType(), child, childKey);
                 }

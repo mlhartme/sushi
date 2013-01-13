@@ -122,7 +122,7 @@ public class Loader {
         String childKey;
         
         col = new ArrayList<>();
-        for (int i = 0; true; i++) {
+        for (int i = 1; true; i++) {
             childKey = key + "." + Integer.toString(i);
             if (!contains(childKey)) {
                 return col;

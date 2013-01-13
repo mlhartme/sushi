@@ -26,7 +26,7 @@ public class ComplexType extends Type {
     public ComplexType(Schema schema, Class<?> type, String name) {
         super(schema, type, name);
 
-        this.items = new ArrayList<Item<?>>();
+        this.items = new ArrayList<>();
     }
 
     public List<Item<?>> items() {

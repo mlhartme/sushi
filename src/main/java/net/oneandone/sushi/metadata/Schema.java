@@ -37,14 +37,14 @@ import java.util.Map;
 
 /** 
  * A set of Types. Initially, the set consists of simple types only. Complex types
- * can be created explicitly by invoking the add method or implictly by overriding the complex 
- * method. Thus, Metadata can be used a factory for complex types.
+ * can be created explicitly by invoking the add method or implicitly by overriding the complex
+ * method. Thus, metadata can be used as a factory for complex types.
  */
 public class Schema {
     private final Map<Class<?>, Type> map;
     
     public Schema() {
-        map = new HashMap<Class<?>, Type>();
+        map = new HashMap<>();
         add(new StringType(this));
         add(new IntType(this));
         add(new LongType(this));
@@ -111,7 +111,7 @@ public class Schema {
     public <T> List<Instance<T>> instances(Collection<T> col) {
         List<Instance<T>> result;
         
-        result = new ArrayList<Instance<T>>();
+        result = new ArrayList<>();
         for (T obj : col) {
             result.add(instance(obj));
         }

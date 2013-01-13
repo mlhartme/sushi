@@ -23,7 +23,10 @@ import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import java.io.IOException;
 import java.util.Properties;
 
-/** Demonstrates how to save and load a class "Config" to and from property files. */
+/**
+ * Sushi can map between objects and properties.
+ * This sample demonstrates how to save and load a class "Config" to and from property files.
+ */
 public class PropertiesSample {
     private static final World world = new World();
 

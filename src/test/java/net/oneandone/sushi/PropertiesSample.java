@@ -24,8 +24,8 @@ import java.io.IOException;
 
 /**
  * To work with property files, use create a Pojo representing all fields of the file, and use
- * Sushi to map between instances of this class and the properties file. This sample demonstrates
- * how to save and load a class "Config" to and from a property file.
+ * Sushi to map between instances and its file. This exsample demonstrates how to save and load
+ * "Config" instances to and from a property file.
  */
 public class PropertiesSample {
     private static final World world = new World();

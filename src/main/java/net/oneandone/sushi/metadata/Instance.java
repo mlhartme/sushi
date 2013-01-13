@@ -141,7 +141,7 @@ public class Instance<T> {
     }
     
     public void toProperties(Properties props, String name) {
-        Saver.write(getType(), get(), name, props);
+        Saver.run(getType(), get(), name, props);
     }
     
     public void exportCsv(View view, Csv dest, String ... selection) {

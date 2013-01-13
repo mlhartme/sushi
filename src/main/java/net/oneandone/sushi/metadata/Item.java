@@ -139,9 +139,9 @@ public abstract class Item<T> {
         ArrayList<Instance<T>> result;
         
         objects = get(src);
-        result = new ArrayList<Instance<T>>(objects.size());
+        result = new ArrayList<>(objects.size());
         for (Object obj : objects) {
-            result.add(new Instance<T>(type, (T) obj));
+            result.add(new Instance<>(type, (T) obj));
         }
         return result;
     }

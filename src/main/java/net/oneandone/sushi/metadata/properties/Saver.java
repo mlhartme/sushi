@@ -28,8 +28,8 @@ import java.util.Properties;
  * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.
  */
 public class Saver {
-    public static void write(Type type, Object obj, String name, final Properties dest) {
-        new Saver(dest).write(type, obj, IO.toExternal(name));
+    public static void run(Type type, Object obj, String name, final Properties dest) {
+        new Saver(dest).save(type, obj, IO.toExternal(name));
     }
 
     private final Properties dest;
@@ -38,13 +38,10 @@ public class Saver {
         this.dest = dest;
     }
 
-    public void write(Type type, Object obj, String key) {
-        if (obj != null) {
-            if (type instanceof SimpleType) {
-                // as-is
-            } else {
-                type = type.getSchema().type(obj.getClass());
-            }
+    public void save(Type type, Object obj, String key) {
+        if (obj != null && !type.getType().equals(obj.getClass())) {
+            // saving derived object
+            type = type.getSchema().type(obj.getClass());
         }
         writeThis(type, obj, key);
         if (type instanceof ComplexType) {
@@ -62,7 +59,7 @@ public class Saver {
                     if (item.getCardinality() == Cardinality.SEQUENCE) {
                         childKey = childKey + "[" + Integer.toString(idx++) + "]";
                     }
-                    write(item.getType(), child, childKey);
+                    save(item.getType(), child, childKey);
                 }
             }
         }

@@ -21,11 +21,11 @@ import net.oneandone.sushi.metadata.Type;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;
-import java.util.Properties;
 
 /**
- * Sushi can map between objects and properties.
- * This sample demonstrates how to save and load a class "Config" to and from property files.
+ * To work with property files, use create a Pojo representing all fields of the file, and use
+ * Sushi to map between instances of this class and the properties file. This sample demonstrates
+ * how to save and load a class "Config" to and from a property file.
  */
 public class PropertiesSample {
     private static final World world = new World();

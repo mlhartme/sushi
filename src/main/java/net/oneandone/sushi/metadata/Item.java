@@ -134,7 +134,7 @@ public abstract class Item<T> {
     public abstract Collection<T> get(Object src);
     public abstract void set(Object dest, Collection<T> values);
 
-    public Collection<Instance<T>> getData(Object src) {
+    public Collection<Instance<T>> getInstances(Object src) {
         Collection<T> objects;
         ArrayList<Instance<T>> result;
         

@@ -53,7 +53,7 @@ public class Path {
                 if (item == null) {
                     throw new PathException(pos.getType().getName() + ": no such field: " + step);
                 }
-                tmp = item.getData(pos.get());
+                tmp = item.getInstances(pos.get());
                 if (step.idx != -1) {
                     if (step.idx >= tmp.size()) {
                         tmp = Collections.emptyList();

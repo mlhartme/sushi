@@ -18,10 +18,12 @@ package net.oneandone.sushi.cli;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.io.InputLogStream;
 import net.oneandone.sushi.io.MultiOutputStream;
+import net.oneandone.sushi.io.MultiWriter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -30,29 +32,29 @@ import java.util.Scanner;
  */
 public class Console {
     public static Console create(World world) {
-        return new Console(world, System.out, System.err, System.in);
+        return new Console(world, new PrintWriter(System.out), new PrintWriter(System.err), System.in);
     }
 
     public static Console create(World world, final OutputStream log) {
         return new Console(world,
-                new PrintStream(MultiOutputStream.createTeeStream(System.out, log), true), 
-                new PrintStream(MultiOutputStream.createTeeStream(System.err, log), true), 
+                new PrintWriter(MultiOutputStream.createTeeStream(System.out, log), true),
+                new PrintWriter(MultiOutputStream.createTeeStream(System.err, log), true),
                 new InputLogStream(System.in, log));
     }
     
     public final World world;
-    public final PrintStream info;
-    public final PrintStream verbose;
-    public final PrintStream error;
+    public final PrintWriter info;
+    public final PrintWriter verbose;
+    public final PrintWriter error;
     public final Scanner input;
     
-    private final MultiOutputStream verboseSwitch;
+    private final MultiWriter verboseSwitch;
     
-    public Console(World world, PrintStream info, PrintStream error, InputStream in) {
+    public Console(World world, PrintWriter info, PrintWriter error, InputStream in) {
         this.world = world;
         this.info = info;
-        this.verboseSwitch = MultiOutputStream.createNullStream();
-        this.verbose = new PrintStream(verboseSwitch);
+        this.verboseSwitch = MultiWriter.createNullWriter();
+        this.verbose = new PrintWriter(verboseSwitch);
         this.error = error;
         this.input = new Scanner(in);
     }

@@ -17,30 +17,31 @@ package net.oneandone.sushi.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MultiOutputStream extends OutputStream {
-    public static MultiOutputStream createNullStream() {
-        return new MultiOutputStream();
+public class MultiWriter extends Writer {
+    public static MultiWriter createNullWriter() {
+        return new MultiWriter();
     }
 
-    public static MultiOutputStream createTeeStream(OutputStream ... dests) {
-        MultiOutputStream result;
-        
-        result = new MultiOutputStream();
+    public static MultiWriter createTeeWriter(Writer ... dests) {
+        MultiWriter result;
+
+        result = new MultiWriter();
         result.dests.addAll(Arrays.asList(dests));
         return result;
     }
-    
-    private final List<OutputStream> dests;
-    
-    public MultiOutputStream() {
+
+    private final List<Writer> dests;
+
+    public MultiWriter() {
         dests = new ArrayList<>();
     }
 
-    public List<OutputStream> dests() {
+    public List<Writer> dests() {
         return dests;
     }
 
@@ -48,14 +49,21 @@ public class MultiOutputStream extends OutputStream {
     
     @Override
     public void write(int c) throws IOException {
-        for (OutputStream dest : dests) {
+        for (Writer dest : dests) {
             dest.write(c);
         }
     }
 
     @Override
+    public void write(char[] cbuf, int off, int len) throws IOException {
+        for (Writer dest : dests) {
+            dest.write(cbuf, off, len);
+        }
+    }
+
+    @Override
     public void flush() throws IOException {
-        for (OutputStream dest : dests) {
+        for (Writer dest : dests) {
             dest.flush();
         }
     }
@@ -63,7 +71,7 @@ public class MultiOutputStream extends OutputStream {
     @Override
     public void close() throws IOException {
         // TODO close as many as possible
-        for (OutputStream dest : dests) {
+        for (Writer dest : dests) {
             dest.close();
         }
     }

@@ -29,7 +29,12 @@ import java.io.IOException;
 public class SshAgent {
     public static void configure(JSch jsch) throws IOException {
         USocketFactory factory;
+        String socket;
 
+        socket = System.getenv("SSH_AUTH_SOCK");
+        if (socket == null || socket.isEmpty()) {
+            return;
+        }
         try {
             factory = new JNAUSocketFactory();
             jsch.setIdentityRepository(new RemoteIdentityRepository(new SSHAgentConnector(factory)));

@@ -22,6 +22,7 @@ import net.oneandone.sushi.fs.file.FileRoot;
 import net.oneandone.sushi.fs.filter.Filter;
 import net.oneandone.sushi.fs.memory.MemoryFilesystem;
 import net.oneandone.sushi.fs.memory.MemoryNode;
+import net.oneandone.sushi.fs.ssh.SshAgentSocket;
 import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.io.Buffer;
@@ -85,7 +86,7 @@ public class World {
     private final MemoryFilesystem memoryFilesystem;
 
     public World() {
-        this(true);
+        this(SshAgentSocket.isConfigured());
     }
 
     public World(boolean trySshAgent) {

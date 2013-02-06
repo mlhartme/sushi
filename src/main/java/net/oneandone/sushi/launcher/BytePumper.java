@@ -23,12 +23,14 @@ public class BytePumper extends Pumper {
     private byte[] buffer;
     private final InputStream src;
     private final OutputStream dest;
+    private final boolean flushDest;
     private final boolean closeDest;
 
-    public BytePumper(InputStream src, OutputStream dest, boolean closeDest) {
+    public BytePumper(InputStream src, OutputStream dest, boolean flushDest, boolean closeDest) {
         this.buffer = new byte[1024];
         this.src = src;
         this.dest = dest;
+        this.flushDest = flushDest;
         this.closeDest = closeDest;
     }
 
@@ -47,6 +49,9 @@ public class BytePumper extends Pumper {
                 return;
             }
             dest.write(buffer, 0, len);
+            if (flushDest) {
+                dest.flush();
+            }
         }
     }
 }

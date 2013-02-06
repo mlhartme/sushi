@@ -23,12 +23,14 @@ public class CharPumper extends Pumper {
     private char[] buffer;
     private final Reader src;
     private final Writer dest;
+    private final boolean flushDest;
     private final boolean closeDest;
 
-    public CharPumper(Reader src, Writer dest, boolean closeDest) {
+    public CharPumper(Reader src, Writer dest, boolean flushDest, boolean closeDest) {
         this.buffer = new char[1024];
         this.src = src;
         this.dest = dest;
+        this.flushDest = flushDest;
         this.closeDest = closeDest;
     }
 
@@ -47,6 +49,9 @@ public class CharPumper extends Pumper {
                 return;
             }
             dest.write(buffer, 0, len);
+            if (flushDest) {
+                dest.flush();
+            }
         }
     }
 }

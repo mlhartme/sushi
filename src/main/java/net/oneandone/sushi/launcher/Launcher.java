@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -108,11 +107,11 @@ public class Launcher {
     }
 
     public void exec(OutputStream stdout, OutputStream stderr) throws Failure {
-        exec(stdout, stderr, null, true);
+        exec(stdout, stderr, true, null, true);
     }
 
-    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinInherit) throws Failure {
-        genericExec(stdout, stderr, stdin, stdinInherit);
+    public void exec(OutputStream stdout, OutputStream stderr, boolean flushDest, InputStream stdin, boolean stdinInherit) throws Failure {
+        genericExec(stdout, stderr, flushDest, stdin, stdinInherit);
     }
 
     public void exec(Writer all) throws Failure {
@@ -120,11 +119,11 @@ public class Launcher {
     }
 
     public void exec(Writer stdout, Writer stderr) throws Failure {
-        exec(stdout, stderr, null, true);
+        exec(stdout, stderr, true, null, true);
     }
 
-    public void exec(Writer stdout, Writer stderr, Writer stdin, boolean stdinInherit) throws Failure {
-        genericExec(stdout, stderr, stdin, stdinInherit);
+    public void exec(Writer stdout, Writer stderr, boolean flushDest, Writer stdin, boolean stdinInherit) throws Failure {
+        genericExec(stdout, stderr, flushDest, stdin, stdinInherit);
     }
 
     /**
@@ -133,10 +132,11 @@ public class Launcher {
      *
      * @param stdout OutputStream or Writer
      * @param stderr OutputStream or Writer, may be null (which will redirect the error stream to stdout.
+     * @param flushDest true to flush stdout/stderr after every chunk read from the process
      * @param stdin InputStream or Reader. Has to be null when stdinInherit is true.
      *              Otherwise: may be null, which starts a process without input
      */
-    public void genericExec(Object stdout, Object stderr, Object stdin, boolean stdinInherit) throws Failure {
+    public void genericExec(Object stdout, Object stderr, boolean flushDest, Object stdin, boolean stdinInherit) throws Failure {
         Process process;
         int exit;
         String output;
@@ -161,16 +161,16 @@ public class Launcher {
         } catch (IOException e) {
             throw new Failure(this, e);
         }
-        psout = Pumper.create(process.getInputStream(), stdout, false, encoding);
+        psout = Pumper.create(process.getInputStream(), stdout, flushDest, false, encoding);
         psout.start();
         if (stderr != null) {
-            pserr = Pumper.create(process.getErrorStream(), stderr, false, encoding);
+            pserr = Pumper.create(process.getErrorStream(), stderr, flushDest, false, encoding);
             pserr.start();
         } else {
             pserr = null;
         }
         if (stdin != null && !stdinInherit) {
-            psin = Pumper.create(stdin, process.getOutputStream(), true, encoding);
+            psin = Pumper.create(stdin, process.getOutputStream(), true, true, encoding);
             psin.start();
         } else {
             psin = null;

@@ -150,7 +150,7 @@ public class LauncherTest {
         out = new ByteArrayOutputStream();
         in = new ByteArrayInputStream(str.getBytes(Settings.UTF_8));
         launcher = new Launcher((FileNode) WORLD.getHome(), "cat");
-        launcher.exec(out, null, in, false);
+        launcher.exec(out, null, false, in, false);
         assertEquals(str, new String(out.toByteArray(), Settings.UTF_8));
     }
 

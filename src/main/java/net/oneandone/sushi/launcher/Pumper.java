@@ -10,9 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 public abstract class Pumper extends Thread {
-    public static Pumper create(Object streamOrReader, Object streamOrWriter, boolean closeDest, String encoding) {
+    public static Pumper create(Object streamOrReader, Object streamOrWriter, boolean flushDest, boolean closeDest, String encoding) {
         if ((streamOrReader instanceof InputStream) && (streamOrWriter instanceof OutputStream)) {
-            return new BytePumper((InputStream) streamOrReader, (OutputStream) streamOrWriter, closeDest);
+            return new BytePumper((InputStream) streamOrReader, (OutputStream) streamOrWriter, flushDest, closeDest);
         }
         if (streamOrWriter instanceof OutputStream) {
             try {
@@ -28,7 +28,7 @@ public abstract class Pumper extends Thread {
                 throw new IllegalStateException(e);
             }
         }
-        return new CharPumper((Reader) streamOrReader, (Writer) streamOrWriter, closeDest);
+        return new CharPumper((Reader) streamOrReader, (Writer) streamOrWriter, flushDest, closeDest);
     }
 
     private Throwable exception;

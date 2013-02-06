@@ -40,7 +40,7 @@ import java.util.List;
  * convenient to use in applications than byte stream because process input/output is usually for humans
  * and thus has to be converted. To keep things simple, I accept the small performance penalty of also
  * de- and encoding; if this is an issue in you application, you have to fall back to Java ProcessBuilders.)
- * 
+ *
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies
  * the api and allows for shorter method names.

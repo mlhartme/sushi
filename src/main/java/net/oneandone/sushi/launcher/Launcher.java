@@ -20,8 +20,7 @@ import net.oneandone.sushi.util.Separator;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
@@ -34,6 +33,14 @@ import java.util.List;
  * None-zero exit codes of a process are reported as ExitCode exceptions. This helps to improve reliability
  * because it's harder to ignore exceptions than to ignore return codes.
  *
+ * Launcher uses Readers and Writers for streaming, although the underlying process uses streams.
+ * Encoding/decoding is performed according to the specified encoding. If you need to stream to OutputWriter
+ * or from InputStream: pass in the appropriate OutputStreamWriter/InputStreamReader and make sure that
+ * their encoding and the encoding for Launcher is ascii. (Rationale: character stream are usually more
+ * convenient to use in applications than byte stream because process input/output is usually for humans
+ * and thus has to be converted. To keep things simple, I accept the small performance penalty of also
+ * de- and encoding; if this is an issue in you application, you have to fall back to Java ProcessBuilders.)
+ * 
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies
  * the api and allows for shorter method names.
@@ -102,18 +109,6 @@ public class Launcher {
         return result.getBuffer().toString();
     }
 
-    public void exec(OutputStream all) throws Failure {
-        exec(all, null);
-    }
-
-    public void exec(OutputStream stdout, OutputStream stderr) throws Failure {
-        exec(stdout, stderr, true, null, true);
-    }
-
-    public void exec(OutputStream stdout, OutputStream stderr, boolean flushDest, InputStream stdin, boolean stdinInherit) throws Failure {
-        genericExec(stdout, stderr, flushDest, stdin, stdinInherit);
-    }
-
     public void exec(Writer all) throws Failure {
         exec(all, null);
     }
@@ -122,21 +117,15 @@ public class Launcher {
         exec(stdout, stderr, true, null, true);
     }
 
-    public void exec(Writer stdout, Writer stderr, boolean flushDest, Writer stdin, boolean stdinInherit) throws Failure {
-        genericExec(stdout, stderr, flushDest, stdin, stdinInherit);
-    }
-
     /**
-     * Worker method, you'll usually call one of type-save exec methods instead.
      * Executes a command in this directory, wired with the specified streams. None of the argument stream is closed.
      *
-     * @param stdout OutputStream or Writer
-     * @param stderr OutputStream or Writer, may be null (which will redirect the error stream to stdout.
+     * @param stdout never null
+     * @param stderr may be null (which will redirect the error stream to stdout.
      * @param flushDest true to flush stdout/stderr after every chunk read from the process
-     * @param stdin InputStream or Reader. Has to be null when stdinInherit is true.
-     *              Otherwise: may be null, which starts a process without input
+     * @param stdin Has to be null when stdinInherit is true. Otherwise: may be null, which starts a process without input
      */
-    public void genericExec(Object stdout, Object stderr, boolean flushDest, Object stdin, boolean stdinInherit) throws Failure {
+    public void exec(Writer stdout, Writer stderr, boolean flushDest, Reader stdin, boolean stdinInherit) throws Failure {
         Process process;
         int exit;
         String output;

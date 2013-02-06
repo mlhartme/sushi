@@ -9,11 +9,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-public abstract class Pumper extends Thread {
+public class Pumper extends Thread {
     public static Pumper create(Object streamOrReader, Object streamOrWriter, boolean flushDest, boolean closeDest, String encoding) {
-        if ((streamOrReader instanceof InputStream) && (streamOrWriter instanceof OutputStream)) {
-            return new BytePumper((InputStream) streamOrReader, (OutputStream) streamOrWriter, flushDest, closeDest);
-        }
         if (streamOrWriter instanceof OutputStream) {
             try {
                 streamOrWriter = new OutputStreamWriter((OutputStream) streamOrWriter, encoding);
@@ -28,14 +25,25 @@ public abstract class Pumper extends Thread {
                 throw new IllegalStateException(e);
             }
         }
-        return new CharPumper((Reader) streamOrReader, (Writer) streamOrWriter, flushDest, closeDest);
+        return new Pumper((Reader) streamOrReader, (Writer) streamOrWriter, flushDest, closeDest);
     }
 
     private Throwable exception;
+    private final char[] buffer;
+    private final Reader src;
+    private final Writer dest;
+    private final boolean flushDest;
+    private final boolean closeDest;
 
-    public Pumper() {
+    public Pumper(Reader src, Writer dest, boolean flushDest, boolean closeDest) {
+        this.buffer = new char[1024];
+        this.src = src;
+        this.dest = dest;
+        this.flushDest = flushDest;
+        this.closeDest = closeDest;
         setDaemon(true);
     }
+
 
     @Override
     public void run() {
@@ -47,7 +55,25 @@ public abstract class Pumper extends Thread {
         }
     }
 
-    protected abstract void runUnchecked() throws IOException;
+    private void runUnchecked() throws IOException {
+        int len;
+
+        while (true) {
+            len = src.read(buffer);
+            if (len == -1) {
+                if (closeDest) {
+                    dest.close();
+                } else {
+                    dest.flush();
+                }
+                return;
+            }
+            dest.write(buffer, 0, len);
+            if (flushDest) {
+                dest.flush();
+            }
+        }
+    }
 
     public void finish(Launcher launcher) throws Failure {
         try {

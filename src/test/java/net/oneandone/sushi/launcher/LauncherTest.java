@@ -15,14 +15,13 @@
  */
 package net.oneandone.sushi.launcher;
 
-import net.oneandone.sushi.fs.Settings;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
@@ -100,17 +99,17 @@ public class LauncherTest {
 
     @Test
     public void stdstreams() throws Failure {
-        ByteArrayOutputStream stdout;
-        ByteArrayOutputStream stderr;
+        StringWriter stdout;
+        StringWriter stderr;
 
         if (OS.CURRENT == OS.WINDOWS) {
             return;
         }
-        stdout = new ByteArrayOutputStream();
-        stderr = new ByteArrayOutputStream();
+        stdout = new StringWriter();
+        stderr = new StringWriter();
         new Launcher((FileNode) WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
-        assertEquals("std", new String(stdout.toByteArray()).trim());
-        assertEquals("err", new String(stderr.toByteArray()).trim());
+        assertEquals("std", stdout.toString().trim());
+        assertEquals("err", stderr.toString().trim());
     }
 
     @Test
@@ -144,14 +143,14 @@ public class LauncherTest {
 
     private void stdin(String str) throws Failure, UnsupportedEncodingException {
         Launcher launcher;
-        ByteArrayOutputStream out;
-        ByteArrayInputStream in;
+        StringWriter out;
+        StringReader in;
 
-        out = new ByteArrayOutputStream();
-        in = new ByteArrayInputStream(str.getBytes(Settings.UTF_8));
+        out = new StringWriter();
+        in = new StringReader(str);
         launcher = new Launcher((FileNode) WORLD.getHome(), "cat");
         launcher.exec(out, null, false, in, false);
-        assertEquals(str, new String(out.toByteArray(), Settings.UTF_8));
+        assertEquals(str, out.toString());
     }
 
     @Test

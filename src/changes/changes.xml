@@ -8,10 +8,12 @@
       </action>
       <action date="2012-01-15" dev="mhm" type="update">
         Console: type of info and error fields changed from PrintStream to PrintWriter
-        (because that simplifies filtering like PrefixWriter).
+        - because that simplifies filtering like PrefixWriter.
+        CAUTION: as a consequence, console.info.print will no longer flush the output
+        (println has not changed).
       </action>
       <action date="2012-01-15" dev="mhm" type="update">
-        Launcher can stream to Writers and from Readers now.
+        Launcher streams to Writers and from Readers.
       </action>
       <action date="2012-01-15" dev="mhm" type="add">
         TeeWriter and PrefixWriter.

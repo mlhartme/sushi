@@ -22,7 +22,6 @@ import net.oneandone.sushi.io.MultiWriter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -32,7 +31,7 @@ import java.util.Scanner;
  */
 public class Console {
     public static Console create(World world) {
-        return new Console(world, new PrintWriter(System.out), new PrintWriter(System.err), System.in);
+        return new Console(world, new PrintWriter(System.out, true), new PrintWriter(System.err, true), System.in);
     }
 
     public static Console create(World world, final OutputStream log) {

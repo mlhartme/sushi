@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release date="2012-01-xx" version="2.8.6">
+    <release date="2012-02-06" version="2.8.6">
+      <action date="2012-02-06" dev="mhm" type="removed">
+        Graph package was removed from Sushi -
+        it's in a separate project now: https://github.com/mlhartme/graph
+      </action>
       <action date="2012-01-15" dev="mhm" type="update">
         Console: type of info and error fields changed from PrintStream to PrintWriter
         (because that simplifies filtering like PrefixWriter).
+      </action>
+      <action date="2012-01-15" dev="mhm" type="update">
+        Launcher can stream to Writers and from Readers now.
       </action>
       <action date="2012-01-15" dev="mhm" type="add">
         TeeWriter and PrefixWriter.

@@ -18,12 +18,13 @@ package net.oneandone.sushi.launcher;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.util.Separator;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -95,11 +96,11 @@ public class Launcher {
     }
 
     public String exec() throws Failure {
-        ByteArrayOutputStream result;
+        StringWriter result;
 
-        result = new ByteArrayOutputStream();
+        result = new StringWriter();
         exec(result);
-        return string(result.toByteArray());
+        return result.getBuffer().toString();
     }
 
     public void exec(OutputStream all) throws Failure {
@@ -107,22 +108,41 @@ public class Launcher {
     }
 
     public void exec(OutputStream stdout, OutputStream stderr) throws Failure {
-        exec(stdout, stderr, System.in, true);
+        exec(stdout, stderr, null, true);
+    }
+
+    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinInherit) throws Failure {
+        genericExec(stdout, stderr, stdin, stdinInherit);
+    }
+
+    public void exec(Writer all) throws Failure {
+        exec(all, null);
+    }
+
+    public void exec(Writer stdout, Writer stderr) throws Failure {
+        exec(stdout, stderr, null, true);
+    }
+
+    public void exec(Writer stdout, Writer stderr, Writer stdin, boolean stdinInherit) throws Failure {
+        genericExec(stdout, stderr, stdin, stdinInherit);
     }
 
     /**
+     * Worker method, you'll usually call one of type-save exec methods instead.
      * Executes a command in this directory, wired with the specified streams. None of the argument stream is closed.
      *
-     * @param stderr may be null (which will redirect the error stream to stdout.
-     * @param stdin may be null
+     * @param stdout OutputStream or Writer
+     * @param stderr OutputStream or Writer, may be null (which will redirect the error stream to stdout.
+     * @param stdin InputStream or Reader. Has to be null when stdinInherit is true.
+     *              Otherwise: may be null, which starts a process without input
      */
-    public void exec(OutputStream stdout, OutputStream stderr, InputStream stdin, boolean stdinInherit) throws Failure {
+    public void genericExec(Object stdout, Object stderr, Object stdin, boolean stdinInherit) throws Failure {
         Process process;
         int exit;
         String output;
-        PumpStream psout;
-        PumpStream pserr;
-        PumpStream psin;
+        Pumper psout;
+        Pumper pserr;
+        Pumper psin;
 
         if (builder.directory() == null) {
             // builder.start() does not check, I would not detect the problem until process.waitFor is called
@@ -132,22 +152,25 @@ public class Launcher {
         builder.redirectErrorStream(stderr == null);
         if (stdinInherit) {
             builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
+            if (stdin != null) {
+                throw new IllegalArgumentException();
+            }
         }
         try {
             process = builder.start();
         } catch (IOException e) {
             throw new Failure(this, e);
         }
-        psout = new PumpStream(process.getInputStream(), stdout, false);
+        psout = Pumper.create(process.getInputStream(), stdout, false, encoding);
         psout.start();
         if (stderr != null) {
-            pserr = new PumpStream(process.getErrorStream(), stderr, false);
+            pserr = Pumper.create(process.getErrorStream(), stderr, false, encoding);
             pserr.start();
         } else {
             pserr = null;
         }
         if (stdin != null && !stdinInherit) {
-            psin = new PumpStream(stdin, process.getOutputStream(), true);
+            psin = Pumper.create(stdin, process.getOutputStream(), true, encoding);
             psin.start();
         } else {
             psin = null;
@@ -165,8 +188,8 @@ public class Launcher {
             psin.finish(this);
         }
         if (exit != 0) {
-            if (stderr == null && stdout instanceof ByteArrayOutputStream) {
-                output = string(((ByteArrayOutputStream) stdout).toByteArray());
+            if (stderr == null && stdout instanceof StringWriter) {
+                output = ((StringWriter) stdout).getBuffer().toString();
             } else {
                 output = "";
             }
@@ -184,15 +207,5 @@ public class Launcher {
     @Override
     public String toString() {
         return "[" + builder.directory() + "] " + Separator.SPACE.join(builder.command());
-    }
-
-    //--
-
-    private String string(byte[] bytes) {
-        try {
-            return new String(bytes, encoding);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

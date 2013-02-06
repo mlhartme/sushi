@@ -16,55 +16,37 @@
 package net.oneandone.sushi.launcher;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 
-public class CharPumper extends Thread {
-    private byte[] buffer;
-    private final InputStream src;
-    private final OutputStream dest;
+public class CharPumper extends Pumper {
+    private char[] buffer;
+    private final Reader src;
+    private final Writer dest;
     private final boolean closeDest;
-    private IOException exception;
 
-    public CharPumper(InputStream src, OutputStream dest, boolean closeDest) {
-        this.buffer = new byte[1024];
+    public CharPumper(Reader src, Writer dest, boolean closeDest) {
+        this.buffer = new char[1024];
         this.src = src;
         this.dest = dest;
         this.closeDest = closeDest;
-        setDaemon(true);
     }
 
     @Override
-    public void run() {
+    public void runUnchecked() throws IOException {
         int len;
 
-        try {
-            while (true) {
-                len = src.read(buffer);
-                if (len == -1) {
-                    if (closeDest) {
-                        dest.close();
-                    } else {
-                        dest.flush();
-                    }
-                    return;
+        while (true) {
+            len = src.read(buffer);
+            if (len == -1) {
+                if (closeDest) {
+                    dest.close();
+                } else {
+                    dest.flush();
                 }
-                dest.write(buffer, 0, len);
+                return;
             }
-        } catch (IOException e) {
-            exception = e;
-            return;
-        }
-    }
-
-    public void finish(Launcher launcher) throws Failure {
-        try {
-            join();
-        } catch (InterruptedException e) {
-            throw new Interrupted(e);
-        }
-        if (exception != null) {
-            throw new Failure(launcher, exception);
+            dest.write(buffer, 0, len);
         }
     }
 }

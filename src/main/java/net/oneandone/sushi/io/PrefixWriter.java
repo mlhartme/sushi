@@ -16,6 +16,7 @@ public class PrefixWriter extends FilterWriter {
         this.start = true;
     }
 
+    @Override
     public void write(int c) throws IOException {
         if (start) {
             out.write(prefix);
@@ -27,6 +28,7 @@ public class PrefixWriter extends FilterWriter {
         }
     }
 
+    @Override
     public void write(char cbuf[], int off, int len) throws IOException {
         char c;
 
@@ -36,6 +38,7 @@ public class PrefixWriter extends FilterWriter {
         }
     }
 
+    @Override
     public void write(String str, int off, int len) throws IOException {
         char c;
 

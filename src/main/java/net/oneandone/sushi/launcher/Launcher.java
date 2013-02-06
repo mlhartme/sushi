@@ -33,13 +33,13 @@ import java.util.List;
  * None-zero exit codes of a process are reported as ExitCode exceptions. This helps to improve reliability
  * because it's harder to ignore exceptions than to ignore return codes.
  *
- * Launcher uses Readers and Writers for streaming, although the underlying process uses streams.
- * Encoding/decoding is performed according to the specified encoding. If you need to stream to OutputWriter
- * or from InputStream: pass in the appropriate OutputStreamWriter/InputStreamReader and make sure that
- * their encoding and the encoding for Launcher is ascii. (Rationale: character stream are usually more
- * convenient to use in applications than byte stream because process input/output is usually for humans
- * and thus has to be converted. To keep things simple, I accept the small performance penalty of also
- * de- and encoding; if this is an issue in you application, you have to fall back to Java ProcessBuilders.)
+ * Launcher streams chars, although the underlying process stream bytes. Encoding/decoding is performed
+ * according to the specified encoding. If you need to stream bytes with Launcher: pass in the appropriate
+ * OutputStreamWriter/InputStreamReader and make sure that their encoding and the encoding for Launcher is
+ * ascii. (Rationale: character stream are usually more convenient to use in applications than byte streams
+ * because process input/output is usually for humans - and thus has to be converted. To keep things simple,
+ * I accept the small performance penalty of also de- and encoding; if this is an issue in your application,
+ * you have to fall back to Java's ProcessBuilder.)
  *
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies

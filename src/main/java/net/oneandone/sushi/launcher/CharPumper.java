@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class PumpStream extends Thread {
+public class CharPumper extends Thread {
     private byte[] buffer;
     private final InputStream src;
     private final OutputStream dest;
     private final boolean closeDest;
     private IOException exception;
 
-    public PumpStream(InputStream src, OutputStream dest, boolean closeDest) {
+    public CharPumper(InputStream src, OutputStream dest, boolean closeDest) {
         this.buffer = new byte[1024];
         this.src = src;
         this.dest = dest;
@@ -34,6 +34,7 @@ public class PumpStream extends Thread {
         setDaemon(true);
     }
 
+    @Override
     public void run() {
         int len;
 

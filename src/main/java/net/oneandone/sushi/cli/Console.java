@@ -81,6 +81,7 @@ public class Console {
         String str;
         
         info.print(message);
+        info.flush();
         str = input.nextLine();
         if (str.length() == 0) {
             return dflt;

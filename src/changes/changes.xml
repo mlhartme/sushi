@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release date="2012-02-12" version="2.8.7">
-      <action date="2012-02-11" dev="mhm" type="fix">
+    <release date="2013-04-xx" version="2.8.8">
+      <action date="2013-04-08" dev="mhm" type="update">
+        Properties Saver now works with HashMap instead of Properties; it can preserve property ordering by
+        using a LinkedHashMap now.
+      </action>
+    </release>
+    <release date="2013-02-12" version="2.8.7">
+      <action date="2013-02-11" dev="mhm" type="fix">
         Fix missing flush in Console.readline.
       </action>
-      <action date="2012-02-11" dev="mhm" type="fix">
+      <action date="2013-02-11" dev="mhm" type="fix">
         Do not try to connect to ssh agent unless SSH_AUTH_SOCKET is defined.
       </action>
     </release>
-    <release date="2012-02-06" version="2.8.6">
-      <action date="2012-02-06" dev="mhm" type="removed">
+    <release date="2013-02-06" version="2.8.6">
+      <action date="2013-02-06" dev="mhm" type="removed">
         Graph package was removed from Sushi -
         it's in a separate project now: https://github.com/mlhartme/graph
       </action>
-      <action date="2012-01-15" dev="mhm" type="update">
+      <action date="2013-01-15" dev="mhm" type="update">
         Console: type of info and error fields changed from PrintStream to PrintWriter
         - because that simplifies filtering like PrefixWriter.
         CAUTION: as a consequence, console.info.print will no longer flush the output
         (println has not changed).
       </action>
-      <action date="2012-01-15" dev="mhm" type="update">
+      <action date="2013-01-15" dev="mhm" type="update">
         Launcher streams to Writers and from Readers.
       </action>
-      <action date="2012-01-15" dev="mhm" type="add">
+      <action date="2013-01-15" dev="mhm" type="add">
         TeeWriter and PrefixWriter.
       </action>
     </release>
-    <release date="2012-01-15" version="2.8.5">
-      <action date="2012-01-13" dev="mhm" type="update">
+    <release date="2013-01-15" version="2.8.5">
+      <action date="2013-01-13" dev="mhm" type="update">
         Cli: print stacktrace only for RuntimeExceptions, not Exceptions.
       </action>
-      <action date="2012-01-13" dev="mhm" type="update">
+      <action date="2013-01-13" dev="mhm" type="update">
         Cli: added -e default option to print a stacktrace for all error.
       </action>
-      <action date="2012-01-13" dev="mhm" type="update">
+      <action date="2013-01-13" dev="mhm" type="update">
         Improved property loading:
         * property keys use dot to separate camel case now; 
          indexes are also separated with a dot
@@ -43,7 +49,7 @@
         * simplified
         * load exception reports the best possible result
       </action>
-      <action date="2012-01-11" dev="mhm" type="add">
+      <action date="2013-01-11" dev="mhm" type="add">
         Instance.toProperties() added.
       </action>
       <action date="2012-12-21" dev="mhm" type="update">

@@ -62,7 +62,7 @@ public class PrefixWriter extends PrintWriter {
     @Override
     public void write(int c) {
         if (matched == length) {
-            super.flush();
+            flush();
             super.write(prefix, 0, prefix.length());
             matched = 0;
         }
@@ -92,5 +92,9 @@ public class PrefixWriter extends PrintWriter {
             c = str.charAt(i);
             write(c);
         }
+    }
+
+    public void println() {
+        write(newline);
     }
 }

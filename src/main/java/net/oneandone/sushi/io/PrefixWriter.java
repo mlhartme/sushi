@@ -62,13 +62,15 @@ public class PrefixWriter extends PrintWriter {
     @Override
     public void write(int c) {
         if (matched == length) {
-            flush();
             super.write(prefix, 0, prefix.length());
             matched = 0;
         }
         super.write(c);
         if (c == newline.charAt(matched)) {
             matched++;
+            if (matched == length) {
+                flush();
+            }
         } else {
             matched = 0;
         }

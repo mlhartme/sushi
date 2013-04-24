@@ -32,7 +32,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /** Some object and its type. TODO: toCsv, fromCsv. */
@@ -136,11 +139,11 @@ public class Instance<T> {
         Properties props;
         
         props = new Properties();
-        toProperties(props, name);
+        toMap(props, name);
         return props;
     }
-    
-    public void toProperties(Properties props, String name) {
+
+    public void toMap(Map<Object, Object> props, String name) {
         Saver.run(getType(), get(), name, props);
     }
     

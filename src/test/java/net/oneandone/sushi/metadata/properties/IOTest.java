@@ -74,7 +74,7 @@ public class IOTest extends ModelBase {
 
         i = MODEL.instance(vendor);
         p = new Properties();
-        i.toProperties(p, "foo");
+        i.toMap(p, "foo");
         clone = MODEL.type(Vendor.class).loadProperties(p, "foo");
         assertEquals(2, clone.get().cars().size());
     }

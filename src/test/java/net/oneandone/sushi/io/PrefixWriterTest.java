@@ -16,9 +16,12 @@
 
 package net.oneandone.sushi.io;
 
+import net.oneandone.sushi.cli.Console;
+import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
@@ -40,7 +43,30 @@ public class PrefixWriterTest {
         PrefixWriter pw;
 
         dest = new StringWriter();
-        pw = new PrefixWriter(dest, "-", '\n');
+        pw = new PrefixWriter(dest, "-", "\n");
+        for (String arg : args) {
+            pw.write(arg);
+        }
+        assertEquals(expected, dest.toString());
+    }
+
+    @Test
+    public void test2() throws IOException {
+        check2("");
+        check2("", "");
+        check2("-a", "a");
+        check2("-a/b", "a", "/", "b");
+        check2("-a/n", "a/", "n");
+        check2("-a/n-bc", "a/nbc");
+        check2("-1/n-2/n-3/n", "1/n", "2/n", "3/n");
+    }
+
+    private void check2(String expected, String ... args) throws IOException {
+        StringWriter dest;
+        PrefixWriter pw;
+
+        dest = new StringWriter();
+        pw = new PrefixWriter(dest, "-", "/n");
         for (String arg : args) {
             pw.write(arg);
         }

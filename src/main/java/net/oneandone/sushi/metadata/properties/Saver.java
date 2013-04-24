@@ -22,19 +22,20 @@ import net.oneandone.sushi.metadata.SimpleType;
 import net.oneandone.sushi.metadata.Type;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Properties;
 
 /**
  * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.
  */
 public class Saver {
-    public static void run(Type type, Object obj, String name, final Properties dest) {
+    public static void run(Type type, Object obj, String name, final Map<Object, Object> dest) {
         new Saver(dest).save(type, obj, IO.toExternal(name));
     }
 
-    private final Properties dest;
+    private final Map<Object, Object> dest;
     
-    public Saver(Properties dest) {
+    public Saver(Map<Object, Object> dest) {
         this.dest = dest;
     }
 
@@ -69,14 +70,14 @@ public class Saver {
         Class<?> clazz;
 
         if (type instanceof SimpleType) {
-            dest.setProperty(key, ((SimpleType) type).valueToString(obj));
+            dest.put(key, ((SimpleType) type).valueToString(obj));
         } else if (obj == null) {
-            dest.setProperty(key, type.getType().getName());
+            dest.put(key, type.getType().getName());
         } else {
             // instanceof ComplexType
             clazz = obj.getClass();
             if (needsMarker(type, clazz)) {
-                dest.setProperty(key, clazz.getName());
+                dest.put(key, clazz.getName());
             }
         }
     }

@@ -16,36 +16,68 @@
 
 package net.oneandone.sushi.io;
 
-import java.io.FilterWriter;
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 
-public class PrefixWriter extends FilterWriter {
-    private final char newline;
-    private final String prefix;
-    private boolean start;
+/**
+ * A PrintWriter with a modifiable prefix and auto-flush.
+ * Auto-flush is better than the underlying PrintWriter because every character is checked.
+ */
+public class PrefixWriter extends PrintWriter {
+    private String prefix;
+    private final String newline;
+    private final int length;
+    private int matched;
 
-    public PrefixWriter(Writer dest, String prefix, char newline) {
-        super(dest);
+    public PrefixWriter(Writer out) {
+        this(out, "", System.getProperty("line.separator"));
+    }
+
+    public PrefixWriter(Writer out, String prefix, String newline) {
+        super(out, false);
         this.prefix = prefix;
         this.newline = newline;
-        this.start = true;
+        this.length = newline.length();
+        this.matched = length;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public Writer getOut() {
+        return out;
+    }
+
+    public void setOut(Writer out) {
+        this.out = out;
+    }
+
+    //--
+
+    @Override
+    public void write(int c) {
+        if (matched == length) {
+            super.write(prefix, 0, prefix.length());
+            matched = 0;
+        }
+        super.write(c);
+        if (c == newline.charAt(matched)) {
+            matched++;
+            if (matched == length) {
+                flush();
+            }
+        } else {
+            matched = 0;
+        }
     }
 
     @Override
-    public void write(int c) throws IOException {
-        if (start) {
-            out.write(prefix);
-            start = false;
-        }
-        out.write(c);
-        if (c == newline) {
-            start = true;
-        }
-    }
-
-    @Override
-    public void write(char cbuf[], int off, int len) throws IOException {
+    public void write(char cbuf[], int off, int len) {
         char c;
 
         for (int i = 0; i < len; i++) {
@@ -55,12 +87,16 @@ public class PrefixWriter extends FilterWriter {
     }
 
     @Override
-    public void write(String str, int off, int len) throws IOException {
+    public void write(String str, int off, int len) {
         char c;
 
         for (int i = 0; i < len; i++) {
             c = str.charAt(i);
             write(c);
         }
+    }
+
+    public void println() {
+        write(newline);
     }
 }

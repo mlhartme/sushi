@@ -36,6 +36,7 @@ import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeException;
 import net.oneandone.sushi.fs.NodeNotFoundException;
+import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.WriteToException;
@@ -646,6 +647,12 @@ public class SshNode extends Node {
     }
 
     @Override
+    public SshNode writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
+        readFrom(new ByteArrayInputStream(bytes, ofs, len), append);
+        return this;
+    }
+
+    @Override
     public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
         final FileNode tmp;
 
@@ -682,11 +689,7 @@ public class SshNode extends Node {
             @Override
             public void close() throws IOException {
                 super.close();
-                try {
-                    readFrom(new ByteArrayInputStream(toByteArray()), append);
-                } catch (JSchException | SftpException e) {
-                    throw new IOException(e);
-                }
+                readFrom(new ByteArrayInputStream(toByteArray()), append);
             }
         };
     }
@@ -738,7 +741,7 @@ public class SshNode extends Node {
         }
     }
 
-    public void readFrom(InputStream src) throws JSchException, SftpException {
+    public void readFrom(InputStream src) throws ReadFromException {
         readFrom(src, false);
     }
 
@@ -747,14 +750,18 @@ public class SshNode extends Node {
      *
      * @throws FileNotFoundException if this is not a file
      */
-    public void readFrom(InputStream src, boolean append) throws JSchException, SftpException {
+    public void readFrom(InputStream src, boolean append) throws ReadFromException {
         ChannelSftp sftp;
 
-        sftp = alloc();
         try {
-            sftp.put(src, escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
-        } finally {
-            free(sftp);
+            sftp = alloc();
+            try {
+                sftp.put(src, escape(slashPath), append ? ChannelSftp.APPEND : ChannelSftp.OVERWRITE);
+            } finally {
+                free(sftp);
+            }
+        } catch (SftpException | JSchException e) {
+            throw new ReadFromException(this, e);
         }
     }
 

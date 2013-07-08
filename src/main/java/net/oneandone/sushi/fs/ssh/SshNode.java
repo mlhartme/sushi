@@ -710,7 +710,7 @@ public class SshNode extends Node {
     }
 
     /**
-     * This is the core function to read an ssh node. Does not close out.
+     * This is the core function to read an ssh node. Does not close dest.
      *
      * @throws FileNotFoundException if this is not a file
      */
@@ -742,6 +742,11 @@ public class SshNode extends Node {
         readFrom(src, false);
     }
 
+    /**
+     * This is the core function to write an ssh node. Does not close src.
+     *
+     * @throws FileNotFoundException if this is not a file
+     */
     public void readFrom(InputStream src, boolean append) throws JSchException, SftpException {
         ChannelSftp sftp;
 

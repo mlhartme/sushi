@@ -216,6 +216,8 @@ public class SshFilesystem extends Filesystem {
             te = e.getTargetException();
             if (te instanceof JSchException) {
                 throw (JSchException) te;
+            } else if (te instanceof IOException) {
+                throw (IOException) te;
             } else {
                 throw new IllegalStateException(e);
             }

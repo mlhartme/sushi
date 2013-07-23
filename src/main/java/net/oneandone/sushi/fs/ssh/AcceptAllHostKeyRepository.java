@@ -47,11 +47,11 @@ public class AcceptAllHostKeyRepository implements HostKeyRepository {
 
     @Override
     public HostKey[] getHostKey() {
-        throw new IllegalStateException();
+        return new HostKey[0];
     }
 
     @Override
     public HostKey[] getHostKey(String host, String type) {
-        throw new IllegalStateException();
+        return new HostKey[0];
     }
 }

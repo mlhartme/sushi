@@ -34,6 +34,7 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.ModeException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.fs.NodeAlreadyExistsException;
 import net.oneandone.sushi.fs.NodeException;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.ReadFromException;
@@ -339,13 +340,14 @@ public class SshNode extends Node {
         }
         dest = (SshNode) destNode;
         try {
+            dest.checkNotExists();
             sftp = alloc();
             try {
                 sftp.rename(escape(slashPath), escape(dest.slashPath));
             } finally {
                 free(sftp);
             }
-        } catch (SftpException | JSchException e) {
+        } catch (SftpException | JSchException | IOException e) {
             throw new MoveException(this, dest, "ssh failure", e);
         }
         return dest;

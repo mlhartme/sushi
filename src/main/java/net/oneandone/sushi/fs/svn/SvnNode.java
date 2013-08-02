@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.svn;
 
+import com.jcraft.jsch.JSchException;
 import net.oneandone.sushi.fs.*;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
@@ -116,6 +117,10 @@ public class SvnNode extends Node {
         } catch (SVNException e) {
             throw new ListException(this, e);
         }
+    }
+
+    public SVNDirEntry info() throws SVNException {
+        return root.getRepository().info(path, SVNRevision.HEAD.getNumber());
     }
 
     public long getLatestRevision() throws SVNException {

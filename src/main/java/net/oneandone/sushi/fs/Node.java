@@ -610,11 +610,11 @@ public abstract class Node {
     }
 
     /**
-     * Convenience method for copy with filters below.
+     * Convenience method for copy all files. Does not use default-excludes
      * @return list of files and directories created
      */
     public List<Node> copyDirectory(Node dest) throws CopyException {
-        return copyDirectory(dest, getWorld().filter().includeAll());
+        return copyDirectory(dest, new Filter().includeAll());
     }
 
     /**

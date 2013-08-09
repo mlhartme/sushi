@@ -5,6 +5,9 @@
       <action date="2013-08-09" dev="mhm" type="update">
         Node.copy() copies all files now, default excludes are no longer used.
       </action>
+      <action date="2013-08-09" dev="mhm" type="fix">
+        Fixed FileNode.move() across file systems.
+      </action>
       <action date="2013-07-23" dev="mhm" type="update">
         Update jsch 0.1.49 to 0.1.50 and agent-proxy 0.0.5 to 0.0.6.
       </action>

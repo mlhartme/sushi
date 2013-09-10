@@ -63,7 +63,7 @@ public class OnShutdown extends Thread {
             + (System.currentTimeMillis() % 100)  + "-";
         this.suffix = ".tmp";
         this.dirNo = 0;
-        this.onShutdown = new ArrayList<Runnable>();
+        this.onShutdown = new ArrayList<>();
     }
 
     public synchronized void onShutdown(Runnable runnable) {

@@ -215,7 +215,7 @@ public class Filter {
     public List<Node> collect(Node root) throws IOException {
         List<Node> result;
 
-        result = new ArrayList<Node>();
+        result = new ArrayList<>();
         collect(root, result);
         return result;
     }
@@ -230,7 +230,7 @@ public class Filter {
      * @throws IOException as thrown by the specified FileTask
      */
     public void invoke(Node root, Action result) throws IOException {
-        doInvoke(0, root, root.isLink(), new ArrayList<Object[]>(includes), new ArrayList<Object[]>(excludes), result);
+        doInvoke(0, root, root.isLink(), new ArrayList<>(includes), new ArrayList<>(excludes), result);
     }
 
     private void doInvoke(int currentDepth, Node parent, boolean parentIsLink, List<Object[]> includes, List<Object[]> excludes, Action result)
@@ -263,8 +263,8 @@ public class Filter {
             for (Node child : children) {
                 name = child.getName();
                 childIsLink = child.isLink();
-                remainingIncludes = new ArrayList<Object[]>();
-                remainingExcludes = new ArrayList<Object[]>();
+                remainingIncludes = new ArrayList<>();
+                remainingExcludes = new ArrayList<>();
                 in = doMatch(name, includes, remainingIncludes);
                 ex = doMatch(name, excludes, remainingExcludes);
                 if (in && !ex && currentDepth >= minDepth && matchPredicates(child, childIsLink)) {

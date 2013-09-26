@@ -191,7 +191,7 @@ public class Separator {
     public List<String> split(CharSequence str) {
         List<String> lst;
 
-        lst = new ArrayList<String>();
+        lst = new ArrayList<>();
         splitTo(lst, str);
         return lst;
     }

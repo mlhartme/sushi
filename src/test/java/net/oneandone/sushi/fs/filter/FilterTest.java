@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -165,6 +166,40 @@ public class FilterTest {
         filter = filter().include("**/c");
         filter.invoke(root, action);
         assertNull(action.getResult());
+    }
+
+    //-- matches
+
+    @Test
+    public void matchesAll() throws IOException {
+        Filter filter;
+
+        filter = new Filter().includeAll();
+        assertFalse(filter.matches("")); // TODO
+        assertTrue(filter.matches("abc"));
+        assertTrue(filter.matches("foo/bar.tgz"));
+    }
+
+    @Test
+    public void matchesInclude() throws IOException {
+        Filter filter;
+
+        filter = new Filter().include("*.c");
+        assertFalse(filter.matches("abc"));
+        assertTrue(filter.matches("a.c"));
+        assertFalse(filter.matches("bc/x.c"));
+    }
+
+    @Test
+    public void matchesComplexInclude() throws IOException {
+        Filter filter;
+
+        filter = new Filter().include("**/*.c");
+        filter.exclude("*.c");
+        filter.exclude("**/abc*");
+        assertFalse(filter.matches("a.c"));
+        assertTrue(filter.matches("bc/x.c"));
+        assertFalse(filter.matches("bc/abc.c"));
     }
 
     //--

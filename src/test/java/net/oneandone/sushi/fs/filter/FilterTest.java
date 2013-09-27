@@ -203,6 +203,17 @@ public class FilterTest {
     }
 
     @Test
+    public void matchesExtensions() throws IOException {
+        Filter filter;
+
+        filter = new Filter().include("**/*.c", "**/.h");
+        assertTrue(filter.matches("a.c"));
+        assertFalse(filter.matches("a.java"));
+        assertTrue(filter.matches("abc/a.c"));
+        assertFalse(filter.matches("abc/a.java"));
+    }
+
+    @Test
     public void matchesDepth() throws IOException {
         Filter filter;
 

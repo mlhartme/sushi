@@ -26,13 +26,21 @@ import java.util.WeakHashMap;
 public class MemoryFilesystem extends Filesystem {
     private final WeakHashMap<Integer, MemoryRoot> roots;
 
-    public final int maxInMemorySize;
+    private int maxInMemorySize;
 
     public MemoryFilesystem(World world, String name) {
         super(world, new Features(true, false, false, false, false, false, false), name);
 
-        this.roots = new WeakHashMap<Integer, MemoryRoot>();
+        this.roots = new WeakHashMap<>();
         this.maxInMemorySize = 32 * 1024;
+    }
+
+    public int getMaxInMemorySize() {
+        return maxInMemorySize;
+    }
+
+    public void setMaxInMemorySize(int maxInMemorySize) {
+        this.maxInMemorySize = maxInMemorySize;
     }
 
     @Override

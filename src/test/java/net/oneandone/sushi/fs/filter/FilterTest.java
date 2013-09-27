@@ -202,6 +202,16 @@ public class FilterTest {
         assertFalse(filter.matches("bc/abc.c"));
     }
 
+    @Test
+    public void matchesDepth() throws IOException {
+        Filter filter;
+
+        filter = new Filter().includeAll().minDepth(2).maxDepth(2);
+        assertFalse(filter.matches("a.c"));
+        assertTrue(filter.matches("bc/x.c"));
+        assertFalse(filter.matches("xy/bc/abc.c"));
+    }
+
     //--
 
     private Filter filter() {

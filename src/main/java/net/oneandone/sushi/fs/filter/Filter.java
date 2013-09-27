@@ -225,10 +225,19 @@ public class Filter {
     }
 
     /**
-     * Tests includes an excludes. CAUTION: does not check currentDepth constrains nor anything that needs a node (like predicates)
+     * Tests includes an excludes. CAUTION: does not support checks that need a node (like predicates). Ignores "followSymlinks"
      */
     public boolean matches(String path) throws IOException {
-        return matches(0, Filesystem.SEPARATOR.split(path), new ArrayList<>(includes), new ArrayList<>(excludes));
+        List<String> segments;
+
+        segments = Filesystem.SEPARATOR.split(path);
+        if (segments.size() < minDepth || segments.size() > maxDepth) {
+            return false;
+        }
+        if (predicates.size() > 0) {
+            throw new UnsupportedOperationException("cannot match with predicates");
+        }
+        return matches(0, segments, new ArrayList<>(includes), new ArrayList<>(excludes));
     }
 
     private boolean matches(int currentSegment, List<String> segments, List<Object[]> includes, List<Object[]> excludes)

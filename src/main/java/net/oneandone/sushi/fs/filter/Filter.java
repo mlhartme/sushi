@@ -227,7 +227,7 @@ public class Filter {
     /**
      * Tests includes an excludes. CAUTION: does not support checks that need a node (like predicates). Ignores "followSymlinks"
      */
-    public boolean matches(String path) throws IOException {
+    public boolean matches(String path) {
         List<String> segments;
 
         segments = Filesystem.SEPARATOR.split(path);
@@ -240,8 +240,7 @@ public class Filter {
         return matches(0, segments, new ArrayList<>(includes), new ArrayList<>(excludes));
     }
 
-    private boolean matches(int currentSegment, List<String> segments, List<Object[]> includes, List<Object[]> excludes)
-            throws IOException {
+    private boolean matches(int currentSegment, List<String> segments, List<Object[]> includes, List<Object[]> excludes) {
         List<Object[]> remainingIncludes;
         List<Object[]> remainingExcludes;
         String name;

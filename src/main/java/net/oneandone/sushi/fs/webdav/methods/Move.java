@@ -25,10 +25,10 @@ import org.apache.http.HttpStatus;
 import java.io.IOException;
 
 public class Move extends Method<Void> {
-    public Move(WebdavNode source, WebdavNode destination) {
+    public Move(WebdavNode source, WebdavNode destination, boolean overwrite) {
         super("MOVE", source);
         setRequestHeader("Destination", destination.getInternalURI().toString());
-        setRequestHeader("Overwrite", "F");
+        setRequestHeader("Overwrite", overwrite ? "T" : "F");
     }
     
     @Override

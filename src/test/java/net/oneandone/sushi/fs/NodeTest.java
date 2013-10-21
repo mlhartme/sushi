@@ -1074,12 +1074,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test
     public void moveDirectory() throws IOException {
-        doMove(work.join("old").mkdir(), work.join("moved"));
+        doMove(work.join("old").mkdir(), work.join("moved"), false);
     }
 
     @Test
     public void moveFile() throws IOException {
-        doMove((work.join("old")).mkfile(), work.join("moved"));
+        doMove((work.join("old")).mkfile(), work.join("moved"), false);
     }
 
     @Test
@@ -1087,12 +1087,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Node destdir;
 
         destdir = work.join("subdir").mkdir();
-        doMove((work.join("old")).mkfile(), destdir.join("moved"));
+        doMove((work.join("old")).mkfile(), destdir.join("moved"), false);
     }
 
     @Test(expected=IOException.class)
     public void moveToNonexistingDir() throws IOException {
-        doMove((work.join("old")).mkfile(), work.join("nosuchdir/moved"));
+        doMove((work.join("old")).mkfile(), work.join("nosuchdir/moved"), false);
     }
 
     @Test(expected=IOException.class)
@@ -1100,7 +1100,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Node dest;
 
         dest = work.join("moved").mkfile();
-        doMove(work.join("old").mkfile(), dest);
+        doMove(work.join("old").mkfile(), dest, false);
     }
 
     @Test(expected=IOException.class)
@@ -1108,11 +1108,30 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Node node;
 
         node = work.join("old").mkdir();
-        doMove(node, node);
+        doMove(node, node, false);
     }
 
-    private void doMove(Node src, Node dest) throws IOException {
-        assertSame(dest, src.move(dest));
+    @Test
+    public void moveOverwriteFile() throws IOException {
+        Node first;
+        Node second;
+
+        first = work.join("first").writeString("first");
+        second = work.join("second").writeString("second");
+        try {
+            first.move(second);
+            fail();
+        } catch (MoveException e) {
+            // ok
+        }
+        assertEquals("second", second.readString());
+        first.move(second, true);
+        assertEquals("first", second.readString());
+        first.checkNotExists();
+    }
+
+    private void doMove(Node src, Node dest, boolean overwrite) throws IOException {
+        assertSame(dest, src.move(dest, overwrite));
         src.checkNotExists();
         dest.checkExists();
     }

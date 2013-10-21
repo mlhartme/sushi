@@ -300,24 +300,24 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node move(Node dest) throws MoveException {
+    public Node move(Node dest, boolean overwrite) throws MoveException {
         if (dest instanceof WebdavNode) {
-            return move((WebdavNode) dest);
+            return move((WebdavNode) dest, overwrite);
         } else {
             throw new MoveException(this, dest, "cannot move webdav node to none-webdav node");
         }
     }
 
-    public WebdavNode move(WebdavNode dest) throws MoveException {
+    public WebdavNode move(WebdavNode dest, boolean overwrite) throws MoveException {
         try {
             synchronized (tryLock) {
                 try {
                     dest.tryDir = tryDir;
-                    new Move(this, dest).invoke();
+                    new Move(this, dest, overwrite).invoke();
                 } catch (MovedException e) {
                     tryDir = !tryDir;
                     dest.tryDir = tryDir;
-                    new Move(this, dest).invoke();
+                    new Move(this, dest, overwrite).invoke();
                 }
             }
 		} catch (IOException e) {

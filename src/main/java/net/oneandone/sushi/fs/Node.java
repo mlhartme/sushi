@@ -232,15 +232,25 @@ public abstract class Node {
     public abstract Node deleteDirectory() throws DirectoryNotFoundException, DeleteException;
 
     /**
+     * Convenience Method for move(dest, false).
+     */
+    public Node move(Node dest) throws MoveException {
+        return move(dest, false);
+    }
+
+    /**
      * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
      * This method is a default implementation with copy and delete, derived classes should override it with a native
      * implementation when available.
      *
+     * @param overwrite false reports an error if the target already exists. true can be usued to implement atomic updates.
      * @return dest
      */
-    public Node move(Node dest) throws MoveException {
+    public Node move(Node dest, boolean overwrite) throws MoveException {
         try {
-            dest.checkNotExists();
+            if (!overwrite) {
+                dest.checkNotExists();
+            }
             copy(dest);
             deleteTree();
         } catch (IOException e) {

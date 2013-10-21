@@ -125,7 +125,7 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public Node move(Node dest) throws MoveException {
+    public Node move(Node dest, boolean overwrite) throws MoveException {
         throw unsupported("move()");
     }
 

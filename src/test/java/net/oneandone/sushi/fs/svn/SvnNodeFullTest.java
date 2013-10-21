@@ -140,7 +140,7 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
         FileNode dest;
         SvnNode svn;
 
-        orig = (SvnNode) WORLD.node("svn:https://packlet.svn.sourceforge.net/svnroot/packlet/kinderhaus/site");
+        orig = (SvnNode) WORLD.node("svn:https://svn.code.sf.net/p/packlet/code/kinderhaus/site");
         dest = WORLD.getTemp().createTempDirectory();
         orig.checkout(dest);
         svn = SvnNode.fromWorkspace(dest);

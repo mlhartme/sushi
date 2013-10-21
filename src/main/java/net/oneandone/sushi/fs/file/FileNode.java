@@ -302,18 +302,20 @@ public class FileNode extends Node {
      * @return dest
      */
     @Override
-    public Node move(Node destNode) throws MoveException {
+    public Node move(Node destNode, boolean overwrite) throws MoveException {
     	FileNode dest;
 
         if (!(destNode instanceof FileNode)) {
-            return super.move(destNode);
+            return super.move(destNode, overwrite);
         }
         dest = (FileNode) destNode;
-      	try {
-      		dest.checkNotExists();
-      	} catch (IOException e) {
-      		throw new MoveException(this, dest, "dest exists", e);
-      	}
+        if (!overwrite) {
+      	    try {
+          		dest.checkNotExists();
+          	} catch (IOException e) {
+      	    	throw new MoveException(this, dest, "dest exists", e);
+      	    }
+        }
         try {
             Files.move(path, dest.path, StandardCopyOption.ATOMIC_MOVE);
         } catch (AtomicMoveNotSupportedException e) {

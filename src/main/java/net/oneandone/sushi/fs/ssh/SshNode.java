@@ -331,16 +331,18 @@ public class SshNode extends Node {
     }
 
     @Override
-    public Node move(Node destNode) throws MoveException {
+    public Node move(Node destNode, boolean override) throws MoveException {
         SshNode dest;
         ChannelSftp sftp;
 
         if (!(destNode instanceof SshNode)) {
-            throw new MoveException(this, destNode, "target has is different node type");
+            super.move(destNode, override);
         }
         dest = (SshNode) destNode;
         try {
-            dest.checkNotExists();
+            if (!override) {
+                dest.checkNotExists();
+            }
             sftp = alloc();
             try {
                 sftp.rename(escape(slashPath), escape(dest.slashPath));

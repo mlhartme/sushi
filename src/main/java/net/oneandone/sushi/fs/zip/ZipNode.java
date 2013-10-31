@@ -150,7 +150,7 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public boolean isFile() {
+    public boolean isFile() throws ExistsException {
         ZipEntry entry;
         InputStream in;
 
@@ -164,7 +164,7 @@ public class ZipNode extends Node {
         try {
             in = root.getZip().getInputStream(entry);
         } catch (IOException e) {
-            return true;
+            throw new ExistsException(this, e);
         }
         if (in == null) {
             return false;
@@ -172,7 +172,7 @@ public class ZipNode extends Node {
             try {
                 in.close();
             } catch (IOException e) {
-                // fall through
+                throw new ExistsException(this, e);
             }
             return true;
         }
@@ -229,14 +229,18 @@ public class ZipNode extends Node {
         List<String> paths;
         List<ZipNode> result;
 
-        if (isFile()) {
-            return null;
+        try {
+            if (isFile()) {
+                return null;
+            }
+        } catch (ExistsException e) {
+            throw new ListException(this, e);
         }
         paths = root.list(path);
         if (paths.size() == 0 && root.getZip().getEntry(path + "/") == null) {
             throw new DirectoryNotFoundException(this);
         }
-        result = new ArrayList<ZipNode>();
+        result = new ArrayList<>();
         for (String path : paths) {
             result.add(root.node(path, null));
         }

@@ -42,7 +42,7 @@ public class Diff {
     public List<String> paths(Node dir, Filter filter) throws IOException {
     	List<String> result;
 
-    	result = new ArrayList<String>();
+    	result = new ArrayList<>();
     	paths(dir, filter, result);
     	return result;
     }

@@ -29,6 +29,24 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class DiffTest {
+    public static final void main(String[] args) throws IOException {
+        World world;
+        String smallLeft;
+        String smallRight;
+        String smallDiff;
+        long started;
+        long ms;
+
+        world = new World();
+        smallLeft = world.getHome().join("left.txt").readString();
+        smallRight = world.getHome().join("right.txt").readString();
+        started = System.currentTimeMillis();
+        smallDiff = Diff.diff(smallLeft, smallRight);
+        ms = System.currentTimeMillis() - started;
+        System.out.println(smallDiff);
+        System.out.println("ms=" + ms);
+    }
+
     @Test
     public void empty() {
         assertEquals("", Diff.diff("", ""));

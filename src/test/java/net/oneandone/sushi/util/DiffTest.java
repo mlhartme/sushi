@@ -46,7 +46,7 @@ public class DiffTest {
         System.out.println(smallDiff);
         System.out.println("ms=" + ms);
     }
-                                          ~
+
     @Test
     public void empty() {
         assertEquals("", Diff.diff("", ""));

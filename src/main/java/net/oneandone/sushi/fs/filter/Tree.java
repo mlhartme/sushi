@@ -27,7 +27,7 @@ public class Tree {
     
     public Tree(Node node) {
         this.node = node;
-        this.children = new ArrayList<Tree>();
+        this.children = new ArrayList<>();
     }
     
     @Override

@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
  * <p>Names use the familiar glob syntax. Filters do not know about extensions. </p>
  */
 public class Filter {
+    public static final Filter NOTHING = new Filter().exclude("**/*");
     public static final int DEPTH_INFINITE = Integer.MAX_VALUE;
 
     //--

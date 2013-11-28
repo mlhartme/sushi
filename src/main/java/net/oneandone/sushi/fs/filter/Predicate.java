@@ -46,4 +46,7 @@ public interface Predicate {
     };
 
     boolean matches(Node node, boolean isLink) throws IOException;
+
+    public class FALSE {
+    }
 }

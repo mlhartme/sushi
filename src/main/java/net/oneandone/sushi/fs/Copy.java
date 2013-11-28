@@ -37,10 +37,13 @@ public class Copy {
     private static final String CONTEXT = "context";
     private static final String CALL = "call";
     
-    private final Node sourcedir;
+    protected final Node sourcedir;
 
     /** applied to sourcedir */
-	private final Filter filter;
+	protected final Filter filter;
+
+    /** content will not be filtered */
+    protected final Filter binary;
 
 	private final boolean permissions;
 	
@@ -70,22 +73,35 @@ public class Copy {
     }
 
     public Copy(Node srcdir, Filter filter, boolean modes, Map<String, String> variables, Substitution subst) {
-        this(srcdir, filter, modes, variables, subst, subst, 
+        this(srcdir, filter, modes, variables, subst, subst,
                 variables == null ? 0 : DEFAULT_CONTEXT_DELIMITER, 
                 variables == null ? 0 : DEFAULT_CALL_PREFIX);
     }
 
-    public Copy(Node srcdir, Filter filter, boolean permissions, Map<String, String> variables, Substitution path, Substitution content, char contextDelimiter, char callPrefix) {
+    public Copy(Node srcdir, Filter filter, Filter binary, boolean modes, Map<String, String> variables, Substitution subst) {
+        this(srcdir, filter, binary, modes, variables, subst, subst,
+                variables == null ? 0 : DEFAULT_CONTEXT_DELIMITER,
+                variables == null ? 0 : DEFAULT_CALL_PREFIX);
+    }
+
+    public Copy(Node srcdir, Filter filter,
+                boolean permissions, Map<String, String> variables, Substitution path, Substitution content, char contextDelimiter, char callPrefix) {
+        this(srcdir, filter, Filter.NOTHING, permissions, variables, path, content, contextDelimiter, callPrefix);
+    }
+
+    public Copy(Node srcdir, Filter filter, Filter binary,
+                boolean permissions, Map<String, String> variables, Substitution path, Substitution content, char contextDelimiter, char callPrefix) {
 	    this.sourcedir = srcdir;
         this.filter = filter;
+        this.binary = binary;
         this.permissions = permissions;
 		this.path = path;
 		this.content = content;
 		this.rootVariables = variables;
 		this.contextDelimiter = contextDelimiter;
-        this.contextConstructors = new HashMap<Character, Method>();
+        this.contextConstructors = new HashMap<>();
         this.callPrefix = callPrefix;
-        this.calls = new HashMap<String, Method>();
+        this.calls = new HashMap<>();
         if (!getClass().equals(Copy.class)) {
             initReflection();
         }
@@ -121,7 +137,7 @@ public class Copy {
         TreeAction action;
         Tree tree;
         
-        result = new ArrayList<Node>();
+        result = new ArrayList<>();
         try {
             sourcedir.checkDirectory();
             destdir.checkDirectory();
@@ -151,7 +167,7 @@ public class Copy {
             if (callPrefix != 0 && name.length() > 0 && name.charAt(0) == callPrefix) {
                 result.add(call(name, src.node, destParent, parentVariables));
             } else {
-                childVariablesList = new ArrayList<Map<String, String>>();
+                childVariablesList = new ArrayList<>();
                 name = splitContext(name, parentVariables, childVariablesList);
                 isDir = src.node.isDirectory();
                 for (Map<String, String> childVariables : childVariablesList) {
@@ -161,7 +177,11 @@ public class Copy {
                     } else {
                         dest.getParent().mkdirsOpt();
                         if (content != null) {
-                            dest.writeString(content.apply(src.node.readString(), childVariables));
+                            if (binary.matches(src.node.getRelative(sourcedir))) {
+                                src.node.copyFile(dest);
+                            } else {
+                                dest.writeString(content.apply(src.node.readString(), childVariables));
+                            }
                         } else {
                             src.node.copyFile(dest);
                         }
@@ -248,7 +268,7 @@ public class Copy {
     private void apply(Method m, List<Map<String, String>> contexts) throws ReflectionException {
         List<Map<String, String>> tmp;
         
-        tmp = new ArrayList<Map<String, String>>(contexts);
+        tmp = new ArrayList<>(contexts);
         contexts.clear();
         for (Map<String, String> map : tmp) {
             context(m, map, contexts);

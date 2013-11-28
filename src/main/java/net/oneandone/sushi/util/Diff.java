@@ -114,7 +114,7 @@ public class Diff {
         int rmax;
         String common;
 
-        result = new ArrayList<Chunk>();
+        result = new ArrayList<>();
         lmax = left.size();
         rmax = right.size();
         li = 0;

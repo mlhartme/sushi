@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs;
 
+import net.oneandone.sushi.fs.filter.Filter;
 import net.oneandone.sushi.io.OS;
 import net.oneandone.sushi.util.Substitution;
 import org.junit.Test;
@@ -35,9 +36,9 @@ public class CopyDiffTest {
 	
 	public CopyDiffTest() throws IOException {
 		world = new World();
-		variables = new HashMap<String, String>();
+		variables = new HashMap<>();
         copy = new Copy(world.getTemp().createTempDirectory(),
-                world.filter().includeAll(), world.getTemp().getRoot().getFilesystem().getFeatures().modes,
+                world.filter().includeAll(), Filter.NOTHING, world.getTemp().getRoot().getFilesystem().getFeatures().modes,
                 variables, Substitution.path(), Substitution.ant(), Copy.DEFAULT_CONTEXT_DELIMITER, Copy.DEFAULT_CALL_PREFIX);
 	}
 

@@ -53,7 +53,7 @@ public class Console {
         this.world = world;
         this.info = info;
         this.verboseSwitch = MultiWriter.createNullWriter();
-        this.verbose = new PrintWriter(verboseSwitch);
+        this.verbose = new PrintWriter(verboseSwitch, true);
         this.error = error;
         this.input = new Scanner(in);
     }

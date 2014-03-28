@@ -3,7 +3,7 @@
   <parent>
     <groupId>net.oneandone.maven.poms</groupId>
     <artifactId>foss-parent</artifactId>
-    <version>1.3.3</version>
+    <version>1.4.5</version>
     <relativePath />
   </parent>
 
@@ -20,6 +20,13 @@
   <properties>
     <oneandone.java.source>1.7</oneandone.java.source>
     <oneandone.java.target>1.7</oneandone.java.target>
+    
+    <!-- because it requires javadocs for everything: -->
+    <checkstyle.skip>true</checkstyle.skip>
+    
+    <pmd.skip>true</pmd.skip>
+    <cpd.skip>true</cpd.skip>
+    <findbugs.skip>true</findbugs.skip>
   </properties>
 
   <developers>
@@ -130,6 +137,13 @@
             <exclude>**/*FullTest.java</exclude>
             <exclude>**/*ManualTest.java</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
       </plugin>
     </plugins>

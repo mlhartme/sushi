@@ -53,9 +53,6 @@ public class ChildElements implements Iterator<Element> {
         }
     }
 
-    /**
-     * @throws UnsupportedOperationException
-     */
     public void remove() {
         throw new UnsupportedOperationException();
     }

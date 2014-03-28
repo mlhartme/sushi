@@ -427,8 +427,6 @@ public abstract class Node {
      * Default implementation that works for all nodes: reads the file in chunks and builds the result in memory.
      * Derived classes should override it if they can provide a more efficient implementation, e.g. by determining
      * the length first if getting the length is cheap.
-     *
-     * @throws IOException
      */
     public byte[] readBytes() throws IOException {
         Buffer buffer;

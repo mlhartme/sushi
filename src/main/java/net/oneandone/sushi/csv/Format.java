@@ -31,7 +31,7 @@ import java.util.List;
  * 
  * You have to implement some pre- or post-processing if you want comments of whitespace handling.
  *
- *
+ * <pre>
  * Grammar
  * 
  * line    = cell (SEP cell)* newline ;
@@ -43,11 +43,12 @@ import java.util.List;
  * value   = char* ;
  * char    = QUOTE QUOTE
  *         | ESC CH
- *         | SEP                               <-- aber nur wenn drumrum quotes stehen
+ *         | SEP                               # aber nur wenn drumrum quotes stehen
  *         | CH \ QUOTE \ ESC \ SEP \ VSEP  ;
  * newline = CR | LF | CR LF ;
- * 
- * Terminals as configured for the format: 
+ * </pre>
+ *
+ * Terminals as configured for the format:
  *   QUOTE, SEP, VSEP, NEWLINE, COMMENT, NULL, EMPTY, ESC
  *   
  * Other Terminals:

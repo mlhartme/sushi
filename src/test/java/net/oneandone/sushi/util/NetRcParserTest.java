@@ -59,6 +59,16 @@ public class NetRcParserTest {
     }
 
     @Test
+    public void testParseMultiLine() {
+        InputStreamReader in = createInputStreamReader(
+                "machine\n\tsvn.dev.java.net\n\tlogin\n\tuser\n\tpassword pass\n\n\n"+
+                "machine svn2.dev.java.net\n\tuser user2\n\tpassword päss2\n");
+        sut.parse(in);
+        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
+        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
+    }
+
+    @Test
     public void testParseMacDefNotSupported() {
         InputStreamReader in = createInputStreamReader(
                 "macdef foo");

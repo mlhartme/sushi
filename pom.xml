@@ -22,6 +22,9 @@
     <oneandone.java.target>1.7</oneandone.java.target>
     <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
     <maven-checkstyle-plugin.suppressionsLocation>${user.dir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
+    <pmd.failOnViolation>false</pmd.failOnViolation>
+    <cpd.failOnViolation>false</cpd.failOnViolation>
+    <findbugs.failOnError>false</findbugs.failOnError>
   </properties>
 
   <developers>

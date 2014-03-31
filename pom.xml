@@ -21,12 +21,12 @@
     <oneandone.java.source>1.7</oneandone.java.source>
     <oneandone.java.target>1.7</oneandone.java.target>
     
-    <!-- because it requires javadocs for everything: -->
-    <checkstyle.skip>true</checkstyle.skip>
-    
     <pmd.skip>true</pmd.skip>
     <cpd.skip>true</cpd.skip>
     <findbugs.skip>true</findbugs.skip>
+
+    <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
+    <maven-checkstyle-plugin.suppressionsLocation>${user.dir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
   </properties>
 
   <developers>
@@ -88,7 +88,6 @@
       <version>0.0.6</version>
       <optional>true</optional>
     </dependency>
-
 
     <!-- if you want SvnFilesystem: -->
     <dependency>

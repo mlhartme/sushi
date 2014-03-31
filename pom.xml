@@ -20,8 +20,11 @@
   <properties>
     <oneandone.java.source>1.7</oneandone.java.source>
     <oneandone.java.target>1.7</oneandone.java.target>
-    
+
+    <!-- disabled because it complain about comment-only code blocks -->
     <pmd.skip>true</pmd.skip>
+
+    <!-- too picky -->
     <cpd.skip>true</cpd.skip>
 
     <!-- TODO: fails with Java 8 -->

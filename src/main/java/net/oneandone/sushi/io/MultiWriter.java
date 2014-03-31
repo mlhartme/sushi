@@ -16,7 +16,6 @@
 package net.oneandone.sushi.io;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;

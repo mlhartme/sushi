@@ -18,7 +18,6 @@ package net.oneandone.sushi.csv;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.metadata.Path;
 import net.oneandone.sushi.metadata.model.ModelBase;
-import net.oneandone.sushi.metadata.xml.LoaderException;
 import org.junit.Test;
 
 import java.io.IOException;

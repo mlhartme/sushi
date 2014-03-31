@@ -21,7 +21,6 @@ import net.oneandone.sushi.metadata.ItemException;
 import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.Type;
 
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;

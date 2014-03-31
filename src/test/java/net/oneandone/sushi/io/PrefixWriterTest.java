@@ -16,12 +16,9 @@
 
 package net.oneandone.sushi.io;
 
-import net.oneandone.sushi.cli.Console;
-import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;

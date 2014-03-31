@@ -23,7 +23,6 @@ import net.oneandone.sushi.metadata.Type;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Helper class to write properties. You'll usually not use this class directly, use Type.loadProperties.

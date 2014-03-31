@@ -15,11 +15,30 @@
  */
 package net.oneandone.sushi.fs.file;
 
-import net.oneandone.sushi.fs.*;
+import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.DeleteException;
+import net.oneandone.sushi.fs.DirectoryNotFoundException;
+import net.oneandone.sushi.fs.ExistsException;
+import net.oneandone.sushi.fs.FileNotFoundException;
+import net.oneandone.sushi.fs.Filesystem;
+import net.oneandone.sushi.fs.GetLastModifiedException;
+import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.LinkException;
+import net.oneandone.sushi.fs.ListException;
+import net.oneandone.sushi.fs.MkdirException;
+import net.oneandone.sushi.fs.MkfileException;
+import net.oneandone.sushi.fs.ModeException;
+import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.fs.NodeNotFoundException;
+import net.oneandone.sushi.fs.OnShutdown;
+import net.oneandone.sushi.fs.ReadLinkException;
+import net.oneandone.sushi.fs.SetLastModifiedException;
+import net.oneandone.sushi.fs.WriteToException;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.fs.zip.ZipNode;
 import net.oneandone.sushi.io.Buffer;
-import net.oneandone.sushi.io.OS;
 import net.oneandone.sushi.launcher.Failure;
 import net.oneandone.sushi.launcher.Launcher;
 
@@ -28,8 +47,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.file.*;
-import java.nio.file.attribute.*;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileOwnerAttributeView;
+import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 

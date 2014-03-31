@@ -34,7 +34,6 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.ModeException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.fs.NodeAlreadyExistsException;
 import net.oneandone.sushi.fs.NodeException;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.ReadFromException;

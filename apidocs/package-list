@@ -12,14 +12,13 @@ net.oneandone.sushi.fs.timemachine
 net.oneandone.sushi.fs.webdav
 net.oneandone.sushi.fs.webdav.methods
 net.oneandone.sushi.fs.zip
-net.oneandone.sushi.graph
 net.oneandone.sushi.io
 net.oneandone.sushi.launcher
 net.oneandone.sushi.metadata
 net.oneandone.sushi.metadata.annotation
+net.oneandone.sushi.metadata.properties
 net.oneandone.sushi.metadata.reflect
 net.oneandone.sushi.metadata.simpletypes
-net.oneandone.sushi.metadata.store
 net.oneandone.sushi.metadata.xml
 net.oneandone.sushi.rss
 net.oneandone.sushi.util

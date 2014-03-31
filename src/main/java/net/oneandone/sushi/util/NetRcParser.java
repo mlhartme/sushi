@@ -175,7 +175,7 @@ public class NetRcParser {
         }
     }
 
-    private class NetRcStreamTokenizer extends StreamTokenizer {
+    private static class NetRcStreamTokenizer extends StreamTokenizer {
 
         public NetRcStreamTokenizer(Reader r) {
             super(r);

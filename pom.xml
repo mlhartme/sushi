@@ -23,10 +23,12 @@
     
     <pmd.skip>true</pmd.skip>
     <cpd.skip>true</cpd.skip>
+
+    <!-- TODO: fails with Java 8 -->
     <findbugs.skip>true</findbugs.skip>
 
     <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
-    <maven-checkstyle-plugin.suppressionsLocation>${user.dir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
+    <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
   </properties>
 
   <developers>

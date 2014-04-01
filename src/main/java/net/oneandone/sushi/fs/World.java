@@ -15,23 +15,6 @@
  */
 package net.oneandone.sushi.fs;
 
-import net.oneandone.sushi.fs.console.ConsoleFilesystem;
-import net.oneandone.sushi.fs.file.FileFilesystem;
-import net.oneandone.sushi.fs.file.FileNode;
-import net.oneandone.sushi.fs.file.FileRoot;
-import net.oneandone.sushi.fs.filter.Filter;
-import net.oneandone.sushi.fs.memory.MemoryFilesystem;
-import net.oneandone.sushi.fs.memory.MemoryNode;
-import net.oneandone.sushi.fs.ssh.SshAgentSocket;
-import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
-import net.oneandone.sushi.fs.zip.ZipFilesystem;
-import net.oneandone.sushi.io.Buffer;
-import net.oneandone.sushi.io.OS;
-import net.oneandone.sushi.util.NetRcParser;
-import net.oneandone.sushi.util.Reflect;
-import net.oneandone.sushi.util.Strings;
-import net.oneandone.sushi.xml.Xml;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,6 +30,22 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.oneandone.sushi.fs.console.ConsoleFilesystem;
+import net.oneandone.sushi.fs.file.FileFilesystem;
+import net.oneandone.sushi.fs.file.FileNode;
+import net.oneandone.sushi.fs.file.FileRoot;
+import net.oneandone.sushi.fs.filter.Filter;
+import net.oneandone.sushi.fs.memory.MemoryFilesystem;
+import net.oneandone.sushi.fs.memory.MemoryNode;
+import net.oneandone.sushi.fs.ssh.SshAgentSocket;
+import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
+import net.oneandone.sushi.fs.zip.ZipFilesystem;
+import net.oneandone.sushi.io.Buffer;
+import net.oneandone.sushi.io.OS;
+import net.oneandone.sushi.util.NetRc;
+import net.oneandone.sushi.util.Reflect;
+import net.oneandone.sushi.util.Strings;
+import net.oneandone.sushi.xml.Xml;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single world instance in your application, configure it and
@@ -88,7 +87,7 @@ public class World {
     private final MemoryFilesystem memoryFilesystem;
 
     /** loaded lazily */
-    private NetRcParser netRc;
+    private NetRc netRc;
 
     public World() {
         this(SshAgentSocket.isConfigured());
@@ -575,11 +574,11 @@ public class World {
 
     //--
 
-    public NetRcParser.NetRcAuthenticator lookupAuthenticator(String hostname) {
+    public NetRc.NetRcAuthenticator lookupAuthenticator(String hostname) {
         Node src;
 
         if (netRc == null) {
-            netRc = new NetRcParser();
+            netRc = new NetRc();
             src = home.join(".netrc");
             try (Reader reader = src.createReader()) {
                 netRc.parse(reader);

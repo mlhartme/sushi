@@ -36,8 +36,8 @@
 
   <developers>
     <developer>
-      <id>mlhartme</id>
       <name>Michael Hartmeier</name>
+      <id>mlhartme</id>
       <url>http://github.com/mlhartme/</url>
       <organization>1 &amp; 1 Internet AG</organization>
       <organizationUrl>https://github.com/1and1</organizationUrl>
@@ -47,6 +47,17 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Mirko Friedenhagen</name>
+      <organization>1 &amp; 1 Internet AG</organization>
+      <organizationUrl>https://github.com/1and1</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </contributor>
+  </contributors>
 
   <scm>
     <connection>scm:git:ssh://git@github.com/mlhartme/sushi.git</connection>

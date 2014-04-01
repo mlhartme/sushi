@@ -15,21 +15,6 @@
  */
 package net.oneandone.sushi.fs;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.oneandone.sushi.fs.console.ConsoleFilesystem;
 import net.oneandone.sushi.fs.file.FileFilesystem;
 import net.oneandone.sushi.fs.file.FileNode;
@@ -46,6 +31,22 @@ import net.oneandone.sushi.util.NetRc;
 import net.oneandone.sushi.util.Reflect;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.xml.Xml;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Configures and creates nodes. You'll usually create a single world instance in your application, configure it and

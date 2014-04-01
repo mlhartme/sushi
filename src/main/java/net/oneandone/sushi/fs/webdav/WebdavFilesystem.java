@@ -15,6 +15,14 @@
  */
 package net.oneandone.sushi.fs.webdav;
 
+import net.oneandone.sushi.fs.Features;
+import net.oneandone.sushi.fs.Filesystem;
+import net.oneandone.sushi.fs.NodeInstantiationException;
+import net.oneandone.sushi.fs.Settings;
+import net.oneandone.sushi.fs.World;
+import net.oneandone.sushi.util.NetRc;
+import org.apache.http.HttpHost;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.FileHandler;
@@ -23,13 +31,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import net.oneandone.sushi.fs.Features;
-import net.oneandone.sushi.fs.Filesystem;
-import net.oneandone.sushi.fs.NodeInstantiationException;
-import net.oneandone.sushi.fs.Settings;
-import net.oneandone.sushi.fs.World;
-import net.oneandone.sushi.util.NetRc;
-import org.apache.http.HttpHost;
 
 public class WebdavFilesystem extends Filesystem {
 	public static final String ENCODING = Settings.UTF_8;

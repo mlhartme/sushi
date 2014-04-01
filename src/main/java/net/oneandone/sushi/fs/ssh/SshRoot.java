@@ -40,8 +40,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
         this(filesystem, host, 22, user, timeout);
     }
 
-    public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout)
-    throws JSchException {
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout) throws JSchException {
         this(filesystem, filesystem.connect(host, port, user, timeout));
     }
 

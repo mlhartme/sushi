@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.Settings;
 import net.oneandone.sushi.fs.World;
+import net.oneandone.sushi.util.NetRcParser;
 import org.apache.http.HttpHost;
 
 import java.io.IOException;
@@ -113,6 +114,7 @@ public class WebdavFilesystem extends Filesystem {
         WebdavRoot result;
         String info;
         int port;
+        NetRcParser.NetRcAuthenticator authenticator;
 
         if (uri.getFragment() != null) {
             throw new IllegalArgumentException(uri.toString());
@@ -126,6 +128,11 @@ public class WebdavFilesystem extends Filesystem {
         info = uri.getUserInfo();
         if (info != null) {
             result.setUserInfo(info);
+        } else {
+            authenticator = getWorld().lookupAuthenticator(uri.getHost());
+            if (authenticator != null) {
+                result.setCredentials(authenticator.getUser(), authenticator.getPass());
+            }
         }
         return result;
     }

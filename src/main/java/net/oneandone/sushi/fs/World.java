@@ -27,6 +27,7 @@ import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.io.OS;
+import net.oneandone.sushi.util.NetRcParser;
 import net.oneandone.sushi.util.Reflect;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.xml.Xml;
@@ -34,6 +35,7 @@ import net.oneandone.sushi.xml.Xml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -85,6 +87,9 @@ public class World {
     private final FileFilesystem fileFilesystem;
     private final MemoryFilesystem memoryFilesystem;
 
+    /** loaded lazily */
+    private NetRcParser netRc;
+
     public World() {
         this(SshAgentSocket.isConfigured());
     }
@@ -106,6 +111,7 @@ public class World {
         this.working = init("user.dir");
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
+        this.netRc = null;
     }
 
     //-- configuration
@@ -565,5 +571,24 @@ public class World {
                 "property " + name + " does not point to a directory: " + value);
         }
         return file(file);
+    }
+
+    //--
+
+    public NetRcParser.NetRcAuthenticator lookupAuthenticator(String hostname) {
+        Node src;
+
+        if (netRc == null) {
+            netRc = new NetRcParser();
+            src = home.join(".netrc");
+            try (Reader reader = src.createReader()) {
+                netRc.parse(reader);
+            } catch (net.oneandone.sushi.fs.FileNotFoundException e) {
+                // ok - netRc is empty
+            } catch (IOException e) {
+                throw new RuntimeException("TODO", e);
+            }
+        }
+        return netRc.getAuthenticators(hostname);
     }
 }

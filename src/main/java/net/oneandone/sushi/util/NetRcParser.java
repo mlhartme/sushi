@@ -16,7 +16,6 @@
 package net.oneandone.sushi.util;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.HashMap;
@@ -48,59 +47,54 @@ public class NetRcParser {
         return authenticators.get(hostname);
     }
 
-    public void parse(InputStreamReader in) {
+    public void parse(Reader in) throws IOException {
         final NetRcStreamTokenizer tokenizer = new NetRcStreamTokenizer(in);
-        try {
-            String entryName = null;
-            String login;
-            String password;
-            String toplevel;
+
+        String entryName;
+        String login;
+        String password;
+        String toplevel;
+        while (true) {
+            int tt = tokenizer.nextToken();
+            final String sval = tokenizer.sval;
+            toplevel = sval;
+            if (tt == StreamTokenizer.TT_EOF) {
+                break;
+            } else if (sval.equals("machine")) {
+                tokenizer.nextToken();
+                entryName = tokenizer.sval;
+            } else if (sval.equals("default")) {
+                entryName = "default";
+            } else if (sval.equals("macdef")) {
+                throw new NetRcIllegalArgumentException(("macdef not supported"), tokenizer.lineno(), sval);
+            } else {
+                throw new NetRcIllegalArgumentException("bad toplevel", tokenizer.lineno(), toplevel);
+            }
+            login = "";
+            password = null;
             while (true) {
-                int tt = tokenizer.nextToken();
-                final String sval = tokenizer.sval;
-                toplevel = sval;
-                if (tt == StreamTokenizer.TT_EOF) {
-                    break;
-                } else if (sval.equals("machine")) {
-                    tokenizer.nextToken();
-                    entryName = tokenizer.sval;
-                } else if (sval.equals("default")) {
-                    entryName = "default";
-                } else if (sval.equals("macdef")) {
-                    throw new NetRcIllegalArgumentException(("macdef not supported"), tokenizer.lineno(), sval);
-                } else {
-                    throw new NetRcIllegalArgumentException("bad toplevel", tokenizer.lineno(), toplevel);
-                }
-                login = "";
-                password = null;
-                while (true) {
-                    tokenizer.nextToken();
-                    final String sval1 = tokenizer.sval;
-                    if (sval1 == null || sval1.startsWith("#") || sval1.equals("machine") || sval1.equals("") || sval1.equals("default")) {
-                        if (password != null) {
-                            authenticators.put(entryName, new NetRcAuthenticator(login, password));
-                            tokenizer.pushBack();
-                            break;
-                        } else {
-                            throw new NetRcIllegalArgumentException("malformed token at toplevel " + toplevel, tokenizer.lineno(), sval1);
-                        }
-                    } else if (sval1.equals("login") || sval1.equals("user")) {
-                        tokenizer.nextToken();
-                        login = tokenizer.sval;
-                    } else if (sval1.equals("account")) {
-                        throw new NetRcIllegalArgumentException("account not supported", tokenizer.lineno(), sval1);
-                    } else if (sval1.equals("password")) {
-                        tokenizer.nextToken();
-                        password = tokenizer.sval;
+                tokenizer.nextToken();
+                final String sval1 = tokenizer.sval;
+                if (sval1 == null || sval1.startsWith("#") || sval1.equals("machine") || sval1.equals("") || sval1.equals("default")) {
+                    if (password != null) {
+                        authenticators.put(entryName, new NetRcAuthenticator(login, password));
+                        tokenizer.pushBack();
+                        break;
                     } else {
-                        throw new NetRcIllegalArgumentException("bad follower token", tokenizer.lineno(), sval1);
+                        throw new NetRcIllegalArgumentException("malformed token at toplevel " + toplevel, tokenizer.lineno(), sval1);
                     }
+                } else if (sval1.equals("login") || sval1.equals("user")) {
+                    tokenizer.nextToken();
+                    login = tokenizer.sval;
+                } else if (sval1.equals("account")) {
+                    throw new NetRcIllegalArgumentException("account not supported", tokenizer.lineno(), sval1);
+                } else if (sval1.equals("password")) {
+                    tokenizer.nextToken();
+                    password = tokenizer.sval;
+                } else {
+                    throw new NetRcIllegalArgumentException("bad follower token", tokenizer.lineno(), sval1);
                 }
             }
-
-        }
-        catch (IOException ex) {
-            throw new RuntimeException(ex);
         }
 
     }

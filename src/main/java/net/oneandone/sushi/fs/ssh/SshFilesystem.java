@@ -118,16 +118,16 @@ public class SshFilesystem extends Filesystem {
         return root("localhost", getWorld().getWorking().getName());
     }
 
-    public SshRoot root(String root) throws JSchException, IOException {
-        return root(root, defaultTimeout);
+    public SshRoot root(String authority) throws JSchException, IOException {
+        return root(authority, defaultTimeout);
     }
 
-    public SshRoot root(String root, int timeout) throws JSchException, IOException {
+    public SshRoot root(String authority, int timeout) throws JSchException, IOException {
         int idx;
         String host;
         String user;
 
-        host = root;
+        host = authority;
         idx = host.indexOf('@');
         if (idx == -1) {
             user = null;

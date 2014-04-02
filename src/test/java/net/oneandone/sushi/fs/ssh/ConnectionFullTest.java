@@ -35,7 +35,7 @@ public class ConnectionFullTest {
     private static final World WORLD = new World();
 
     public static SshRoot open() throws JSchException, IOException {
-        return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host(), user());
+        return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host(), user(), null);
     }
 
     public static String host() throws JSchException, IOException {
@@ -257,6 +257,6 @@ public class ConnectionFullTest {
         fs.addDefaultIdentityOpt();
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/without-passphrase/id_rsa"), null);
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/with-passphrase/id_rsa"), "passphrase");
-        fs.root(host(), user()).exec("ls");
+        fs.root(host(), user(), null).exec("ls");
     }
 }

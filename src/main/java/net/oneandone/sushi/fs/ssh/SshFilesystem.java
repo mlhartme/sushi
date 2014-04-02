@@ -29,7 +29,6 @@ import net.oneandone.sushi.util.NetRc;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.Authenticator;
 import java.net.URI;
 import java.util.Arrays;
 
@@ -120,7 +119,7 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getWorld().getWorking().getName());
+        return root("localhost", getWorld().getWorking().getName(), null);
     }
 
     public SshRoot root(String authority) throws JSchException, IOException {
@@ -131,26 +130,34 @@ public class SshFilesystem extends Filesystem {
         int idx;
         String host;
         String user;
+        String password;
 
         host = authority;
         idx = host.indexOf('@');
         if (idx == -1) {
             user = null;
+            password = null;
         } else {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
+            idx = user.indexOf(':');
+            if (idx == -1) {
+                password = null;
+            } else {
+                password = user.substring(idx + 1);
+                user = user.substring(0, idx);
+            }
         }
-        return root(host, user, timeout);
+        return root(host, user, password, timeout);
     }
 
-    public SshRoot root(String host, String user) throws JSchException, IOException {
-        return root(host, user, defaultTimeout);
+    public SshRoot root(String host, String user, String password) throws JSchException, IOException {
+        return root(host, user, password, defaultTimeout);
     }
 
     /** @param user null to use current user */
-    public SshRoot root(String host, String user, int timeout) throws JSchException, IOException {
+    public SshRoot root(String host, String user, String password, int timeout) throws JSchException, IOException {
         NetRc.NetRcAuthenticator authenticator;
-        String password;
 
         if (user == null) {
             authenticator = getWorld().lookupAuthenticator(host);
@@ -161,8 +168,6 @@ public class SshFilesystem extends Filesystem {
                 user = authenticator.getUser();
                 password = authenticator.getPass();
             }
-        } else {
-            password = null;
         }
         addDefaultIdentityOpt();
         return new SshRoot(this, host, user, password, timeout);

@@ -39,6 +39,7 @@ import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
+import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.WriteToException;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;

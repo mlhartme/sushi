@@ -51,6 +51,7 @@ public class CliSample extends Cli implements Command {
         remaining.add(str);
     }
     
+    @Override
     public void invoke() {
         console.info.println("command invoked with ");
         console.info.println("   flag = " + flag);

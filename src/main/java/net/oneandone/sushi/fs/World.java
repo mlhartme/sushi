@@ -65,6 +65,18 @@ import java.util.Map;
  * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */
 public class World {
+    /** creates a standard world with netrc initialized */
+
+    public static World create() throws IOException {
+        World world;
+
+        world = new World();
+        world.loadNetRcOpt();
+        return world;
+    }
+
+    //--
+
     public final OS os;
 
     /** never null */
@@ -87,8 +99,7 @@ public class World {
     private final FileFilesystem fileFilesystem;
     private final MemoryFilesystem memoryFilesystem;
 
-    /** loaded lazily */
-    private NetRc netRc;
+    private final NetRc netRc;
 
     public World() {
         this(SshAgentSocket.isConfigured());
@@ -111,7 +122,7 @@ public class World {
         this.working = init("user.dir");
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
-        this.netRc = null;
+        this.netRc = new NetRc();
     }
 
     //-- configuration
@@ -575,20 +586,20 @@ public class World {
 
     //--
 
-    public NetRc.NetRcAuthenticator lookupAuthenticator(String hostname) {
+    public NetRc getNetRc() {
+        return netRc;
+    }
+
+    /** @return false when netrc does not exist */
+    public boolean loadNetRcOpt() throws IOException {
         Node src;
 
-        if (netRc == null) {
-            netRc = new NetRc();
-            src = home.join(".netrc");
-            try (Reader reader = src.createReader()) {
-                netRc.parse(reader);
-            } catch (net.oneandone.sushi.fs.FileNotFoundException e) {
-                // ok - netRc is empty
-            } catch (IOException e) {
-                throw new RuntimeException("TODO", e);
-            }
+        src = home.join(".netrc");
+        try (Reader reader = src.createReader()) {
+            netRc.parse(reader);
+            return true;
+        } catch (net.oneandone.sushi.fs.FileNotFoundException e) {
+            return false;
         }
-        return netRc.getAuthenticators(hostname);
     }
 }

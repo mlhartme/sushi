@@ -129,7 +129,7 @@ public class WebdavFilesystem extends Filesystem {
         if (info != null) {
             result.setUserInfo(info);
         } else {
-            authenticator = getWorld().lookupAuthenticator(uri.getHost());
+            authenticator = getWorld().getNetRc().getAuthenticators(uri.getHost());
             if (authenticator != null) {
                 result.setCredentials(authenticator.getUser(), authenticator.getPass());
             }

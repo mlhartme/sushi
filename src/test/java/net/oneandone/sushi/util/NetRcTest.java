@@ -29,16 +29,16 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mirko Friedenhagen
  */
-public class NetRcParserTest {
+public class NetRcTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    NetRcParser sut;
+    NetRc sut;
 
     @Before
     public void setUp() {
-        sut = new NetRcParser();
+        sut = new NetRc();
     }
 
     @Test
@@ -49,11 +49,11 @@ public class NetRcParserTest {
                 "#machine svn3.dev.java.net user user3 password pass3\n" +
                 "default login userd password passd");
         sut.parse(in);
-        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
-        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
+        Assert.assertEquals(new NetRc.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
+        Assert.assertEquals(new NetRc.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
         Assert.assertNull(sut.getAuthenticators("svn3.dev.java.net"));
-        final NetRcParser.NetRcAuthenticator defaultAuthenticator = sut.getAuthenticators("default");
-        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("userd", "passd"), defaultAuthenticator);
+        final NetRc.NetRcAuthenticator defaultAuthenticator = sut.getAuthenticators("default");
+        Assert.assertEquals(new NetRc.NetRcAuthenticator("userd", "passd"), defaultAuthenticator);
         Assert.assertEquals("userd", defaultAuthenticator.getUser());
         Assert.assertEquals("passd", defaultAuthenticator.getPass());
         Assert.assertEquals("NetRcAuthenticator{user=userd, pass=passd}", String.valueOf(defaultAuthenticator));
@@ -65,14 +65,14 @@ public class NetRcParserTest {
                 "machine\n\tsvn.dev.java.net\n\tlogin\n\tuser\n\tpassword pass\n\n\n"+
                 "machine svn2.dev.java.net\n\tuser user2\n\tpassword päss2\n");
         sut.parse(in);
-        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
-        Assert.assertEquals(new NetRcParser.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
+        Assert.assertEquals(new NetRc.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
+        Assert.assertEquals(new NetRc.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
     }
 
     @Test
     public void testParseMacDefNotSupported() throws IOException  {
         InputStreamReader in = createInputStreamReader("macdef foo");
-        expectedException.expect(NetRcParser.NetRcIllegalArgumentException.class);
+        expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("macdef not supported at line 1: macdef");
         sut.parse(in);
     }
@@ -80,7 +80,7 @@ public class NetRcParserTest {
     @Test
     public void testParseAccountNotSupported() throws IOException  {
         InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user account account\n");
-        expectedException.expect(NetRcParser.NetRcIllegalArgumentException.class);
+        expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("account not supported at line 1: account");
         sut.parse(in);
     }
@@ -88,7 +88,7 @@ public class NetRcParserTest {
     @Test
     public void testParseBadTopLevel() throws IOException  {
         InputStreamReader in = createInputStreamReader("fizzbuzz svn.dev.java.net login user pass account\n");
-        expectedException.expect(NetRcParser.NetRcIllegalArgumentException.class);
+        expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("bad toplevel at line 1: fizzbuzz");
         sut.parse(in);
     }
@@ -96,7 +96,7 @@ public class NetRcParserTest {
     @Test
     public void testParseBadEntryWithBadFollowerToken() throws IOException  {
         InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user puss account\n");
-        expectedException.expect(NetRcParser.NetRcIllegalArgumentException.class);
+        expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("bad follower token at line 1: puss");
         sut.parse(in);
     }
@@ -104,7 +104,7 @@ public class NetRcParserTest {
     @Test
     public void testParseBadEntryWithoutPassword() throws IOException  {
         InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user\n");
-        expectedException.expect(NetRcParser.NetRcIllegalArgumentException.class);
+        expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("malformed token at toplevel machine at line 2: null");
         sut.parse(in);
     }

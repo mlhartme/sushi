@@ -27,7 +27,7 @@ import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.io.OS;
-import net.oneandone.sushi.util.NetRcParser;
+import net.oneandone.sushi.util.NetRc;
 import net.oneandone.sushi.util.Reflect;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.xml.Xml;
@@ -88,7 +88,7 @@ public class World {
     private final MemoryFilesystem memoryFilesystem;
 
     /** loaded lazily */
-    private NetRcParser netRc;
+    private NetRc netRc;
 
     public World() {
         this(SshAgentSocket.isConfigured());
@@ -575,11 +575,11 @@ public class World {
 
     //--
 
-    public NetRcParser.NetRcAuthenticator lookupAuthenticator(String hostname) {
+    public NetRc.NetRcAuthenticator lookupAuthenticator(String hostname) {
         Node src;
 
         if (netRc == null) {
-            netRc = new NetRcParser();
+            netRc = new NetRc();
             src = home.join(".netrc");
             try (Reader reader = src.createReader()) {
                 netRc.parse(reader);

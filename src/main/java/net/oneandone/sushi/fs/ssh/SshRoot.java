@@ -36,12 +36,14 @@ public class SshRoot implements Root<SshNode>, Runnable {
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, int timeout) throws JSchException {
-        this(filesystem, host, 22, user, timeout);
+    /** @param password may be null */
+    public SshRoot(SshFilesystem filesystem, String host, String user, String password, int timeout) throws JSchException {
+        this(filesystem, host, 22, user, password, timeout);
     }
 
-    public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout) throws JSchException {
-        this(filesystem, filesystem.connect(host, port, user, timeout));
+    /** @param password may be null */
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, String password, int timeout) throws JSchException {
+        this(filesystem, filesystem.connect(host, port, user, password, timeout));
     }
 
     public SshRoot(SshFilesystem filesystem, Session session) throws JSchException {

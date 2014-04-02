@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
+    <release date="2014-04-01" version="2.8.14">
+      <action date="2014-04-01" dev="mfriedenhagen" type="add">
+        Added ~/.netrc support for ssh and webdav nodes.
+      </action>
+    </release>
     <release date="2014-01-31" version="2.8.13">
       <action date="2014-01-30" dev="mhm" type="fix">
         Autoflush was missing for verbose console output.

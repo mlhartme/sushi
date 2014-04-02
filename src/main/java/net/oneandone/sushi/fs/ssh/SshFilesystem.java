@@ -24,10 +24,12 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
+import net.oneandone.sushi.util.NetRc;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.Authenticator;
 import java.net.URI;
 import java.util.Arrays;
 
@@ -79,10 +81,13 @@ public class SshFilesystem extends Filesystem {
         this.jsch = jsch;
     }
 
-    public Session connect(String host, int port, String user, int timeout) throws JSchException {
+    public Session connect(String host, int port, String user, String password, int timeout) throws JSchException {
         Session session;
 
         session = jsch.getSession(user, host, port);
+        if (password != null) {
+            session.setPassword(password);
+        }
         session.connect(timeout);
         return session;
     }
@@ -144,11 +149,23 @@ public class SshFilesystem extends Filesystem {
 
     /** @param user null to use current user */
     public SshRoot root(String host, String user, int timeout) throws JSchException, IOException {
+        NetRc.NetRcAuthenticator authenticator;
+        String password;
+
         if (user == null) {
-            user = getWorld().getHome().getName();
+            authenticator = getWorld().lookupAuthenticator(host);
+            if (authenticator == null) {
+                user = getWorld().getHome().getName();
+                password = null;
+            } else {
+                user = authenticator.getUser();
+                password = authenticator.getPass();
+            }
+        } else {
+            password = null;
         }
         addDefaultIdentityOpt();
-        return new SshRoot(this, host, user, timeout);
+        return new SshRoot(this, host, user, password, timeout);
     }
 
     //--

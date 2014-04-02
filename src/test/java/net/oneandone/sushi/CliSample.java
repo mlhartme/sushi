@@ -24,6 +24,12 @@ import net.oneandone.sushi.cli.Value;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Usage sample.
+  * <tt>
+  * mvn org.codehaus.mojo:exec-maven-plugin:1.2.1:java -Dexec.classpathScope=test -Dexec.mainClass=net.oneandone.sushi.CliSample -Dexec.args=&quot;-flag -number 8 first second third&quot;
+  * </tt>
+*/
 public class CliSample extends Cli implements Command {
     public static void main(String[] args) {
         System.exit(new CliSample().run(args));

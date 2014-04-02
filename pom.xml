@@ -32,6 +32,7 @@
 
     <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
     <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
+    <surefire.forkCount>0</surefire.forkCount>
   </properties>
 
   <developers>
@@ -142,7 +143,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <forkMode>never</forkMode>
+          <forkCount>${surefire.forkCount}</forkCount>
           <useFile>false</useFile>
           <useSystemClassLoader>false</useSystemClassLoader>
           <includes>

@@ -351,7 +351,7 @@ public class FileNode extends Node {
         try {
             Files.move(path, dest.path, StandardCopyOption.ATOMIC_MOVE);
         } catch (AtomicMoveNotSupportedException e) {
-            return super.move(destNode);
+            return super.move(destNode, overwrite);
 		} catch (IOException e) {
 			throw new MoveException(this, dest, "os command failed", e);
 		}

@@ -24,6 +24,7 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
+import net.oneandone.sushi.util.NetRc;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -79,10 +80,13 @@ public class SshFilesystem extends Filesystem {
         this.jsch = jsch;
     }
 
-    public Session connect(String host, int port, String user, int timeout) throws JSchException {
+    public Session connect(String host, int port, String user, String password, int timeout) throws JSchException {
         Session session;
 
         session = jsch.getSession(user, host, port);
+        if (password != null) {
+            session.setPassword(password);
+        }
         session.connect(timeout);
         return session;
     }
@@ -115,40 +119,58 @@ public class SshFilesystem extends Filesystem {
     }
 
     public SshRoot localhostRoot() throws JSchException, IOException {
-        return root("localhost", getWorld().getWorking().getName());
+        return root("localhost", getWorld().getWorking().getName(), null);
     }
 
-    public SshRoot root(String root) throws JSchException, IOException {
-        return root(root, defaultTimeout);
+    public SshRoot root(String authority) throws JSchException, IOException {
+        return root(authority, defaultTimeout);
     }
 
-    public SshRoot root(String root, int timeout) throws JSchException, IOException {
+    public SshRoot root(String authority, int timeout) throws JSchException, IOException {
         int idx;
         String host;
         String user;
+        String password;
 
-        host = root;
+        host = authority;
         idx = host.indexOf('@');
         if (idx == -1) {
             user = null;
+            password = null;
         } else {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
+            idx = user.indexOf(':');
+            if (idx == -1) {
+                password = null;
+            } else {
+                password = user.substring(idx + 1);
+                user = user.substring(0, idx);
+            }
         }
-        return root(host, user, timeout);
+        return root(host, user, password, timeout);
     }
 
-    public SshRoot root(String host, String user) throws JSchException, IOException {
-        return root(host, user, defaultTimeout);
+    public SshRoot root(String host, String user, String password) throws JSchException, IOException {
+        return root(host, user, password, defaultTimeout);
     }
 
     /** @param user null to use current user */
-    public SshRoot root(String host, String user, int timeout) throws JSchException, IOException {
+    public SshRoot root(String host, String user, String password, int timeout) throws JSchException, IOException {
+        NetRc.NetRcAuthenticator authenticator;
+
         if (user == null) {
-            user = getWorld().getHome().getName();
+            authenticator = getWorld().getNetRc().getAuthenticators(host);
+            if (authenticator == null) {
+                user = getWorld().getHome().getName();
+                password = null;
+            } else {
+                user = authenticator.getUser();
+                password = authenticator.getPass();
+            }
         }
         addDefaultIdentityOpt();
-        return new SshRoot(this, host, user, timeout);
+        return new SshRoot(this, host, user, password, timeout);
     }
 
     //--

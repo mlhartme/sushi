@@ -214,8 +214,7 @@ public class IntBitSet implements IntCollection, Serializable {
     }
 
     /**
-     * Add all elements in the indicated range. Nothing is set for
-     * first > last.
+     * Add all elements in the indicated range. Nothing is set for first &gt; last.
      * @param  first   first element to add
      * @param  last    last element to add
      */

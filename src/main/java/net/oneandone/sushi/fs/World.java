@@ -27,6 +27,7 @@ import net.oneandone.sushi.fs.timemachine.TimeMachineFilesystem;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.io.OS;
+import net.oneandone.sushi.util.NetRc;
 import net.oneandone.sushi.util.Reflect;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.xml.Xml;
@@ -34,6 +35,7 @@ import net.oneandone.sushi.xml.Xml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -63,6 +65,18 @@ import java.util.Map;
  * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */
 public class World {
+    /** creates a standard world with netrc initialized */
+
+    public static World create() throws IOException {
+        World world;
+
+        world = new World();
+        world.loadNetRcOpt();
+        return world;
+    }
+
+    //--
+
     public final OS os;
 
     /** never null */
@@ -85,6 +99,8 @@ public class World {
     private final FileFilesystem fileFilesystem;
     private final MemoryFilesystem memoryFilesystem;
 
+    private final NetRc netRc;
+
     public World() {
         this(SshAgentSocket.isConfigured());
     }
@@ -106,6 +122,7 @@ public class World {
         this.working = init("user.dir");
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
+        this.netRc = new NetRc();
     }
 
     //-- configuration
@@ -565,5 +582,24 @@ public class World {
                 "property " + name + " does not point to a directory: " + value);
         }
         return file(file);
+    }
+
+    //--
+
+    public NetRc getNetRc() {
+        return netRc;
+    }
+
+    /** @return false when netrc does not exist */
+    public boolean loadNetRcOpt() throws IOException {
+        Node src;
+
+        src = home.join(".netrc");
+        try (Reader reader = src.createReader()) {
+            netRc.parse(reader);
+            return true;
+        } catch (net.oneandone.sushi.fs.FileNotFoundException e) {
+            return false;
+        }
     }
 }

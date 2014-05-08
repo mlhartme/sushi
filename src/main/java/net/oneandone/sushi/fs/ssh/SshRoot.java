@@ -15,7 +15,10 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
-import com.jcraft.jsch.*;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 import net.oneandone.sushi.fs.OnShutdown;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.io.MultiOutputStream;
@@ -33,13 +36,14 @@ public class SshRoot implements Root<SshNode>, Runnable {
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    public SshRoot(SshFilesystem filesystem, String host, String user, int timeout) throws JSchException {
-        this(filesystem, host, 22, user, timeout);
+    /** @param password may be null */
+    public SshRoot(SshFilesystem filesystem, String host, String user, String password, int timeout) throws JSchException {
+        this(filesystem, host, 22, user, password, timeout);
     }
 
-    public SshRoot(SshFilesystem filesystem, String host, int port, String user, int timeout)
-    throws JSchException {
-        this(filesystem, filesystem.connect(host, port, user, timeout));
+    /** @param password may be null */
+    public SshRoot(SshFilesystem filesystem, String host, int port, String user, String password, int timeout) throws JSchException {
+        this(filesystem, filesystem.connect(host, port, user, password, timeout));
     }
 
     public SshRoot(SshFilesystem filesystem, Session session) throws JSchException {

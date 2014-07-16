@@ -45,7 +45,7 @@ public class Strings {
         String result;
 
         result = removeLeftOpt(str, left);
-        if (result != str) {
+        if (result != str || left.isEmpty()) {
             return result;
         } else {
             throw new IllegalArgumentException("'" + str + "' does not start with '" + left + "'");
@@ -64,7 +64,7 @@ public class Strings {
         String result;
 
         result = removeRightOpt(str, right);
-        if (result != str) {
+        if (result != str || right.isEmpty()) {
             return result;
         } else {
             throw new IllegalArgumentException("'" + str + "' does not end with '" + right + "'");

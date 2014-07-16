@@ -5,6 +5,9 @@
       <action date="2014-07-16" dev="mlhartme" type="add">
         Added FileNode.zip method.
       </action>
+      <action date="2014-07-16" dev="mlhartme" type="fix">
+        Fixed Strings.removeLeft and removeRight when removing empty Strings.
+      </action>
     </release>
     <release date="2014-05-05" version="2.8.14">
       <action date="2014-04-25" dev="mlhartme" type="fix">

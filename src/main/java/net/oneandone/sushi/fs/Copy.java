@@ -176,14 +176,10 @@ public class Copy {
                         dest.mkdirsOpt();
                     } else {
                         dest.getParent().mkdirsOpt();
-                        if (content != null) {
-                            if (binary.matches(src.node.getRelative(sourcedir))) {
-                                src.node.copyFile(dest);
-                            } else {
-                                dest.writeString(content.apply(src.node.readString(), childVariables));
-                            }
-                        } else {
+                        if (content == null || binary.matches(src.node.getRelative(sourcedir))) {
                             src.node.copyFile(dest);
+                        } else {
+                            dest.writeString(content.apply(src.node.readString(), childVariables));
                         }
                     }
                     if (permissions) {

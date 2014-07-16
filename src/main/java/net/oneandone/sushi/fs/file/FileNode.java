@@ -174,7 +174,7 @@ public class FileNode extends Node {
     public Node zip(Node dest) throws IOException {
         Archive archive;
 
-        archive = new Archive(this, null);
+        archive = new Archive(this, null, getPath() + "/");
         archive.save(dest);
         return dest;
     }

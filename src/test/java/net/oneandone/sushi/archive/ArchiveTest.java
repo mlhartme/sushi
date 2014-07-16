@@ -36,9 +36,9 @@ public class ArchiveTest {
     
     @Before 
     public void setUp() {
-        directories = new ArrayList<String>();
-        fileNames = new ArrayList<String>();
-        fileData = new ArrayList<String>();
+        directories = new ArrayList<>();
+        fileNames = new ArrayList<>();
+        fileData = new ArrayList<>();
     }
 
     @Test 

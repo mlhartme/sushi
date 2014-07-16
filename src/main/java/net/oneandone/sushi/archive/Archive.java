@@ -18,6 +18,7 @@ package net.oneandone.sushi.archive;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.io.Buffer;
+import net.oneandone.sushi.util.Strings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,9 +70,16 @@ public class Archive {
     /** null for zip files, not null for jars */
     public final Manifest manifest;
 
+    public final String pathRoot;
+
     public Archive(Node data, Manifest manifest) {
+        this(data, manifest, "");
+    }
+
+    public Archive(Node data, Manifest manifest, String pathRoot) {
         this.data = data;
         this.manifest = manifest;
+        this.pathRoot = pathRoot;
     }
 
     /** @return this */
@@ -152,13 +160,13 @@ public class Archive {
                 } else if (node.isFile()) {
                     files.add(node);
                 } else {
-                    out.putNextEntry(new ZipEntry(node.getPath() + "/"));
+                    out.putNextEntry(new ZipEntry(Strings.removeLeft(node.getPath() + "/", pathRoot)));
                     out.closeEntry();
                 }
             }
             for (Node file : files) {
                 try (InputStream in = file.createInputStream()) {
-                    out.putNextEntry(new ZipEntry(file.getPath()));
+                    out.putNextEntry(new ZipEntry(Strings.removeLeft(file.getPath(), pathRoot)));
                     file.getWorld().getBuffer().copy(in, out);
                     out.closeEntry();
                 }

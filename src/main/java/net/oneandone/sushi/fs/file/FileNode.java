@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.file;
 
+import net.oneandone.sushi.archive.Archive;
 import net.oneandone.sushi.fs.CreateInputStreamException;
 import net.oneandone.sushi.fs.CreateOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
@@ -166,7 +167,22 @@ public class FileNode extends Node {
         return ((ZipFilesystem) getWorld().getFilesystem("jar")).node(this, "");
     }
 
-    /** @return dest */
+    /**
+     * @param dest resulting zip file
+     * @return dest
+     */
+    public Node zip(Node dest) throws IOException {
+        Archive archive;
+
+        archive = new Archive(this, null);
+        archive.save(dest);
+        return dest;
+    }
+
+    /**
+     * @param dest resulting directory
+     * @return dest
+     */
     public Node unzip(Node dest) throws IOException {
         openZip().copyDirectory(dest);
         return this;

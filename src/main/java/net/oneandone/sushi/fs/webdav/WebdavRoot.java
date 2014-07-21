@@ -149,7 +149,7 @@ public class WebdavRoot implements Root<WebdavNode> {
         if (response != null) {
             entity = response.getEntity();
             if (entity != null) {
-                entity.consumeContent();
+                entity.getContent().close();
             }
         }
         if (wantsClose(response)) {

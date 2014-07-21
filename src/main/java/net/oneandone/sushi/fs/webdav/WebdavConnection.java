@@ -138,7 +138,7 @@ public class WebdavConnection implements HttpClientConnection {
 
     @Override
     public boolean isStale() {
-        return !isOpen(); // TODO
+        return !isOpen(); // TODO: don't know how to reasonably implement this ...
     }
 
     public void setSocketTimeout(int timeout) {

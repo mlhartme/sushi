@@ -33,6 +33,8 @@ import org.apache.http.impl.io.SocketInputBuffer;
 import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.io.HttpMessageParser;
 import org.apache.http.io.HttpMessageWriter;
+import org.apache.http.io.SessionInputBuffer;
+import org.apache.http.io.SessionOutputBuffer;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
@@ -45,8 +47,8 @@ public class WebdavConnection implements HttpClientConnection {
     public static WebdavConnection open(Socket socket, HttpParams params) throws IOException {
         int linger;
         int buffersize;
-        SocketInputBuffer input;
-        SocketOutputBuffer output;
+        SessionInputBuffer input;
+        SessionOutputBuffer output;
         
         socket.setTcpNoDelay(HttpConnectionParams.getTcpNoDelay(params));
         socket.setSoTimeout(HttpConnectionParams.getSoTimeout(params));
@@ -68,14 +70,14 @@ public class WebdavConnection implements HttpClientConnection {
     private final Socket socket;
     private final EntitySerializer entityserializer;
     private final EntityDeserializer entitydeserializer;
-    private final SocketInputBuffer input;
-    private final SocketOutputBuffer output;
+    private final SessionInputBuffer input;
+    private final SessionOutputBuffer output;
     private final HttpMessageParser responseParser;
     private final HttpMessageWriter requestWriter;
     private final HttpConnectionMetricsImpl metrics;
 	private boolean open;
 
-    public WebdavConnection(Socket socket, SocketInputBuffer input, SocketOutputBuffer output, HttpParams params) {
+    public WebdavConnection(Socket socket, SessionInputBuffer input, SessionOutputBuffer output, HttpParams params) {
     	this.socket = socket;
         this.entityserializer = new EntitySerializer(new StrictContentLengthStrategy());
         this.entitydeserializer = new EntityDeserializer(new LaxContentLengthStrategy());
@@ -133,19 +135,12 @@ public class WebdavConnection implements HttpClientConnection {
     public boolean isOpen() {
         return open;
     }
-    
+
+    @Override
     public boolean isStale() {
-        if (!isOpen() || isEof()) {
-            return true;
-        }
-        try {
-            input.isDataAvailable(1);
-            return false;
-        } catch (IOException ex) {
-            return true;
-        }
+        return !isOpen(); // TODO
     }
-    
+
     public void setSocketTimeout(int timeout) {
         try {
             socket.setSoTimeout(timeout);
@@ -174,11 +169,7 @@ public class WebdavConnection implements HttpClientConnection {
 
     //--
     
-    private boolean isEof() {
-        return input.isEof();
-    }
-    
-    public SocketOutputBuffer getOutputBuffer() {
+    public SessionOutputBuffer getOutputBuffer() {
     	return output;
     }
     

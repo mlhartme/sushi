@@ -27,6 +27,7 @@ import org.apache.http.impl.entity.EntityDeserializer;
 import org.apache.http.impl.entity.EntitySerializer;
 import org.apache.http.impl.entity.LaxContentLengthStrategy;
 import org.apache.http.impl.entity.StrictContentLengthStrategy;
+import org.apache.http.impl.io.DefaultHttpResponseParser;
 import org.apache.http.impl.io.HttpRequestWriter;
 import org.apache.http.impl.io.HttpResponseParser;
 import org.apache.http.impl.io.SocketInputBuffer;
@@ -83,7 +84,7 @@ public class WebdavConnection implements HttpClientConnection {
         this.entitydeserializer = new EntityDeserializer(new LaxContentLengthStrategy());
         this.input = input;
         this.output = output;
-        this.responseParser = new HttpResponseParser(input, null, new DefaultHttpResponseFactory(), params);
+        this.responseParser = new DefaultHttpResponseParser(input, null, new DefaultHttpResponseFactory(), params);
         this.requestWriter = new HttpRequestWriter(output, null, params);
         this.metrics = new HttpConnectionMetricsImpl(input.getMetrics(), output.getMetrics());
         this.open = true;

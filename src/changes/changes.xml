@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release date="2014-07-21" version="2.8.15">
+    <release date="2014-07-23" version="2.8.15">
       <action date="2014-07-21" dev="mlhartme" type="fix">
-        Fixed webdav nodes to work with httpcore 4.3.2 (simply by fixing the deprecation warning issues by httpcore 4.2.5.
+        Fixed webdav nodes to work with httpcore 4.3.2 (simply by fixing the deprecation warning issues by httpcore 4.2.5).
       </action>
       <action date="2014-07-16" dev="mlhartme" type="add">
         Added FileNode.zip method.

@@ -5,10 +5,13 @@
       <action date="2014-07-24" dev="mlhartme" type="update">
         Updated jsch 0.1.50 to 0.1.51.
       </action>
+      <action date="2014-07-24" dev="mlhartme" type="update">
+        Updated svnkit 1.8.3-1 to 1.8.5.
+      </action>
     </release>
     <release date="2014-07-23" version="2.8.15">
       <action date="2014-07-21" dev="mlhartme" type="fix">
-        Fixed webdav nodes to work with httpcore 4.3.2 (simply by fixing the deprecation warning issues by httpcore 4.2.5).
+        Fixed webdav nodes to work with httpcore 4.3.2 (simply by fixing the deprecation warning issued by httpcore 4.2.5).
       </action>
       <action date="2014-07-16" dev="mlhartme" type="add">
         Added FileNode.zip method.

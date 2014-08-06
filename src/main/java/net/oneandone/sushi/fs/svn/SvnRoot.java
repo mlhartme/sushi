@@ -87,4 +87,16 @@ public class SvnRoot implements Root<SvnNode> {
     public int hashCode() {
         return repository.getLocation().hashCode();
     }
+     
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        dispose();
+    }
+
+    public void dispose() {
+        clientManager.dispose();
+        repository.closeSession();
+    }
+
 }

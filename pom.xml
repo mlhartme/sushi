@@ -60,6 +60,15 @@
         <role>developer</role>
       </roles>
     </contributor>
+    <contributor>
+      <name>Maximilian Braun</name>
+      <organization>1 &amp; 1 Internet AG</organization>
+      <organizationUrl>https://github.com/1and1</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </contributor>
   </contributors>
 
   <scm>

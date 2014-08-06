@@ -554,6 +554,5 @@ public class SvnNode extends Node {
         } finally {
             clientManager.dispose();
         }
-
     }
 }

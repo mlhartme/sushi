@@ -551,6 +551,9 @@ public class SvnNode extends Node {
             return clientManager.getWCClient().doInfo(workspace.toPath().toFile(), SVNRevision.UNDEFINED).getURL().toString();
         } catch (SVNException e) {
             throw new IOException("cannot determine workspace url: " + e.getMessage(), e);
+        } finally {
+            clientManager.dispose();
         }
+
     }
 }

@@ -15,7 +15,10 @@
  */
 package net.oneandone.sushi.fs.ssh;
 
+import com.jcraft.jsch.Identity;
+import com.jcraft.jsch.IdentityRepository;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
 import com.jcraft.jsch.agentproxy.USocketFactory;
@@ -23,18 +26,29 @@ import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
 
 import java.io.IOException;
+import java.util.Vector;
 
 /** Some documentation: Mac OS: http://www.dribin.org/dave/blog/archives/2007/11/28/ssh_agent_leopard/ */
 
 public class SshAgent {
     public static void configure(JSch jsch) throws IOException {
         USocketFactory factory;
+        IdentityRepository repository;
+        Vector identities;
 
         try {
             factory = new JNAUSocketFactory();
-            jsch.setIdentityRepository(new RemoteIdentityRepository(new SSHAgentConnector(factory)));
+            repository = new RemoteIdentityRepository(new SSHAgentConnector(factory));
+            identities = repository.getIdentities();
         } catch (AgentProxyException e) {
             throw new IOException("cannot connect to ssh-agent", e);
+        }
+        for (Object obj : identities) {
+            try {
+                jsch.addIdentity((Identity) obj, null);
+            } catch (JSchException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 }

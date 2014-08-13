@@ -3,6 +3,11 @@
   <body>
     <release date="2014-08-06" version="2.8.16">
       <action date="2014-08-06" dev="mlhartme" type="update">
+        SshFilesystem: stick with LocalIdentityRepository, ssh agent identities are copied.
+      </action>
+    </release>
+    <release date="2014-08-06" version="2.8.16">
+      <action date="2014-08-06" dev="mlhartme" type="update">
         Fixed memory leak in SvnNode and added SvnRoot.dispose to work-around another leak.
       </action>
       <action date="2014-07-24" dev="mlhartme" type="update">

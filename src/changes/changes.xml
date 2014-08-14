@@ -2,8 +2,10 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2014-08-06" version="2.8.16">
-      <action date="2014-08-06" dev="mlhartme" type="update">
-        SshFilesystem: stick with LocalIdentityRepository, ssh agent identities are copied.
+      <action date="2014-08-06" dev="mlhartme" type="fix">
+        SshFilesystem: do not accumulate identifies when ssh-agent is used. This was cause by using the RemoteIdentityRepository - and 
+        added identities were propagated to the clients. The fix sticks with LocalIdentityRepository, and adds all remote identities to
+        it when starting.
       </action>
     </release>
     <release date="2014-08-06" version="2.8.16">

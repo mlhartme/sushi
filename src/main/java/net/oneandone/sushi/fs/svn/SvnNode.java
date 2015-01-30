@@ -208,12 +208,12 @@ public class SvnNode extends Node {
             try (OutputStream dest = tmp.createOutputStream()) {
                 writeTo(dest);
             }
-            return tmp.createInputStream();
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
             throw new CreateInputStreamException(this, e);
         }
+        return tmp.createInputStreamDeleteOnClose();
     }
 
     public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {

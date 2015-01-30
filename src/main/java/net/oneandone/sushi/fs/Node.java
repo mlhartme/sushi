@@ -31,6 +31,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -108,6 +109,17 @@ public abstract class Node {
      * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception
      */
     public abstract InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException;
+
+    public FilterInputStream createInputStreamDeleteOnClose() throws FileNotFoundException, CreateInputStreamException {
+        return new FilterInputStream(createInputStream()) {
+            @Override
+            public void close() throws IOException {
+                super.close();
+                // opt because it may be closed twice:
+                deleteFileOpt();
+            }
+        };
+    }
 
     /**
      * Concenience method for <code>writeTo(dest, 0)</code>.

@@ -670,14 +670,7 @@ public class SshNode extends Node {
         } catch (IOException e) {
             throw new CreateInputStreamException(this, e);
         }
-        return new FilterInputStream(tmp.createInputStream()) {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                // opt because it may be closed twice:
-                tmp.deleteTreeOpt();
-            }
-        };
+        return tmp.createInputStreamDeleteOnClose();
     }
 
     @Override

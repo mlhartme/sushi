@@ -25,7 +25,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 public class Base64 {
-    /** true create base64 */
+    /** true encodes to base64, false decodes from base64 */
     private final boolean encoder;
     private final byte[] srcBuffer;
     private final byte[] destBuffer;

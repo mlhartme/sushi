@@ -26,7 +26,7 @@ import java.io.Writer;
 import java.util.List;
 
 /**
- * Configures and executes an operating system process. This class wraps a ProcessBuilder to simplify usage.
+ * Configures and executes an operating system process. This class wraps a ProcessBuilder to simplify process execution.
  * In particular, most methods return this so you can configure and execute a program in a single expression
  * (short methods names further simplify this). In addition, you can easily get process output as a string.
  *
@@ -44,6 +44,8 @@ import java.util.List;
  * Note that the first "arg" passed to an instance of this class is actually not an argument, but
  * the name of the program or script to be executed. I accept this inconsistency because it simplifies
  * the api and allows for shorter method names.
+ *
+ * The executable is searched according to the PATH variables.
  */
 public class Launcher {
     private final ProcessBuilder builder;

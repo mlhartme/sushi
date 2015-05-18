@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -33,7 +34,7 @@ public class LauncherTest {
 
     @Test
     public void normal() throws Failure {
-        launch("hostname").exec();
+        assertNotNull(launch("hostname").exec());
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -58,7 +59,7 @@ public class LauncherTest {
 
         var = OS.CURRENT.variable("PATH");
         output = launch("echo", var).exec().trim();
-        assertTrue(output + " vs " + var, OS.CURRENT != OS.WINDOWS == var.equals(output));
+        assertTrue(output + " vs " + var, (OS.CURRENT != OS.WINDOWS) == var.equals(output));
     }
 
     @Test

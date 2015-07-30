@@ -99,7 +99,7 @@ public class ZipNodeTest {
                 assertFalse(node.isFile());
             }
         }
-        assertEquals(266, count);
+        assertEquals(323, count);
     }
 
     @Test

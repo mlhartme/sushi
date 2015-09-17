@@ -126,12 +126,17 @@ public class SshFilesystem extends Filesystem {
         return root(authority, defaultTimeout);
     }
 
+    /**
+     * @param authority Allowed schemas: host and user@host, while user can be user:password and host can be host:port
+     */
     public SshRoot root(String authority, int timeout) throws JSchException, IOException {
         int idx;
         String host;
+        int port;
         String user;
         String password;
 
+        // split user@host
         host = authority;
         idx = host.indexOf('@');
         if (idx == -1) {
@@ -140,6 +145,8 @@ public class SshFilesystem extends Filesystem {
         } else {
             user = host.substring(0, idx);
             host = host.substring(idx + 1);
+
+            // split user:password
             idx = user.indexOf(':');
             if (idx == -1) {
                 password = null;
@@ -148,15 +155,32 @@ public class SshFilesystem extends Filesystem {
                 user = user.substring(0, idx);
             }
         }
-        return root(host, user, password, timeout);
+
+        // split host:port
+        idx = host.indexOf(':');
+        if (idx == -1) {
+            port = SshRoot.DEFAULT_PORT;
+        } else {
+            try {
+                port = Integer.parseInt(host.substring(idx + 1));
+            } catch (NumberFormatException e) {
+                throw new JSchException("Invalid port number " + host.substring(idx + 1));
+            }
+            host = host.substring(0, idx);
+        }
+        return root(host, port, user, password, timeout);
     }
 
     public SshRoot root(String host, String user, String password) throws JSchException, IOException {
         return root(host, user, password, defaultTimeout);
     }
 
-    /** @param user null to use current user */
     public SshRoot root(String host, String user, String password, int timeout) throws JSchException, IOException {
+        return root(host, SshRoot.DEFAULT_PORT, user, password, timeout);
+    }
+
+    /** @param user null to use current user */
+    public SshRoot root(String host, int port, String user, String password, int timeout) throws JSchException, IOException {
         NetRc.NetRcAuthenticator authenticator;
 
         if (user == null) {
@@ -170,7 +194,7 @@ public class SshFilesystem extends Filesystem {
             }
         }
         addDefaultIdentityOpt();
-        return new SshRoot(this, host, user, password, timeout);
+        return new SshRoot(this, host, port, user, password, timeout);
     }
 
     //--

@@ -28,6 +28,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 public class SshRoot implements Root<SshNode>, Runnable {
+
+    public static final int DEFAULT_PORT = 22;
+
     private final SshFilesystem filesystem;
 
     /** connected session */
@@ -38,7 +41,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     /** @param password may be null */
     public SshRoot(SshFilesystem filesystem, String host, String user, String password, int timeout) throws JSchException {
-        this(filesystem, host, 22, user, password, timeout);
+        this(filesystem, host, DEFAULT_PORT, user, password, timeout);
     }
 
     /** @param password may be null */
@@ -65,7 +68,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     @Override
     public String getId() {
-        return "//" + session.getUserName() + "@" + session.getHost() + "/";
+        return "//" + session.getUserName() + "@" + session.getHost() + ":" + session.getPort() + "/";
     }
 
     @Override
@@ -94,7 +97,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     @Override
     public String toString() {
-        return "SshNode host=" + getHost() + ", user=" + getUser();
+        return "SshNode host=" + getHost() + ":" + getPort() + ", user=" + getUser();
     }
 
     //--
@@ -179,6 +182,10 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     public String getHost() {
         return session.getHost();
+    }
+
+    public int getPort() {
+        return session.getPort();
     }
 
     // executes on shutdown

@@ -111,12 +111,16 @@ public class World {
     }
 
     public World(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
+        this(os, settings, buffer, null, null, defaultExcludes);
+    }
+
+    public World(OS os, Settings settings, Buffer buffer, FileFilesystem fileFilesystem, MemoryFilesystem memoryFilesystem, String... defaultExcludes) {
         this.os = os;
         this.settings = settings;
         this.buffer = buffer;
         this.filesystems = new HashMap<>();
-        this.fileFilesystem = this.addFilesystem(new FileFilesystem(this, "file"));
-        this.memoryFilesystem = this.addFilesystem(new MemoryFilesystem(this, "mem"));
+        this.fileFilesystem = this.addFilesystem(fileFilesystem != null ? fileFilesystem : new FileFilesystem(this, "file"));
+        this.memoryFilesystem = this.addFilesystem(memoryFilesystem != null ? memoryFilesystem : new MemoryFilesystem(this, "mem"));
         this.temp = init("java.io.tmpdir");
         this.home = init("user.home");
         this.working = init("user.dir");

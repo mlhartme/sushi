@@ -3,6 +3,9 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-29" dev="mlhartme" type="update">
+        Update httpcore 4.3.2 to 4.3.3. No code changes, just the dependency update.
+      </action>
+      <action date="2015-12-29" dev="mlhartme" type="update">
         Update jsch 0.1.51 to 0.1.53. No code changes, just the dependency update.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">

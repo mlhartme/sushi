@@ -44,7 +44,7 @@ For SshNodes (e.g. world.node("ssh//user@host/my/path")):
       <dependency>
         <groupId>com.jcraft</groupId>
         <artifactId>jsch</artifactId>
-        <version>0.1.51</version>
+        <version>0.1.53</version>
       </dependency>
 
 Additionally, you can add

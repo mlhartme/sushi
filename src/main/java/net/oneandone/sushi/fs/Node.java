@@ -104,6 +104,14 @@ public abstract class Node {
         return getRoot().getFilesystem().getWorld();
     }
 
+    public LineReader newLineReader() throws IOException {
+        return newLineReader(getWorld().getSettings().lineFormat);
+    }
+
+    public LineReader newLineReader(LineFormat format) throws IOException {
+        return new LineReader(createReader(), format);
+    }
+
     /**
      * Creates a stream to read this node.
      * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception
@@ -467,7 +475,7 @@ public abstract class Node {
 
     /** @return lines without tailing line separator */
     public List<String> readLines(LineFormat format) throws IOException {
-        return new LineReader(createReader(), format).collect();
+        return newLineReader(format).collect();
     }
 
     /** Reads properties with the encoding for this node */

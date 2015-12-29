@@ -34,8 +34,7 @@ public class Csv implements Iterable<Line> {
         Csv csv;
         String line;
 
-        try (Reader orig = node.createReader();
-             LineReader src = new LineReader(orig, new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.SEPARATOR))) {
+        try (LineReader src = node.newLineReader(new LineFormat(LineFormat.GENERIC_SEPARATOR, LineFormat.Trim.SEPARATOR))) {
             csv = new Csv(format);
             msg = new StringBuilder();
             while (true) {

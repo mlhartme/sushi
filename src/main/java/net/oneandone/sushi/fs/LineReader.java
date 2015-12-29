@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-/** Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars. */
+/**
+ * Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars.
+ * Closing the LineReader also closes the underlying read.
+ */
 public class LineReader implements AutoCloseable {
     public static final int INITIAL_BUFFER_SIZE = 256;
 
@@ -118,11 +121,12 @@ public class LineReader implements AutoCloseable {
         }
     }
 
+    /** Also closes the LineReader. */
     public List<String> collect() throws IOException {
-        return collect(new ArrayList<String>());
+        return collect(new ArrayList<>());
     }
 
-    /** @return result */
+    /** Also closes the LineReader. */
     public List<String> collect(List<String> result) throws IOException {
         String line;
 

@@ -18,8 +18,8 @@ package net.oneandone.sushi.fs.memory;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Filesystem;
-import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.Root;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayInputStream;
 

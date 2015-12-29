@@ -20,7 +20,6 @@ import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;

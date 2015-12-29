@@ -15,20 +15,20 @@
  */
 package net.oneandone.sushi.fs.webdav;
 
-import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.NewInputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.WriteToException;
 import net.oneandone.sushi.fs.webdav.methods.Delete;
 import net.oneandone.sushi.fs.webdav.methods.Get;

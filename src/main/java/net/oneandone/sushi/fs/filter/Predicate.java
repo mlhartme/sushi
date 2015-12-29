@@ -15,7 +15,6 @@
  */
 package net.oneandone.sushi.fs.filter;
 
-import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.Node;
 
 import java.io.IOException;

@@ -15,17 +15,17 @@
  */
 package net.oneandone.sushi.fs.zip;
 
-import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.SetLastModifiedException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.WriteToException;
 
 import java.io.IOException;

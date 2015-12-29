@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs.ssh;
 
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeTest;
-import net.oneandone.sushi.fs.file.FileNode;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;

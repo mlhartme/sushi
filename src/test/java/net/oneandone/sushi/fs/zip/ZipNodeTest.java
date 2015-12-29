@@ -16,8 +16,8 @@
 package net.oneandone.sushi.fs.zip;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
 import org.junit.Assert;

@@ -40,8 +40,8 @@ public class Selector {
 
     public Selector() {
         this.factory = XPathFactory.newInstance();
-        this.simples = new HashMap<String, String[]>();
-        this.normals = new HashMap<String, XPathExpression>();
+        this.simples = new HashMap<>();
+        this.normals = new HashMap<>();
         this.namespaceContext = null;
     }
 
@@ -168,7 +168,7 @@ public class Selector {
             throw new RuntimeException("invalid xpath: " + expression, e);
         }
         size = nodes.getLength();
-        result = new ArrayList<Node>(size);
+        result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             result.add(nodes.item(i));
         }

@@ -66,7 +66,7 @@ import java.util.List;
 
     public View(Path scope) {
         this.scope = scope;
-        this.fields = new ArrayList<Field>();
+        this.fields = new ArrayList<>();
     }
 
     public Path getScope() {
@@ -208,7 +208,7 @@ import java.util.List;
         Field field;
         String name;
         
-        result = new ArrayList<Field>();
+        result = new ArrayList<>();
         for (int i = 0, max = line.size(); i < max; i++) {
             name = line.getOne(i);
             field = lookup(name);

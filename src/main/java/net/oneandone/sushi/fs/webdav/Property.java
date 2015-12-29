@@ -54,7 +54,7 @@ public class Property {
     }
 
     private static List<Node> getChildElementsOrTexts(Node parent) {
-        List<Node> content = new ArrayList<Node>();
+        List<Node> content = new ArrayList<>();
         Node child;
 
         NodeList children = parent.getChildNodes();

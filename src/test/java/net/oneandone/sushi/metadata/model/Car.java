@@ -42,7 +42,7 @@ public class Car {
         this.seats = seats;
         this.engine = engine;
         this.radio = radio;
-        this.commentList = new ArrayList<String>();
+        this.commentList = new ArrayList<>();
     }
     
     public String getName() {

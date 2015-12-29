@@ -50,7 +50,7 @@ public class Channel {
         this.title = title;
         this.link = link;
         this.description = description;
-        this.items = new ArrayList<Item>();
+        this.items = new ArrayList<>();
     }
 
     public String getTitle() {

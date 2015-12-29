@@ -201,7 +201,7 @@ public class Diff {
             this.left = left;
             this.right = right;
             this.common = common;
-            this.add = new ArrayList<String>();
+            this.add = new ArrayList<>();
         }
 
         public boolean touches(Chunk chunk, int context) {

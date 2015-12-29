@@ -96,7 +96,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         int idx;
         List<MemoryNode> result;
         
-        result = new ArrayList<MemoryNode>();
+        result = new ArrayList<>();
         for (MemoryNode node : nodes.values()) {
             child = node.getPath();
             idx = child.lastIndexOf(Filesystem.SEPARATOR_CHAR);

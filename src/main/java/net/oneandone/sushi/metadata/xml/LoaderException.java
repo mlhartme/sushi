@@ -57,7 +57,7 @@ public class LoaderException extends IOException {
     private static List<SAXException> getLoaderExceptions(List<SAXException> lst) {
         List<SAXException> result;
         
-        result = new ArrayList<SAXException>();
+        result = new ArrayList<>();
         for (SAXException e : lst) {
             if (e instanceof SAXLoaderException) {
                 result.add(e);

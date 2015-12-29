@@ -64,7 +64,7 @@ public class Csv implements Iterable<Line> {
 
     public Csv(Format format) {
         this.format = format;
-        this.lines = new ArrayList<Line>();
+        this.lines = new ArrayList<>();
     }
 
     public Format getFormat() {

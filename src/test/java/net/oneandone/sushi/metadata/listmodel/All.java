@@ -22,6 +22,6 @@ public class All {
     public final List<Object> objects;
     
     public All() {
-        objects = new ArrayList<Object>();
+        objects = new ArrayList<>();
     }
 }

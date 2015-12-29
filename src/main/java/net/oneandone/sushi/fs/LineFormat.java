@@ -23,7 +23,7 @@ public class LineFormat {
     public static final Pattern LF_SEPARATOR = Pattern.compile(Pattern.quote("\n"));
 
     /** how to trim lines before they are returned by next() */
-    public static enum Trim {
+    public enum Trim {
         NOTHING, SEPARATOR, ALL
     }
 

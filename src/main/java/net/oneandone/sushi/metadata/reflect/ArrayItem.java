@@ -44,7 +44,7 @@ public class ArrayItem<T> extends Item<T> {
         } catch (IllegalAccessException e) {
             throw new RuntimeException("TODO", e);
         }
-        return new ArrayList<T>(Arrays.asList(array));
+        return new ArrayList<>(Arrays.asList(array));
     }
     
     @Override

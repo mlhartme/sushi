@@ -44,7 +44,7 @@ public class CliSample extends Cli implements Command {
     @Value(name = "first", position = 1)
     private String first = null;
 
-    private List<String> remaining = new ArrayList<String>();
+    private List<String> remaining = new ArrayList<>();
     
     @Remaining
     public void addRemaining(String str) {

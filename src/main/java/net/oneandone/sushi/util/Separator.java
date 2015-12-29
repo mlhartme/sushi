@@ -19,6 +19,7 @@ import net.oneandone.sushi.fs.LineFormat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,8 +138,8 @@ public class Separator {
 
         result = new StringBuilder();
         try {
-            count = joinTo(result, 0, java.util.Arrays.asList(first));
-            count = joinTo(result, count, java.util.Arrays.asList(second));
+            count = joinTo(result, 0, Collections.singletonList(first));
+            count = joinTo(result, count, Collections.singletonList(second));
             joinTo(result, count, java.util.Arrays.asList(rest));
         } catch (IOException e) {
             throw new IllegalStateException(e);

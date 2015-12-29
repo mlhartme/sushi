@@ -33,7 +33,7 @@ public class Vendor {
     }
     
     public Vendor(Car ... cars) {
-        this.cars = new ArrayList<Car>(Arrays.asList(cars));
+        this.cars = new ArrayList<>(Arrays.asList(cars));
     }
 
     public void setId(long id) {

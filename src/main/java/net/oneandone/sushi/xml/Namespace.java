@@ -38,7 +38,7 @@ public class Namespace {
     }
 
     public boolean hasUri(String other) {
-        return uri.equals(uri);
+        return uri.equals(other);
     }
 
     @Override

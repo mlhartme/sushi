@@ -52,7 +52,7 @@ public class Loader extends DefaultHandler {
     public Loader(Type type, SAXParser parser) {
         this.type = type;
         this.parser = parser;
-        this.elements = new ArrayList<Element>();
+        this.elements = new ArrayList<>();
         this.result = null;
     }
 
@@ -111,14 +111,19 @@ public class Loader extends DefaultHandler {
         for (int i = 0; i < length; i++) {
             name = attrs.getQName(i);
             value = attrs.getValue(i);
-            if (name.equals("id")) {
-                started.id = value;
-            } else if (name.equals("idref")) {
-                started.idref = value;
-            } else if (name.equals("type")) {
-                // already processed
-            } else {
-                loaderException("unexected attribute " + name);
+            switch (name) {
+                case "id":
+                    started.id = value;
+                    break;
+                case "idref":
+                    started.idref = value;
+                    break;
+                case "type":
+                    // already processed
+                    break;
+                default:
+                    loaderException("unexected attribute " + name);
+                    break;
             }
         }
     }

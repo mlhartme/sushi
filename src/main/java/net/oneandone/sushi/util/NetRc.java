@@ -191,10 +191,7 @@ public class NetRc {
             if (!Objects.equals(this.user, other.user)) {
                 return false;
             }
-            if (!Objects.equals(this.pass, other.pass)) {
-                return false;
-            }
-            return true;
+            return Objects.equals(this.pass, other.pass);
         }
 
         @Override

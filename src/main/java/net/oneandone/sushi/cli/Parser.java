@@ -94,10 +94,10 @@ public class Parser {
     
     public Parser(Schema metadata) {
         this.metadata = metadata;
-        this.options = new HashMap<String, Argument>();
-        this.values = new ArrayList<Argument>();
+        this.options = new HashMap<>();
+        this.values = new ArrayList<>();
         values.add(null);
-        this.children = new HashMap<String, ChildMethod>();
+        this.children = new HashMap<>();
     }
 
     public void addOption(String name, Argument arg) {

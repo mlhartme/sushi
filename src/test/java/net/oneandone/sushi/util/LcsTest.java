@@ -59,7 +59,7 @@ public class LcsTest {
         List<Character> result;
 
         max = arg.length();
-        result = new ArrayList<Character>(max);
+        result = new ArrayList<>(max);
         for (int i = 0; i < max; i++) { 
             result.add(arg.charAt(i));
         }

@@ -230,7 +230,7 @@ public class ParserTest {
         public FileNode first;
         @Value(name = "second", position = 2)
         public String second;
-        public List<FileNode> remaining = new ArrayList<FileNode>();
+        public List<FileNode> remaining = new ArrayList<>();
 
         @Value(name = "first", position = 1)
         public void first(FileNode first) {
@@ -271,7 +271,7 @@ public class ParserTest {
 
         public ChildObject(String name) {
             this.name = name;
-            this.remaining = new ArrayList<String>();
+            this.remaining = new ArrayList<>();
         }
 
         @Remaining(name = "remaining")

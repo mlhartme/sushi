@@ -43,7 +43,7 @@ public class BuilderTest {
         Document doc;
         final List<String> closed;
 
-        closed = new ArrayList<String>();
+        closed = new ArrayList<>();
         src = new StringReader("<xml/>") {
             @Override
             public void close() {
@@ -63,7 +63,7 @@ public class BuilderTest {
         Document doc;
         final List<String> closed;
 
-        closed = new ArrayList<String>();
+        closed = new ArrayList<>();
         src = new ByteArrayInputStream("<xml/>".getBytes()) {
             @Override
             public void close() throws IOException {

@@ -42,19 +42,19 @@ public class SimpleTypeTest extends ModelBase {
 
     @Test
     public void longX() throws SimpleTypeException {
-        check(Long.TYPE, "2", new Long(2));
+        check(Long.TYPE, "2", 2L);
     }
     
     @Test
     public void floatX() throws SimpleTypeException {
-        check(Float.class, "2", new Float(2), "2.0");
-        check(Float.TYPE, "2.0", new Float(2));
+        check(Float.class, "2", 2f, "2.0");
+        check(Float.TYPE, "2.0", 2f);
     }
 
     @Test
     public void doubleX() throws SimpleTypeException {
-        check(Double.TYPE, "4.9", new Double(4.9), "4.9");
-        check(Double.class, "2.0", new Double(2));
+        check(Double.TYPE, "4.9", 4.9, "4.9");
+        check(Double.class, "2.0", 2d);
     }
     
     @Test

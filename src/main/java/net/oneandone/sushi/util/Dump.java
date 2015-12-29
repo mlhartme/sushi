@@ -77,7 +77,7 @@ public class Dump {
         this.metadata = metadata;
         this.dest = dest;
         this.maxDepth = maxDepth;
-        this.stack = new ArrayList<Object>();
+        this.stack = new ArrayList<>();
     }
     
     public void run(Object obj) throws IOException {

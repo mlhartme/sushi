@@ -46,11 +46,11 @@ public enum OS {
 
     public final Separator lineSeparator;
 
-    private OS(String substring, String variablePrefix, String variableSuffix, char listSeparatorChar, String lineSeparator) {
+    OS(String substring, String variablePrefix, String variableSuffix, char listSeparatorChar, String lineSeparator) {
         this(new String[] { substring }, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator);
     }
 
-    private OS(String[] substrings, String variablePrefix, String variableSuffix,
+    OS(String[] substrings, String variablePrefix, String variableSuffix,
             char listSeparatorChar, String lineSeparator) {
         this.substrings = substrings;
         this.variablePrefix = variablePrefix;

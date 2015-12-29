@@ -270,7 +270,7 @@ public class Strings {
     }
 
     public static ArrayList<String> toList(String ... elements) {
-        return new ArrayList<String>(Arrays.asList(elements));
+        return new ArrayList<>(Arrays.asList(elements));
     }
 
 

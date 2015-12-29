@@ -91,11 +91,7 @@ public abstract class Cli {
     
     @Child("help")
     public Command help() {
-        return new Command() {
-            public void invoke() throws Exception {
-                printHelp();
-            }
-        };
+        return () -> printHelp();
     }
     
     @Child("version")

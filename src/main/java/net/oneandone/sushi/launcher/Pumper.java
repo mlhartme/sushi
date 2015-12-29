@@ -67,7 +67,7 @@ public class Pumper extends Thread {
             runUnchecked();
         } catch (Throwable e) {
             exception = e;
-            return;
+            // fall through
         }
     }
 

@@ -39,9 +39,9 @@ public class ComplexElement extends Element {
             throw new IllegalArgumentException();
         }
         this.type = type;
-        this.children = new HashMap<Item<?>, List<Object>>();
+        this.children = new HashMap<>();
         for (Item<?> item : type.items()) {
-            children.put(item, new ArrayList<Object>());
+            children.put(item, new ArrayList<>());
         }
     }
 
@@ -76,7 +76,7 @@ public class ComplexElement extends Element {
             try {
                 item.set(object, entry.getValue());
             } catch (ItemException e) {
-                exceptions.add(new SAXVariableException(new Variable<Object>(object, item), locator, e));
+                exceptions.add(new SAXVariableException(new Variable<>(object, item), locator, e));
             }            
         }
         return object;

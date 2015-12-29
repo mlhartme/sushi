@@ -35,7 +35,7 @@ public class OptionItem<T> extends Item<T> {
         name = field.getName();
         type = field.getDeclaringClass();
         fieldType = field.getType();
-        return new OptionItem<T>(name, fieldType, metadata.type(fieldType), 
+        return new OptionItem<>(name, fieldType, metadata.type(fieldType),
                 lookup(type, "get" + name), lookup(type, "set" + name));
     }
     
@@ -61,7 +61,7 @@ public class OptionItem<T> extends Item<T> {
         T result;
         
         result = (T) invoke(getter, src);
-        return result == null ? new ArrayList<T>() : Collections.singletonList(result);
+        return result == null ? new ArrayList<>() : Collections.singletonList(result);
     }
     
     @Override

@@ -55,9 +55,7 @@ public class ComplexType extends Type {
     public Object newInstance() {
         try {
             return type.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

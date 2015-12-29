@@ -479,9 +479,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (SftpException e) {
-            throw new ReadLinkException(this, e);
-        } catch (JSchException e) {
+        } catch (SftpException | JSchException e) {
             throw new ReadLinkException(this, e);
         }
     }
@@ -743,8 +741,6 @@ public class SshNode extends Node {
 
     /**
      * This is the core function to write an ssh node. Does not close src.
-     *
-     * @throws FileNotFoundException if this is not a file
      */
     public void readFrom(InputStream src, boolean append) throws ReadFromException {
         ChannelSftp sftp;

@@ -53,7 +53,7 @@ public class MultiStatus {
             in.close();
         }
    		Dom.require(root, "multistatus", Method.DAV);
-		result = new ArrayList<MultiStatus>();
+		result = new ArrayList<>();
 		iter = Method.DAV.childElements(root, Method.XML_RESPONSE);
 		while (iter.hasNext()) {
 			fromXml(iter.next(), result);

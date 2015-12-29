@@ -90,7 +90,7 @@ public class Result {
     public void fail() {
         List<Throwable> lst;
 
-        lst = new ArrayList<Throwable>();
+        lst = new ArrayList<>();
         for (int i = 0; i < throwables.length; i++) {
             if (throwables[i] != null) {
                 lst.add(throwables[i]);

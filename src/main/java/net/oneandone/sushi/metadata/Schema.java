@@ -105,7 +105,7 @@ public class Schema {
         Type type;
         
         type = type(obj.getClass());
-        return new Instance<T>(type, obj);
+        return new Instance<>(type, obj);
     }
     
     public <T> List<Instance<T>> instances(Collection<T> col) {

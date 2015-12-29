@@ -52,7 +52,7 @@ public class TestProperties {
         List<String> result;
         String value;
 
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         for (int i = 1; true; i++) {
             value = getOpt(key + "." + i);
             if (value == null) {

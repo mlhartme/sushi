@@ -752,9 +752,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         try {
             in.read();
             fail();
-        } catch (IllegalStateException e) {
-            // ok
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             // ok
         }
     }
@@ -782,9 +780,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         try {
             out.write(1);
             fail();
-        } catch (IllegalStateException e) {
-            // ok
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             // ok
         }
     }
@@ -1417,7 +1413,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public void multiThreading() throws Exception {
         List<Function> functions;
 
-        functions = new ArrayList<Function>();
+        functions = new ArrayList<>();
         Function.forTarget("empty", TextTarget.create(work.join("empty"), 0), functions);
         Function.forTarget("small", TextTarget.create(work.join("small"), 3), functions);
         Function.forTarget("medium", TextTarget.create(work.join("medium"), 16548), functions);

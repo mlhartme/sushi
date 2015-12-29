@@ -21,32 +21,13 @@ import net.oneandone.sushi.fs.Node;
 import java.io.IOException;
 
 public interface Predicate {
-    Predicate FILE = new Predicate() {
-        public boolean matches(Node node, boolean isLink) throws ExistsException {
-            return node.isFile();
-        }
-    };
+    Predicate FILE = (node, isLink) -> node.isFile();
 
-    Predicate DIRECTORY = new Predicate() {
-        public boolean matches(Node node, boolean isLink) throws ExistsException {
-            return node.isDirectory();
-        }
-    };
+    Predicate DIRECTORY = (node, isLink) -> node.isDirectory();
 
-    Predicate LINK = new Predicate() {
-		public boolean matches(Node node, boolean isLink) throws IOException {
-			return isLink;
-		}
-    };
+    Predicate LINK = (node, isLink) -> isLink;
 
-    Predicate NON_LINK = new Predicate() {
-		public boolean matches(Node node, boolean isLink) throws IOException {
-			return !isLink;
-		}
-    };
+    Predicate NON_LINK = (node, isLink) -> !isLink;
 
     boolean matches(Node node, boolean isLink) throws IOException;
-
-    public class FALSE {
-    }
 }

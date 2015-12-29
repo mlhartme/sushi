@@ -117,7 +117,7 @@ public class WebdavRoot implements Root<WebdavNode> {
         return new WebdavNode(this, path, encodedQuery, false);
     }
 
-    private final List<WebdavConnection> pool = new ArrayList<WebdavConnection>();
+    private final List<WebdavConnection> pool = new ArrayList<>();
     private int allocated = 0;
 
     public synchronized WebdavConnection allocate() throws IOException {
@@ -193,16 +193,13 @@ public class WebdavRoot implements Root<WebdavNode> {
                 conn.sendRequestEntity((HttpEntityEnclosingRequest) request);
             }
             conn.flush();
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             free(null, conn);
             throw e;
         } catch (HttpException e) {
             free(null, conn);
             // TODO
           	throw new IOException(e);
-        } catch (RuntimeException e) {
-            free(null, conn);
-            throw e;
         }
     }
 
@@ -220,16 +217,13 @@ public class WebdavRoot implements Root<WebdavNode> {
                 statuscode = response.getStatusLine().getStatusCode();
             } while (response == null || statuscode < HttpStatus.SC_OK);
             return response;
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             free(response, conn);
             throw e;
         } catch (HttpException e) {
             free(response, conn);
             // TODO
           	throw new IOException(e);
-        } catch (RuntimeException e) {
-            free(response, conn);
-            throw e;
         }
     }
 

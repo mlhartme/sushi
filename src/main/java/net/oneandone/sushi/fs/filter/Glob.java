@@ -38,18 +38,19 @@ public class Glob {
     /** @return Pattern or String */
     public static Object compile(String glob, boolean ignoreCase) {
     	StringBuilder regex;
-    	
-        if (glob.equals("**")) {
-            return STARSTAR;
-        } else if (glob.equals("*")) {
-            return STAR;
-        } else {
-        	regex = new StringBuilder();
-        	if (translate(glob, regex) && !ignoreCase) {
-        		return glob;
-        	} else {
-        		return doCompile(regex.toString(), ignoreCase);
-        	}
+
+        switch (glob) {
+            case "**":
+                return STARSTAR;
+            case "*":
+                return STAR;
+            default:
+                regex = new StringBuilder();
+                if (translate(glob, regex) && !ignoreCase) {
+                    return glob;
+                } else {
+                    return doCompile(regex.toString(), ignoreCase);
+                }
         }
     }
 

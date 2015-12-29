@@ -122,7 +122,7 @@ public abstract class Type {
         ComplexType complex;
         Type type;
         
-        result = new ArrayList<Type>();
+        result = new ArrayList<>();
         result.add(this);
         for (int i = 0; i < result.size(); i++) { // result grows!
             type = result.get(i);
@@ -148,7 +148,7 @@ public abstract class Type {
         schema.append(SCHEMA_HEAD);
         schema.append("  <xs:element name='").append(getName()).append("' type='").append(getSchemaTypeName()).append("'/>\n");
 
-        types = new HashSet<Type>();
+        types = new HashSet<>();
         addSchemaType(types, schema);
 
         schema.append("</xs:schema>");

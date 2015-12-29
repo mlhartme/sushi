@@ -92,7 +92,7 @@ public class ZipRoot implements Root<ZipNode> {
         separator = Filesystem.SEPARATOR_STRING;
         prefix = path.length() == 0 ? "" : path + separator;
         length = prefix.length();
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         while (e.hasMoreElements()) {
             entry = e.nextElement();
             name = entry.getName();

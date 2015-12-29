@@ -29,7 +29,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class DiffTest {
-    public static final void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         World world;
         String smallLeft;
         String smallRight;

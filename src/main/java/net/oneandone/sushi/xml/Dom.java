@@ -44,7 +44,7 @@ public class Dom {
         int max;
         Node node;
 
-        result = new ArrayList<Element>();
+        result = new ArrayList<>();
         nodes = parent.getChildNodes();
         max = nodes.getLength();
         for (i = 0; i < max; i++) {
@@ -99,7 +99,7 @@ public class Dom {
     public static List<Element> getChildElements(Element root, String ... steps) {
         List<Element> lst;
         
-        lst = new ArrayList<Element>();
+        lst = new ArrayList<>();
         doGetChildElements(root, steps, 0, lst);
         return lst;
     }
@@ -122,7 +122,7 @@ public class Dom {
         Node node;
         Element element;
 
-        result = new ArrayList<Element>();
+        result = new ArrayList<>();
         nodes = parent.getChildNodes();
         max = nodes.getLength();
         for (i = 0; i < max; i++) {

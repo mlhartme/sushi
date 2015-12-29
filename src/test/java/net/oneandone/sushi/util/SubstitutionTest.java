@@ -27,7 +27,7 @@ public class SubstitutionTest {
     private final Map<String, String> props;
 
     public SubstitutionTest() {
-        props = new HashMap<String, String>();
+        props = new HashMap<>();
         props.put("1", "one");
         props.put("2", "two");
 	}

@@ -18,6 +18,7 @@ package net.oneandone.sushi.metadata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Variable<T> {
@@ -50,7 +51,7 @@ public class Variable<T> {
         
         values = get();
         simple = simple();
-        result = new ArrayList<String>(values.size());
+        result = new ArrayList<>(values.size());
         for (T value : values) {
             result.add(simple.valueToString(value));
         }
@@ -58,7 +59,7 @@ public class Variable<T> {
     }
 
     public void set(T values) {
-        set(Arrays.asList(values));
+        set(Collections.singletonList(values));
     }
 
     public void set(List<T> values) {
@@ -74,7 +75,7 @@ public class Variable<T> {
         SimpleType simple;
         
         simple = simple();
-        values = new ArrayList<T>(strings.size());
+        values = new ArrayList<>(strings.size());
         for (String str : strings) {
             values.add((T) simple.stringToValue(str));
         }

@@ -27,7 +27,7 @@ public class DomTree extends Tree {
     private final List<Element> parents;
     
     public DomTree(Element root) {
-        parents = new ArrayList<Element>();
+        parents = new ArrayList<>();
         parents.add(root);
     }
 

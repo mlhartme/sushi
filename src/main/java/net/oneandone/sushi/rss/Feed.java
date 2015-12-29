@@ -45,7 +45,7 @@ public class Feed {
     }
 
     public Feed() {
-        channels = new ArrayList<Channel>();
+        channels = new ArrayList<>();
     }
 
     public List<Channel> channels() {

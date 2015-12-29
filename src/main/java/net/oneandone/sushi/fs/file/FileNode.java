@@ -406,8 +406,6 @@ public class FileNode extends Node {
 
     /**
      * Deletes a file or directory. Directories are deleted recursively. Handles Links.
-     *
-     * @throws IOException if a file cannot be deleted
      */
     @Override
     public FileNode deleteTree() throws DeleteException, NodeNotFoundException {

@@ -48,11 +48,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
             assertEquals(".", work.toString());
             assertEquals("foo", node.toString());
             work.getWorld().setWorking(null);
-            if (node instanceof FileNode) {
-                assertEquals(((FileNode) node).toPath().toString(), node.toString());
-            } else {
-                assertEquals(node.getURI().toString(), node.toString());
-            }
+            assertEquals(((FileNode) node).toPath().toString(), node.toString());
         } finally {
             work.getWorld().setWorking(orig);
         }

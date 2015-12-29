@@ -47,11 +47,11 @@ public class ReflectSchema extends Schema {
             } else if (field.isSynthetic()) {
                 item = null;  // e.g. this$0
             } else if (fieldType.isArray()) {
-                item = new ArrayItem<Object>(field, type(fieldType.getComponentType()));
+                item = new ArrayItem<>(field, type(fieldType.getComponentType()));
             } else if (Collection.class.isAssignableFrom(fieldType)) {
                 item = new CollectionItem(field, type(Object.class));
             } else {
-                item = new ValueItem<Object>(field, type(fieldType));
+                item = new ValueItem<>(field, type(fieldType));
             }
             if (item != null) {
                 type.items().add(item);

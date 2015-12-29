@@ -147,7 +147,7 @@ public class CopyDiffTest {
         world = new World();
         src = world.guessProjectHome(getClass()).join("src/test/template");
         dest = world.getTemp().createTempDirectory().join("dest").mkdir();
-        context = new HashMap<String, String>();
+        context = new HashMap<>();
         context.put("var", "value");
         context.put("name", "foo");
         foo = new CopyExt(src, context);
@@ -208,7 +208,7 @@ public class CopyDiffTest {
         private List<Map<String, String>> ctx(Map<String, String> parent, String name) {
             List<Map<String, String>> result;
             
-            result = new ArrayList<Map<String, String>>();
+            result = new ArrayList<>();
             result.add(map(parent, name, 1));
             result.add(map(parent, name, 2));
             return result;
@@ -217,7 +217,7 @@ public class CopyDiffTest {
         private static Map<String, String> map(Map<String, String> parent, String name, int n) {
             Map<String, String> result;
             
-            result = new HashMap<String, String>(parent);
+            result = new HashMap<>(parent);
             result.put(name, Integer.toString(n));
             return result;
         }

@@ -112,8 +112,7 @@ public class NetRcTest {
     private InputStreamReader newInputStreamReader(final String netrc) {
         final ByteArrayInputStream inBytes = new ByteArrayInputStream(
                 netrc.getBytes(Charset.forName("utf-8")));
-        InputStreamReader in = new InputStreamReader(inBytes);
-        return in;
+        return new InputStreamReader(inBytes);
     }
 
 }

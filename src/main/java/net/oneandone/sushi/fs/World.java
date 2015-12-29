@@ -437,7 +437,7 @@ public class World {
     public List<FileNode> path(String path) throws URISyntaxException, NodeInstantiationException {
         List<FileNode> result;
 
-        result = new ArrayList<FileNode>();
+        result = new ArrayList<>();
         for (String str: os.listSeparator.split(path)) {
             result.add(file(str));
         }
@@ -457,7 +457,7 @@ public class World {
     public List<Node> uripath(String path) throws URISyntaxException, NodeInstantiationException {
         List<Node> result;
 
-        result = new ArrayList<Node>();
+        result = new ArrayList<>();
         for (String str: os.listSeparator.split(path)) {
             result.add(node(str));
         }

@@ -27,8 +27,8 @@ public class TreeAction implements Action {
     private Tree result;
     
     public TreeAction() {
-        this.nodes = new ArrayList<Node>();
-        this.trees = new ArrayList<Tree>();
+        this.nodes = new ArrayList<>();
+        this.trees = new ArrayList<>();
     }
     
     public void enter(Node node, boolean isLink) {

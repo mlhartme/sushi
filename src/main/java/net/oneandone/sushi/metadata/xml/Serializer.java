@@ -90,11 +90,11 @@ public class Serializer {
         List<Item<?>> items;
         int idx;
         
-        closureTypes = new ArrayList<Type>();
+        closureTypes = new ArrayList<>();
         closureTypes.add(rootType);
-        closureObjects = new ArrayList<Object>();
+        closureObjects = new ArrayList<>();
         closureObjects.add(rootObject);
-        result = new ArrayList<Object>();
+        result = new ArrayList<>();
         for (int i = 0; i < closureObjects.size(); i++) { // size grows
             obj = closureObjects.get(i);
             type = closureTypes.get(i);

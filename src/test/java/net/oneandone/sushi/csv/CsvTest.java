@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -87,7 +88,7 @@ public class CsvTest {
         assertEquals(lines.length, csv.size());
         for (int i = 0; i < lines.length; i++) {
             assertEquals(1, csv.get(i).size());
-            assertEquals(Arrays.asList(lines[i]), csv.get(i).get(0));
+            assertEquals(Collections.singletonList(lines[i]), csv.get(i).get(0));
         }
     }
 }

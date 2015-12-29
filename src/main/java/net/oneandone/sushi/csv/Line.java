@@ -35,7 +35,7 @@ public class Line {
     private final List<List<String>> cells;
     
     public Line() {
-        this.cells = new ArrayList<List<String>>();
+        this.cells = new ArrayList<>();
     }
     
     public boolean equalsAfter(int ofs, Line line) {
@@ -60,7 +60,7 @@ public class Line {
     public List<String> add() {
         List<String> cell;
         
-        cell = new ArrayList<String>();
+        cell = new ArrayList<>();
         cells.add(cell);
         return cell;
     }

@@ -41,10 +41,10 @@ public class Path {
         Collection<Instance<?>> tmp;
         Item item;
 
-        current = new ArrayList<Instance<?>>();
+        current = new ArrayList<>();
         current.add(context);
         for (Step step : steps()) {
-            next = new ArrayList<Instance<?>>();
+            next = new ArrayList<>();
             for (Instance<?> pos : current) {
                 if (!(pos.getType() instanceof ComplexType)) {
                     throw new PathException("complex type expected: " + pos.getType());
@@ -119,9 +119,9 @@ public class Path {
                 if (step.idx != -1) {
                     throw new PathException("index in last step is not supported: " + path);
                 }
-                return new Variable<Object>(parent, item);
+                return new Variable<>(parent, item);
             }
-            children = new ArrayList<Object>(item.get(parent));
+            children = new ArrayList<>(item.get(parent));
             if (step.idx == -1) {
                 switch (children.size()) {
                     case 0:
@@ -147,14 +147,14 @@ public class Path {
                 }
                 child = children.get(step.idx);
             }
-            current = new Instance<Object>(item.getType(), child);
+            current = new Instance<>(item.getType(), child);
         }
     }
 
     private List<Object> addNew(Object parent, Item<Object> item, int count) {
         List<Object> children;
 
-        children = new ArrayList<Object>(item.get(parent));
+        children = new ArrayList<>(item.get(parent));
         do {
             children.add(item.getType().newInstance());
         } while (--count > 0);
@@ -172,7 +172,7 @@ public class Path {
     protected List<Step> steps() {
         List<Step> result;
 
-        result = new ArrayList<Step>();
+        result = new ArrayList<>();
         for (String step : Filesystem.SEPARATOR.split(path)) {
             result.add(Step.parse(step));
         }

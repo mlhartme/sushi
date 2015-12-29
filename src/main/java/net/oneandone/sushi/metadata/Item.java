@@ -158,7 +158,7 @@ public abstract class Item<T> {
     public void setOne(Object dest, T value) {
         List<T> lst;
         
-        lst = new ArrayList<T>();
+        lst = new ArrayList<>();
         lst.add(value);
         set(dest, lst);
     }

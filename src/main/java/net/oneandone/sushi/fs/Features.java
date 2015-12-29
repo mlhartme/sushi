@@ -36,7 +36,7 @@ public class Features {
     public final boolean atomicMkfile;
     public final boolean atomicMkdir;
 
-    /** true, when writeTo is more efficient than newInputStream and read */
+    /** true, when readFrom/writeTo are more efficient than using newInputStream/newOutputStream */
     public final boolean inverseIO;
 
     public Features(boolean write, boolean nativeMove, boolean links, boolean modes, boolean atomicMkfile,

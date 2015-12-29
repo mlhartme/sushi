@@ -150,6 +150,7 @@ public abstract class Node {
      */
     public abstract long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
 
+    /* writeTo implementation with streams */
     public long writeToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         long result;
 
@@ -630,12 +631,21 @@ public abstract class Node {
      * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
-        try (InputStream in = newInputStream()) {
-            getWorld().getBuffer().copy(in, dest);
-            return dest;
+        try {
+            if (getRoot().getFilesystem().getFeatures().inverseIO) {
+                try (OutputStream out = dest.newOutputStream()) {
+                    writeTo(out);
+                }
+            } else {
+                try (InputStream in = newInputStream()) {
+                    getWorld().getBuffer().copy(in, dest);
+                    return dest;
+                }
+            }
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
         }
+        return this;
     }
 
     /**

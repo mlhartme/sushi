@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs;
 
+import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.fs.multi.DirectoryTarget;
 import net.oneandone.sushi.fs.multi.Function;
 import net.oneandone.sushi.fs.multi.Invoker;
@@ -1195,6 +1196,23 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         a.writeString("123");
         a.copyFile(b);
         assertEquals("123", b.readString());
+    }
+
+    // test copyFile between a file file and the file under test
+    @Test
+    public void copyFileFile() throws IOException {
+        final String text = "hello";
+        FileNode file;
+        Node test;
+
+        file = work.getWorld().getTemp().createTempFile();
+        file.writeString(text);
+        test = work.join("test");
+        file.copyFile(test);
+        assertEquals(text, test.readString());
+        file.deleteFile();
+        test.copyFile(file);
+        assertEquals(text, file.readString());
     }
 
     @Test

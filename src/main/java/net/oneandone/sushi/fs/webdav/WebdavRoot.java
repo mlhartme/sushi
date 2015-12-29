@@ -16,7 +16,6 @@
 package net.oneandone.sushi.fs.webdav;
 
 import net.oneandone.sushi.fs.Root;
-import net.oneandone.sushi.util.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -36,6 +35,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class WebdavRoot implements Root<WebdavNode> {
@@ -66,7 +66,7 @@ public class WebdavRoot implements Root<WebdavNode> {
     }
 
     public void setCredentials(String username, String password) {
-    	authorization = "Basic " + new Base64(true).run(username + ":" + password);
+    	authorization = "Basic " + Base64.getEncoder().encodeToString(filesystem.getWorld().getSettings().bytes(username + ":" + password));
     }
 
     public int getConnectionTimeout() {

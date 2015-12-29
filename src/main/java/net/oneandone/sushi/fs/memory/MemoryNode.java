@@ -198,6 +198,7 @@ public class MemoryNode extends Node {
         } catch (ExistsException e) {
             throw new DeleteException(this, e);
         }
+        root.free(this);
         type = Type.NONE;
         return this;
     }

@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.memory;
 
+import net.oneandone.sushi.fs.DeleteException;
+import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.Root;
@@ -38,8 +40,8 @@ public class MemoryRoot implements Root<MemoryNode> {
     public MemoryRoot(MemoryFilesystem filesystem, int id) {
         this.filesystem = filesystem;
         this.id = id;
-        this.nodes = new HashMap<String, MemoryNode>();
-        this.store = new HashMap<String, Object>();
+        this.nodes = new HashMap<>();
+        this.store = new HashMap<>();
         add(new MemoryNode(this, "", Type.DIRECTORY));
     }
 
@@ -68,7 +70,16 @@ public class MemoryRoot implements Root<MemoryNode> {
     public void add(MemoryNode node) {
         nodes.put(node.getPath(), node);
     }
-    
+
+    public void free(MemoryNode node) throws FileNotFoundException, DeleteException {
+        Object previous;
+
+        previous = store.remove(node.getPath());
+        if (previous instanceof FileNode) {
+            ((FileNode) previous).deleteFile();
+        }
+    }
+
     public long length(String path) throws SizeException {
         Object obj;
 

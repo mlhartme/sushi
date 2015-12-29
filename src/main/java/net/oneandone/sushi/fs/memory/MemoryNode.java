@@ -26,6 +26,7 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
+import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.WriteToException;
@@ -268,6 +269,10 @@ public class MemoryNode extends Node {
 
     public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         return copyFileToImpl(dest, skip);
+    }
+
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
+        copyFileFromImpl(dest);
     }
 
     @Override

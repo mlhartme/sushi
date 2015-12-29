@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
+import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.WriteToException;
 
@@ -69,6 +70,10 @@ public class ConsoleNode extends Node {
     }
 
     public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+        throw new UnsupportedOperationException();
+    }
+
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
         throw new UnsupportedOperationException();
     }
 

@@ -129,6 +129,8 @@ public abstract class Node {
         };
     }
 
+    //-- copyFileTo
+
     /**
      * Concenience method for <code>copyFileTo(dest, 0)</code>.
      *
@@ -190,6 +192,26 @@ public abstract class Node {
         }
         return false;
     }
+
+    //-- copyFileFrom
+
+    /**
+     * This is the core function to write an ssh node. Does not close src.
+     */
+    public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, ReadFromException;
+
+    /* writeTo implementation with streams */
+    public long copyFileFromImpl(InputStream src) throws FileNotFoundException, ReadFromException {
+        try (OutputStream dest = newOutputStream()) {
+            return getWorld().getBuffer().copy(src, dest);
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new ReadFromException(this, e);
+        }
+    }
+
+    //--
 
     public OutputStream newOutputStream() throws FileNotFoundException, NewOutputStreamException {
         return newOutputStream(false);

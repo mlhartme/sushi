@@ -736,6 +736,7 @@ public class SshNode extends Node {
         }
     }
 
+    @Override
     public void copyFileFrom(InputStream src) throws ReadFromException {
         copyFileFrom(src, false);
     }

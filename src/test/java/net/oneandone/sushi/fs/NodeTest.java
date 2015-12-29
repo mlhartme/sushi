@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -442,26 +443,41 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("some data", file.readString());
     }
 
-    //-- writeTo
+    //-- copyFileTo/from
 
     @Test(expected = IOException.class)
-    public void writeToNoneExisting() throws IOException {
+    public void copyFileToNoneExisting() throws IOException {
         work.join("nosuchfile").copyFileTo(new ByteArrayOutputStream());
+    }
+    @Test(expected = IOException.class)
+    public void copyFileFromNoneExisting() throws IOException {
+        work.join("nosuchfile").copyFileFrom(new ByteArrayInputStream(new byte[]{}));
     }
 
     @Test(expected = IOException.class)
-    public void writeToDirectory() throws IOException {
+    public void copyFileToDirectory() throws IOException {
         work.join("dir").mkdir().copyFileTo(new ByteArrayOutputStream());
     }
 
-    @Test
-    public void writeToFile() throws IOException {
-        checkWriteTo();
-        checkWriteTo((byte) 1);
-        checkWriteTo((byte) 2, (byte) 3);
+    @Test(expected = IOException.class)
+    public void copyFileFromDirectory() throws IOException {
+        work.join("dir").mkdir().copyFileFrom(new ByteArrayInputStream(new byte[]{}));
     }
 
-    private void checkWriteTo(byte ... bytes) throws IOException {
+
+    @Test
+    public void copyFileToFrom() throws IOException {
+        checkCopyFileToFrom();
+        checkCopyFileToFrom((byte) 1);
+        checkCopyFileToFrom((byte) 2, (byte) 3);
+    }
+
+    private void checkCopyFileToFrom(byte ... bytes) throws IOException {
+        doCheckCopyFileTo(bytes);
+        doCheckCopyFileFrom(bytes);
+    }
+
+    private void doCheckCopyFileTo(byte ... bytes) throws IOException {
         Node file;
         CheckedByteArrayOutputStream dest;
 
@@ -489,6 +505,15 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals(0, file.copyFileTo(dest, bytes.length + 3));
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
+    }
+
+    private void doCheckCopyFileFrom(byte ... bytes) throws IOException {
+        Node file;
+        CheckedByteArrayOutputStream dest;
+
+        file = work.join("foo");
+        file.copyFileFrom(new ByteArrayInputStream(bytes));
+        assertEquals(bytes, file.readBytes());
     }
 
     @Test

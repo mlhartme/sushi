@@ -27,6 +27,7 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
+import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.WriteToException;
@@ -255,8 +256,8 @@ public class SvnNode extends Node {
                 public void close() throws IOException {
                     super.close();
                     try {
-                        copyFileFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
-                    } catch (SVNException e) {
+                        copyFileFrom(new ByteArrayInputStream(toByteArray()));
+                    } catch (ReadFromException e) {
                         throw new IOException("close failed", e);
                     }
                 }
@@ -435,6 +436,16 @@ public class SvnNode extends Node {
     public void setLastModified(long millis) throws SetLastModifiedException {
         throw new SetLastModifiedException(this);
     }
+
+    /** @return revision */
+    public void copyFileFrom(InputStream content) throws ReadFromException {
+        try {
+            copyFileFrom(content, root.getComment());
+        } catch (SVNException e) {
+            throw new ReadFromException(this, e);
+        }
+    }
+
 
     /** @return revision */
     public long copyFileFrom(InputStream content, String comment) throws SVNException {

@@ -27,7 +27,7 @@ import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.LinkException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
@@ -39,7 +39,6 @@ import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.ReadFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
-import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.WriteToException;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
@@ -47,7 +46,6 @@ import net.oneandone.sushi.launcher.ExitCode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -149,7 +147,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public long length() throws LengthException {
+    public long size() throws SizeException {
         ChannelSftp sftp;
         SftpATTRS attrs;
 
@@ -158,14 +156,14 @@ public class SshNode extends Node {
             try {
                 attrs = sftp.stat(escape(slashPath));
                 if (attrs.isDir()) {
-                    throw new LengthException(this, new IOException("file expected"));
+                    throw new SizeException(this, new IOException("file expected"));
                 }
                 return attrs.getSize();
             } finally {
                 free(sftp);
             }
         } catch (SftpException | JSchException e) {
-            throw new LengthException(this, e);
+            throw new SizeException(this, e);
         }
     }
 

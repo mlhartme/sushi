@@ -23,7 +23,7 @@ import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.Node;
@@ -372,16 +372,16 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public long length() throws LengthException {
+    public long size() throws SizeException {
         SVNDirEntry entry;
         try {
             entry = root.getRepository().info(path, -1);
             if (entry == null || entry.getKind() != SVNNodeKind.FILE) {
-                throw new LengthException(this, new IOException("file expected"));
+                throw new SizeException(this, new IOException("file expected"));
             }
             return entry.getSize();
         } catch (SVNException e) {
-            throw new LengthException(this, e);
+            throw new SizeException(this, e);
         }
     }
 

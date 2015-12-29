@@ -20,7 +20,7 @@ import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
@@ -70,12 +70,12 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public long length() throws LengthException {
+    public long size() throws SizeException {
         ZipEntry entry;
 
         entry = root.getZip().getEntry(path);
         if (entry == null) {
-            throw new LengthException(this, new IOException("file expected"));
+            throw new SizeException(this, new IOException("file expected"));
         }
         return entry.getSize();
     }

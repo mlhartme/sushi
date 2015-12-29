@@ -61,7 +61,7 @@ public class TextTarget {
         this.bytes = file.readBytes();
         this.string = file.readString();
         this.lines = file.readLines();
-        this.length = file.length();
+        this.length = file.size();
         this.lastModified = file.getLastModified();
         this.md5 = file.md5();
     }
@@ -88,7 +88,7 @@ public class TextTarget {
     }
 
     public void length() throws IOException {
-        assertEquals(length, file.length());
+        assertEquals(length, file.size());
     }
 
     public void lastModified() throws IOException {

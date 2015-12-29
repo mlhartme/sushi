@@ -124,7 +124,7 @@ public class ConsoleNode extends Node {
     }
 
     @Override
-    public long length() {
+    public long size() {
         throw unsupported("length()");
     }
 

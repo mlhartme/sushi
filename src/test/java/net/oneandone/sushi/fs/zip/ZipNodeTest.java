@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.zip;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
@@ -169,7 +169,7 @@ public class ZipNodeTest {
         node.readBytes();
     }
 
-    @Test(expected=LengthException.class)
+    @Test(expected=SizeException.class)
     public void lengthNoneExisting() throws IOException {
         FileNode jar;
         Node node;
@@ -177,7 +177,7 @@ public class ZipNodeTest {
         jar = world.locateClasspathItem(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
-        node.length();
+        node.size();
     }
 
     @Test

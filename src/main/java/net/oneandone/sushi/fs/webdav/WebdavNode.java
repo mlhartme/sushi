@@ -22,7 +22,7 @@ import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
@@ -142,7 +142,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public long length() throws LengthException {
+    public long size() throws SizeException {
         boolean oldTryDir;
         Property property;
 
@@ -153,7 +153,7 @@ public class WebdavNode extends Node {
                 property = getProperty(Name.GETCONTENTLENGTH);
             } catch (IOException e) {
                 tryDir = oldTryDir;
-                throw new LengthException(this, e);
+                throw new SizeException(this, e);
             }
             return Long.parseLong((String) property.getValue());
         }

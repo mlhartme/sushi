@@ -143,7 +143,7 @@ public class WorldTest {
         node = new World().resource("org/junit/Assert.class");
         assertTrue(node instanceof ZipNode);
         assertTrue(node.isFile());
-        assertEquals(node.length(), node.readBytes().length);
+        assertEquals(node.size(), node.readBytes().length);
     }
 
     @Test(expected=FileNotFoundException.class)

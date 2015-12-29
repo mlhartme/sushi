@@ -15,7 +15,6 @@
  */
 package net.oneandone.sushi.fs;
 
-import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.fs.multi.DirectoryTarget;
 import net.oneandone.sushi.fs.multi.Function;
 import net.oneandone.sushi.fs.multi.Invoker;
@@ -392,25 +391,25 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("file");
         file.writeBytes();
-        assertEquals(0, file.length());
+        assertEquals(0, file.size());
         file.writeBytes((byte) 1, (byte) 2, (byte) 3);
-        assertEquals(3, file.length());
+        assertEquals(3, file.size());
     }
 
-    @Test(expected=LengthException.class)
+    @Test(expected=SizeException.class)
     public void lengthDirectory() throws IOException {
         Node dir;
 
         dir = work.join("dir");
         dir.mkdir();
-        dir.length();
+        dir.size();
     }
-    @Test(expected=LengthException.class)
+    @Test(expected=SizeException.class)
     public void lengthNotFound() throws IOException {
         Node dir;
 
         dir = work.join("dir");
-        dir.length();
+        dir.size();
     }
 
     @Test
@@ -421,7 +420,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("foo").writeBytes(data1);
         data = file.readBytes();
-        assertEquals(0L, file.length());
+        assertEquals(0L, file.size());
         assertNotNull(data);
         assertEquals(0, data.length);
     }
@@ -437,7 +436,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("foo").writeString("some data");
         assertEquals("some data", file.readString());
-        assertEquals(9L, file.length());
+        assertEquals(9L, file.size());
         // read again
         assertEquals("some data", file.readString());
     }

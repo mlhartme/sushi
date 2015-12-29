@@ -24,7 +24,7 @@ import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.LinkException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
@@ -112,8 +112,7 @@ public class FileNode extends Node {
     }
 
     /**
-     * Avoid calling this method in your code. Should only be used to interact with libs that do not
-     * Sushi (File) Nodes.
+     * Avoid calling this method in your code. Should only be used to interact with code that does not know Sushi (File) Nodes.
      */
     public Path toPath() {
         return path;
@@ -195,12 +194,12 @@ public class FileNode extends Node {
 
 
     @Override
-    public long length() throws LengthException {
+    public long size() throws SizeException {
         try {
             checkFile();
             return Files.size(path);
         } catch (IOException e) {
-            throw new LengthException(this, e);
+            throw new SizeException(this, e);
         }
     }
 
@@ -441,7 +440,7 @@ public class FileNode extends Node {
     @Override
     public boolean diff(Node right, Buffer rightBuffer) throws IOException {
         if (right instanceof FileNode) {
-            if (length() != right.length()) {
+            if (size() != right.size()) {
                 return true;
             }
         }

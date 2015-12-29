@@ -22,7 +22,7 @@ import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.GetLastModifiedException;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.LinkException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
@@ -74,8 +74,8 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public long length() throws LengthException {
-        return node.length();
+    public long size() throws SizeException {
+        return node.size();
     }
 
     @Override

@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.memory;
 
 import net.oneandone.sushi.fs.Filesystem;
-import net.oneandone.sushi.fs.LengthException;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayInputStream;
@@ -69,12 +69,12 @@ public class MemoryRoot implements Root<MemoryNode> {
         nodes.put(node.getPath(), node);
     }
     
-    public long length(String path) throws LengthException {
+    public long length(String path) throws SizeException {
         Object obj;
 
         obj = store.get(path);
         if (obj instanceof FileNode) {
-            return ((FileNode) obj).length();
+            return ((FileNode) obj).size();
         } else {
             return ((byte[]) obj).length;
         }

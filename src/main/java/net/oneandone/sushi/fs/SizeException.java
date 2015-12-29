@@ -15,8 +15,8 @@
  */
 package net.oneandone.sushi.fs;
 
-public class LengthException extends NodeException {
-    public LengthException(Node node, Throwable cause) {
-        super(node, "length failed", cause);
+public class SizeException extends NodeException {
+    public SizeException(Node node, Throwable cause) {
+        super(node, "size failed", cause);
     }
 }

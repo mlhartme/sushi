@@ -274,7 +274,7 @@ public abstract class Node {
     //-- status methods
 
     /** Throws a LengthException if this node is not a file. */
-    public abstract long length() throws LengthException;
+    public abstract long size() throws SizeException;
 
     /**
      * Tests if this is a file, directory or link.
@@ -321,6 +321,7 @@ public abstract class Node {
         return path.substring(path.lastIndexOf(Filesystem.SEPARATOR_CHAR) + 1);
     }
 
+    /** @return last extension of the file name, without the dot. */
     public String getExtension() {
         String name;
         int idx;

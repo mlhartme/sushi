@@ -17,8 +17,8 @@ Note that Sushi releases are not necessarily backward compatible. In particular,
 * [Maven Site](http://mlhartme.github.com/sushi/)
 * [Tests](https://github.com/mlhartme/sushi/wiki/Tests)
 
-Prerequisites
--------------
+
+# Prerequisites
 
 * Linux or Mac OS (Windows might do, but it's untested)
 * Java 7

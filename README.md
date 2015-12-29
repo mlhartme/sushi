@@ -21,7 +21,7 @@ Note that Sushi releases are not necessarily backward compatible. In particular,
 ## Prerequisites
 
 * Linux or Mac OS (Windows might do, but it's untested)
-* Java 7
+* Java 8
 * if you want to build Sushi: Maven 3
 
 ## Usage
@@ -31,7 +31,7 @@ Sushi is available from Maven Central. To use it in a Maven project, add this de
     <dependency>
       <groupId>net.oneandone</groupId>
       <artifactId>sushi</artifactId>
-      <version>2.8.18</version>
+      <version>2.9.0</version>
     </dependency>
 
 ## Optional Dependencies

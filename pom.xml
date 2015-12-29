@@ -3,7 +3,7 @@
   <parent>
     <groupId>net.oneandone.maven.poms</groupId>
     <artifactId>foss-parent</artifactId>
-    <version>1.5.7</version>
+    <version>1.5.9</version>
     <relativePath />
   </parent>
 
@@ -33,7 +33,7 @@
     <!-- TODO: fails with Java 8 -->
     <findbugs.skip>true</findbugs.skip>
 
-    <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
+    <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
     <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
     <surefire.forkCount>0</surefire.forkCount>
   </properties>

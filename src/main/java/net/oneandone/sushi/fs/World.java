@@ -91,7 +91,7 @@ public class World {
 
     /** Intentionally not a file -- see Tempfiles for a rationale */
     private FileNode temp;
-    private Node working;
+    private FileNode working;
 
     private final List<String> defaultExcludes;
 
@@ -141,12 +141,12 @@ public class World {
     }
 
     /** Current working directory. May be null. Use during node creation to resolve relative URIs and in Node.toString(). */
-    public Node getWorking() {
+    public FileNode getWorking() {
         return working;
     }
 
     /** current working directory */
-    public World setWorking(Node working) {
+    public World setWorking(FileNode working) {
         this.working = working;
         return this;
     }

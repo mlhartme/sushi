@@ -16,6 +16,7 @@
 package net.oneandone.sushi.fs.file;
 
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeTest;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
@@ -36,6 +37,28 @@ public class FileNodeTest extends NodeTest<FileNode> {
     }
 
     @Test
+    public void toStr() {
+        FileNode orig;
+        Node node;
+
+        orig = work.getWorld().getWorking();
+        try {
+            work.getWorld().setWorking(work);
+            node = work.join("foo");
+            assertEquals(".", work.toString());
+            assertEquals("foo", node.toString());
+            work.getWorld().setWorking(null);
+            if (node instanceof FileNode) {
+                assertEquals(((FileNode) node).toPath().toString(), node.toString());
+            } else {
+                assertEquals(node.getURI().toString(), node.toString());
+            }
+        } finally {
+            work.getWorld().setWorking(orig);
+        }
+    }
+
+    @Test
     public void fileConstructor() {
         assertEquals(WORLD.getHome(), WORLD.file(System.getProperty("user.home")));
         assertEquals(work.getPath(), WORLD.file(work.getAbsolute() + "/").getPath());
@@ -52,7 +75,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
     public void relativeFile() throws IOException {
         FileNode file;
 
-        assertEquals(((FileNode) WORLD.getWorking()).toPath(), new File(".").getCanonicalFile().toPath());
+        assertEquals((WORLD.getWorking()).toPath(), new File(".").getCanonicalFile().toPath());
         file = WORLD.file("foo");
         assertEquals("foo", file.toString());
         assertEquals(WORLD.getWorking(), file.getParent());

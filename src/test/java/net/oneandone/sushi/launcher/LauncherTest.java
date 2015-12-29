@@ -108,7 +108,7 @@ public class LauncherTest {
         }
         stdout = new StringWriter();
         stderr = new StringWriter();
-        new Launcher((FileNode) WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
+        new Launcher(WORLD.getWorking(), "bash", "-c", "echo std && echo err 1>&2").exec(stdout, stderr);
         assertEquals("std", stdout.toString().trim());
         assertEquals("err", stderr.toString().trim());
     }

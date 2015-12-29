@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.webdav;
 
 import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -419,7 +419,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException, FileNotFoundException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException, FileNotFoundException {
         byte[] add;
         final Put method;
         final WebdavConnection connection;
@@ -430,7 +430,7 @@ public class WebdavNode extends Node {
                 throw new FileNotFoundException(this);
             }
         } catch (ExistsException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
         try {
             if (append) {
@@ -464,7 +464,7 @@ public class WebdavNode extends Node {
             }
             return result;
         } catch (IOException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
     }
 

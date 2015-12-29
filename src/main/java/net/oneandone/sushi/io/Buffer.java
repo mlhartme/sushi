@@ -147,7 +147,7 @@ public class Buffer {
     public long copy(InputStream in, Node dest) throws IOException {
         long result;
 
-        try (OutputStream out = dest.createOutputStream()) {
+        try (OutputStream out = dest.newOutputStream()) {
             result = copy(in, out);
         }
         return result;

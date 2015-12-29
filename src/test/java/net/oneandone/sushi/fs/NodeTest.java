@@ -727,7 +727,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("existing");
         file.writeString("foo");
-        file.createOutputStream().close();
+        file.newOutputStream().close();
         assertEquals("", file.readString());
     }
 
@@ -737,7 +737,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("existing");
         file.mkdir();
-        file.createOutputStream();
+        file.newOutputStream();
     }
     @Test
     public void inputAlreadyClosed() throws IOException {
@@ -776,7 +776,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public void outputAlreadyClosed() throws IOException {
         OutputStream out;
 
-        out = work.join("file").createOutputStream();
+        out = work.join("file").newOutputStream();
         out.write(1);
         out.close();
         try {
@@ -793,7 +793,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public void outputClosedTwice() throws IOException {
         OutputStream out;
 
-        out = work.join("file").createOutputStream();
+        out = work.join("file").newOutputStream();
         out.write(1);
         out.close();
         out.close();
@@ -810,9 +810,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         node1 = work.join("1");
         node2 = work.join("2");
-        out1 = node1.createOutputStream();
+        out1 = node1.newOutputStream();
         out1.write('a');
-        out2 = node2.createOutputStream();
+        out2 = node2.newOutputStream();
         out2.write('1');
         out2.write('2');
         out1.write('b');

@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.svn;
 
 import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -205,7 +205,7 @@ public class SvnNode extends Node {
 
         try {
             tmp = getWorld().getTemp().createTempFile();
-            try (OutputStream dest = tmp.createOutputStream()) {
+            try (OutputStream dest = tmp.newOutputStream()) {
                 writeTo(dest);
             }
         } catch (FileNotFoundException e) {
@@ -230,7 +230,7 @@ public class SvnNode extends Node {
 
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws CreateOutputStreamException, FileNotFoundException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException, FileNotFoundException {
         byte[] add;
 
         try {
@@ -238,7 +238,7 @@ public class SvnNode extends Node {
                 throw new FileNotFoundException(this);
             }
         } catch (ExistsException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
         try {
             if (append) {
@@ -262,7 +262,7 @@ public class SvnNode extends Node {
                 }
             };
         } catch (IOException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
     }
 

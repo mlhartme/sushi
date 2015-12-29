@@ -21,7 +21,7 @@ import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -661,7 +661,7 @@ public class SshNode extends Node {
 
         try {
             tmp = getWorld().getTemp().createTempFile();
-            try (OutputStream dest = tmp.createOutputStream()) {
+            try (OutputStream dest = tmp.newOutputStream()) {
                 writeTo(dest);
             }
         } catch (FileNotFoundException e) {
@@ -673,13 +673,13 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(final boolean append) throws FileNotFoundException, CreateOutputStreamException {
+    public OutputStream newOutputStream(final boolean append) throws FileNotFoundException, NewOutputStreamException {
         try {
             if (isDirectory()) {
                 throw new FileNotFoundException(this);
             }
         } catch (ExistsException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
         return new CheckedByteArrayOutputStream() {
             @Override

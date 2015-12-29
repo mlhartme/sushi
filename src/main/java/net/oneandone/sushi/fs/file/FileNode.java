@@ -17,7 +17,7 @@ package net.oneandone.sushi.fs.file;
 
 import net.oneandone.sushi.archive.Archive;
 import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -267,7 +267,7 @@ public class FileNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException {
+    public OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException {
         try {
             if (append) {
                 return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
@@ -278,7 +278,7 @@ public class FileNode extends Node {
             if (isDirectory()) {
                 throw new FileNotFoundException(this, e);
             }
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
     }
 

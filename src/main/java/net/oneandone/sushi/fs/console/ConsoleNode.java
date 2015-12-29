@@ -74,7 +74,7 @@ public class ConsoleNode extends Node {
 
     /** @param append is ignored */
     @Override
-    public OutputStream createOutputStream(boolean append) {
+    public OutputStream newOutputStream(boolean append) {
         return System.out;
     }
 

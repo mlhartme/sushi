@@ -190,11 +190,11 @@ public abstract class Node {
         return false;
     }
 
-    public OutputStream createOutputStream() throws FileNotFoundException, CreateOutputStreamException {
-        return createOutputStream(false);
+    public OutputStream newOutputStream() throws FileNotFoundException, NewOutputStreamException {
+        return newOutputStream(false);
     }
-    public OutputStream createAppendStream() throws FileNotFoundException, CreateOutputStreamException {
-        return createOutputStream(true);
+    public OutputStream newAppendStream() throws FileNotFoundException, NewOutputStreamException {
+        return newOutputStream(true);
     }
 
     /**
@@ -202,7 +202,7 @@ public abstract class Node {
      * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
      * @throws FileNotFoundException if this node is a directory
      */
-    public abstract OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException;
+    public abstract OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException;
 
     /**
      * Lists child nodes of this node.
@@ -520,7 +520,7 @@ public abstract class Node {
 
     public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
         try (InputStream in = newInputStream();
-             OutputStream out = dest.createOutputStream()) {
+             OutputStream out = dest.newOutputStream()) {
             transformer.transform(new StreamSource(in), new StreamResult(out));
         }
     }
@@ -808,7 +808,7 @@ public abstract class Node {
     }
 
     public ObjectOutputStream createObjectOutputStream() throws IOException {
-        return new ObjectOutputStream(createOutputStream());
+        return new ObjectOutputStream(newOutputStream());
     }
 
     public Node writeBytes(byte ... bytes) throws IOException {
@@ -820,7 +820,7 @@ public abstract class Node {
     }
 
     public Node writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
-        try (OutputStream out = createOutputStream(append)) {
+        try (OutputStream out = newOutputStream(append)) {
             out.write(bytes, ofs, len);
         }
         return this;
@@ -951,7 +951,7 @@ public abstract class Node {
 
     public void gzip(Node dest) throws IOException {
         try (InputStream in = newInputStream();
-             OutputStream rawOut = dest.createOutputStream();
+             OutputStream rawOut = dest.newOutputStream();
              OutputStream out = new GZIPOutputStream(rawOut)) {
             getWorld().getBuffer().copy(in, out);
         }
@@ -960,7 +960,7 @@ public abstract class Node {
     public void gunzip(Node dest) throws IOException {
         try (InputStream rawIn = newInputStream();
              InputStream in = new GZIPInputStream(rawIn);
-             OutputStream out = dest.createOutputStream()) {
+             OutputStream out = dest.newOutputStream()) {
             getWorld().getBuffer().copy(in, out);
         }
     }

@@ -94,7 +94,7 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
             if (!target.exists()) {
                 target.writeBytes();
             }
-            working.applyTextDelta(SVNFileUtil.DUMMY_IN, target.createOutputStream(), false);
+            working.applyTextDelta(SVNFileUtil.DUMMY_IN, target.newOutputStream(), false);
         } catch (IOException e) {
             throw exception(e);
         }

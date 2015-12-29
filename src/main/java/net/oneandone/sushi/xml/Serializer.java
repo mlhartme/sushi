@@ -60,7 +60,7 @@ public class Serializer {
     /** Generates an xml/encoding declaration */
     public void serialize(Node src, net.oneandone.sushi.fs.Node dest, boolean format) throws IOException {
         // don't use Saver to allow transformer to decide about encoding */
-        try (OutputStream out = dest.createOutputStream()) {
+        try (OutputStream out = dest.newOutputStream()) {
             serialize(new DOMSource(src), new StreamResult(out), dest.getWorld().getSettings().encoding, format);
         }
     }

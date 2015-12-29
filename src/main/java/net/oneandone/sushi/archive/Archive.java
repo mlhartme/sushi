@@ -135,7 +135,7 @@ public class Archive {
     }
 
     public Archive save(Node dest) throws IOException {
-        try (OutputStream out = dest.createOutputStream()) {
+        try (OutputStream out = dest.newOutputStream()) {
             save(out);
         }
         return this;

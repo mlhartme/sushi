@@ -189,8 +189,8 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) {
-        throw unsupported("createOutputStream(boolean)");
+    public OutputStream newOutputStream(boolean append) {
+        throw unsupported("newOutputStream(boolean)");
     }
 
     @Override

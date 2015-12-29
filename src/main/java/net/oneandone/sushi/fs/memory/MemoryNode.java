@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.memory;
 
 import net.oneandone.sushi.fs.NewInputStreamException;
-import net.oneandone.sushi.fs.CreateOutputStreamException;
+import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -270,7 +270,7 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) throws FileNotFoundException, CreateOutputStreamException {
+    public OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException {
         byte[] add;
 
         try {
@@ -296,7 +296,7 @@ public class MemoryNode extends Node {
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            throw new CreateOutputStreamException(this, e);
+            throw new NewOutputStreamException(this, e);
         }
     }
 

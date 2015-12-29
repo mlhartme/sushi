@@ -231,8 +231,8 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public OutputStream createOutputStream(boolean append) {
-        throw unsupported("createOutputStream(" + append + ")");
+    public OutputStream newOutputStream(boolean append) {
+        throw unsupported("newOutputStream(" + append + ")");
     }
 
     @Override

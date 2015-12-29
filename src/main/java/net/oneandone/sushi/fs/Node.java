@@ -130,14 +130,14 @@ public abstract class Node {
     }
 
     /**
-     * Concenience method for <code>writeTo(dest, 0)</code>.
+     * Concenience method for <code>copyFileTo(dest, 0)</code>.
      *
      * @return bytes actually written
      * @throws FileNotFoundException when this node is not a file
      * @throws WriteToException for other errors
      */
-    public long writeTo(OutputStream dest) throws FileNotFoundException, WriteToException {
-        return writeTo(dest, 0);
+    public long copyFileTo(OutputStream dest) throws FileNotFoundException, WriteToException {
+        return copyFileTo(dest, 0);
     }
 
     /**
@@ -148,10 +148,10 @@ public abstract class Node {
      * @throws FileNotFoundException when this node is not a file
      * @throws WriteToException for other errors
      */
-    public abstract long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
+    public abstract long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
 
     /* writeTo implementation with streams */
-    public long writeToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    public long copyFileToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         long result;
 
         try (InputStream src = newInputStream()) {
@@ -631,17 +631,8 @@ public abstract class Node {
      * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
-        try {
-            if (getRoot().getFilesystem().getFeatures().inverseIO) {
-                try (OutputStream out = dest.newOutputStream()) {
-                    writeTo(out);
-                }
-            } else {
-                try (InputStream in = newInputStream()) {
-                    getWorld().getBuffer().copy(in, dest);
-                    return dest;
-                }
-            }
+        try (OutputStream out = dest.newOutputStream()) {
+            copyFileTo(out);
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
         }

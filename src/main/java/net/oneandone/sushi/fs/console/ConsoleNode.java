@@ -68,7 +68,7 @@ public class ConsoleNode extends Node {
         return System.in;
     }
 
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         throw new UnsupportedOperationException();
     }
 

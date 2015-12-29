@@ -206,7 +206,7 @@ public class SvnNode extends Node {
         try {
             tmp = getWorld().getTemp().createTempFile();
             try (OutputStream dest = tmp.newOutputStream()) {
-                writeTo(dest);
+                copyFileTo(dest);
             }
         } catch (FileNotFoundException e) {
             throw e;
@@ -216,7 +216,7 @@ public class SvnNode extends Node {
         return tmp.newInputStreamDeleteOnClose();
     }
 
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
         SkipOutputStream out;
 
         out = new SkipOutputStream(dest, skip);
@@ -255,7 +255,7 @@ public class SvnNode extends Node {
                 public void close() throws IOException {
                     super.close();
                     try {
-                        readFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
+                        copyFileFrom(new ByteArrayInputStream(toByteArray()), root.getComment());
                     } catch (SVNException e) {
                         throw new IOException("close failed", e);
                     }
@@ -437,7 +437,7 @@ public class SvnNode extends Node {
     }
 
     /** @return revision */
-    public long readFrom(InputStream content, String comment) throws SVNException {
+    public long copyFileFrom(InputStream content, String comment) throws SVNException {
     	// does NOT use the CommitClient, because the commit client needs a physical file
         boolean exists;
         ISVNEditor editor;

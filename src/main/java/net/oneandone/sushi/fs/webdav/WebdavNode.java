@@ -414,8 +414,8 @@ public class WebdavNode extends Node {
         }
     }
 
-    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
-        return writeToImpl(dest, skip);
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+        return copyFileToImpl(dest, skip);
     }
 
     @Override

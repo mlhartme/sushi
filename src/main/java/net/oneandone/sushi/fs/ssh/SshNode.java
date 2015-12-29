@@ -643,13 +643,13 @@ public class SshNode extends Node {
         ByteArrayOutputStream dest;
 
         dest = new ByteArrayOutputStream();
-        writeTo(dest);
+        copyFileTo(dest);
         return dest.toByteArray();
     }
 
     @Override
     public SshNode writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
-        readFrom(new ByteArrayInputStream(bytes, ofs, len), append);
+        copyFileFrom(new ByteArrayInputStream(bytes, ofs, len), append);
         return this;
     }
 
@@ -660,7 +660,7 @@ public class SshNode extends Node {
         try {
             tmp = getWorld().getTemp().createTempFile();
             try (OutputStream dest = tmp.newOutputStream()) {
-                writeTo(dest);
+                copyFileTo(dest);
             }
         } catch (FileNotFoundException e) {
             throw e;
@@ -683,7 +683,8 @@ public class SshNode extends Node {
             @Override
             public void close() throws IOException {
                 super.close();
-                readFrom(new ByteArrayInputStream(toByteArray()), append);
+                // TODO: expensive - reuse memory!
+                copyFileFrom(new ByteArrayInputStream(toByteArray()), append);
             }
         };
     }
@@ -712,7 +713,7 @@ public class SshNode extends Node {
      * @throws FileNotFoundException if this is not a file
      */
     @Override
-    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         ChannelSftp sftp;
         Progress monitor;
 
@@ -735,14 +736,14 @@ public class SshNode extends Node {
         }
     }
 
-    public void readFrom(InputStream src) throws ReadFromException {
-        readFrom(src, false);
+    public void copyFileFrom(InputStream src) throws ReadFromException {
+        copyFileFrom(src, false);
     }
 
     /**
      * This is the core function to write an ssh node. Does not close src.
      */
-    public void readFrom(InputStream src, boolean append) throws ReadFromException {
+    public void copyFileFrom(InputStream src, boolean append) throws ReadFromException {
         ChannelSftp sftp;
 
         try {

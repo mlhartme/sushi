@@ -184,8 +184,8 @@ public class TimeMachineNode extends Node {
         return node.newInputStream();
     }
 
-    public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
-        return writeToImpl(dest, skip);
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+        return copyFileToImpl(dest, skip);
     }
 
     @Override

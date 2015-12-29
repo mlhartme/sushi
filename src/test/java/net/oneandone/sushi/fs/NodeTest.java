@@ -446,12 +446,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     @Test(expected = IOException.class)
     public void writeToNoneExisting() throws IOException {
-        work.join("nosuchfile").writeTo(new ByteArrayOutputStream());
+        work.join("nosuchfile").copyFileTo(new ByteArrayOutputStream());
     }
 
     @Test(expected = IOException.class)
     public void writeToDirectory() throws IOException {
-        work.join("dir").mkdir().writeTo(new ByteArrayOutputStream());
+        work.join("dir").mkdir().copyFileTo(new ByteArrayOutputStream());
     }
 
     @Test
@@ -468,25 +468,25 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file = work.join("foo").writeBytes(bytes);
 
         dest = new CheckedByteArrayOutputStream();
-        assertEquals(bytes.length, file.writeTo(dest));
+        assertEquals(bytes.length, file.copyFileTo(dest));
         dest.ensureOpen();
         assertTrue(Arrays.equals(bytes, dest.toByteArray()));
 
         if (bytes.length > 0) {
             dest = new CheckedByteArrayOutputStream();
-            assertEquals(1, file.writeTo(dest, bytes.length - 1));
+            assertEquals(1, file.copyFileTo(dest, bytes.length - 1));
             dest.ensureOpen();
             assertEquals(1, dest.toByteArray().length);
             assertEquals(bytes[bytes.length - 1], dest.toByteArray()[0]);
         }
 
         dest = new CheckedByteArrayOutputStream();
-        assertEquals(0, file.writeTo(dest, bytes.length));
+        assertEquals(0, file.copyFileTo(dest, bytes.length));
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
 
         dest = new CheckedByteArrayOutputStream();
-        assertEquals(0, file.writeTo(dest, bytes.length + 3));
+        assertEquals(0, file.copyFileTo(dest, bytes.length + 3));
         dest.ensureOpen();
         assertEquals(0, dest.toByteArray().length);
     }

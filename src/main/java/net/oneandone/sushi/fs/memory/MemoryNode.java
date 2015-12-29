@@ -266,8 +266,8 @@ public class MemoryNode extends Node {
         }
     }
 
-    public long writeTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
-        return writeToImpl(dest, skip);
+    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+        return copyFileToImpl(dest, skip);
     }
 
     @Override

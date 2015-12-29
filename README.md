@@ -77,7 +77,7 @@ For WebdavNodes:
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpcore</artifactId>
-      <version>4.3.2</version>
+      <version>4.4.4</version>
     </dependency>
 
 For SvnNodes (e.g. world.node("svn:https//host/my/path")):

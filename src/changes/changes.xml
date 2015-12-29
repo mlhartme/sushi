@@ -4,6 +4,7 @@
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-29" dev="mlhartme" type="update">
         Update svnkit 1.8.5 to 1.8.11. No code changes, just the dependency update.
+        CAUTION: this introduces a dependency update from jna 3.4.0 to 4.1.0.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
         Update httpcore 4.3.2 to 4.4.4. No code changes, just the dependency update.

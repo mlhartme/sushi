@@ -80,9 +80,9 @@ import java.util.zip.GZIPOutputStream;
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
  *
- * <p>You can read nodes using traditional InputStream or Writers. In addition to this pull-logic, the writoTo method
- * provides push logic. Some Node implementations are more efficient when using writeTo(). (I'd appriciate if all
- * underlying libraries provides pull logic because, push logic can be efficiently implemented on top ...) </p>
+ * <p>You can read nodes using traditional stream or reader/writers. In addition to this pull-logic, the readTo method
+ * provides push logic. Some Node implementations are more efficient when using readTo() (whis is indicated the the inverseIO feature).
+ * I'd appreciate if all underlying libraries provided pull logic because, push logic can be efficiently implemented on top ... </p>
  *
  * <p>As long as you stick to read operations, nodes are thread-save.</p>
  *

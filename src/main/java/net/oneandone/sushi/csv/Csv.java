@@ -20,7 +20,6 @@ import net.oneandone.sushi.fs.LineReader;
 import net.oneandone.sushi.fs.Node;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class Csv implements Iterable<Line> {
 
 
     public void write(Node file) throws IOException {
-        try (Writer dest = file.createWriter()) {
+        try (Writer dest = file.newWriter()) {
             write(dest);
         }
     }

@@ -795,15 +795,15 @@ public abstract class Node {
 
     //-- output create functionality
 
-    public NodeWriter createWriter() throws IOException {
-        return createWriter(false);
+    public NodeWriter newWriter() throws IOException {
+        return newWriter(false);
     }
 
-    public NodeWriter createAppender() throws IOException {
-        return createWriter(true);
+    public NodeWriter newAppender() throws IOException {
+        return newWriter(true);
     }
 
-    public NodeWriter createWriter(boolean append) throws IOException {
+    public NodeWriter newWriter(boolean append) throws IOException {
         return NodeWriter.create(this, append);
     }
 
@@ -835,21 +835,21 @@ public abstract class Node {
     }
 
     public Node writeChars(char[] chars, int ofs, int len, boolean append) throws IOException {
-        try (Writer out = createWriter(append)) {
+        try (Writer out = newWriter(append)) {
             out.write(chars, ofs, len);
         }
         return this;
     }
 
     public Node writeString(String txt) throws IOException {
-        try (Writer w = createWriter()) {
+        try (Writer w = newWriter()) {
             w.write(txt);
         }
         return this;
     }
 
     public Node appendString(String txt) throws IOException {
-        try (Writer w = createAppender()) {
+        try (Writer w = newAppender()) {
             w.write(txt);
         }
         return this;
@@ -860,7 +860,7 @@ public abstract class Node {
     }
 
     public Node writeStrings(List<String> strings) throws IOException {
-        return strings(createWriter(), strings);
+        return strings(newWriter(), strings);
     }
 
     public Node appendStrings(String ... str) throws IOException {
@@ -868,7 +868,7 @@ public abstract class Node {
     }
 
     public Node appendStrings(List<String> strings) throws IOException {
-        return strings(createAppender(), strings);
+        return strings(newAppender(), strings);
     }
 
     private Node strings(Writer dest, List<String> strings) throws IOException {
@@ -886,7 +886,7 @@ public abstract class Node {
 
     /** @param lines without tailing line separator */
     public Node writeLines(List<String> lines) throws IOException {
-        return lines(createWriter(), lines);
+        return lines(newWriter(), lines);
     }
 
     /** @param line without tailing line separator */
@@ -896,7 +896,7 @@ public abstract class Node {
 
     /** @param lines without tailing line separator */
     public Node appendLines(List<String> lines) throws IOException {
-        return lines(createAppender(), lines);
+        return lines(newAppender(), lines);
     }
 
     /** @param lines without tailing line separator */
@@ -917,7 +917,7 @@ public abstract class Node {
     }
 
     public Node writeProperties(Properties p, String comment) throws IOException {
-        try (Writer dest = createWriter()) {
+        try (Writer dest = newWriter()) {
             p.store(dest, comment);
         }
         return this;

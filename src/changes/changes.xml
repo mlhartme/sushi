@@ -10,7 +10,8 @@
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
         Align terminology Node method names with Java 7 NIO: Renamed createInputStream() to newInputStream(),
-        createReader() to newReader(), and length() to size().
+        createReader() to newReader(), createWriter() to newWriter(), createAppender() to newAppender(),
+        and length() to size().
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
         Cli.run no longer catches RuntimeException (except ArgumentException).

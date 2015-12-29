@@ -87,7 +87,7 @@ public class World {
     /** never null */
     private final Xml xml;
 
-    private Node home;
+    private FileNode home;
 
     /** Intentionally not a file -- see Tempfiles for a rationale */
     private FileNode temp;
@@ -135,7 +135,7 @@ public class World {
         return home;
     }
 
-    public World setHome(Node home) {
+    public World setHome(FileNode home) {
         this.home = home;
         return this;
     }

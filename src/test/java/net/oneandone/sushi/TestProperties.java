@@ -82,12 +82,12 @@ public class TestProperties {
         result = new Properties();
         world = new World();
         home = world.guessProjectHome(TestProperties.class);
-        try (Reader src = home.join("test.properties").createReader()) {
+        try (Reader src = home.join("test.properties").newReader()) {
             result.load(src);
         }
         p = home.join("test.private.properties");
         if (p.exists()) {
-            try (Reader src = p.createReader()) {
+            try (Reader src = p.newReader()) {
                 result.load(src);
             }
         }

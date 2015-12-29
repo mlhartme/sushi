@@ -599,7 +599,7 @@ public class World {
         Node src;
 
         src = home.join(".netrc");
-        try (Reader reader = src.createReader()) {
+        try (Reader reader = src.newReader()) {
             netRc.parse(reader);
             return true;
         } catch (net.oneandone.sushi.fs.FileNotFoundException e) {

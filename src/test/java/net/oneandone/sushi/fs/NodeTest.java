@@ -499,7 +499,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             assertSame(file, writer.getNode());
             writer.write("hi");
         }
-        try (NodeReader reader = file.createReader()) {
+        try (NodeReader reader = file.newReader()) {
             assertSame(file, reader.getNode());
             assertEquals('h', reader.read());
             assertEquals('i', reader.read());
@@ -583,7 +583,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("foo");
         file.writeBytes(ALL_CHARS.getBytes(file.getWorld().getSettings().encoding));
-        try (Reader src = file.createReader()) {
+        try (Reader src = file.newReader()) {
             str = new StringBuilder();
             while (true) {
                 c = src.read();

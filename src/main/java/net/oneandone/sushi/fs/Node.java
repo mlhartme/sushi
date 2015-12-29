@@ -109,7 +109,7 @@ public abstract class Node {
     }
 
     public LineReader newLineReader(LineFormat format) throws IOException {
-        return new LineReader(createReader(), format);
+        return new LineReader(newReader(), format);
     }
 
     /**
@@ -434,7 +434,7 @@ public abstract class Node {
 
     //-- input stream functionality
 
-    public NodeReader createReader() throws IOException {
+    public NodeReader newReader() throws IOException {
         return NodeReader.create(this);
     }
 
@@ -482,7 +482,7 @@ public abstract class Node {
     public Properties readProperties() throws IOException {
         Properties p;
 
-        try (Reader src = createReader()) {
+        try (Reader src = newReader()) {
             p = new Properties();
             p.load(src);
         }

@@ -81,7 +81,7 @@ public abstract class Type {
 
     public <T> Instance<T> loadXml(Node node) throws IOException, LoaderException {
         // TODO: use stream instead!?
-        try (Reader src = node.createReader()) {
+        try (Reader src = node.newReader()) {
             return loadXml(node.getURI().toString(), src);
         }
     }

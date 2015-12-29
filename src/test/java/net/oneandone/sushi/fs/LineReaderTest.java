@@ -103,7 +103,7 @@ public class LineReaderTest {
 
         try {
             node = world.memoryNode(str);
-            reader = new LineReader(node.createReader(), format, initialSize);
+            reader = new LineReader(node.newReader(), format, initialSize);
             result = reader.collect();
         } catch (IOException e) {
             throw new IllegalStateException(e);

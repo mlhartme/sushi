@@ -9,7 +9,8 @@
         Added Node.newLineReader() methods.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
-        Align terminology Node method names with Java 7 NIO: Renamed createInputStream() to newInputStream(),
+        Align method names with Java 7 NIO terminology: Renamed createInputStream() to newInputStream(),
+        createInputStreamDeleteOnClose() to newInputStreamDeleteOnClose()
         createOutputStream() to newOutputStream(), createAppendStream() to newAppendStream(),
         createReader() to newReader(), createWriter() to newWriter(), createAppender() to newAppender(),
         and length() to size(). Also renamed CreateOutputStreamException to NewOutputStreamException and CreateInputStreamException

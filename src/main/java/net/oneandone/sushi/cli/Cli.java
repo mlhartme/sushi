@@ -81,10 +81,6 @@ public abstract class Cli {
             console.info.println("Specify 'help' to get a usage message.");
             e.printStackTrace(exception ? console.error : console.verbose);
             return -1;
-        } catch (RuntimeException e) {
-            console.error.println(e.getMessage());
-            e.printStackTrace(console.error);
-            return -1;
         } catch (Exception e) {
             console.error.println(e.getMessage());
             e.printStackTrace(exception ? console.error : console.verbose);

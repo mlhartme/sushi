@@ -3,6 +3,9 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-29" dev="mlhartme" type="update">
+        Cli.run no longer catches RuntimeException (except ArgumentException).
+      </action>
+      <action date="2015-12-29" dev="mlhartme" type="update">
         Changed World.getHome and setHome to work with FileNodes.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">

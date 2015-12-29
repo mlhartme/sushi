@@ -16,7 +16,7 @@
 package net.oneandone.sushi.fs.file;
 
 import net.oneandone.sushi.archive.Archive;
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.CreateOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
@@ -249,7 +249,7 @@ public class FileNode extends Node {
     //-- read and writeBytes
 
     @Override
-    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
+    public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
         if (isDirectory()) {
             throw new FileNotFoundException(this);
         }
@@ -258,7 +258,7 @@ public class FileNode extends Node {
         } catch (NoSuchFileException e) {
             throw new FileNotFoundException(this, e);
         } catch (IOException e) {
-            throw new CreateInputStreamException(this, e);
+            throw new NewInputStreamException(this, e);
         }
     }
 

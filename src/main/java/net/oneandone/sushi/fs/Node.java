@@ -116,10 +116,10 @@ public abstract class Node {
      * Creates a stream to read this node.
      * Closing the stream more than once is ok, but reading from a closed stream is rejected by an exception
      */
-    public abstract InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException;
+    public abstract InputStream newInputStream() throws FileNotFoundException, NewInputStreamException;
 
-    public FilterInputStream createInputStreamDeleteOnClose() throws FileNotFoundException, CreateInputStreamException {
-        return new FilterInputStream(createInputStream()) {
+    public FilterInputStream newInputStreamDeleteOnClose() throws FileNotFoundException, NewInputStreamException {
+        return new FilterInputStream(newInputStream()) {
             @Override
             public void close() throws IOException {
                 super.close();
@@ -153,7 +153,7 @@ public abstract class Node {
     public long writeToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
         long result;
 
-        try (InputStream src = createInputStream()) {
+        try (InputStream src = newInputStream()) {
             if (skip(src, skip)) {
                 return 0;
             }
@@ -439,7 +439,7 @@ public abstract class Node {
     }
 
     public ObjectInputStream createObjectInputStream() throws IOException {
-        return new ObjectInputStream(createInputStream());
+        return new ObjectInputStream(newInputStream());
     }
 
     /**
@@ -452,7 +452,7 @@ public abstract class Node {
     public byte[] readBytes() throws IOException {
         Buffer buffer;
 
-        try (InputStream src = createInputStream()) {
+        try (InputStream src = newInputStream()) {
             buffer = getWorld().getBuffer();
             synchronized (buffer) {
                 return buffer.readBytes(src);
@@ -512,14 +512,14 @@ public abstract class Node {
     public Transformer readXsl() throws IOException, TransformerConfigurationException {
         Templates templates;
 
-        try (InputStream in = createInputStream()) {
+        try (InputStream in = newInputStream()) {
             templates = Serializer.templates(new SAXSource(new InputSource(in)));
         }
         return templates.newTransformer();
     }
 
     public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
-        try (InputStream in = createInputStream();
+        try (InputStream in = newInputStream();
              OutputStream out = dest.createOutputStream()) {
             transformer.transform(new StreamSource(in), new StreamResult(out));
         }
@@ -630,7 +630,7 @@ public abstract class Node {
      * @return dest
      */
     public Node copyFile(Node dest) throws CopyException {
-        try (InputStream in = createInputStream()) {
+        try (InputStream in = newInputStream()) {
             getWorld().getBuffer().copy(in, dest);
             return dest;
         } catch (IOException e) {
@@ -679,8 +679,8 @@ public abstract class Node {
         boolean result;
 
         leftBuffer = getWorld().getBuffer();
-        try (InputStream leftSrc = createInputStream();
-             InputStream rightSrc = right.createInputStream()) {
+        try (InputStream leftSrc = newInputStream();
+             InputStream rightSrc = right.newInputStream()) {
             leftEof = new boolean[] { false };
             rightEof = new boolean[] { false };
             result = false;
@@ -950,7 +950,7 @@ public abstract class Node {
     //-- other
 
     public void gzip(Node dest) throws IOException {
-        try (InputStream in = createInputStream();
+        try (InputStream in = newInputStream();
              OutputStream rawOut = dest.createOutputStream();
              OutputStream out = new GZIPOutputStream(rawOut)) {
             getWorld().getBuffer().copy(in, out);
@@ -958,7 +958,7 @@ public abstract class Node {
     }
 
     public void gunzip(Node dest) throws IOException {
-        try (InputStream rawIn = createInputStream();
+        try (InputStream rawIn = newInputStream();
              InputStream in = new GZIPInputStream(rawIn);
              OutputStream out = dest.createOutputStream()) {
             getWorld().getBuffer().copy(in, out);
@@ -985,7 +985,7 @@ public abstract class Node {
         MessageDigest digest;
         Buffer buffer;
 
-        try (InputStream src =  createInputStream()) {
+        try (InputStream src =  newInputStream()) {
             digest = MessageDigest.getInstance(name);
             synchronized (digest) {
                 buffer = getWorld().getBuffer();

@@ -70,7 +70,7 @@ public class Builder {
     public Document parse(net.oneandone.sushi.fs.Node node) throws SAXException, IOException {
         InputSource src;
 
-        try (InputStream stream = node.createInputStream()) {
+        try (InputStream stream = node.newInputStream()) {
             src = new InputSource();
             src.setSystemId(node.toString());
             src.setByteStream(stream);

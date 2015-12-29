@@ -20,7 +20,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.CreateOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
@@ -656,7 +656,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
+    public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
         final FileNode tmp;
 
         try {
@@ -667,9 +667,9 @@ public class SshNode extends Node {
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            throw new CreateInputStreamException(this, e);
+            throw new NewInputStreamException(this, e);
         }
-        return tmp.createInputStreamDeleteOnClose();
+        return tmp.newInputStreamDeleteOnClose();
     }
 
     @Override

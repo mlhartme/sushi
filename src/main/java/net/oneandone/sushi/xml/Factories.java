@@ -101,7 +101,7 @@ public class Factories {
         Source src;
         
         sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        src = new StreamSource(schema.createInputStream());
+        src = new StreamSource(schema.newInputStream());
         factory.setSchema(sf.newSchema(src));
     }
 

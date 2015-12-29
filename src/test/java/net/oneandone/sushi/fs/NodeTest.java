@@ -372,7 +372,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("doesnotexist");
         assertFalse(file.exists());
-        file.createInputStream();
+        file.newInputStream();
     }
 
     @Test(expected=IOException.class)
@@ -382,7 +382,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         dir = work.join("dir");
         dir.mkdir();
         assertTrue(dir.isDirectory());
-        dir.createInputStream();
+        dir.newInputStream();
     }
 
     @Test
@@ -746,7 +746,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("file");
         file.writeString("foo");
-        in = file.createInputStream();
+        in = file.newInputStream();
         assertEquals('f', in.read());
         in.close();
         try {
@@ -766,7 +766,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
         file = work.join("file");
         file.writeString("foo");
-        in = file.createInputStream();
+        in = file.newInputStream();
         assertEquals('f', in.read());
         in.close();
         in.close();
@@ -819,9 +819,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         out1.close();
         out2.close();
 
-        in2 = node2.createInputStream();
+        in2 = node2.newInputStream();
         assertEquals('1', in2.read());
-        in1 = node1.createInputStream();
+        in1 = node1.newInputStream();
         assertEquals('a', in1.read());
         assertEquals('b', in1.read());
         assertEquals('2', in2.read());

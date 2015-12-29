@@ -89,7 +89,7 @@ public class Archive {
         Node node;
         
         buffer = file.getWorld().getBuffer();
-        try (ZipInputStream zip = new ZipInputStream(file.createInputStream())) {
+        try (ZipInputStream zip = new ZipInputStream(file.newInputStream())) {
             while (true) {
                 entry = zip.getNextEntry();
                 if (entry == null) {
@@ -165,7 +165,7 @@ public class Archive {
                 }
             }
             for (Node file : files) {
-                try (InputStream in = file.createInputStream()) {
+                try (InputStream in = file.newInputStream()) {
                     out.putNextEntry(new ZipEntry(Strings.removeLeft(file.getPath(), pathRoot)));
                     file.getWorld().getBuffer().copy(in, out);
                     out.closeEntry();

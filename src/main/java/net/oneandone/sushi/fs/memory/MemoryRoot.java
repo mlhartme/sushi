@@ -105,7 +105,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         
         obj = store.get(path);
         if (obj instanceof FileNode) {
-            return ((FileNode) obj).createInputStream();
+            return ((FileNode) obj).newInputStream();
         } else {
             return new CheckedByteArrayInputStream((byte[]) obj);
         }

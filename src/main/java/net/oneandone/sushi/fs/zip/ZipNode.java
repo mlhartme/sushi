@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.zip;
 
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -210,7 +210,7 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
+    public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
         ZipFile zip;
         ZipEntry entry;
 
@@ -222,7 +222,7 @@ public class ZipNode extends Node {
         try {
             return zip.getInputStream(entry);
         } catch (IOException e) {
-            throw new CreateInputStreamException(this, e);
+            throw new NewInputStreamException(this, e);
         }
     }
 

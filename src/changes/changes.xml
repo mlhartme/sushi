@@ -9,6 +9,9 @@
         Dumped Base64 class, use java.util.Base64 instead.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
+        Renamed Node.createInputStream() to Node.newInputStream() to align terminology with Java 7 NIO.
+      </action>
+      <action date="2015-12-29" dev="mlhartme" type="update">
         Renamed Node.length() to Node.size() to align terminology with Java 7 NIO.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">

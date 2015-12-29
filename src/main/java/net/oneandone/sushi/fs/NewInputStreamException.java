@@ -15,8 +15,8 @@
  */
 package net.oneandone.sushi.fs;
 
-public class CreateInputStreamException extends NodeException {
-    public CreateInputStreamException(Node node, Throwable cause) {
+public class NewInputStreamException extends NodeException {
+    public NewInputStreamException(Node node, Throwable cause) {
         super(node, "cannot create input stream", cause);
     }
 }

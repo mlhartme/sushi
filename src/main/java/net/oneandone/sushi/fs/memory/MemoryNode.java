@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.memory;
 
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.CreateOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
@@ -254,14 +254,14 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
+    public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
         if (type != Type.FILE) {
             throw new FileNotFoundException(this);
         }
         try {
             return root.open(path);
         } catch (IOException e) {
-            throw new CreateInputStreamException(this, e);
+            throw new NewInputStreamException(this, e);
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.timemachine;
 
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -180,8 +180,8 @@ public class TimeMachineNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws FileNotFoundException, CreateInputStreamException {
-        return node.createInputStream();
+    public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
+        return node.newInputStream();
     }
 
     public long writeTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {

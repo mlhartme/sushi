@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.webdav;
 
-import net.oneandone.sushi.fs.CreateInputStreamException;
+import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.CreateOutputStreamException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
@@ -401,7 +401,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public InputStream createInputStream() throws CreateInputStreamException, FileNotFoundException {
+    public InputStream newInputStream() throws NewInputStreamException, FileNotFoundException {
         synchronized (tryLock) {
             tryDir = false;
             try {
@@ -409,7 +409,7 @@ public class WebdavNode extends Node {
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {
-                throw new CreateInputStreamException(this, e);
+                throw new NewInputStreamException(this, e);
             }
         }
     }

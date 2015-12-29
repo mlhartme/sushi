@@ -43,7 +43,7 @@ public class NetRcTest {
 
     @Test
     public void testParse() throws IOException {
-        InputStreamReader in = createInputStreamReader(
+        InputStreamReader in = newInputStreamReader(
                 "machine svn.dev.java.net login user password pass\n"+
                 "machine svn2.dev.java.net user user2 password päss2\n" +
                 "#machine svn3.dev.java.net user user3 password pass3\n" +
@@ -61,7 +61,7 @@ public class NetRcTest {
 
     @Test
     public void testParseMultiLine() throws IOException  {
-        InputStreamReader in = createInputStreamReader(
+        InputStreamReader in = newInputStreamReader(
                 "machine\n\tsvn.dev.java.net\n\tlogin\n\tuser\n\tpassword pass\n\n\n"+
                 "machine svn2.dev.java.net\n\tuser user2\n\tpassword päss2\n");
         sut.parse(in);
@@ -71,7 +71,7 @@ public class NetRcTest {
 
     @Test
     public void testParseMacDefNotSupported() throws IOException  {
-        InputStreamReader in = createInputStreamReader("macdef foo");
+        InputStreamReader in = newInputStreamReader("macdef foo");
         expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("macdef not supported at line 1: macdef");
         sut.parse(in);
@@ -79,7 +79,7 @@ public class NetRcTest {
 
     @Test
     public void testParseAccountNotSupported() throws IOException  {
-        InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user account account\n");
+        InputStreamReader in = newInputStreamReader("machine svn.dev.java.net login user account account\n");
         expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("account not supported at line 1: account");
         sut.parse(in);
@@ -87,7 +87,7 @@ public class NetRcTest {
 
     @Test
     public void testParseBadTopLevel() throws IOException  {
-        InputStreamReader in = createInputStreamReader("fizzbuzz svn.dev.java.net login user pass account\n");
+        InputStreamReader in = newInputStreamReader("fizzbuzz svn.dev.java.net login user pass account\n");
         expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("bad toplevel at line 1: fizzbuzz");
         sut.parse(in);
@@ -95,7 +95,7 @@ public class NetRcTest {
 
     @Test
     public void testParseBadEntryWithBadFollowerToken() throws IOException  {
-        InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user puss account\n");
+        InputStreamReader in = newInputStreamReader("machine svn.dev.java.net login user puss account\n");
         expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("bad follower token at line 1: puss");
         sut.parse(in);
@@ -103,13 +103,13 @@ public class NetRcTest {
 
     @Test
     public void testParseBadEntryWithoutPassword() throws IOException  {
-        InputStreamReader in = createInputStreamReader("machine svn.dev.java.net login user\n");
+        InputStreamReader in = newInputStreamReader("machine svn.dev.java.net login user\n");
         expectedException.expect(NetRc.NetRcIllegalArgumentException.class);
         expectedException.expectMessage("malformed token at toplevel machine at line 2: null");
         sut.parse(in);
     }
 
-    private InputStreamReader createInputStreamReader(final String netrc) {
+    private InputStreamReader newInputStreamReader(final String netrc) {
         final ByteArrayInputStream inBytes = new ByteArrayInputStream(
                 netrc.getBytes(Charset.forName("utf-8")));
         InputStreamReader in = new InputStreamReader(inBytes);

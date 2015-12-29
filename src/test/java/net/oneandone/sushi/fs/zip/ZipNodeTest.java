@@ -148,14 +148,14 @@ public class ZipNodeTest {
     }
 
     @Test(expected=FileNotFoundException.class)
-    public void createInputStreamNoneExisting() throws IOException {
+    public void newInputStreamNoneExisting() throws IOException {
         FileNode jar;
         Node node;
 
         jar = world.locateClasspathItem(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
-        node.createInputStream();
+        node.newInputStream();
     }
 
     @Test(expected=FileNotFoundException.class)

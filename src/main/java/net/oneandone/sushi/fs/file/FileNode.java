@@ -534,11 +534,11 @@ public class FileNode extends Node {
     //--
 
     public FileNode createTempFile() throws IOException {
-        return OnShutdown.get().createFile(this);
+        return getWorld().onShutdown().createFile(this);
     }
 
     public FileNode createTempDirectory() throws IOException {
-        return OnShutdown.get().createDirectory(this);
+        return getWorld().onShutdown().createDirectory(this);
     }
 }
 

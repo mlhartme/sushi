@@ -35,17 +35,6 @@ import java.util.List;
  * 3) only java.world.File can create a temp file atomically
  */
 public class OnShutdown extends Thread {
-    private static OnShutdown singleton;
-
-    /** a static singleton, because I don't want a shutdown hook for every world instance */
-    public static synchronized OnShutdown get() {
-        if (singleton == null) {
-            singleton = new OnShutdown();
-            Runtime.getRuntime().addShutdownHook(singleton);
-        }
-        return singleton;
-    }
-
     /** null if the exit task has already been started */
     private List<FileNode> delete;
 

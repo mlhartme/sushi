@@ -101,6 +101,8 @@ public class World {
 
     private final NetRc netRc;
 
+    private OnShutdown lazyOnShutdown;
+
     public World() {
         this(SshAgentSocket.isConfigured());
     }
@@ -127,6 +129,14 @@ public class World {
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
         this.netRc = new NetRc();
+    }
+
+    public OnShutdown onShutdown() {
+        if (lazyOnShutdown == null) {
+            lazyOnShutdown = new OnShutdown();
+            Runtime.getRuntime().addShutdownHook(lazyOnShutdown);
+        }
+        return lazyOnShutdown;
     }
 
     //-- configuration

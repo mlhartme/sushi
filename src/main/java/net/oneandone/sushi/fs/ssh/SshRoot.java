@@ -56,7 +56,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
         this.filesystem = filesystem;
         this.session = session;
         this.sftp = null;
-        OnShutdown.get().onShutdown(this);
+        filesystem.getWorld().onShutdown().onShutdown(this);
     }
 
     //-- Root interface

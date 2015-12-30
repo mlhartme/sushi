@@ -3,7 +3,10 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-30" dev="mlhartme" type="update">
-        Speedup tmp file handling by implemnting it with java.nio.Files.
+        Dumped OnShutdown singleton, access it via World now.
+      </action>
+      <action date="2015-12-30" dev="mlhartme" type="update">
+        Speed-up tmp file handling by implementing it with java.nio.Files.
       </action>
       <action date="2015-12-30" dev="mlhartme" type="add">
         Added Node.copyInto and Node.moveInto.

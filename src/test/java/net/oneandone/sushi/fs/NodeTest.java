@@ -771,7 +771,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("fooa", file.readString());
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = NewDirectoryOutputStreamException.class)
     public void writeOverDirectory() throws IOException {
         Node file;
 

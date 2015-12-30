@@ -23,6 +23,7 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.GetLastModifiedException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
+import net.oneandone.sushi.fs.NewDirectoryOutputStreamException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
@@ -231,12 +232,12 @@ public class SvnNode extends Node {
 
 
     @Override
-    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException, FileNotFoundException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException {
         byte[] add;
 
         try {
             if (isDirectory()) {
-                throw new FileNotFoundException(this);
+                throw new NewDirectoryOutputStreamException(this);
             }
         } catch (ExistsException e) {
             throw new NewOutputStreamException(this, e);

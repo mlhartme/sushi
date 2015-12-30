@@ -3,6 +3,9 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-29" dev="mlhartme" type="update">
+        Calling Node.newOutputStream for a directory now throws NewDirectoryOutputStreamExceptions instead of FileNotFoundExceptions.
+      </action>
+      <action date="2015-12-29" dev="mlhartme" type="update">
         Renamed Node.writeTo to Node.copyFileTo, SshNode.readFrom to SshNode.copyFileFrom, SvnNode.readFrom to SvnNode.copyFileFrom.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">

@@ -211,20 +211,21 @@ public abstract class Node {
 
     //--
 
-    public OutputStream newOutputStream() throws FileNotFoundException, NewOutputStreamException {
+    public OutputStream newOutputStream() throws NewOutputStreamException {
         return newOutputStream(false);
     }
 
-    public OutputStream newAppendStream() throws FileNotFoundException, NewOutputStreamException {
+    public OutputStream newAppendStream() throws NewOutputStreamException {
         return newOutputStream(true);
     }
 
     /**
      * Create a stream to write this node.
      * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
-     * @throws FileNotFoundException if this node is a directory
+     * @throws NewDirectoryOutputStreamException if this node is a directory
+     * @throws NewOutputStreamException for other problems creating the stream
      */
-    public abstract OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException;
+    public abstract OutputStream newOutputStream(boolean append) throws NewOutputStreamException;
 
     /**
      * Lists child nodes of this node.

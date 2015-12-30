@@ -15,16 +15,15 @@
  */
 package net.oneandone.sushi.fs;
 
-public class NewOutputStreamException extends NodeException {
-    public NewOutputStreamException(Node node, Throwable cause) {
-        this(node, "cannot create output stream", cause);
+import java.io.IOException;
+
+/** thrown if you try to create an OutputStream for a directory */
+public class NewDirectoryOutputStreamException extends NewOutputStreamException {
+    public NewDirectoryOutputStreamException(Node node) {
+        this(node, null);
     }
 
-    /** @param cause may be null */
-    public NewOutputStreamException(Node node, String message, Throwable cause) {
-        super(node, message);
-        if (cause != null) {
-            initCause(cause);
-        }
+    public NewDirectoryOutputStreamException(Node node, Throwable cause) {
+        super(node, "cannot create OutputStream for directory", cause);
     }
 }

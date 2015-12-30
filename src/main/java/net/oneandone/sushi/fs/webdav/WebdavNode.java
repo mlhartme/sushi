@@ -23,6 +23,7 @@ import net.oneandone.sushi.fs.GetLastModifiedException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.NewDirectoryOutputStreamException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
@@ -424,7 +425,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException, FileNotFoundException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException {
         byte[] add;
         final Put method;
         final WebdavConnection connection;
@@ -432,7 +433,7 @@ public class WebdavNode extends Node {
 
         try {
             if (isDirectory()) {
-                throw new FileNotFoundException(this);
+                throw new NewDirectoryOutputStreamException(this);
             }
         } catch (ExistsException e) {
             throw new NewOutputStreamException(this, e);

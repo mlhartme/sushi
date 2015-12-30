@@ -30,6 +30,7 @@ import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.ModeException;
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.NewDirectoryOutputStreamException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
@@ -671,10 +672,10 @@ public class SshNode extends Node {
     }
 
     @Override
-    public OutputStream newOutputStream(final boolean append) throws FileNotFoundException, NewOutputStreamException {
+    public OutputStream newOutputStream(final boolean append) throws NewOutputStreamException {
         try {
             if (isDirectory()) {
-                throw new FileNotFoundException(this);
+                throw new NewDirectoryOutputStreamException(this);
             }
         } catch (ExistsException e) {
             throw new NewOutputStreamException(this, e);

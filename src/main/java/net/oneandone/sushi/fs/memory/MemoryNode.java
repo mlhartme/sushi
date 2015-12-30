@@ -22,6 +22,7 @@ import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.GetLastModifiedException;
 import net.oneandone.sushi.fs.ListException;
 import net.oneandone.sushi.fs.MkdirException;
+import net.oneandone.sushi.fs.NewDirectoryOutputStreamException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
@@ -276,13 +277,13 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException {
         byte[] add;
 
         try {
             switch (type) {
                 case DIRECTORY:
-                    throw new FileNotFoundException(this, "cannot write file over directory");
+                    throw new NewDirectoryOutputStreamException(this);
                 case FILE:
                     add = append ? readBytes() : null;
                     break;
@@ -299,7 +300,7 @@ public class MemoryNode extends Node {
                     lastModified = System.currentTimeMillis();
                 }
             };
-        } catch (FileNotFoundException e) {
+        } catch (NewOutputStreamException e) {
             throw e;
         } catch (IOException e) {
             throw new NewOutputStreamException(this, e);

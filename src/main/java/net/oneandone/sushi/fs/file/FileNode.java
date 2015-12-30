@@ -28,6 +28,7 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MkfileException;
 import net.oneandone.sushi.fs.ModeException;
 import net.oneandone.sushi.fs.MoveException;
+import net.oneandone.sushi.fs.NewDirectoryOutputStreamException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
@@ -273,7 +274,7 @@ public class FileNode extends Node {
 
 
     @Override
-    public OutputStream newOutputStream(boolean append) throws FileNotFoundException, NewOutputStreamException {
+    public OutputStream newOutputStream(boolean append) throws NewOutputStreamException {
         try {
             if (append) {
                 return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
@@ -282,7 +283,7 @@ public class FileNode extends Node {
             }
         } catch (IOException e) {
             if (isDirectory()) {
-                throw new FileNotFoundException(this, e);
+                throw new NewDirectoryOutputStreamException(this, e);
             }
             throw new NewOutputStreamException(this, e);
         }

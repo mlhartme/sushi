@@ -15,20 +15,44 @@
  */
 package net.oneandone.sushi.io;
 
-import net.oneandone.sushi.fs.Settings;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 public class BufferTest {
+    @Test
+    public void readBytes() throws IOException {
+        checkReadBytes("0");
+        checkReadBytes("01");
+        checkReadBytes("012");
+        checkReadBytes("0123");
+        checkReadBytes("01234");
+        checkReadBytes("012345");
+    }
+
+    private void checkReadBytes(String data) throws IOException {
+        Buffer buffer;
+        ByteArrayInputStream src;
+        byte[] orig;
+        byte[] copy;
+
+        buffer = new Buffer(3);
+        orig = data.getBytes();
+        if (data.length() != orig.length) {
+            throw new IllegalStateException();
+        }
+        src = new ByteArrayInputStream(orig);
+        copy = buffer.readBytes(src);
+        assertTrue(Arrays.equals(orig, copy));
+    }
+
     @Test
     public void copy() throws IOException {
         copy(bytes(), bytes(), 100);

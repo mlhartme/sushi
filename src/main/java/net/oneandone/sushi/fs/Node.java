@@ -942,19 +942,15 @@ public abstract class Node {
         Buffer leftBuffer;
         int leftChunk;
         int rightChunk;
-        boolean[] leftEof;
-        boolean[] rightEof;
         boolean result;
 
         leftBuffer = getWorld().getBuffer();
         try (InputStream leftSrc = newInputStream();
              InputStream rightSrc = right.newInputStream()) {
-            leftEof = new boolean[] { false };
-            rightEof = new boolean[] { false };
             result = false;
             do {
-                leftChunk = leftEof[0] ? 0 : leftBuffer.fill(leftSrc, leftEof);
-                rightChunk = rightEof[0] ? 0 : rightBuffer.fill(rightSrc, rightEof);
+                leftChunk = leftBuffer.fill(leftSrc);
+                rightChunk = rightBuffer.fill(rightSrc);
                 if (leftChunk != rightChunk || leftBuffer.diff(rightBuffer, leftChunk)) {
                     result = true;
                     break;

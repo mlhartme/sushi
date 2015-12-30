@@ -18,7 +18,6 @@ package net.oneandone.sushi.io;
 import net.oneandone.sushi.fs.Node;
 
 import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,29 +49,17 @@ public class Buffer {
     public int size() {
         return buffer.length;
     }
-    
+
+    /** read until the buffer is full or the stream is eof */
     public int fill(InputStream in) throws IOException {
-        return fill(in, buffer, 0, buffer.length, null);
-    }
-
-    public int fill(InputStream in, boolean[] eof) throws IOException {
-        return fill(in, buffer, 0, buffer.length, eof);
-    }
-
-    public static int fill(InputStream in, byte[] buffer) throws IOException {
-        return fill(in, buffer, 0, buffer.length, null);
-    }
-
-    public static int fill(InputStream in, byte[] buffer, int start, int max, boolean[] eof) throws IOException {
+        int max;
         int chunk;
         int ofs;
-        
+
+        max = buffer.length;
         for (ofs = 0; ofs < max; ofs += chunk) {
             chunk = in.read(buffer, ofs, max - ofs);
             if (chunk < 0) {
-                if (eof != null) {
-                    eof[0] = true;
-                }
                 return ofs;
             }
         }
@@ -105,9 +92,20 @@ public class Buffer {
     //--
 
     public byte[] readBytes(InputStream src) throws IOException {
+        int count;
+        byte[] result;
         ByteArrayOutputStream dest;
-        
-        dest = new ByteArrayOutputStream(buffer.length);
+
+        // fill buffer first, try to handle without ByteArrayOutputStream
+        eof = new boolean[] { false };
+        count = fill(src);
+        if (count < size()) {
+            result = new byte[count];
+            System.arraycopy(buffer, 0, result, 0, count);
+            return result;
+        }
+        dest = new ByteArrayOutputStream(buffer.length * 2);
+        dest.write(buffer, 0, count);
         copy(src, dest);
         return dest.toByteArray();
     }

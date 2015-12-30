@@ -2,7 +2,13 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2015-08-xx" version="2.9.0">
-
+      <action date="2015-12-30" dev="mlhartme" type="update">
+        Simplified Buffer.file methods: dump the static methods (create a buffer instead) and the eof argument (test if result < size()
+        instead).
+      </action>
+      <action date="2015-12-30" dev="mlhartme" type="update">
+        Optimized Buffer.readBytes(): avoid addtional ByteArrayOutputStream if the file fits into the buffer.
+      </action>
       <action date="2015-12-30" dev="mlhartme" type="remove">
         Dumped Buffer.readLine() - it was unused and the implementation was poor (and buggy for multibyte utf-8 characters).
       </action>

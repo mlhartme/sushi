@@ -449,9 +449,10 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public void copyFileToNoneExisting() throws IOException {
         work.join("nosuchfile").copyFileTo(new ByteArrayOutputStream());
     }
+
     @Test(expected = IOException.class)
-    public void copyFileFromNoneExisting() throws IOException {
-        work.join("nosuchfile").copyFileFrom(new ByteArrayInputStream(new byte[]{}));
+    public void copyFileWithoutParentFrom() throws IOException {
+        work.join("noSuchParent/nosuchfile").copyFileFrom(new ByteArrayInputStream(new byte[]{}));
     }
 
     @Test(expected = IOException.class)
@@ -466,18 +467,20 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
 
     @Test
-    public void copyFileToFrom() throws IOException {
-        checkCopyFileToFrom();
-        checkCopyFileToFrom((byte) 1);
-        checkCopyFileToFrom((byte) 2, (byte) 3);
+    public void copyFileTo() throws IOException {
+        checkCopyFileTo();
+        checkCopyFileTo((byte) 1);
+        checkCopyFileTo((byte) 2, (byte) 3);
     }
 
-    private void checkCopyFileToFrom(byte ... bytes) throws IOException {
-        doCheckCopyFileTo(bytes);
-        doCheckCopyFileFrom(bytes);
+    @Test
+    public void copyFileFrom() throws IOException {
+        checkCopyFileFrom();
+        checkCopyFileFrom((byte) 1);
+        checkCopyFileFrom((byte) 2, (byte) 3);
     }
 
-    private void doCheckCopyFileTo(byte ... bytes) throws IOException {
+    private void checkCopyFileTo(byte ... bytes) throws IOException {
         Node file;
         CheckedByteArrayOutputStream dest;
 
@@ -507,13 +510,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals(0, dest.toByteArray().length);
     }
 
-    private void doCheckCopyFileFrom(byte ... bytes) throws IOException {
+    private void checkCopyFileFrom(byte ... bytes) throws IOException {
         Node file;
-        CheckedByteArrayOutputStream dest;
 
         file = work.join("foo");
         file.copyFileFrom(new ByteArrayInputStream(bytes));
-        assertEquals(bytes, file.readBytes());
+        assertTrue(Arrays.equals(bytes, file.readBytes()));
     }
 
     @Test
@@ -755,6 +757,18 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.writeString("foo");
         file.newOutputStream().close();
         assertEquals("", file.readString());
+    }
+
+    @Test
+    public void appendFile() throws IOException {
+        Node file;
+
+        file = work.join("existing");
+        file.writeString("foo");
+        try (OutputStream dest = file.newAppendStream()) {
+            dest.write(new byte[] {'a'});
+        }
+        assertEquals("fooa", file.readString());
     }
 
     @Test(expected = FileNotFoundException.class)

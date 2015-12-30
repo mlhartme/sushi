@@ -195,9 +195,7 @@ public abstract class Node {
 
     //-- copyFileFrom
 
-    /**
-     * This is the core function to write an ssh node. Does not close src.
-     */
+    /** Overwrites this node with content from src. Does not close src. */
     public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, ReadFromException;
 
     /* writeTo implementation with streams */
@@ -216,6 +214,7 @@ public abstract class Node {
     public OutputStream newOutputStream() throws FileNotFoundException, NewOutputStreamException {
         return newOutputStream(false);
     }
+
     public OutputStream newAppendStream() throws FileNotFoundException, NewOutputStreamException {
         return newOutputStream(true);
     }

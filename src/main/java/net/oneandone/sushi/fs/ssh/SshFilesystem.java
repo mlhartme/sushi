@@ -184,7 +184,7 @@ public class SshFilesystem extends Filesystem {
         NetRc.Authenticator authenticator;
 
         if (user == null) {
-            authenticator = getWorld().getNetRc().getAuthenticators(host);
+            authenticator = getWorld().getNetRc().getAuthenticator(host);
             if (authenticator == null) {
                 user = getWorld().getHome().getName();
                 password = null;

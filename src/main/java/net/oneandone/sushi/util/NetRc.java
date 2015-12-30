@@ -43,7 +43,7 @@ public class NetRc {
      * @param hostname to look for.
      * @return authentication information for hostname.
      */
-    public Authenticator getAuthenticators(final String hostname) {
+    public Authenticator getAuthenticator(final String hostname) {
         return authenticators.get(hostname);
     }
 

@@ -108,12 +108,8 @@ public class World {
     }
 
     public World(boolean trySshAgent) {
-        this(OS.CURRENT, new Settings(), new Buffer(), "**/.svn", "**/.svn/**/*");
+        this(OS.CURRENT, new Settings(), new Buffer(), null, null, "**/.svn", "**/.svn/**/*");
         addStandardFilesystems(trySshAgent);
-    }
-
-    public World(OS os, Settings settings, Buffer buffer, String... defaultExcludes) {
-        this(os, settings, buffer, null, null, defaultExcludes);
     }
 
     public World(OS os, Settings settings, Buffer buffer, FileFilesystem fileFilesystem, MemoryFilesystem memoryFilesystem, String... defaultExcludes) {

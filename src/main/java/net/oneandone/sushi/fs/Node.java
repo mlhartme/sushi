@@ -68,14 +68,14 @@ import java.util.zip.GZIPOutputStream;
  * <p>The base is a node this node is relative to. It's optional, a node without base is called absolute.
  * It's use to simplify (shorten!) toString output.</p>
  *
- * <p>Your application usually creates some "working-directory" nodes with <code>world.node(URI)</code>.
+ * <p>Your application usually creates some starting nodes with <code>world.node(URI)</code> or <code>world.file(str)</code>.
  * They will be used to create actual working nodes with <code>node.join(path)</code>. The constructor
  * of the respective node class is rarely used directly, it's used indirectly by the filesystem. </p>
  *
  * <p>A node is immutable, except for its base.</p>
  *
- * <p>Method names try to be short, but no abbreviations. Exceptions from this rule are mkfile, mkdir and
- * mklink, because mkdir is a well-established name.</p>
+ * <p>Method names try to be short, but no abbreviations. Exceptions from this rule are mkfile, mkdir and mklink, because
+ * mkdir is a well-established name.</p>
  *
  * <p>If an Implementation cannot (or does not want to) implement a method (e.g. move), it throws an
  * UnsupportedOperationException.</p>
@@ -94,6 +94,8 @@ public abstract class Node {
         return new UnsupportedOperationException(getURI() + ":" + op);
     }
 
+    //--
+
     public abstract Root<?> getRoot();
 
     public Node getRootNode() {
@@ -103,6 +105,48 @@ public abstract class Node {
     public World getWorld() {
         return getRoot().getFilesystem().getWorld();
     }
+
+    //-- stream, reader, writer
+
+    public NodeReader newReader() throws IOException {
+        return NodeReader.create(this);
+    }
+
+    public ObjectInputStream createObjectInputStream() throws IOException {
+        return new ObjectInputStream(newInputStream());
+    }
+
+    public NodeWriter newWriter() throws IOException {
+        return newWriter(false);
+    }
+
+    public NodeWriter newAppender() throws IOException {
+        return newWriter(true);
+    }
+
+    public NodeWriter newWriter(boolean append) throws IOException {
+        return NodeWriter.create(this, append);
+    }
+
+    public ObjectOutputStream createObjectOutputStream() throws IOException {
+        return new ObjectOutputStream(newOutputStream());
+    }
+
+    public OutputStream newOutputStream() throws NewOutputStreamException {
+        return newOutputStream(false);
+    }
+
+    public OutputStream newAppendStream() throws NewOutputStreamException {
+        return newOutputStream(true);
+    }
+
+    /**
+     * Create a stream to write this node.
+     * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
+     * @throws NewDirectoryOutputStreamException if this node is a directory
+     * @throws NewOutputStreamException for other problems creating the stream
+     */
+    public abstract OutputStream newOutputStream(boolean append) throws NewOutputStreamException;
 
     public LineReader newLineReader() throws IOException {
         return newLineReader(getWorld().getSettings().lineFormat);
@@ -129,103 +173,7 @@ public abstract class Node {
         };
     }
 
-    //-- copyFileTo
-
-    /**
-     * Concenience method for <code>copyFileTo(dest, 0)</code>.
-     *
-     * @return bytes actually written
-     * @throws FileNotFoundException when this node is not a file
-     * @throws CopyFileToException for other errors
-     */
-    public long copyFileTo(OutputStream dest) throws FileNotFoundException, CopyFileToException {
-        return copyFileTo(dest, 0);
-    }
-
-    /**
-     * Writes all bytes except "skip" initial bytes of this node to out. Without closing out afterwards.
-     * Writes nothing if this node has less than skip bytes.
-     *
-     * @return bytes actually written
-     * @throws FileNotFoundException when this node is not a file
-     * @throws CopyFileToException for other errors
-     */
-    public abstract long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException;
-
-    /* copyFileTo implementation with streams */
-    public long copyFileToImpl(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
-        long result;
-
-        try (InputStream src = newInputStream()) {
-            if (skip(src, skip)) {
-                return 0;
-            }
-            result = getWorld().getBuffer().copy(src, dest);
-        } catch (FileNotFoundException e) {
-            throw e;
-        } catch (IOException e) {
-            throw new CopyFileToException(this, e);
-        }
-        return result;
-    }
-
-    /** @return true when EOF was seen */
-    public static boolean skip(InputStream src, long count) throws IOException {
-        long step;
-        int c;
-
-        while (count > 0) {
-            step = src.skip(count);
-            if (step == 0) {
-                // ByteArrayInputStream just return 0 when at end of file
-                c = src.read();
-                if (c < 0) {
-                    // EOF
-                    src.close();
-                    return true;
-                } else {
-                    count--;
-                }
-            } else {
-                count -= step;
-            }
-        }
-        return false;
-    }
-
-    //-- copyFileFrom
-
-    /** Overwrites this node with content from src. Does not close src. */
-    public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, CopyFileFromException;
-
-    /* copyFileFrom implementation with streams */
-    public long copyFileFromImpl(InputStream src) throws FileNotFoundException, CopyFileFromException {
-        try (OutputStream dest = newOutputStream()) {
-            return getWorld().getBuffer().copy(src, dest);
-        } catch (FileNotFoundException e) {
-            throw e;
-        } catch (IOException e) {
-            throw new CopyFileFromException(this, e);
-        }
-    }
-
-    //--
-
-    public OutputStream newOutputStream() throws NewOutputStreamException {
-        return newOutputStream(false);
-    }
-
-    public OutputStream newAppendStream() throws NewOutputStreamException {
-        return newOutputStream(true);
-    }
-
-    /**
-     * Create a stream to write this node.
-     * Closing the stream more than once is ok, but writing to a closed stream is rejected by an exception.
-     * @throws NewDirectoryOutputStreamException if this node is a directory
-     * @throws NewOutputStreamException for other problems creating the stream
-     */
-    public abstract OutputStream newOutputStream(boolean append) throws NewOutputStreamException;
+    //-- directories
 
     /**
      * Lists child nodes of this node.
@@ -243,23 +191,46 @@ public abstract class Node {
      */
     public abstract Node mkdir() throws MkdirException;
 
-    /**
-     * Fails if the directory already exists. Features define whether this operation is atomic.
-     * This default implementation is not atomic.
-     * @return this
-     */
-    public Node mkfile() throws MkfileException {
-    	try {
-			if (exists()) {
-				throw new MkfileException(this);
-			}
-			writeBytes();
-		} catch (IOException e) {
-			throw new MkfileException(this, e);
-		}
-		return this;
+    public Node mkdirOpt() throws MkdirException {
+        try {
+            if (!isDirectory()) {
+                mkdir(); // fail here if it's a file!
+            }
+        } catch (ExistsException e) {
+            throw new MkdirException(this, e);
+        }
+        return this;
     }
 
+    public Node mkdirsOpt() throws MkdirException {
+        Node parent;
+
+        try {
+            if (!isDirectory()) {
+                parent = getParent();
+                if (parent != null) {
+                    parent.mkdirsOpt();
+                }
+                mkdir(); // fail here if it's a file!
+            }
+        } catch (ExistsException e) {
+            throw new MkdirException(this, e);
+        }
+        return this;
+    }
+
+    public Node mkdirs() throws MkdirException {
+        try {
+            if (exists()) {
+                throw new MkdirException(this);
+            }
+            return mkdirsOpt();
+        } catch (IOException e) {
+            throw new MkdirException(this, e);
+        }
+    }
+
+    //-- delete
 
     /**
      * Deletes this node, no matter if it's a file or a directory or a broken link. If this is a link, the link is deleted, not the link target.
@@ -283,41 +254,43 @@ public abstract class Node {
      */
     public abstract Node deleteDirectory() throws DirectoryNotFoundException, DeleteException;
 
-    /**
-     * Convenience Method for move(dest, false).
-     */
-    public Node move(Node dest) throws NodeNotFoundException, MoveException {
-        return move(dest, false);
+    public Node deleteFileOpt() throws IOException {
+        if (exists()) {
+            deleteFile();
+        }
+        return this;
     }
 
-    /**
-     * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
-     * This method is a default implementation with copy and delete, derived classes should override it with a native
-     * implementation when available.
-     *
-     * @param overwrite false reports an error if the target already exists. true can be usued to implement atomic updates.
-     * @return dest
-     * @throws FileNotFoundException if this does not exist
-     */
-    public Node move(Node dest, boolean overwrite) throws NodeNotFoundException, MoveException {
-        try {
-            if (!overwrite) {
-                dest.checkNotExists();
-            }
-            copy(dest);
-            deleteTree();
-        } catch (FileNotFoundException e) {
-            throw e;
-        } catch (IOException e) {
-            throw new MoveException(this, dest, "move failed", e);
+    public Node deleteDirectoryOpt() throws IOException {
+        if (exists()) {
+            deleteDirectory();
         }
-        return dest;
+        return this;
+    }
+
+    public Node deleteTreeOpt() throws IOException {
+        if (exists()) {
+            deleteTree();
+        }
+        return this;
     }
 
     //-- status methods
 
     /** Throws a LengthException if this node is not a file. */
     public abstract long size() throws SizeException;
+
+    /** Throws an exception is the file does not exist */
+    public abstract long getLastModified() throws GetLastModifiedException;
+    public abstract void setLastModified(long millis) throws SetLastModifiedException;
+
+    public abstract String getPermissions() throws ModeException;
+    public abstract void setPermissions(String permissions) throws ModeException;
+
+    public abstract UserPrincipal getOwner() throws ModeException;
+    public abstract void setOwner(UserPrincipal owner) throws ModeException;
+    public abstract GroupPrincipal getGroup() throws ModeException;
+    public abstract void setGroup(GroupPrincipal group) throws ModeException;
 
     /**
      * Tests if this is a file, directory or link.
@@ -334,17 +307,42 @@ public abstract class Node {
     /** @return true for links to files or directories or dangling links */
     public abstract boolean isLink() throws ExistsException;
 
-    /** Throws an exception is the file does not exist */
-    public abstract long getLastModified() throws GetLastModifiedException;
-    public abstract void setLastModified(long millis) throws SetLastModifiedException;
+    public Node checkExists() throws ExistsException, NodeNotFoundException {
+        if (!exists()) {
+            throw new NodeNotFoundException(this);
+        }
+        return this;
+    }
 
-    public abstract String getPermissions() throws ModeException;
-    public abstract void setPermissions(String permissions) throws ModeException;
+    public Node checkNotExists() throws ExistsException, NodeAlreadyExistsException {
+        if (exists()) {
+            throw new NodeAlreadyExistsException(this);
+        }
+        return this;
+    }
 
-    public abstract UserPrincipal getOwner() throws ModeException;
-    public abstract void setOwner(UserPrincipal owner) throws ModeException;
-    public abstract GroupPrincipal getGroup() throws ModeException;
-    public abstract void setGroup(GroupPrincipal group) throws ModeException;
+    public Node checkDirectory() throws ExistsException, DirectoryNotFoundException {
+        if (isDirectory()) {
+            return this;
+        }
+        if (exists()) {
+            throw new DirectoryNotFoundException(this, "directory not found - this is a file");
+        } else {
+            throw new DirectoryNotFoundException(this);
+        }
+    }
+
+    /** @return false for dangling links */
+    public Node checkFile() throws ExistsException, FileNotFoundException {
+        if (isFile()) {
+            return this;
+        }
+        if (exists()) {
+            throw new FileNotFoundException(this, "file not found - this is a directory");
+        } else {
+            throw new FileNotFoundException(this);
+        }
+    }
 
     //-- path functionality
 
@@ -472,15 +470,7 @@ public abstract class Node {
         return join(Arrays.asList(names));
     }
 
-    //-- input stream functionality
-
-    public NodeReader newReader() throws IOException {
-        return NodeReader.create(this);
-    }
-
-    public ObjectInputStream createObjectInputStream() throws IOException {
-        return new ObjectInputStream(newInputStream());
-    }
+    //-- read functionality
 
     /**
      * Reads all bytes of the node.
@@ -558,315 +548,23 @@ public abstract class Node {
         return templates.newTransformer();
     }
 
-    public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
-        try (InputStream in = newInputStream();
-             OutputStream out = dest.newOutputStream()) {
-            transformer.transform(new StreamSource(in), new StreamResult(out));
-        }
-    }
-
-    //--
-
-    public Node checkExists() throws ExistsException, NodeNotFoundException {
-        if (!exists()) {
-            throw new NodeNotFoundException(this);
-        }
-        return this;
-    }
-
-    public Node checkNotExists() throws ExistsException, NodeAlreadyExistsException {
-        if (exists()) {
-            throw new NodeAlreadyExistsException(this);
-        }
-        return this;
-    }
-
-    public Node checkDirectory() throws ExistsException, DirectoryNotFoundException {
-        if (isDirectory()) {
-            return this;
-        }
-        if (exists()) {
-            throw new DirectoryNotFoundException(this, "directory not found - this is a file");
-        } else {
-            throw new DirectoryNotFoundException(this);
-        }
-    }
-
-    /** @return false for dangling links */
-    public Node checkFile() throws ExistsException, FileNotFoundException {
-        if (isFile()) {
-            return this;
-        }
-        if (exists()) {
-            throw new FileNotFoundException(this, "file not found - this is a directory");
-        } else {
-            throw new FileNotFoundException(this);
-        }
-    }
-
-    //--
+    //-- write functionality
 
     /**
-     * Creates an absolute link. The signature of this method resembles the copy method.
-     *
-     * @param dest link to be created
-     * @return dest;
+     * Fails if the file already exists. Features define whether this operation is atomic.
+     * This default implementation is not atomic.
+     * @return this
      */
-    public Node link(Node dest) throws LinkException {
-        if (!getClass().equals(dest.getClass())) {
-            throw new IllegalArgumentException(this.getClass() + " vs " + dest.getClass());
-        }
+    public Node mkfile() throws MkfileException {
         try {
-            checkExists();
-        } catch (IOException e) {
-            throw new LinkException(this, e);
-        }
-        // TODO: getRoot() for ssh root ...
-        dest.mklink(Filesystem.SEPARATOR_STRING + this.getPath());
-        return dest;
-    }
-
-    /**
-     * Creates this link, pointing to the specified path. Throws an exception if this already exists or if the
-     * parent does not exist; the target is not checked, it may be absolute or relative
-     */
-    public abstract void mklink(String path) throws LinkException;
-
-    /**
-     * Returns the link target of this file or throws an exception.
-     */
-    public abstract String readLink() throws ReadLinkException;
-
-    /**
-     * Throws an exception if this is not a link.
-     */
-    public Node resolveLink() throws ReadLinkException {
-        String path;
-
-        path = readLink();
-        if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
-            return getRoot().node(path.substring(1), null);
-        } else {
-            return getParent().join(path);
-        }
-    }
-
-    /**
-     * Copies this to dest. Overwrites existing file and adds to existing directories.
-     *
-     * @throws NodeNotFoundException if this does not exist
-     */
-    public void copy(Node dest) throws NodeNotFoundException, CopyException {
-        try {
-            if (isDirectory()) {
-                dest.mkdirOpt();
-                copyDirectory(dest);
-            } else {
-                copyFile(dest);
+            if (exists()) {
+                throw new MkfileException(this);
             }
-        } catch (FileNotFoundException | CopyException e) {
-            throw e;
+            writeBytes();
         } catch (IOException e) {
-            throw new CopyException(this, dest, e);
-        }
-    }
-
-    public void copyInto(Node directory) throws ExistsException, NodeNotFoundException, CopyException {
-        directory.checkDirectory();
-        copy(directory.join(getName()));
-    }
-
-    public void moveInto(Node directory) throws ExistsException, NodeNotFoundException, MoveException {
-        directory.checkDirectory();
-        move(directory.join(getName()));
-    }
-
-    /**
-     * Overwrites dest if it already exists.
-     * @return dest
-     */
-    public Node copyFile(Node dest) throws FileNotFoundException, CopyException {
-        try (OutputStream out = dest.newOutputStream()) {
-            copyFileTo(out);
-        } catch (FileNotFoundException e) {
-            throw e;
-        } catch (IOException e) {
-            throw new CopyException(this, dest, e);
+            throw new MkfileException(this, e);
         }
         return this;
-    }
-
-    /**
-     * Convenience method for copy all files. Does not use default-excludes
-     * @return list of files and directories created
-     */
-    public List<Node> copyDirectory(Node dest) throws DirectoryNotFoundException, CopyException {
-        return copyDirectory(dest, new Filter().includeAll());
-    }
-
-    /**
-     * Throws an exception is this or dest is not a directory. Overwrites existing files in dest.
-     * @return list of files and directories created
-     */
-    public List<Node> copyDirectory(Node destdir, Filter filter) throws DirectoryNotFoundException, CopyException {
-        return new Copy(this, filter).directory(destdir);
-    }
-
-    //-- diff
-
-    public String diffDirectory(Node rightdir) throws IOException {
-        return diffDirectory(rightdir, false);
-    }
-
-    public String diffDirectory(Node rightdir, boolean brief) throws IOException {
-        return new Diff(brief).directory(this, rightdir, getWorld().filter().includeAll());
-    }
-
-    /** cheap diff if you only need a yes/no answer */
-    public boolean diff(Node right) throws IOException {
-        return diff(right, new Buffer(getWorld().getBuffer()));
-    }
-
-    /** cheap diff if you only need a yes/no answer */
-    public boolean diff(Node right, Buffer rightBuffer) throws IOException {
-        Buffer leftBuffer;
-        int leftChunk;
-        int rightChunk;
-        boolean[] leftEof;
-        boolean[] rightEof;
-        boolean result;
-
-        leftBuffer = getWorld().getBuffer();
-        try (InputStream leftSrc = newInputStream();
-             InputStream rightSrc = right.newInputStream()) {
-            leftEof = new boolean[] { false };
-            rightEof = new boolean[] { false };
-            result = false;
-            do {
-                leftChunk = leftEof[0] ? 0 : leftBuffer.fill(leftSrc, leftEof);
-                rightChunk = rightEof[0] ? 0 : rightBuffer.fill(rightSrc, rightEof);
-                if (leftChunk != rightChunk || leftBuffer.diff(rightBuffer, leftChunk)) {
-                    result = true;
-                    break;
-                }
-            } while (leftChunk > 0);
-        }
-        return result;
-    }
-
-    //-- search for child nodes
-
-    /** uses default excludes */
-    public List<Node> find(String... includes) throws IOException {
-        return find(getWorld().filter().include(includes));
-    }
-
-    public Node findOne(String include) throws IOException {
-        Node found;
-
-        found = findOpt(include);
-        if (found == null) {
-            throw new FileNotFoundException(this, "nothing matches this pattern: " + include);
-        }
-        return found;
-    }
-
-    public Node findOpt(String include) throws IOException {
-        List<Node> found;
-
-        found = find(include);
-        switch (found.size()) {
-        case 0:
-            return null;
-        case 1:
-            return found.get(0);
-        default:
-            throw new IOException(toString() + ": ambiguous: " + include);
-        }
-    }
-
-    public List<Node> find(Filter filter) throws IOException {
-        return filter.collect(this);
-    }
-
-    //--
-
-    public Node deleteFileOpt() throws IOException {
-        if (exists()) {
-            deleteFile();
-        }
-        return this;
-    }
-
-    public Node deleteDirectoryOpt() throws IOException {
-        if (exists()) {
-            deleteDirectory();
-        }
-        return this;
-    }
-
-    public Node deleteTreeOpt() throws IOException {
-        if (exists()) {
-            deleteTree();
-        }
-        return this;
-    }
-
-    public Node mkdirOpt() throws MkdirException {
-        try {
-			if (!isDirectory()) {
-			    mkdir(); // fail here if it's a file!
-			}
-		} catch (ExistsException e) {
-			throw new MkdirException(this, e);
-		}
-        return this;
-    }
-
-    public Node mkdirsOpt() throws MkdirException {
-        Node parent;
-
-        try {
-			if (!isDirectory()) {
-			    parent = getParent();
-			    if (parent != null) {
-			        parent.mkdirsOpt();
-			    }
-			    mkdir(); // fail here if it's a file!
-			}
-		} catch (ExistsException e) {
-			throw new MkdirException(this, e);
-		}
-        return this;
-    }
-
-    public Node mkdirs() throws MkdirException {
-    	try {
-    		if (exists()) {
-    			throw new MkdirException(this);
-    		}
-    	    return mkdirsOpt();
-    	} catch (IOException e) {
-    		throw new MkdirException(this, e);
-    	}
-    }
-
-    //-- output create functionality
-
-    public NodeWriter newWriter() throws IOException {
-        return newWriter(false);
-    }
-
-    public NodeWriter newAppender() throws IOException {
-        return newWriter(true);
-    }
-
-    public NodeWriter newWriter(boolean append) throws IOException {
-        return NodeWriter.create(this, append);
-    }
-
-    public ObjectOutputStream createObjectOutputStream() throws IOException {
-        return new ObjectOutputStream(newOutputStream());
     }
 
     public Node writeBytes(byte ... bytes) throws IOException {
@@ -1005,7 +703,310 @@ public abstract class Node {
         return this;
     }
 
+    //-- copy
+
+    /**
+     * Copies this to dest. Overwrites existing file and adds to existing directories.
+     *
+     * @throws NodeNotFoundException if this does not exist
+     */
+    public void copy(Node dest) throws NodeNotFoundException, CopyException {
+        try {
+            if (isDirectory()) {
+                dest.mkdirOpt();
+                copyDirectory(dest);
+            } else {
+                copyFile(dest);
+            }
+        } catch (FileNotFoundException | CopyException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new CopyException(this, dest, e);
+        }
+    }
+
+    public void copyInto(Node directory) throws ExistsException, NodeNotFoundException, CopyException {
+        directory.checkDirectory();
+        copy(directory.join(getName()));
+    }
+
+    /**
+     * Overwrites dest if it already exists.
+     * @return dest
+     */
+    public Node copyFile(Node dest) throws FileNotFoundException, CopyException {
+        try (OutputStream out = dest.newOutputStream()) {
+            copyFileTo(out);
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new CopyException(this, dest, e);
+        }
+        return this;
+    }
+
+    /**
+     * Convenience method for copy all files. Does not use default-excludes
+     * @return list of files and directories created
+     */
+    public List<Node> copyDirectory(Node dest) throws DirectoryNotFoundException, CopyException {
+        return copyDirectory(dest, new Filter().includeAll());
+    }
+
+    /**
+     * Throws an exception is this or dest is not a directory. Overwrites existing files in dest.
+     * @return list of files and directories created
+     */
+    public List<Node> copyDirectory(Node destdir, Filter filter) throws DirectoryNotFoundException, CopyException {
+        return new Copy(this, filter).directory(destdir);
+    }
+
+    /** Overwrites this node with content from src. Does not close src. */
+    public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, CopyFileFromException;
+
+    /* copyFileFrom implementation with streams */
+    public long copyFileFromImpl(InputStream src) throws FileNotFoundException, CopyFileFromException {
+        try (OutputStream dest = newOutputStream()) {
+            return getWorld().getBuffer().copy(src, dest);
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new CopyFileFromException(this, e);
+        }
+    }
+
+    /**
+     * Concenience method for <code>copyFileTo(dest, 0)</code>.
+     *
+     * @return bytes actually written
+     * @throws FileNotFoundException when this node is not a file
+     * @throws CopyFileToException for other errors
+     */
+    public long copyFileTo(OutputStream dest) throws FileNotFoundException, CopyFileToException {
+        return copyFileTo(dest, 0);
+    }
+
+    /**
+     * Writes all bytes except "skip" initial bytes of this node to out. Without closing out afterwards.
+     * Writes nothing if this node has less than skip bytes.
+     *
+     * @return bytes actually written
+     * @throws FileNotFoundException when this node is not a file
+     * @throws CopyFileToException for other errors
+     */
+    public abstract long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException;
+
+    /* copyFileTo implementation with streams */
+    public long copyFileToImpl(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
+        long result;
+
+        try (InputStream src = newInputStream()) {
+            if (skip(src, skip)) {
+                return 0;
+            }
+            result = getWorld().getBuffer().copy(src, dest);
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new CopyFileToException(this, e);
+        }
+        return result;
+    }
+
+    /** @return true when EOF was seen */
+    public static boolean skip(InputStream src, long count) throws IOException {
+        long step;
+        int c;
+
+        while (count > 0) {
+            step = src.skip(count);
+            if (step == 0) {
+                // ByteArrayInputStream just return 0 when at end of file
+                c = src.read();
+                if (c < 0) {
+                    // EOF
+                    src.close();
+                    return true;
+                } else {
+                    count--;
+                }
+            } else {
+                count -= step;
+            }
+        }
+        return false;
+    }
+
+    //-- move
+
+    /**
+     * Convenience Method for move(dest, false).
+     */
+    public Node move(Node dest) throws NodeNotFoundException, MoveException {
+        return move(dest, false);
+    }
+
+    /**
+     * Moves this file or directory to dest. Throws an exception if this does not exist or if dest already exists.
+     * This method is a default implementation with copy and delete, derived classes should override it with a native
+     * implementation when available.
+     *
+     * @param overwrite false reports an error if the target already exists. true can be usued to implement atomic updates.
+     * @return dest
+     * @throws FileNotFoundException if this does not exist
+     */
+    public Node move(Node dest, boolean overwrite) throws NodeNotFoundException, MoveException {
+        try {
+            if (!overwrite) {
+                dest.checkNotExists();
+            }
+            copy(dest);
+            deleteTree();
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new MoveException(this, dest, "move failed", e);
+        }
+        return dest;
+    }
+
+    public void moveInto(Node directory) throws ExistsException, NodeNotFoundException, MoveException {
+        directory.checkDirectory();
+        move(directory.join(getName()));
+    }
+
+    //-- links
+
+    /**
+     * Creates an absolute link dest pointing to this. The signature of this method resembles the copy method.
+     *
+     * @param dest link to be created
+     * @return dest;
+     */
+    public Node link(Node dest) throws LinkException {
+        if (!getClass().equals(dest.getClass())) {
+            throw new IllegalArgumentException(this.getClass() + " vs " + dest.getClass());
+        }
+        try {
+            checkExists();
+        } catch (IOException e) {
+            throw new LinkException(this, e);
+        }
+        // TODO: getRoot() for ssh root ...
+        dest.mklink(Filesystem.SEPARATOR_STRING + this.getPath());
+        return dest;
+    }
+
+    /**
+     * Creates this link, pointing to the specified target. Throws an exception if this already exists or if the
+     * parent does not exist; the target is not checked, it may be absolute or relative
+     */
+    public abstract void mklink(String target) throws LinkException;
+
+    /**
+     * Returns the link target of this file or throws an exception.
+     */
+    public abstract String readLink() throws ReadLinkException;
+
+    /**
+     * Throws an exception if this is not a link.
+     */
+    public Node resolveLink() throws ReadLinkException {
+        String path;
+
+        path = readLink();
+        if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
+            return getRoot().node(path.substring(1), null);
+        } else {
+            return getParent().join(path);
+        }
+    }
+
+    //-- diff
+
+    public String diffDirectory(Node rightdir) throws IOException {
+        return diffDirectory(rightdir, false);
+    }
+
+    public String diffDirectory(Node rightdir, boolean brief) throws IOException {
+        return new Diff(brief).directory(this, rightdir, getWorld().filter().includeAll());
+    }
+
+    /** cheap diff if you only need a yes/no answer */
+    public boolean diff(Node right) throws IOException {
+        return diff(right, new Buffer(getWorld().getBuffer()));
+    }
+
+    /** cheap diff if you only need a yes/no answer */
+    public boolean diff(Node right, Buffer rightBuffer) throws IOException {
+        Buffer leftBuffer;
+        int leftChunk;
+        int rightChunk;
+        boolean[] leftEof;
+        boolean[] rightEof;
+        boolean result;
+
+        leftBuffer = getWorld().getBuffer();
+        try (InputStream leftSrc = newInputStream();
+             InputStream rightSrc = right.newInputStream()) {
+            leftEof = new boolean[] { false };
+            rightEof = new boolean[] { false };
+            result = false;
+            do {
+                leftChunk = leftEof[0] ? 0 : leftBuffer.fill(leftSrc, leftEof);
+                rightChunk = rightEof[0] ? 0 : rightBuffer.fill(rightSrc, rightEof);
+                if (leftChunk != rightChunk || leftBuffer.diff(rightBuffer, leftChunk)) {
+                    result = true;
+                    break;
+                }
+            } while (leftChunk > 0);
+        }
+        return result;
+    }
+
+    //-- search for child nodes
+
+    /** uses default excludes */
+    public List<Node> find(String... includes) throws IOException {
+        return find(getWorld().filter().include(includes));
+    }
+
+    public Node findOne(String include) throws IOException {
+        Node found;
+
+        found = findOpt(include);
+        if (found == null) {
+            throw new FileNotFoundException(this, "nothing matches this pattern: " + include);
+        }
+        return found;
+    }
+
+    public Node findOpt(String include) throws IOException {
+        List<Node> found;
+
+        found = find(include);
+        switch (found.size()) {
+        case 0:
+            return null;
+        case 1:
+            return found.get(0);
+        default:
+            throw new IOException(toString() + ": ambiguous: " + include);
+        }
+    }
+
+    public List<Node> find(Filter filter) throws IOException {
+        return filter.collect(this);
+    }
+
     //-- other
+
+    public void xslt(Transformer transformer, Node dest) throws IOException, TransformerException {
+        try (InputStream in = newInputStream();
+             OutputStream out = dest.newOutputStream()) {
+            transformer.transform(new StreamSource(in), new StreamResult(out));
+        }
+    }
 
     public void gzip(Node dest) throws IOException {
         try (InputStream in = newInputStream();

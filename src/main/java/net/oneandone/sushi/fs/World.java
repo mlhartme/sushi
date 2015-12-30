@@ -75,7 +75,7 @@ public class World {
         World world;
 
         world = createMinimal();
-        world.addStandardFilesystems(trySsh);
+        world.withStandardFilesystems(trySsh);
         world.loadNetRcOpt();
         return world;
     }
@@ -127,12 +127,30 @@ public class World {
         this.netRc = new NetRc();
     }
 
+    //--
+
     public OnShutdown onShutdown() {
         if (lazyOnShutdown == null) {
             lazyOnShutdown = new OnShutdown();
             Runtime.getRuntime().addShutdownHook(lazyOnShutdown);
         }
         return lazyOnShutdown;
+    }
+
+    //--  filesystems
+
+    public World withStandardFilesystems(boolean trySshAgent) {
+        addFilesystem(new ConsoleFilesystem(this, "console"));
+        addFilesystem(new ZipFilesystem(this, "zip"));
+        addFilesystem(new ZipFilesystem(this, "jar"));
+        addFilesystem(new TimeMachineFilesystem(this, "tm"));
+        addFilesystemOpt("net.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh", trySshAgent);
+        addFilesystemOpt("net.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
+        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
+        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
+        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "dav", "http", true);
+        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "davs", "https", true);
+        return this;
     }
 
     //-- configuration
@@ -171,22 +189,6 @@ public class World {
 
     public Xml getXml() {
         return xml;
-    }
-
-    //--  filesystems
-
-    public World addStandardFilesystems(boolean trySshAgent) {
-        addFilesystem(new ConsoleFilesystem(this, "console"));
-        addFilesystem(new ZipFilesystem(this, "zip"));
-        addFilesystem(new ZipFilesystem(this, "jar"));
-        addFilesystem(new TimeMachineFilesystem(this, "tm"));
-        addFilesystemOpt("net.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh", trySshAgent);
-        addFilesystemOpt("net.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
-        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "http", "http", false);
-        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "https", "https", false);
-        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "dav", "http", true);
-        addFilesystemOpt("net.oneandone.sushi.fs.webdav.WebdavFilesystem", this, "davs", "https", true);
-        return this;
     }
 
     public <T extends Filesystem> T addFilesystem(T filesystem) {

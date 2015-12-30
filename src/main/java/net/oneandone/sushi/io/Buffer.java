@@ -107,38 +107,20 @@ public class Buffer {
     public byte[] readBytes(InputStream src) throws IOException {
         ByteArrayOutputStream dest;
         
-        dest = new ByteArrayOutputStream();
+        dest = new ByteArrayOutputStream(buffer.length);
         copy(src, dest);
         return dest.toByteArray();
     }
 
-    public String readLine(InputStream src, String encoding) throws IOException {
-        ByteArrayOutputStream tmp;
-        int c;
-        
-        tmp = new ByteArrayOutputStream();
-        while (true) {
-            c = src.read();
-            if (c < 0) {
-                if (tmp.size() > 0) {
-                    throw new EOFException();
-                }
-                return null;
-            } else if (c == '\n') {
-                return tmp.toString(encoding);
-            } else {
-                tmp.write(c);
-            }
-        }
-    }
-    
     public String readString(InputStream src, String encoding) throws IOException {
         byte[] bytes;
-        
+
         bytes = readBytes(src);
         return new String(bytes, encoding);
     }
-    
+
+    //--
+
     /** 
      * Copies all bytes.
      * 

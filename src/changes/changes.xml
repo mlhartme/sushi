@@ -2,6 +2,10 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2015-08-xx" version="2.9.0">
+
+      <action date="2015-12-30" dev="mlhartme" type="remove">
+        Dumped Buffer.readLine() - it was unused and the implementation was poor (and buggy for multibyte utf-8 characters).
+      </action>
       <action date="2015-12-30" dev="mlhartme" type="update">
         Cleaned up World construction: you'll normally create a world with World.create() now. The actual constructor is for internal use now.
       </action>

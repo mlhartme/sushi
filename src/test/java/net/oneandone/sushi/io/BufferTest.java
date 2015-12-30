@@ -30,30 +30,6 @@ import static org.junit.Assert.fail;
 
 public class BufferTest {
     @Test
-    public void readLine() throws IOException {
-        Buffer buffer;
-        Settings settings;
-        InputStream src;
-
-        buffer = new Buffer();
-        settings = new Settings();
-
-        src = new ByteArrayInputStream(new byte[] { });
-        assertNull(buffer.readLine(src, settings.encoding));
-
-        src = new ByteArrayInputStream(new byte[] { 'a', 'b', 'c', '\n', 'a', '\n', '\n', 'x', 'x' });
-        assertEquals("abc", buffer.readLine(src, settings.encoding));
-        assertEquals("a", buffer.readLine(src, settings.encoding));
-        assertEquals("", buffer.readLine(src, settings.encoding));
-        try {
-            assertEquals("", buffer.readLine(src, settings.encoding));
-            fail();
-        } catch (EOFException e) {
-            // ok
-        }
-    }
-
-    @Test
     public void copy() throws IOException {
         copy(bytes(), bytes(), 100);
         copy(bytes(0, 1, 2, 3, 4), bytes(0, 1, 2, 3, 4), 100);

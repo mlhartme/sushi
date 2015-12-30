@@ -97,7 +97,6 @@ public class Buffer {
         ByteArrayOutputStream dest;
 
         // fill buffer first, try to handle without ByteArrayOutputStream
-        eof = new boolean[] { false };
         count = fill(src);
         if (count < size()) {
             result = new byte[count];

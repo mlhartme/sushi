@@ -19,6 +19,7 @@ import net.oneandone.sushi.fs.file.FileNode;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,19 +51,12 @@ public class OnShutdown extends Thread {
 
     private final String prefix;
 
-    private final String suffix;
-
-    // to generate directory names
-    private int dirNo;
-
     private final List<Runnable> onShutdown;
 
     public OnShutdown() {
         this.delete = new ArrayList<>();
-        this.prefix = "sushi" + new SimpleDateFormat("MMdd-HHmm").format(new Date()) + "-"
+        this.prefix = "sushitmp" + new SimpleDateFormat("MMdd-HHmm").format(new Date()) + "-"
             + (System.currentTimeMillis() % 100)  + "-";
-        this.suffix = ".tmp";
-        this.dirNo = 0;
         this.onShutdown = new ArrayList<>();
     }
 
@@ -72,26 +66,22 @@ public class OnShutdown extends Thread {
 
     //--
 
+    /** @throws IOException is dir is not a directory */
     public FileNode createFile(FileNode dir) throws IOException {
-        FileNode file;
+        FileNode result;
 
-        file = new FileNode(dir.getRoot(), File.createTempFile(prefix, suffix, dir.toPath().toFile()).toPath());
-        deleteAtExit(file);
-        return file;
+        result = new FileNode(dir.getRoot(), Files.createTempFile(dir.toPath(), prefix, ".tmp"));
+        deleteAtExit(result);
+        return result;
     }
 
+    /** @throws IOException is dir is not a directory */
     public FileNode createDirectory(FileNode dir) throws IOException {
-        FileNode file;
+        FileNode result;
 
-        dir.checkDirectory();
-        for (; true; dirNo++) {
-            file = dir.join(prefix + dirNo + suffix);
-            if (!file.exists()) {
-                file.mkdir(); // do not catch IOExceptios here -- it might be "disk full" ...
-                deleteAtExit(file);
-                return file;
-            }
-        }
+        result = new FileNode(dir.getRoot(), Files.createTempDirectory(dir.toPath(), prefix));
+        deleteAtExit(result);
+        return result;
     }
 
     //--
@@ -124,6 +114,7 @@ public class OnShutdown extends Thread {
     //--
 
     /**
+     * Use this instead of File.deleteAtExist because it can delete none-empty directories
      * @param node  file or directory
      */
     public synchronized void deleteAtExit(FileNode node) {

@@ -323,12 +323,9 @@ public class FileNode extends Node {
 
     @Override
     public void mklink(String target) throws LinkException {
-        FileNode parent;
-
         try {
             checkNotExists();
-            parent = getParent();
-            parent.checkDirectory();
+            getParent().checkDirectory();
             Files.createSymbolicLink(path, path.getFileSystem().getPath(target));
         } catch (IOException e) {
             throw new LinkException(this, e);

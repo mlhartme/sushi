@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -35,6 +36,16 @@ public class FileNodeTest extends NodeTest<FileNode> {
     @Override
     protected FileNode createWork() throws IOException {
         return WORLD.getTemp().createTempDirectory();
+    }
+
+    @Test(expected = NoSuchFileException.class)
+    public void createTempFileInNonExisting() throws IOException {
+        work.join("nosuchdir").createTempFile();
+    }
+
+    @Test(expected = NoSuchFileException.class)
+    public void createTempDirectoryInNonExisting() throws IOException {
+        work.join("nosuchdir").createTempDirectory();
     }
 
     @Test

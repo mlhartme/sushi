@@ -388,7 +388,7 @@ public class FileNode extends Node {
 
     public FileNode deleteFile() throws DeleteException, FileNotFoundException {
         try {
-            checkFile();
+            checkFile(); // expensive, but I have to avoid deleting empty directories
             Files.delete(path);
         } catch (FileNotFoundException e) {
             throw e;
@@ -400,7 +400,7 @@ public class FileNode extends Node {
 
     public FileNode deleteDirectory() throws DeleteException, DirectoryNotFoundException {
         try {
-            checkDirectory();
+            checkDirectory(); // expensive, but I have to avoid deleting files
             Files.delete(path);
         } catch (DirectoryNotFoundException e) {
             throw e;
@@ -514,19 +514,6 @@ public class FileNode extends Node {
             return Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
         } catch (IOException e) {
             throw new ModeException(this, e);
-        }
-    }
-
-    private int stat(String[] args, int radix) throws ModeException {
-        Launcher stat;
-
-        stat = new Launcher(getParent(), "stat");
-        stat.arg(args);
-        stat.arg(getAbsolute());
-        try {
-            return Integer.parseInt(stat.exec().trim(), radix);
-        } catch (Failure failure) {
-            throw new ModeException(this, failure);
         }
     }
 

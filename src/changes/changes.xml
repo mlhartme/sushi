@@ -3,8 +3,11 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-29" dev="mlhartme" type="update">
-        Node.move, Node.copy, Node.copyDirectory and Node.copyFile now throws a FileNotFoundException if the source does not exist.
-        (Instead of throwing a MoveException or a CopyException)
+        Node.move, Node.copy, Node.copyDirectory and Node.copyFile now throw proper ...NotFoundExceptions if the source does not exist
+        (instead of throwing Move- or CopyExceptions).
+      </action>
+      <action date="2015-12-29" dev="mlhartme" type="update">
+        FileNotFoundException and DirectoryNotFoundException now extend NodeNotFoundException.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
         Calling Node.newOutputStream for a directory now throws NewDirectoryOutputStreamExceptions instead of FileNotFoundExceptions.

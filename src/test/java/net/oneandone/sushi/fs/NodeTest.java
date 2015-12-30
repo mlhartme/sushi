@@ -445,7 +445,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- copy
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = NodeNotFoundException.class)
     public void copyNonexisting() throws IOException {
         work.join("nosuchfile").copy(work.join("nosuchcopy"));
     }
@@ -453,9 +453,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     public void copyFileNonexisting() throws IOException {
         work.join("nosuchfile").copyFile(work.join("nosuchcopy"));
     }
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = DirectoryNotFoundException.class)
     public void copyDirectoryNonexisting() throws IOException {
-        work.join("nosuchfile").copyFile(work.join("nosuchcopy"));
+        work.join("nosuchdirectory").copyDirectory(work.join("nosuchcopy"));
     }
 
     @Test(expected = FileNotFoundException.class)
@@ -1131,9 +1131,9 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- move
 
-    @Test(expected=FileNotFoundException.class)
+    @Test(expected=NodeNotFoundException.class)
     public void moveNonexisting() throws IOException {
-        doMove(work.join("old"), work.join("moved"), false);
+        doMove(work.join("nosuchnode"), work.join("moved"), false);
     }
 
     @Test

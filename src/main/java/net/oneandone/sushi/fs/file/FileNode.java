@@ -253,7 +253,7 @@ public class FileNode extends Node {
     @Override
     public InputStream newInputStream() throws FileNotFoundException, NewInputStreamException {
         if (isDirectory()) {
-            throw new FileNotFoundException(this);
+            throw new FileNotFoundException(this, "file not found - this is a directory");
         }
         try {
             return Files.newInputStream(path);
@@ -356,7 +356,7 @@ public class FileNode extends Node {
      * @return dest
      */
     @Override
-    public Node move(Node destNode, boolean overwrite) throws FileNotFoundException, MoveException {
+    public Node move(Node destNode, boolean overwrite) throws NodeNotFoundException, MoveException {
     	FileNode dest;
 
         if (!(destNode instanceof FileNode)) {

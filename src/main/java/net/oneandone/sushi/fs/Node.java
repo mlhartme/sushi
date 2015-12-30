@@ -277,7 +277,7 @@ public abstract class Node {
     /**
      * Convenience Method for move(dest, false).
      */
-    public Node move(Node dest) throws FileNotFoundException, MoveException {
+    public Node move(Node dest) throws NodeNotFoundException, MoveException {
         return move(dest, false);
     }
 
@@ -290,7 +290,7 @@ public abstract class Node {
      * @return dest
      * @throws FileNotFoundException if this does not exist
      */
-    public Node move(Node dest, boolean overwrite) throws FileNotFoundException, MoveException {
+    public Node move(Node dest, boolean overwrite) throws NodeNotFoundException, MoveException {
         try {
             if (!overwrite) {
                 dest.checkNotExists();
@@ -637,7 +637,7 @@ public abstract class Node {
     }
 
     /** @throws FileNotFoundException if this does not exist */
-    public void copy(Node dest) throws FileNotFoundException, CopyException {
+    public void copy(Node dest) throws NodeNotFoundException, CopyException {
         try {
             if (isDirectory()) {
                 dest.mkdirOpt();
@@ -671,7 +671,7 @@ public abstract class Node {
      * Convenience method for copy all files. Does not use default-excludes
      * @return list of files and directories created
      */
-    public List<Node> copyDirectory(Node dest) throws CopyException {
+    public List<Node> copyDirectory(Node dest) throws DirectoryNotFoundException, CopyException {
         return copyDirectory(dest, new Filter().includeAll());
     }
 
@@ -679,7 +679,7 @@ public abstract class Node {
      * Throws an exception is this or dest is not a directory. Overwrites existing files in dest.
      * @return list of files and directories created
      */
-    public List<Node> copyDirectory(Node destdir, Filter filter) throws CopyException {
+    public List<Node> copyDirectory(Node destdir, Filter filter) throws DirectoryNotFoundException, CopyException {
         return new Copy(this, filter).directory(destdir);
     }
 

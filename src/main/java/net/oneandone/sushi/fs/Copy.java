@@ -132,7 +132,7 @@ public class Copy {
 	}
 	
 	/** @return Target files or directories created. */
-	public List<Node> directory(Node destdir) throws CopyException {
+	public List<Node> directory(Node destdir) throws DirectoryNotFoundException, CopyException {
         List<Node> result;
         TreeAction action;
         Tree tree;
@@ -143,6 +143,8 @@ public class Copy {
             destdir.checkDirectory();
             action = new TreeAction();
             filter.invoke(sourcedir, action);
+        } catch (DirectoryNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new CopyException(sourcedir, destdir, "scanning source files failed", e);
         }

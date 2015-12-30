@@ -331,7 +331,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public Node move(Node destNode, boolean override) throws FileNotFoundException, MoveException {
+    public Node move(Node destNode, boolean override) throws NodeNotFoundException, MoveException {
         SshNode dest;
         ChannelSftp sftp;
 
@@ -341,7 +341,7 @@ public class SshNode extends Node {
         dest = (SshNode) destNode;
         try {
             if (!exists()) {
-                throw new FileNotFoundException(this);
+                throw new NodeNotFoundException(this);
             }
             if (!override) {
                 dest.checkNotExists();
@@ -352,7 +352,7 @@ public class SshNode extends Node {
             } finally {
                 free(sftp);
             }
-        } catch (FileNotFoundException e) {
+        } catch (NodeNotFoundException e) {
             throw e;
         } catch (SftpException | JSchException | IOException e) {
             throw new MoveException(this, dest, "ssh failure", e);

@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs;
 
-public class DirectoryNotFoundException extends NodeException {
+public class DirectoryNotFoundException extends NodeNotFoundException {
     public DirectoryNotFoundException(Node node) {
         this(node, "directory not found");
     }

@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.file;
 
+import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
@@ -141,7 +142,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
     }
 
     @Test
-    public void symlinkToProtectedDirectory() throws IOException {
+    public void linkToProtectedDirectory() throws IOException {
         if (OS.CURRENT == OS.WINDOWS) {
             return; // TODO: is it save to delete root?
         }
@@ -154,7 +155,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
     }
 
     @Test
-    public void symlinkToProtectedFile() throws IOException {
+    public void linkToProtectedFile() throws IOException {
         if (OS.CURRENT == OS.WINDOWS) {
             return; // TODO: is it save to delete root?
         }
@@ -164,6 +165,24 @@ public class FileNodeTest extends NodeTest<FileNode> {
         link = work.join("link");
         work.getRootNode().join("etc/passwd").link(link);
         link.deleteTree();
+    }
+
+    @Test
+    public void brokenLink() throws IOException {
+        FileNode link;
+
+        link = work.join("link");
+        link.mklink("nosuchfile");
+        assertTrue(link.exists());
+        try {
+            link.deleteFile();
+            fail();
+        } catch (FileNotFoundException e) {
+            // ok
+        }
+        assertTrue(link.exists());
+        link.deleteTree();
+        assertFalse(link.exists());
     }
 
     @Test

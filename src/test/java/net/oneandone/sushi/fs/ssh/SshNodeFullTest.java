@@ -117,7 +117,7 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
     }
 
     @Test
-    public void deleteSymlink() throws Exception {
+    public void deleteLink() throws Exception {
         SshNode root;
         List<SshNode> lst;
         SshNode broken;
@@ -127,6 +127,7 @@ public class SshNodeFullTest extends NodeTest<SshNode> {
         lst = root.list();
         assertEquals(1, lst.size());
         broken = lst.get(0);
+        assertTrue(broken.exists());
         broken.deleteTree();
     }
 }

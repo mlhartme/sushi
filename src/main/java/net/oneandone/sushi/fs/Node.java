@@ -262,16 +262,25 @@ public abstract class Node {
 
 
     /**
-     * Deletes this node, no matter if it's a file or a directory. If this is a link, the link is deleted, not the link target.
+     * Deletes this node, no matter if it's a file or a directory or a broken link. If this is a link, the link is deleted, not the link target.
      *
      * @return this
      */
     public abstract Node deleteTree() throws NodeNotFoundException, DeleteException;
 
-    /** @throws DeleteException if this is not file */
+    /**
+     * Deletes this file or link to a file; throws an exception otherwise.
+     * CAUTION: does not delete dangling link - in this case, use deleteTree.
+     *
+     * @throws DeleteException if this is not file
+     */
     public abstract Node deleteFile() throws FileNotFoundException, DeleteException;
 
-    /** @throws DeleteException if this is not a directory or the directory is not empty */
+    /**
+     * Deletes this directory or link to a directory; throws an exception otherwise.
+     *
+     * @throws DeleteException if this is not a directory or the directory is not empty
+     */
     public abstract Node deleteDirectory() throws DirectoryNotFoundException, DeleteException;
 
     /**
@@ -316,8 +325,13 @@ public abstract class Node {
      */
     public abstract boolean exists() throws ExistsException;
 
+    /** @return true for files and links to files */
     public abstract boolean isFile() throws ExistsException;
+
+    /** @return true for directories and links to directories */
     public abstract boolean isDirectory() throws ExistsException;
+
+    /** @return true for links to files or directories or dangling links */
     public abstract boolean isLink() throws ExistsException;
 
     /** Throws an exception is the file does not exist */
@@ -578,6 +592,7 @@ public abstract class Node {
         }
     }
 
+    /** @return false for dangling links */
     public Node checkFile() throws ExistsException, FileNotFoundException {
         if (isFile()) {
             return this;
@@ -594,7 +609,7 @@ public abstract class Node {
     /**
      * Creates an absolute link. The signature of this method resembles the copy method.
      *
-     * @param dest symlink to be created
+     * @param dest link to be created
      * @return dest;
      */
     public Node link(Node dest) throws LinkException {

@@ -69,7 +69,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>File, directory, symlink or something not yet created. Replacement for java.world.File.</p>
+ * Represents a file, directory, link or something not yet created. Replacement for java.io.File or java.nio.Path. </p>
  */
 public class FileNode extends Node {
     private final FileRoot root;

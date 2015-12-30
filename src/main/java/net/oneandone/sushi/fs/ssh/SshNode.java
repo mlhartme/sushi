@@ -308,7 +308,7 @@ public class SshNode extends Node {
         SftpATTRS stat;
 
         try {
-            // stat follows symlinks - lstat does *not*. Delete must *not* follow symlinks
+            // stat follows links - lstat does *not*. Delete must *not* follow symlinks
             stat = sftp.lstat(escape(slashPath));
             if (stat.isDir()) {
                 // http://tools.ietf.org/html/draft-ietf-secsh-filexfer-05 does not mention that the directory has to be empty
@@ -446,7 +446,7 @@ public class SshNode extends Node {
         try {
             sftp = alloc();
             try {
-                // CAUTION: use lstat to *not* follow symlinks
+                // CAUTION: use lstat to *not* follow links
                 return sftp.lstat(escape(slashPath)).isLink();
             } finally {
                 free(sftp);

@@ -37,6 +37,7 @@
         createInputStreamDeleteOnClose() to newInputStreamDeleteOnClose()
         createOutputStream() to newOutputStream(), createAppendStream() to newAppendStream(),
         createReader() to newReader(), createWriter() to newWriter(), createAppender() to newAppender(),
+        createObjectOutputStream() to newObjectOutputStream(), createObjectInputStream() to newObjectInputStream()
         and length() to size(). Also renamed CreateOutputStreamException to NewOutputStreamException,
         CreateInputStreamException to NewInputStreamException and LengthException to SizeException.
       </action>

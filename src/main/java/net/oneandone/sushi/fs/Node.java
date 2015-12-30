@@ -112,7 +112,7 @@ public abstract class Node {
         return NodeReader.create(this);
     }
 
-    public ObjectInputStream createObjectInputStream() throws IOException {
+    public ObjectInputStream newObjectInputStream() throws IOException {
         return new ObjectInputStream(newInputStream());
     }
 
@@ -128,7 +128,7 @@ public abstract class Node {
         return NodeWriter.create(this, append);
     }
 
-    public ObjectOutputStream createObjectOutputStream() throws IOException {
+    public ObjectOutputStream newObjectOutputStream() throws IOException {
         return new ObjectOutputStream(newOutputStream());
     }
 
@@ -522,7 +522,7 @@ public abstract class Node {
     public Object readObject() throws IOException {
         Object result;
 
-        try (ObjectInputStream src = createObjectInputStream()) {
+        try (ObjectInputStream src = newObjectInputStream()) {
             result = src.readObject();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -680,7 +680,7 @@ public abstract class Node {
     }
 
     public Node writeObject(Serializable obj) throws IOException {
-        try (ObjectOutputStream out = createObjectOutputStream()) {
+        try (ObjectOutputStream out = newObjectOutputStream()) {
             out.writeObject(obj);
         }
         return this;

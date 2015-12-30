@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.file;
 
+import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeTest;
@@ -88,7 +89,7 @@ public class FileNodeTest extends NodeTest<FileNode> {
         try {
             src.move(dest);
             fail();
-        } catch (MoveException e) {
+        } catch (FileNotFoundException e) {
             // ok
         }
         src.mkfile();

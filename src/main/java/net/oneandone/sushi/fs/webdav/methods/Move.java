@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.webdav.methods;
 
+import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.webdav.MovedException;
 import net.oneandone.sushi.fs.webdav.StatusException;
 import net.oneandone.sushi.fs.webdav.WebdavConnection;
@@ -39,6 +40,8 @@ public class Move extends Method<Void> {
     		return null;
     	case HttpStatus.SC_MOVED_PERMANENTLY:
     		throw new MovedException();
+        case HttpStatus.SC_NOT_FOUND:
+            throw new FileNotFoundException(resource);
     	default:
         	throw new StatusException(response.getStatusLine());
         }

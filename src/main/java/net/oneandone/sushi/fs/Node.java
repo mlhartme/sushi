@@ -277,7 +277,7 @@ public abstract class Node {
     /**
      * Convenience Method for move(dest, false).
      */
-    public Node move(Node dest) throws MoveException {
+    public Node move(Node dest) throws FileNotFoundException, MoveException {
         return move(dest, false);
     }
 
@@ -288,14 +288,17 @@ public abstract class Node {
      *
      * @param overwrite false reports an error if the target already exists. true can be usued to implement atomic updates.
      * @return dest
+     * @throws FileNotFoundException if this does not exist
      */
-    public Node move(Node dest, boolean overwrite) throws MoveException {
+    public Node move(Node dest, boolean overwrite) throws FileNotFoundException, MoveException {
         try {
             if (!overwrite) {
                 dest.checkNotExists();
             }
             copy(dest);
             deleteTree();
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new MoveException(this, dest, "move failed", e);
         }
@@ -633,7 +636,8 @@ public abstract class Node {
         }
     }
 
-    public void copy(Node dest) throws CopyException {
+    /** @throws FileNotFoundException if this does not exist */
+    public void copy(Node dest) throws FileNotFoundException, CopyException {
         try {
             if (isDirectory()) {
                 dest.mkdirOpt();
@@ -641,7 +645,7 @@ public abstract class Node {
             } else {
                 copyFile(dest);
             }
-        } catch (CopyException e) {
+        } catch (FileNotFoundException | CopyException e) {
             throw e;
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
@@ -652,9 +656,11 @@ public abstract class Node {
      * Overwrites dest if it already exists.
      * @return dest
      */
-    public Node copyFile(Node dest) throws CopyException {
+    public Node copyFile(Node dest) throws FileNotFoundException, CopyException {
         try (OutputStream out = dest.newOutputStream()) {
             copyFileTo(out);
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
         }

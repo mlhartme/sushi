@@ -443,7 +443,20 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         assertEquals("some data", file.readString());
     }
 
-    //-- copyFileTo/from
+    //-- copy
+
+    @Test(expected = FileNotFoundException.class)
+    public void copyNonexisting() throws IOException {
+        work.join("nosuchfile").copy(work.join("nosuchcopy"));
+    }
+    @Test(expected = FileNotFoundException.class)
+    public void copyFileNonexisting() throws IOException {
+        work.join("nosuchfile").copyFile(work.join("nosuchcopy"));
+    }
+    @Test(expected = FileNotFoundException.class)
+    public void copyDirectoryNonexisting() throws IOException {
+        work.join("nosuchfile").copyFile(work.join("nosuchcopy"));
+    }
 
     @Test(expected = FileNotFoundException.class)
     public void copyFileToNoneExisting() throws IOException {
@@ -1117,6 +1130,11 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     //-- move
+
+    @Test(expected=FileNotFoundException.class)
+    public void moveNonexisting() throws IOException {
+        doMove(work.join("old"), work.join("moved"), false);
+    }
 
     @Test
     public void moveDirectory() throws IOException {

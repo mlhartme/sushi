@@ -316,7 +316,7 @@ public class WebdavNode extends Node {
     }
 
     @Override
-    public Node move(Node dest, boolean overwrite) throws MoveException {
+    public Node move(Node dest, boolean overwrite) throws FileNotFoundException, MoveException {
         if (dest instanceof WebdavNode) {
             return move((WebdavNode) dest, overwrite);
         } else {
@@ -324,7 +324,7 @@ public class WebdavNode extends Node {
         }
     }
 
-    public WebdavNode move(WebdavNode dest, boolean overwrite) throws MoveException {
+    public WebdavNode move(WebdavNode dest, boolean overwrite) throws FileNotFoundException, MoveException {
         try {
             synchronized (tryLock) {
                 try {
@@ -336,6 +336,8 @@ public class WebdavNode extends Node {
                     new Move(this, dest, overwrite).invoke();
                 }
             }
+        } catch (FileNotFoundException e) {
+            throw e;
 		} catch (IOException e) {
 			throw new MoveException(this, dest, e.getMessage(), e);
 		}

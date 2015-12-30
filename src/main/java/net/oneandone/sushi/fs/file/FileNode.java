@@ -356,7 +356,7 @@ public class FileNode extends Node {
      * @return dest
      */
     @Override
-    public Node move(Node destNode, boolean overwrite) throws MoveException {
+    public Node move(Node destNode, boolean overwrite) throws FileNotFoundException, MoveException {
     	FileNode dest;
 
         if (!(destNode instanceof FileNode)) {
@@ -374,6 +374,8 @@ public class FileNode extends Node {
             Files.move(path, dest.path, StandardCopyOption.ATOMIC_MOVE);
         } catch (AtomicMoveNotSupportedException e) {
             return super.move(destNode, overwrite);
+        } catch (NoSuchFileException e) {
+            throw new FileNotFoundException(this, e);
 		} catch (IOException e) {
 			throw new MoveException(this, dest, "os command failed", e);
 		}

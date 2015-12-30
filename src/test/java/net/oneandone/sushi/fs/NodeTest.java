@@ -445,12 +445,12 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
 
     //-- copyFileTo/from
 
-    @Test(expected = IOException.class)
+    @Test(expected = FileNotFoundException.class)
     public void copyFileToNoneExisting() throws IOException {
         work.join("nosuchfile").copyFileTo(new ByteArrayOutputStream());
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ReadFromException.class)
     public void copyFileWithoutParentFrom() throws IOException {
         work.join("noSuchParent/nosuchfile").copyFileFrom(new ByteArrayInputStream(new byte[]{}));
     }

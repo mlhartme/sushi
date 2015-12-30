@@ -87,7 +87,7 @@ public class World {
     /** never null */
     private final Xml xml;
 
-    private FileNode home;
+    private final FileNode home;
 
     /** Intentionally not a file -- see Tempfiles for a rationale */
     private FileNode temp;
@@ -143,11 +143,6 @@ public class World {
 
     public Node getHome() {
         return home;
-    }
-
-    public World setHome(FileNode home) {
-        this.home = home;
-        return this;
     }
 
     /** Current working directory. May be null. Use during node creation to resolve relative URIs and in Node.toString(). */

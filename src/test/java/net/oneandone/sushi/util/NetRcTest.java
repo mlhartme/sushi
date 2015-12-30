@@ -50,14 +50,14 @@ public class NetRcTest {
                 "#machine svn3.dev.java.net user user3 password pass3\n" +
                 "default login userd password passd");
         sut.parse(in);
-        Assert.assertEquals(new NetRc.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
-        Assert.assertEquals(new NetRc.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
+        Assert.assertEquals(new NetRc.Authenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
+        Assert.assertEquals(new NetRc.Authenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
         Assert.assertNull(sut.getAuthenticators("svn3.dev.java.net"));
-        final NetRc.NetRcAuthenticator defaultAuthenticator = sut.getAuthenticators("default");
-        Assert.assertEquals(new NetRc.NetRcAuthenticator("userd", "passd"), defaultAuthenticator);
+        final NetRc.Authenticator defaultAuthenticator = sut.getAuthenticators("default");
+        Assert.assertEquals(new NetRc.Authenticator("userd", "passd"), defaultAuthenticator);
         Assert.assertEquals("userd", defaultAuthenticator.getUser());
         Assert.assertEquals("passd", defaultAuthenticator.getPass());
-        Assert.assertEquals("NetRcAuthenticator{user=userd, pass=passd}", String.valueOf(defaultAuthenticator));
+        Assert.assertEquals("NetRc.Authenticator{user=userd, pass=passd}", String.valueOf(defaultAuthenticator));
     }
 
     @Test
@@ -66,8 +66,8 @@ public class NetRcTest {
                 "machine\n\tsvn.dev.java.net\n\tlogin\n\tuser\n\tpassword pass\n\n\n"+
                 "machine svn2.dev.java.net\n\tuser user2\n\tpassword päss2\n");
         sut.parse(in);
-        Assert.assertEquals(new NetRc.NetRcAuthenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
-        Assert.assertEquals(new NetRc.NetRcAuthenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
+        Assert.assertEquals(new NetRc.Authenticator("user", "pass"), sut.getAuthenticators("svn.dev.java.net"));
+        Assert.assertEquals(new NetRc.Authenticator("user2", "päss2"), sut.getAuthenticators("svn2.dev.java.net"));
     }
 
     @Test

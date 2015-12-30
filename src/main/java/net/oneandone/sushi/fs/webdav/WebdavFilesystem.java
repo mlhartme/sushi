@@ -114,7 +114,7 @@ public class WebdavFilesystem extends Filesystem {
         WebdavRoot result;
         String info;
         int port;
-        NetRc.NetRcAuthenticator authenticator;
+        NetRc.Authenticator authenticator;
 
         if (uri.getFragment() != null) {
             throw new IllegalArgumentException(uri.toString());

@@ -35,28 +35,28 @@ public class NetRc {
 
     private final static CharSequence ADDITIONAL_CHARS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
-    final HashMap<String, NetRcAuthenticator> authenticators = new HashMap<>();
+    private final HashMap<String, Authenticator> authenticators = new HashMap<>();
 
     /**
-     * Returns a {@link NetRcAuthenticator} for the given host.
+     * Returns a {@link Authenticator} for the given host.
      *
      * @param hostname to look for.
      * @return authentication information for hostname.
      */
-    public NetRcAuthenticator getAuthenticators(final String hostname) {
+    public Authenticator getAuthenticators(final String hostname) {
         return authenticators.get(hostname);
     }
 
-    private static class NetRcParser {
+    private static class Parser {
 
-        private final HashMap<String, NetRcAuthenticator> authenticators;
+        private final HashMap<String, Authenticator> authenticators;
         private final NetRcStreamTokenizer tokenizer;
         String entryName;
         String login;
         String password;
         String toplevel;
 
-        private NetRcParser(Reader in, HashMap<String, NetRcAuthenticator> authenticators) {
+        private Parser(Reader in, HashMap<String, Authenticator> authenticators) {
             this.tokenizer = new NetRcStreamTokenizer(in);
             this.authenticators = authenticators;
         }
@@ -99,7 +99,7 @@ public class NetRc {
                 final String sval = sval();
                 if (sval == null || sval.startsWith("#") || sval.equals("machine") || sval.equals("") || sval.equals("default")) {
                     if (password != null) {
-                        authenticators.put(entryName, new NetRcAuthenticator(login, password));
+                        authenticators.put(entryName, new Authenticator(login, password));
                         pushBack();
                         break;
                     } else {
@@ -137,13 +137,13 @@ public class NetRc {
     }
 
     public void parse(Reader in) throws IOException {
-        new NetRcParser(in, authenticators).parse();
+        new Parser(in, authenticators).parse();
     }
 
     /**
      * Holder class for authentication information.
      */
-    public static class NetRcAuthenticator {
+    public static class Authenticator {
 
         private final String user;
         private final String pass;
@@ -152,7 +152,7 @@ public class NetRc {
          * @param user username
          * @param pass password
          */
-        public NetRcAuthenticator(String user, String pass) {
+        public Authenticator(String user, String pass) {
             this.user = user;
             this.pass = pass;
         }
@@ -187,7 +187,7 @@ public class NetRc {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final NetRcAuthenticator other = (NetRcAuthenticator) obj;
+            final Authenticator other = (Authenticator) obj;
             if (!Objects.equals(this.user, other.user)) {
                 return false;
             }
@@ -196,7 +196,7 @@ public class NetRc {
 
         @Override
         public String toString() {
-            return "NetRcAuthenticator{" + "user=" + user + ", pass=" + pass + '}';
+            return "NetRc.Authenticator{" + "user=" + user + ", pass=" + pass + '}';
         }
 
     }

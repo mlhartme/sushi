@@ -181,7 +181,7 @@ public class SshFilesystem extends Filesystem {
 
     /** @param user null to use current user */
     public SshRoot root(String host, int port, String user, String password, int timeout) throws JSchException, IOException {
-        NetRc.NetRcAuthenticator authenticator;
+        NetRc.Authenticator authenticator;
 
         if (user == null) {
             authenticator = getWorld().getNetRc().getAuthenticators(host);

@@ -136,9 +136,9 @@ public abstract class Node {
      *
      * @return bytes actually written
      * @throws FileNotFoundException when this node is not a file
-     * @throws WriteToException for other errors
+     * @throws CopyFileToException for other errors
      */
-    public long copyFileTo(OutputStream dest) throws FileNotFoundException, WriteToException {
+    public long copyFileTo(OutputStream dest) throws FileNotFoundException, CopyFileToException {
         return copyFileTo(dest, 0);
     }
 
@@ -148,12 +148,12 @@ public abstract class Node {
      *
      * @return bytes actually written
      * @throws FileNotFoundException when this node is not a file
-     * @throws WriteToException for other errors
+     * @throws CopyFileToException for other errors
      */
-    public abstract long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException;
+    public abstract long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException;
 
-    /* writeTo implementation with streams */
-    public long copyFileToImpl(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    /* copyFileTo implementation with streams */
+    public long copyFileToImpl(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
         long result;
 
         try (InputStream src = newInputStream()) {
@@ -164,7 +164,7 @@ public abstract class Node {
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            throw new WriteToException(this, e);
+            throw new CopyFileToException(this, e);
         }
         return result;
     }
@@ -196,16 +196,16 @@ public abstract class Node {
     //-- copyFileFrom
 
     /** Overwrites this node with content from src. Does not close src. */
-    public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, ReadFromException;
+    public abstract void copyFileFrom(InputStream src) throws FileNotFoundException, CopyFileFromException;
 
-    /* writeTo implementation with streams */
-    public long copyFileFromImpl(InputStream src) throws FileNotFoundException, ReadFromException {
+    /* copyFileFrom implementation with streams */
+    public long copyFileFromImpl(InputStream src) throws FileNotFoundException, CopyFileFromException {
         try (OutputStream dest = newOutputStream()) {
             return getWorld().getBuffer().copy(src, dest);
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            throw new ReadFromException(this, e);
+            throw new CopyFileFromException(this, e);
         }
     }
 

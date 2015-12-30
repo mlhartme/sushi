@@ -24,10 +24,10 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -227,11 +227,11 @@ public class ZipNode extends Node {
         }
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) throws CopyFileToException, FileNotFoundException {
         return copyFileToImpl(dest, skip);
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
         copyFileFromImpl(dest);
     }
 

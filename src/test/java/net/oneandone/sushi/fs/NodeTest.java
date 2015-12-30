@@ -450,7 +450,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         work.join("nosuchfile").copyFileTo(new ByteArrayOutputStream());
     }
 
-    @Test(expected = ReadFromException.class)
+    @Test(expected = CopyFileFromException.class)
     public void copyFileWithoutParentFrom() throws IOException {
         work.join("noSuchParent/nosuchfile").copyFileFrom(new ByteArrayInputStream(new byte[]{}));
     }
@@ -534,6 +534,17 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
             assertEquals(-1, reader.read());
         }
     }
+
+    @Test
+    public void name120() throws IOException {
+        final String twenty = "01234567890123456789";
+        Node node;
+
+        node = work.join(twenty + twenty + twenty + twenty + twenty + twenty);
+        node.writeString("foo");
+        assertEquals("foo", node.readString());
+    }
+
 
     @Test
     public void specialNames() throws IOException {

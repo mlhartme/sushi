@@ -15,9 +15,9 @@
  */
 package net.oneandone.sushi.fs;
 
-public class ReadFromException extends NodeException {
-    public ReadFromException(Node node, Exception cause) {
-        super(node, "readFrom failed: " + cause.getMessage());
+public class CopyFileFromException extends NodeException {
+    public CopyFileFromException(Node node, Exception cause) {
+        super(node, "copyFileFrom failed: " + cause.getMessage());
         initCause(cause);
     }
 }

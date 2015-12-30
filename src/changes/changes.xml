@@ -7,6 +7,7 @@
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">
         Renamed Node.writeTo to Node.copyFileTo, SshNode.readFrom to SshNode.copyFileFrom, SvnNode.readFrom to SvnNode.copyFileFrom.
+        Renamed WriteToException to CopyFileToException and ReadFromException to CopyFileFromException.
         Node.copyFile now calls Node.copyFileTo which improves performace for SvnNodes and SshNodes.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="fix">

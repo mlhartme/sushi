@@ -15,9 +15,9 @@
  */
 package net.oneandone.sushi.fs;
 
-public class WriteToException extends NodeException {
-    public WriteToException(Node node, Exception cause) {
-        super(node, "writeTo failed: " + cause.getMessage());
+public class CopyFileToException extends NodeException {
+    public CopyFileToException(Node node, Exception cause) {
+        super(node, "copyFileTo failed: " + cause.getMessage());
         initCause(cause);
     }
 }

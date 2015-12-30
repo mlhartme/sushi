@@ -27,11 +27,11 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.file.FileNode;
 
 import java.io.IOException;
@@ -185,11 +185,11 @@ public class TimeMachineNode extends Node {
         return node.newInputStream();
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
         return copyFileToImpl(dest, skip);
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
         copyFileFromImpl(dest);
     }
 

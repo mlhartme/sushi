@@ -27,10 +27,10 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 
 import java.io.IOException;
@@ -268,11 +268,11 @@ public class MemoryNode extends Node {
         }
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) throws CopyFileToException, FileNotFoundException {
         return copyFileToImpl(dest, skip);
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
         copyFileFromImpl(dest);
     }
 

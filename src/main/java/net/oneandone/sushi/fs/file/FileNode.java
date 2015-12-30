@@ -34,11 +34,11 @@ import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.OnShutdown;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.fs.zip.ZipNode;
 import net.oneandone.sushi.io.Buffer;
@@ -264,11 +264,11 @@ public class FileNode extends Node {
         }
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
         return copyFileToImpl(dest, skip);
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, ReadFromException {
+    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
         copyFileFromImpl(dest);
     }
 

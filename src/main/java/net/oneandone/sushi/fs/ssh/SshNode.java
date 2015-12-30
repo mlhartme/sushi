@@ -36,11 +36,11 @@ import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeException;
 import net.oneandone.sushi.fs.NodeNotFoundException;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.launcher.ExitCode;
@@ -714,7 +714,7 @@ public class SshNode extends Node {
      * @throws FileNotFoundException if this is not a file
      */
     @Override
-    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, WriteToException {
+    public long copyFileTo(OutputStream dest, long skip) throws FileNotFoundException, CopyFileToException {
         ChannelSftp sftp;
         Progress monitor;
 
@@ -731,21 +731,21 @@ public class SshNode extends Node {
             if (e.id == 2 || e.id == 4) {
                 throw new FileNotFoundException(this);
             }
-            throw new WriteToException(this, e);
+            throw new CopyFileToException(this, e);
         } catch (JSchException e) {
-            throw new WriteToException(this, e);
+            throw new CopyFileToException(this, e);
         }
     }
 
     @Override
-    public void copyFileFrom(InputStream src) throws ReadFromException {
+    public void copyFileFrom(InputStream src) throws CopyFileFromException {
         copyFileFrom(src, false);
     }
 
     /**
      * This is the core function to write an ssh node. Does not close src.
      */
-    public void copyFileFrom(InputStream src, boolean append) throws ReadFromException {
+    public void copyFileFrom(InputStream src, boolean append) throws CopyFileFromException {
         ChannelSftp sftp;
 
         try {
@@ -756,7 +756,7 @@ public class SshNode extends Node {
                 free(sftp);
             }
         } catch (SftpException | JSchException e) {
-            throw new ReadFromException(this, e);
+            throw new CopyFileFromException(this, e);
         }
     }
 

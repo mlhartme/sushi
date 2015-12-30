@@ -28,10 +28,10 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
-import net.oneandone.sushi.fs.ReadFromException;
+import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.WriteToException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.io.SkipOutputStream;
@@ -218,14 +218,14 @@ public class SvnNode extends Node {
         return tmp.newInputStreamDeleteOnClose();
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws WriteToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) throws CopyFileToException, FileNotFoundException {
         SkipOutputStream out;
 
         out = new SkipOutputStream(dest, skip);
         try {
             doWriteTo(-1, out);
         } catch (SVNException e) {
-            throw new WriteToException(this, e);
+            throw new CopyFileToException(this, e);
         }
         return out.count();
     }
@@ -258,7 +258,7 @@ public class SvnNode extends Node {
                     super.close();
                     try {
                         copyFileFrom(new ByteArrayInputStream(toByteArray()));
-                    } catch (ReadFromException e) {
+                    } catch (CopyFileFromException e) {
                         throw new IOException("close failed", e);
                     }
                 }
@@ -439,11 +439,11 @@ public class SvnNode extends Node {
     }
 
     /** @return revision */
-    public void copyFileFrom(InputStream content) throws ReadFromException {
+    public void copyFileFrom(InputStream content) throws CopyFileFromException {
         try {
             copyFileFrom(content, root.getComment());
         } catch (SVNException e) {
-            throw new ReadFromException(this, e);
+            throw new CopyFileFromException(this, e);
         }
     }
 

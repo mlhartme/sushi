@@ -46,15 +46,15 @@ public class WorldTest {
     public void getFilesystem() {
         World world;
 
-        world = new World();
-        assertTrue(world.getFilesystem("zip") instanceof ZipFilesystem);
+        world = World.createMinimal();
+        assertTrue(world.getFilesystem("file") instanceof FileFilesystem);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void filesystemDuplicate() {
         World world;
 
-        world = new World();
+        world = World.createMinimal();
         world.addFilesystem(new FileFilesystem(world, "file"));
     }
 
@@ -63,7 +63,7 @@ public class WorldTest {
         Node node;
         World world;
 
-        world = new World();
+        world = World.create();
         node = world.node(new File(File.listRoots()[0], "usr").toURI());
         assertEquals("usr", node.getPath());
         node = world.node("console:///");
@@ -78,7 +78,7 @@ public class WorldTest {
         Node node;
         World world;
 
-        world = new World();
+        world = World.create();
         uri = new URI("http://foo.bar:80/foo");
         node = world.node(uri);
         assertTrue(node instanceof WebdavNode);
@@ -103,7 +103,7 @@ public class WorldTest {
         World world;
         List<FileNode> path;
 
-        world = new World();
+        world = World.createMinimal();
         assertEquals(0, world.path("").size());
         path = world.path("foo" + world.os.listSeparator.getSeparator() + "bar");
         assertEquals(2, path.size());
@@ -116,7 +116,7 @@ public class WorldTest {
         World world;
         List<FileNode> path;
 
-        world = new World();
+        world = World.createMinimal();
         assertEquals(0, world.path("").size());
         path = world.path(new File("foo").getAbsolutePath() + world.os.listSeparator.getSeparator() + new File("bar").getAbsolutePath());
         assertEquals(2, path.size());
@@ -130,7 +130,7 @@ public class WorldTest {
     public void fileResource() throws Exception {
         Node node;
 
-        node = new World().resource("testresource");
+        node = World.createMinimal().resource("testresource");
         assertTrue(node instanceof FileNode);
         assertTrue(node.isFile());
         assertEquals("hello", node.readString());
@@ -140,7 +140,7 @@ public class WorldTest {
     public void zipResource() throws Exception {
         Node node;
 
-        node = new World().resource("org/junit/Assert.class");
+        node = World.create().resource("org/junit/Assert.class");
         assertTrue(node instanceof ZipNode);
         assertTrue(node.isFile());
         assertEquals(node.size(), node.readBytes().length);
@@ -148,12 +148,12 @@ public class WorldTest {
 
     @Test(expected=FileNotFoundException.class)
     public void noneExisting() throws Exception {
-        new World().resource("nosuchresource");
+        World.createMinimal().resource("nosuchresource");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void absolutePath() throws Exception {
-        new World().resource("/absolute");
+        World.createMinimal().resource("/absolute");
     }
 
 
@@ -163,7 +163,7 @@ public class WorldTest {
     public void locate() throws IOException {
         World world;
 
-        world = new World();
+        world = World.createMinimal();
         world.locateClasspathItem(World.class).checkDirectory();
         world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
         world.locateClasspathItem(Object.class).checkFile();
@@ -178,7 +178,7 @@ public class WorldTest {
     public void locateRuntime() throws IOException {
         World world;
 
-        world = new World();
+        world = World.createMinimal();
         world.locateClasspathItem("/java/lang/Object.class").checkExists();
     }
 
@@ -186,7 +186,7 @@ public class WorldTest {
     public void locateFromJar() throws IOException {
         World world;
 
-        world = new World();
+        world = World.createMinimal();
         world.locateClasspathItem("/org/junit/Test.class").checkExists();
     }
 
@@ -200,7 +200,7 @@ public class WorldTest {
         World world;
         FileNode home;
 
-        world = new World();
+        world = World.createMinimal();
         home = world.guessProjectHome(clazz);
         assertNotNull(home);
         assertTrue(home.join("pom.xml").isFile());

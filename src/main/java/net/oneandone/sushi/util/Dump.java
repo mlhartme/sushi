@@ -43,7 +43,7 @@ public class Dump {
         
         dest = new StringWriter();
         try {
-            dump(new World(), obj, dest, maxDepth);
+            dump(World.createMinimal() /* TODO */, obj, dest, maxDepth);
         } catch (IOException e) {
             throw new RuntimeException("unexected world exception from StringWriter: " + e.getMessage(), e);
         }

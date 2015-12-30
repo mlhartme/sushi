@@ -21,20 +21,21 @@ import net.oneandone.sushi.metadata.Type;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 public class MetadataSample {
-    private static final World WORLD = new World();
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws Exception {
+        World world;
+        Type type;
         Instance<Obj> instance;
         Obj obj;
-        
-        instance = TYPE.loadXml(WORLD.memoryNode("<obj><number>2</number><string>str</string></obj>"));
+
+        world = World.create();
+        type = new ReflectSchema(world).type(Obj.class);
+        instance = type.loadXml(world.memoryNode("<obj><number>2</number><string>str</string></obj>"));
         obj = instance.get();
         System.out.println("object:\n" + obj);
         obj.number = 3;
         System.out.println("xml:\n" + instance.toXml());
     }
-    
-    private static final Type TYPE = new ReflectSchema(WORLD).type(Obj.class);
     
     public static class Obj {
         public int number;

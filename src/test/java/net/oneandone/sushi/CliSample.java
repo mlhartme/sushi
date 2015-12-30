@@ -20,7 +20,9 @@ import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
+import net.oneandone.sushi.fs.World;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ import java.util.List;
   * </tt>
 */
 public class CliSample extends Cli implements Command {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.exit(new CliSample().run(args));
     }
 
@@ -45,7 +47,10 @@ public class CliSample extends Cli implements Command {
     private String first = null;
 
     private List<String> remaining = new ArrayList<>();
-    
+
+    public CliSample() throws IOException {
+    }
+
     @Remaining
     public void addRemaining(String str) {
         remaining.add(str);

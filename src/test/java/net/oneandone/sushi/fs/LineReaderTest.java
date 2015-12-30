@@ -25,7 +25,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class LineReaderTest {
-    private final World world = new World();
+    private final World world = World.createMinimal();
 
     @Test
     public void zero() {

@@ -19,6 +19,7 @@ import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -44,8 +45,8 @@ public abstract class Cli {
         exception = e;
     }
 
-    public Cli() {
-        this(new World());
+    public Cli() throws IOException {
+        this(World.create());
     }
     
     public Cli(World world) {

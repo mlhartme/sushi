@@ -68,11 +68,20 @@ public class World {
     /** creates a standard world with netrc initialized */
 
     public static World create() throws IOException {
+        return create(SshAgentSocket.isConfigured());
+    }
+
+    public static World create(boolean trySsh) throws IOException {
         World world;
 
-        world = new World();
+        world = createMinimal();
+        world.addStandardFilesystems(trySsh);
         world.loadNetRcOpt();
         return world;
+    }
+
+    public static World createMinimal() {
+        return new World(OS.CURRENT, new Settings(), new Buffer(), null, null, "**/.svn", "**/.svn/**/*");
     }
 
     //--
@@ -102,15 +111,6 @@ public class World {
     private final NetRc netRc;
 
     private OnShutdown lazyOnShutdown;
-
-    public World() {
-        this(SshAgentSocket.isConfigured());
-    }
-
-    public World(boolean trySshAgent) {
-        this(OS.CURRENT, new Settings(), new Buffer(), null, null, "**/.svn", "**/.svn/**/*");
-        addStandardFilesystems(trySshAgent);
-    }
 
     public World(OS os, Settings settings, Buffer buffer, FileFilesystem fileFilesystem, MemoryFilesystem memoryFilesystem, String... defaultExcludes) {
         this.os = os;

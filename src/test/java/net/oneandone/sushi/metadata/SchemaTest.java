@@ -31,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SchemaTest {
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     @Test
     public void simple() throws SAXException, IOException {

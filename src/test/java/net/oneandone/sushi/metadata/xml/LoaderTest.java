@@ -303,7 +303,7 @@ public class LoaderTest extends ModelBase {
         return e.causes().get(0);
     }
 
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     private static Instance<?> loadXml(Type type, String str) throws LoaderException {
         try {

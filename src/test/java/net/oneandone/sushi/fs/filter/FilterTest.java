@@ -34,7 +34,7 @@ public class FilterTest {
 
     @Before
     public void setup() throws IOException {
-    	root = new World().getTemp().createTempDirectory();
+    	root = World.createMinimal().getTemp().createTempDirectory();
     }
 
     @Test

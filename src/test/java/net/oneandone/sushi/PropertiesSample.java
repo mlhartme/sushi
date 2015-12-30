@@ -28,14 +28,15 @@ import java.io.IOException;
  * "Config" instances to and from a property file.
  */
 public class PropertiesSample {
-    private static final World world = new World();
+    private static World WORLD;
 
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws IOException {
         Node file;
         Config config;
 
-        file = world.getTemp().createTempFile();
+        WORLD = World.create();
+        file = WORLD.getTemp().createTempFile();
         config = new Config();
         config.save(file);
         System.out.println("default config created:");
@@ -52,7 +53,7 @@ public class PropertiesSample {
     }
     
     public static class Config {
-        private static final Type TYPE = new ReflectSchema(world).type(Config.class);
+        private static final Type TYPE = new ReflectSchema(WORLD).type(Config.class);
 
         public static Config load(Node file) throws IOException {
             return (Config) TYPE.loadProperties(file.readProperties()).get();

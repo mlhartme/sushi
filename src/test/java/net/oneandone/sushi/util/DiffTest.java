@@ -37,7 +37,7 @@ public class DiffTest {
         long started;
         long ms;
 
-        world = new World();
+        world = World.createMinimal();
         smallLeft = world.getHome().join("left.txt").readString();
         smallRight = world.getHome().join("right.txt").readString();
         started = System.currentTimeMillis();
@@ -111,7 +111,7 @@ public class DiffTest {
         String actual;
         List<String> lines;
 
-        world = new World();
+        world = World.createMinimal();
         dir = world.guessProjectHome(getClass()).join("src/test/resources/diff");
         for (Node left : dir.find("*.left")) {
             right = dir.join(Strings.removeRight(left.getName(), ".left") + ".right");

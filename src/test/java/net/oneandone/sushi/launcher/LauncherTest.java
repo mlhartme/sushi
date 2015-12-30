@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class LauncherTest {
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     @Test
     public void normal() throws Failure {

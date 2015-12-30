@@ -185,7 +185,7 @@ public class ViewTest extends ModelBase {
 
     private View view(String str) {
         try {
-            return View.fromXml(new World().memoryNode(str));
+            return View.fromXml(World.createMinimal().memoryNode(str));
         } catch (IOException e) {
             throw new RuntimeException("TODO", e);
         }

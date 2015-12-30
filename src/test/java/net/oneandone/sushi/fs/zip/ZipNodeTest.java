@@ -35,7 +35,11 @@ import static org.junit.Assert.assertTrue;
 
 /** Accesses external hosts and might need proxy configuration =&gt; Full test */
 public class ZipNodeTest {
-    private final World world = new World();
+    private final World world;
+
+    public ZipNodeTest() throws IOException {
+        world = World.create();
+    }
 
     @Test
     public void junit() throws Exception {

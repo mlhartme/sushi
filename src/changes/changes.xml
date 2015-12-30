@@ -3,6 +3,9 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2015-12-30" dev="mlhartme" type="update">
+        Cleaned up World construction: you'll normally create a world with World.create() now. The actual constructor is for internal use now.
+      </action>
+      <action date="2015-12-30" dev="mlhartme" type="update">
         Simplified names in NetRc.
       </action>
       <action date="2015-12-30" dev="mlhartme" type="remove">

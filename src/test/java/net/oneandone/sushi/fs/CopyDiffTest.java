@@ -35,7 +35,7 @@ public class CopyDiffTest {
 	private final Copy copy;
 	
 	public CopyDiffTest() throws IOException {
-		world = new World();
+		world = World.createMinimal();
 		variables = new HashMap<>();
         copy = new Copy(world.getTemp().createTempDirectory(),
                 world.filter().includeAll(), Filter.NOTHING, world.getTemp().getRoot().getFilesystem().getFeatures().modes,
@@ -144,7 +144,7 @@ public class CopyDiffTest {
         Node dest;
         Map<String, String> context;
         
-        world = new World();
+        world = World.createMinimal();
         src = world.guessProjectHome(getClass()).join("src/test/template");
         dest = world.getTemp().createTempDirectory().join("dest").mkdir();
         context = new HashMap<>();

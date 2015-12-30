@@ -26,23 +26,25 @@ import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import java.util.Arrays;
 
 public class CsvSample {
-    private static final World WORLD = new World();
-    private static final Type TYPE = new ReflectSchema(WORLD).type(All.class);
-    
     /** Serialize object to xml and load the result back into an object */
     public static void main(String[] args) throws Exception {
+        World world;
+        Type type;
+
         All all;
         View view;
         Csv csv;
         Instance<All> instance;
-        
+
+        world = World.create();
+        type = new ReflectSchema(world).type(All.class);
         all = new All();
 
         System.out.println("object:\n" + all);
         
-        instance = TYPE.instance(all);
+        instance = type.instance(all);
         csv = new Csv(new Format());
-        view = View.fromXml(WORLD.memoryNode("<view>" +
+        view = View.fromXml(world.memoryNode("<view>" +
                 "  <scope>items</scope>" +
                 "  <field><name>Id</name><path>id</path></field>" +
                 "  <field><name>String</name><path>string</path></field>" +

@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class BuilderTest {
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     private Builder builder;
 

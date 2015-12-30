@@ -59,8 +59,8 @@ public class Instance<T> {
         Type type;
         StringWriter tmp;
         World world;
-        
-        world = new World(); // TODO
+
+        world = World.createMinimal(); // TODO
         type = getType();
         tmp = new StringWriter();
         try {

@@ -15,8 +15,6 @@
  */
 package net.oneandone.sushi.fs;
 
-import net.oneandone.sushi.io.Buffer;
-import net.oneandone.sushi.io.OS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +25,15 @@ import java.net.URI;
 import static org.junit.Assert.assertEquals;
 
 public abstract class NodeReadOnlyTest<T extends Node> {
-    protected static final World WORLD = new World(true);
+    protected static final World WORLD;
+
+    static {
+        try {
+            WORLD = World.create(true);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     /** creates a new empty directory */
     protected abstract T createWork() throws IOException;

@@ -32,7 +32,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ConnectionFullTest {
-    private static final World WORLD = new World();
+    private static final World WORLD;
+
+    static {
+        try {
+            WORLD = World.create();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     public static SshRoot open() throws JSchException, IOException {
         return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host(), user(), null);
@@ -241,7 +249,7 @@ public class ConnectionFullTest {
         World world;
         SshFilesystem fs;
 
-        world = new World();
+        world = World.create();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/" + name + "/id_rsa"), passphrase);
         return world;
@@ -252,7 +260,7 @@ public class ConnectionFullTest {
         World world;
         SshFilesystem fs;
 
-        world = new World();
+        world = World.create();
         fs = world.getFilesystem("ssh", SshFilesystem.class);
         fs.addDefaultIdentityOpt();
         fs.addIdentity(world.guessProjectHome(getClass()).join("src/test/ssh/without-passphrase/id_rsa"), null);

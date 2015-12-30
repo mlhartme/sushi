@@ -24,7 +24,7 @@ public class FsSample {
         World world;
         Node dir;
 
-        world = new World();
+        world = World.create();
         dir = world.file("src/main/java");
         for (Node node : dir.find("**/*.java")) {
             System.out.println(node.readString());

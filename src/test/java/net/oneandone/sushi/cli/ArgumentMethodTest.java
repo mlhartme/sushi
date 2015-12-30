@@ -32,7 +32,7 @@ public class ArgumentMethodTest {
     private void check(int expected) {
         Argument arg;
         
-        arg = ArgumentMethod.create("setInt", new ReflectSchema(new World()), getMethod());
+        arg = ArgumentMethod.create("setInt", new ReflectSchema(World.createMinimal()), getMethod());
         arg.set(this, expected);
         assertEquals(expected, i);
     }

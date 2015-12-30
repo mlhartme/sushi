@@ -53,21 +53,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
-    public static void main(String[] foo) throws Exception {
-        World world;
-        Node file;
-
-        world = new World();
-        WebdavFilesystem.wireLog(world.guessProjectHome(NodeTest.class).getAbsolute() + "/failedtorespond.log");
-
-        file = world.node("http://englishediting.de/index.html");
-        System.out.println("head");
-        file.exists();
-        System.out.println("head");
-        file.exists();
-        System.out.println("done");
-    }
-
     @Test
     public void work() throws IOException {
         List<?> children;

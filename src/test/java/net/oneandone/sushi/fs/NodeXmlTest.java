@@ -25,7 +25,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class NodeXmlTest {
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     @Test
     public void xslt() throws IOException, TransformerException {

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ArchiveTest {
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     private List<String> directories;
     private List<String> fileNames;

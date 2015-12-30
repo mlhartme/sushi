@@ -80,7 +80,7 @@ public class TestProperties {
         Node p;
 
         result = new Properties();
-        world = new World();
+        world = World.createMinimal();
         home = world.guessProjectHome(TestProperties.class);
         try (Reader src = home.join("test.properties").newReader()) {
             result.load(src);

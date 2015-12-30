@@ -28,7 +28,7 @@ import static org.junit.Assert.fail;
 
 public class CsvTest {
     private static final Format FMT = new Format();
-    private static final World WORLD = new World();
+    private static final World WORLD = World.createMinimal();
 
     @Test
     public void empty() throws IOException {

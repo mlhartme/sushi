@@ -2,11 +2,14 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2015-08-xx" version="2.9.0">
-      <action date="2015-12-29" dev="mlhartme" type="update">
+      <action date="2015-12-30" dev="mlhartme" type="add">
+        Added Node.copyInto and Node.moveInto.
+      </action>
+      <action date="2015-12-30" dev="mlhartme" type="update">
         Node.move, Node.copy, Node.copyDirectory and Node.copyFile now throw proper ...NotFoundExceptions if the source does not exist
         (instead of throwing Move- or CopyExceptions).
       </action>
-      <action date="2015-12-29" dev="mlhartme" type="update">
+      <action date="2015-12-30" dev="mlhartme" type="update">
         FileNotFoundException and DirectoryNotFoundException now extend NodeNotFoundException.
       </action>
       <action date="2015-12-29" dev="mlhartme" type="update">

@@ -15,8 +15,6 @@
  */
 package net.oneandone.sushi.fs;
 
-import java.io.IOException;
-
 /** thrown if you try to create an OutputStream for a directory */
 public class NewDirectoryOutputStreamException extends NewOutputStreamException {
     public NewDirectoryOutputStreamException(Node node) {

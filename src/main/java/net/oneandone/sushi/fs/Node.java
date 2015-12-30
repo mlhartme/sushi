@@ -636,7 +636,11 @@ public abstract class Node {
         }
     }
 
-    /** @throws FileNotFoundException if this does not exist */
+    /**
+     * Copies this to dest. Overwrites existing file and adds to existing directories.
+     *
+     * @throws NodeNotFoundException if this does not exist
+     */
     public void copy(Node dest) throws NodeNotFoundException, CopyException {
         try {
             if (isDirectory()) {
@@ -650,6 +654,16 @@ public abstract class Node {
         } catch (IOException e) {
             throw new CopyException(this, dest, e);
         }
+    }
+
+    public void copyInto(Node directory) throws ExistsException, NodeNotFoundException, CopyException {
+        directory.checkDirectory();
+        copy(directory.join(getName()));
+    }
+
+    public void moveInto(Node directory) throws ExistsException, NodeNotFoundException, MoveException {
+        directory.checkDirectory();
+        move(directory.join(getName()));
     }
 
     /**

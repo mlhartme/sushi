@@ -1,0 +1,161 @@
+/**
+ * Copyright 1&1 Internet AG, https://github.com/1and1/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package net.oneandone.sushi.fs.http.methods;
+
+import net.oneandone.sushi.fs.http.HttpConnection;
+import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.xml.Namespace;
+import net.oneandone.sushi.xml.Serializer;
+import net.oneandone.sushi.xml.Xml;
+import net.oneandone.sushi.fs.http.model.Body;
+import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Response;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+public abstract class Method<T> {
+    public static final Namespace DAV = Namespace.getNamespace("D", "DAV:");
+    public static final String XML_PROP = "prop";
+    public static final String XML_RESPONSE = "response";
+
+    //-- RFC 1945 and 2518 status codes
+    public static final int STATUSCODE_OK = 200;
+    public static final int STATUSCODE_CREATED = 201;
+    public static final int STATUSCODE_NO_CONTENT = 204;
+    public static final int STATUSCODE_RESET_CONTENT = 205;
+    public static final int STATUSCODE_MULTI_STATUS = 207;
+
+    public static final int STATUSCODE_MOVED_PERMANENTLY = 301;
+    public static final int STATUSCODE_NOT_MODIFIED = 304;
+
+    public static final int STATUSCODE_BAD_REQUEST = 400;
+    public static final int STATUSCODE_NOT_FOUND = 404;
+    public static final int STATUSCODE_GONE = 410;
+
+    //--
+
+    protected final HttpNode resource;
+
+    private final Request request;
+
+    private final boolean head;
+
+    public Method(String method, HttpNode resource) {
+        this(method, resource, false);
+    }
+
+    public Method(String method, HttpNode resource, boolean head) {
+        this.resource = resource;
+        this.head = head;
+        this.request = new Request(method, resource.getAbsPath());
+    }
+
+    //--
+
+    public void setRequestHeader(String name, String value) {
+    	request.getHeaderList().add(name, value);
+    }
+
+    public void setRequestEntity(Document body) throws IOException {
+        Serializer serializer;
+        ByteArrayOutputStream serialized;
+        byte[] bytes;
+
+        serialized = new ByteArrayOutputStream();
+        serializer = getXml().getSerializer();
+        synchronized (serializer) {
+            serializer.serialize(new DOMSource(body), new StreamResult(serialized), true);
+        }
+        bytes = serialized.toByteArray();
+    	request.setBody(new Body(null, null, bytes.length, new ByteArrayInputStream(bytes), false));
+    }
+
+    //--
+
+    public String getUri() {
+    	return request.getUri();
+    }
+
+    public Xml getXml() {
+        return resource.getRoot().getFilesystem().getWorld().getXml();
+    }
+
+    //--
+
+    public T invoke() throws IOException {
+    	return response(request());
+    }
+
+    public HttpConnection request() throws IOException {
+        HttpConnection conn;
+
+    	setRequestHeader("Expires", "0");
+        setRequestHeader("Pragma", "no-cache");
+        setRequestHeader("Cache-control", "no-cache");
+        setRequestHeader("Cache-store", "no-store");
+        setRequestHeader(Header.USER_AGENT, "Sushi Http");
+        setContentHeader();
+        conn = resource.getRoot().allocate();
+        resource.getRoot().send(conn, request);
+        return conn;
+    }
+
+    public T response(HttpConnection connection) throws IOException {
+        Response response;
+
+        response = resource.getRoot().receive(connection, head);
+        try {
+            return processResponse(connection, response);
+        } finally {
+        	processResponseFinally(response, connection);
+        }
+    }
+
+    protected void setContentHeader() {
+        Body body;
+
+        body = request.getBody();
+        if (body == null) {
+            request.getHeaderList().add(Header.CONTENT_LENGTH, "0");
+            return;
+        }
+        if (body.chunked || body.length < 0) {
+        	throw new IllegalStateException();
+        }
+        request.getHeaderList().add(Header.CONTENT_LENGTH, Long.toString(body.length));
+        if (body.type != null) {
+            request.getHeaderList().add(body.type);
+        }
+        if (body.encoding != null) {
+            request.getHeaderList().add(body.encoding);
+        }
+
+    }
+
+    // TODO: connection argument needed for GetMethod ...
+    public abstract T processResponse(HttpConnection connection, Response response) throws IOException;
+
+    /** called after processResponse finished normally or with an exception */
+    protected void processResponseFinally(Response response, HttpConnection conn) throws IOException {
+    	resource.getRoot().free(response, conn);
+    }
+}

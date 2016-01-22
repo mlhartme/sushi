@@ -21,7 +21,6 @@ import net.oneandone.sushi.fs.multi.Function;
 import net.oneandone.sushi.fs.multi.Invoker;
 import net.oneandone.sushi.fs.multi.TextTarget;
 import net.oneandone.sushi.fs.multi.XmlTarget;
-import net.oneandone.sushi.fs.webdav.WebdavFilesystem;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
@@ -100,7 +99,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         try {
             assertTrue(root.isDirectory());
         } catch (ExistsException e) {
-            // root node is not accessible (e.g. Webdav)
+            // root node is not accessible (e.g. Http)
             // -> continue
         }
         assertEquals("", root.getName());

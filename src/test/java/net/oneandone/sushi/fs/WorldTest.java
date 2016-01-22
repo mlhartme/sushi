@@ -19,8 +19,7 @@ import net.oneandone.sushi.fs.console.ConsoleNode;
 import net.oneandone.sushi.fs.file.FileFilesystem;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.fs.memory.MemoryNode;
-import net.oneandone.sushi.fs.webdav.WebdavNode;
-import net.oneandone.sushi.fs.zip.ZipFilesystem;
+import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.zip.ZipNode;
 import net.oneandone.sushi.util.Reflect;
 import org.junit.Test;
@@ -81,7 +80,7 @@ public class WorldTest {
         world = World.create();
         uri = new URI("http://foo.bar:80/foo");
         node = world.node(uri);
-        assertTrue(node instanceof WebdavNode);
+        assertTrue(node instanceof HttpNode);
         assertEquals("foo", node.getPath());
         assertEquals(uri, node.getURI());
 

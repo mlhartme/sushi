@@ -31,7 +31,7 @@ Sushi is available from Maven Central. To use it in a Maven project, add this de
     <dependency>
       <groupId>net.oneandone</groupId>
       <artifactId>sushi</artifactId>
-      <version>2.8.18</version>
+      <version>2.9.0</version>
     </dependency>
 
 ## Optional Dependencies

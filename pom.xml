@@ -35,7 +35,6 @@
 
     <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
     <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
-    <surefire.forkCount>0</surefire.forkCount>
   </properties>
 
   <developers>
@@ -136,14 +135,6 @@
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
       <version>1.8.11</version>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- if you want WebdevFilesystem: -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpcore</artifactId>
-      <version>4.4.4</version>
       <optional>true</optional>
     </dependency>
 

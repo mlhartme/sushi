@@ -174,7 +174,7 @@ public abstract class Method<T> {
 
     //--
 
-    protected boolean receiveBody(Response response) {
+    protected boolean isReceiveBody(Response response) {
         int status;
 
         status = response.getStatusLine().statusCode;
@@ -191,19 +191,24 @@ public abstract class Method<T> {
             try {
                 response = connection.receiveResponseHeader();
             } catch (IOException e) {
-                connection.close();
-                resource.getRoot().free(connection);
+                try {
+                    connection.close();
+                    resource.getRoot().free(connection);
+                } catch (IOException e2) {
+                    e.addSuppressed(e2);
+                }
                 throw e;
             }
             try {
-                if (receiveBody(response)) {
+                if (isReceiveBody(response)) {
                     connection.receiveResponseBody(response);
                 }
-            } catch (IOException | RuntimeException e) {
-                if (response.close()) {
-                    connection.close();
+            } catch (IOException e) {
+                try {
+                    free(response, connection);
+                } catch (IOException e2) {
+                    e.addSuppressed(e2);
                 }
-                resource.getRoot().free(connection);
                 throw e;
             }
 

@@ -209,22 +209,22 @@ public class HttpRoot implements Root<HttpNode> {
         }
     }
 
-    public Response receive(HttpConnection conn, boolean head) throws IOException {
+    public Response receive(HttpConnection connection, boolean head) throws IOException {
         Response response;
         int statuscode;
 
         response = null;
         try {
             do {
-                response = conn.receiveResponseHeader();
+                response = connection.receiveResponseHeader();
                 if (canResponseHaveBody(response, head)) {
-                    conn.receiveResponseBody(response);
+                    connection.receiveResponseBody(response);
                 }
                 statuscode = response.getStatusLine().statusCode;
-            } while (response == null || statuscode < Method.STATUSCODE_OK);
+            } while (statuscode < Method.STATUSCODE_OK);
             return response;
         } catch (IOException | RuntimeException e) {
-            free(response, conn);
+            free(response, connection);
             throw e;
         }
     }

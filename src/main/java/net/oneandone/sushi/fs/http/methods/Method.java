@@ -58,15 +58,12 @@ public abstract class Method<T> {
 
     private final Request request;
 
-    private final boolean head;
-
     public Method(String method, HttpNode resource) {
-        this(method, resource, false, null);
+        this(method, resource, null);
     }
 
-    public Method(String method, HttpNode resource, boolean head, Body body) {
+    public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
-        this.head = head;
         this.request = new Request(method, resource.getAbsPath(), body);
         if (body != null) {
             if (body.type != null) {
@@ -113,7 +110,7 @@ public abstract class Method<T> {
     public T response(HttpConnection connection) throws IOException {
         Response response;
 
-        response = resource.getRoot().receive(connection, head);
+        response = resource.getRoot().receive(connection, this instanceof Head);
         try {
             return processResponse(connection, response);
         } finally {

@@ -24,11 +24,11 @@ import java.io.IOException;
 
 public class Head extends Method<Void> {
     public Head(HttpNode resource) {
-        super("HEAD", resource, true, null);
+        super("HEAD", resource, null);
     }
 
     @Override
-    public Void processResponse(final HttpConnection connection, final Response response) throws IOException {
+    public Void processResponse(HttpConnection connection, Response response) throws IOException {
     	int status;
 
         status = response.getStatusLine().statusCode;

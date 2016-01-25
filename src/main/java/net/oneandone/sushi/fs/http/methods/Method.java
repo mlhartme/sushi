@@ -65,6 +65,17 @@ public abstract class Method<T> {
     public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
         this.request = new Request(method, resource.getAbsPath(), body);
+
+        // prepare header
+
+        resource.getRoot().addDefaultHeader(request.headerList);
+        addRequestHeader("Expires", "0");
+        addRequestHeader("Pragma", "no-cache");
+        addRequestHeader("Cache-control", "no-cache");
+        addRequestHeader("Cache-store", "no-store");
+        addRequestHeader("User-Agent", "Sushi Http");
+        contentLength();
+
         if (body != null) {
             if (body.type != null) {
                 request.headerList.add(body.type);
@@ -96,13 +107,6 @@ public abstract class Method<T> {
     public HttpConnection request() throws IOException {
         HttpConnection connection;
 
-        resource.getRoot().addDefaultHeader(request.headerList);
-        addRequestHeader("Expires", "0");
-        addRequestHeader("Pragma", "no-cache");
-        addRequestHeader("Cache-control", "no-cache");
-        addRequestHeader("Cache-store", "no-store");
-        addRequestHeader("User-Agent", "Sushi Http");
-        contentLength();
         connection = resource.getRoot().allocate();
         try {
             connection.sendRequestHeader(request);
@@ -135,6 +139,7 @@ public abstract class Method<T> {
         return result;
     }
 
+    /** CAUTION when overriding this method: it's called during super class construction, i.e. you class is not initialized yet! */
     protected void contentLength() {
         Body body;
 

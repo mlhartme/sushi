@@ -167,6 +167,14 @@ public class HttpRoot implements Root<HttpNode> {
         return allocated;
     }
 
+
+    public void addDefaultHeader(HeaderList headerList) {
+        headerList.add(Header.HOST, hostname);
+        if (authorization != null) {
+            headerList.add("Authorization", authorization);
+        }
+    }
+
     //--
 
     @Override
@@ -183,14 +191,5 @@ public class HttpRoot implements Root<HttpNode> {
     @Override
     public int hashCode() {
         return hostname.hashCode();
-    }
-
-    //--
-
-    public void addDefaultHeader(HeaderList headerList) {
-        headerList.add(Header.HOST, hostname);
-        if (authorization != null) {
-            headerList.add("Authorization", authorization);
-        }
     }
 }

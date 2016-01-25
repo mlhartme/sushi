@@ -25,9 +25,6 @@ import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.io.LineLogger;
-import net.oneandone.sushi.io.LoggingAsciiInputStream;
-import net.oneandone.sushi.io.LoggingAsciiOutputStream;
 import net.oneandone.sushi.io.OpenInputStream;
 import net.oneandone.sushi.io.OpenOutputStream;
 import net.oneandone.sushi.io.WindowInputStream;
@@ -37,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
 
 public class HttpConnection implements Closeable {
     private final Socket socket;

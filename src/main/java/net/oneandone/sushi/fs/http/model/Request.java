@@ -20,31 +20,14 @@ import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 import java.io.IOException;
 
 public class Request {
-    private final RequestLine requestline;
-    private final HeaderList headerList;
-
-    private final Body body;
-
-    public Request(String method, String uri) {
-        this(method, uri, null);
-    }
+    public final RequestLine requestline;
+    public final HeaderList headerList;
+    public final Body body;
 
     public Request(String method, String uri, Body body) {
         this.headerList = new HeaderList();
         this.requestline = new RequestLine(method, uri, StatusLine.HTTP_1_1);
         this.body = body;
-    }
-
-    public String getUri() {
-        return requestline.uri;
-    }
-
-    public HeaderList getHeaderList() {
-        return headerList;
-    }
-
-    public Body getBody() {
-        return body;
     }
 
     public void write(AsciiOutputStream dest) throws IOException {

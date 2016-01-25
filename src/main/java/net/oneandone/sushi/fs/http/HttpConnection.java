@@ -83,8 +83,8 @@ public class HttpConnection implements Closeable {
     }
 
     public void sendRequestBody(Request request) throws IOException {
-        if (request.getBody() != null) {
-            serialize(output, request.getHeaderList(), request.getBody());
+        if (request.body != null) {
+            serialize(output, request.headerList, request.body);
         }
     }
 

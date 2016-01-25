@@ -69,20 +69,20 @@ public abstract class Method<T> {
         this.request = new Request(method, resource.getAbsPath(), body);
         if (body != null) {
             if (body.type != null) {
-                request.getHeaderList().add(body.type);
+                request.headerList.add(body.type);
             }
             if (body.encoding != null) {
-                request.getHeaderList().add(body.encoding);
+                request.headerList.add(body.encoding);
             }
         }
     }
 
     public void addRequestHeader(String name, String value) {
-    	request.getHeaderList().add(name, value);
+    	request.headerList.add(name, value);
     }
 
     public String getUri() {
-    	return request.getUri();
+    	return request.requestline.uri;
     }
 
     public Xml getXml() {
@@ -123,15 +123,15 @@ public abstract class Method<T> {
     protected void contentLength() {
         Body body;
 
-        body = request.getBody();
+        body = request.body;
         if (body == null) {
-            request.getHeaderList().add(Header.CONTENT_LENGTH, "0");
+            request.headerList.add(Header.CONTENT_LENGTH, "0");
             return;
         }
         if (body.chunked || body.length < 0) {
         	throw new IllegalStateException();
         }
-        request.getHeaderList().add(Header.CONTENT_LENGTH, Long.toString(body.length));
+        request.headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
     }
 
     // TODO: connection argument needed for GetMethod ...

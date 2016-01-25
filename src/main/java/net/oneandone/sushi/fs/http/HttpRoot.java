@@ -193,9 +193,9 @@ public class HttpRoot implements Root<HttpNode> {
 
     public void send(HttpConnection conn, Request request) throws IOException {
         // TODO: side effect
-        request.getHeaderList().add(Header.HOST, hostname);
+        request.headerList.add(Header.HOST, hostname);
         if (authorization != null) {
-            request.getHeaderList().add("Authorization", authorization);
+            request.headerList.add("Authorization", authorization);
         }
         // TODO: request.addHeader("Keep-Alive", "300");
 

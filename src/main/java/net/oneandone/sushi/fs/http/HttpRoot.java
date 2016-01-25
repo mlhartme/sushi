@@ -16,7 +16,6 @@
 package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.Root;
-import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Request;
@@ -207,36 +206,5 @@ public class HttpRoot implements Root<HttpNode> {
             free(null, conn);
             throw e;
         }
-    }
-
-    public Response receive(HttpConnection connection, boolean head) throws IOException {
-        Response response;
-
-        response = null;
-        try {
-            do {
-                response = connection.receiveResponseHeader();
-                if (canResponseHaveBody(response, head)) {
-                    connection.receiveResponseBody(response);
-                }
-            } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
-            return response;
-        } catch (IOException | RuntimeException e) {
-            free(response, connection);
-            throw e;
-        }
-    }
-
-    private boolean canResponseHaveBody(Response response, boolean head) {
-        int status;
-
-        status = response.getStatusLine().statusCode;
-        if (status == Method.STATUSCODE_OK && head) {
-            return false;
-        }
-        return status >= Method.STATUSCODE_OK
-            && status != Method.STATUSCODE_NO_CONTENT
-            && status != Method.STATUSCODE_NOT_MODIFIED
-            && status != Method.STATUSCODE_RESET_CONTENT;
     }
 }

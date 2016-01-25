@@ -110,7 +110,7 @@ public abstract class Method<T> {
     public T response(HttpConnection connection) throws IOException {
         Response response;
 
-        response = resource.getRoot().receive(connection, this instanceof Head);
+        response = receive(connection, this instanceof Head);
         try {
             return processResponse(connection, response);
         } finally {
@@ -158,4 +158,36 @@ public abstract class Method<T> {
         return new Body(null, null, bytes.length, new ByteArrayInputStream(bytes), false);
     }
 
+    //--
+
+    private Response receive(HttpConnection connection, boolean head) throws IOException {
+        Response response;
+
+        response = null;
+        try {
+            do {
+                response = connection.receiveResponseHeader();
+                if (canResponseHaveBody(response, head)) {
+                    connection.receiveResponseBody(response);
+                }
+            } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
+            return response;
+        } catch (IOException | RuntimeException e) {
+            resource.getRoot().free(response, connection);
+            throw e;
+        }
+    }
+
+    private static boolean canResponseHaveBody(Response response, boolean head) {
+        int status;
+
+        status = response.getStatusLine().statusCode;
+        if (status == Method.STATUSCODE_OK && head) {
+            return false;
+        }
+        return status >= Method.STATUSCODE_OK
+                && status != Method.STATUSCODE_NO_CONTENT
+                && status != Method.STATUSCODE_NOT_MODIFIED
+                && status != Method.STATUSCODE_RESET_CONTENT;
+    }
 }

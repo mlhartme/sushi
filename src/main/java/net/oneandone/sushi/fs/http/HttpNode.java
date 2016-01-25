@@ -42,6 +42,7 @@ import net.oneandone.sushi.fs.http.methods.Move;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
+import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
@@ -169,7 +170,7 @@ public class HttpNode extends Node {
         String result;
 
         try {
-            result = new Head(this).invoke();
+            result = new Head(this, Header.CONTENT_LENGTH).invoke();
             if (result == null) {
                 throw new ProtocolException("head request did not return content length");
             }
@@ -194,6 +195,14 @@ public class HttpNode extends Node {
 
     @Override
     public long getLastModified() throws GetLastModifiedException {
+        if (getRoot().getFilesystem().isDav()) {
+            return davGetLastModified();
+        } else {
+            return headGetLastModified();
+        }
+    }
+
+    public long davGetLastModified() throws GetLastModifiedException {
         Property property;
 
         try {
@@ -216,6 +225,23 @@ public class HttpNode extends Node {
             throw new GetLastModifiedException(this, e);
         }
     }
+
+    public long headGetLastModified() throws GetLastModifiedException {
+        String result;
+
+        try {
+            result = new Head(this, "Last-Modified").invoke();
+            if (result == null) {
+                throw new ProtocolException("head request did not return last-modified header");
+            }
+            synchronized (FMT) {
+                return FMT.parse(result).getTime();
+            }
+        } catch (IOException | ParseException e) {
+            throw new GetLastModifiedException(this, e);
+        }
+    }
+
 
     @Override
     public void setLastModified(long millis) throws SetLastModifiedException {
@@ -390,7 +416,7 @@ public class HttpNode extends Node {
     public boolean exists() throws ExistsException {
         synchronized (tryLock) {
             try {
-                new Head(this).invoke();
+                new Head(this, null).invoke();
                 return true;
             } catch (StatusException e) {
                 switch (e.getStatusLine().statusCode) {
@@ -672,7 +698,7 @@ public class HttpNode extends Node {
 
     private boolean doTryDirHttp() throws IOException {
         try {
-            new Head(this).invoke();
+            new Head(this, null).invoke();
             return true;
         } catch (StatusException e2) {
             switch (e2.getStatusLine().statusCode) {

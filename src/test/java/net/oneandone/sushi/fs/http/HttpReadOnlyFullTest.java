@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.http;
 
+import net.oneandone.sushi.fs.GetLastModifiedException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeReadOnlyTest;
 import net.oneandone.sushi.fs.SizeException;
@@ -41,21 +42,6 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     }
 
     @Test
-    public void normal() throws Exception {
-        HttpNode node;
-        int size;
-
-        node = (HttpNode) WORLD.node("http://englishediting.de/index.html");
-        assertTrue(node.isFile());
-        assertTrue(node.exists());
-        size = node.readBytes().length;
-        assertEquals(size, node.size());
-        assertEquals("//englishediting.de/", node.getRoot().getId());
-        assertEquals("index.html", node.getPath());
-        assertEquals("", node.getParent().getPath());
-    }
-
-    @Test
     public void eq() throws Exception {
         HttpNode node;
 
@@ -67,9 +53,32 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     private static final String GITHUB = "https://github.com/mlhartme/sushi";
 
     @Test
+    public void englishediting() throws Exception {
+        HttpNode node;
+        int size;
+
+        node = (HttpNode) WORLD.node("http://englishediting.de/index.html");
+        assertTrue(node.isFile());
+        assertTrue(node.exists());
+        assertTrue(node.getLastModified() != 0);
+        size = node.readBytes().length;
+        assertEquals(size, node.size());
+        assertEquals("//englishediting.de/", node.getRoot().getId());
+        assertEquals("index.html", node.getPath());
+        assertEquals("", node.getParent().getPath());
+    }
+
+    @Test
     public void github() throws Exception {
-        assertTrue(WORLD.node(GITHUB).exists());
         assertFalse(WORLD.node(GITHUB + "nosuchfile").exists());
+        assertTrue(WORLD.node(GITHUB).exists());
+        assertTrue(WORLD.node(GITHUB).isFile());
+        try {
+            assertTrue(WORLD.node(GITHUB).getLastModified() != 0);
+            fail();
+        } catch (GetLastModifiedException e) {
+            // ok -- github does not return last-modified
+        }
         try {
             WORLD.node(GITHUB).size();
             fail();

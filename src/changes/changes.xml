@@ -3,7 +3,7 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2016-01-25" dev="mlhartme" type="update">
-        HttpNode.size() now uses head requests if webdav is not available.
+        HttpNode.size() and getLastModified() now use head requests if webdav is not available.
       </action>
       <action date="2016-01-22" dev="mlhartme" type="update">
         Renamed webdav to http, changed naming prefixes accordingly.

@@ -18,14 +18,16 @@ package net.oneandone.sushi.fs.http.methods;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
 
 public class Head extends Method<String> {
-    public Head(HttpNode resource) {
+    private final String header;
+
+    public Head(HttpNode resource, String header) {
         super("HEAD", resource, null);
+        this.header = header;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class Head extends Method<String> {
         status = response.getStatusLine().statusCode;
         switch (status) {
         case STATUSCODE_OK:
-            return response.getHeaderList().getFirstValue(Header.CONTENT_LENGTH);
+            return header == null ? null : response.getHeaderList().getFirstValue(header);
         default:
         	throw new StatusException(response.getStatusLine());
         }

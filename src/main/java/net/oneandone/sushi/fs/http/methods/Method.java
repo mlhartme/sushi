@@ -69,27 +69,14 @@ public abstract class Method<T> {
         this.request = new Request(method, resource.getAbsPath());
     }
 
-    //--
+    public Method(String method, HttpNode resource, Body body) {
+        this(method, resource, false);
+        this.request.setBody(body);
+    }
 
     public void addRequestHeader(String name, String value) {
     	request.getHeaderList().add(name, value);
     }
-
-    public void setRequestEntity(Document body) throws IOException {
-        Serializer serializer;
-        ByteArrayOutputStream serialized;
-        byte[] bytes;
-
-        serialized = new ByteArrayOutputStream();
-        serializer = getXml().getSerializer();
-        synchronized (serializer) {
-            serializer.serialize(new DOMSource(body), new StreamResult(serialized), true);
-        }
-        bytes = serialized.toByteArray();
-    	request.setBody(new Body(null, null, bytes.length, new ByteArrayInputStream(bytes), false));
-    }
-
-    //--
 
     public String getUri() {
     	return request.getUri();
@@ -158,4 +145,23 @@ public abstract class Method<T> {
     protected void processResponseFinally(Response response, HttpConnection conn) throws IOException {
     	resource.getRoot().free(response, conn);
     }
+
+    //--
+
+    public static Body body(Serializer serializer, Document body) {
+        ByteArrayOutputStream serialized;
+        byte[] bytes;
+
+        serialized = new ByteArrayOutputStream();
+        synchronized (serializer) {
+            try {
+                serializer.serialize(new DOMSource(body), new StreamResult(serialized), true);
+            } catch (IOException e) {
+                throw new IllegalStateException(e); // because we serialize into memory
+            }
+        }
+        bytes = serialized.toByteArray();
+        return new Body(null, null, bytes.length, new ByteArrayInputStream(bytes), false);
+    }
+
 }

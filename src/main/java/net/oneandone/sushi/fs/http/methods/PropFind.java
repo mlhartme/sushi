@@ -22,27 +22,19 @@ import net.oneandone.sushi.fs.http.MovedException;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.StatusException;
+import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.xml.Builder;
+import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.util.List;
 
 public class PropFind extends Method<List<MultiStatus>> {
-    public PropFind(HttpNode resource, Name name, int depth) throws IOException {
-    	super("PROPFIND", resource);
-
-        Document document;
-        Builder builder;
-
+    public PropFind(HttpNode resource, Name name, int depth) {
+    	super("PROPFIND", resource, propfindBody(resource.getWorld().getXml(), name));
         addRequestHeader("Depth", String.valueOf(depth));
-        builder = getXml().getBuilder();
-        synchronized (builder) {
-            document = builder.createDocument("propfind", DAV);
-        }
-		name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
-        setRequestEntity(document);
     }
 
     @Override
@@ -58,5 +50,18 @@ public class PropFind extends Method<List<MultiStatus>> {
         default:
         	throw new StatusException(response.getStatusLine());
         }
+    }
+
+
+    private static Body propfindBody(Xml xml, Name name) {
+        Document document;
+        Builder builder;
+
+        builder = xml.getBuilder();
+        synchronized (builder) {
+            document = builder.createDocument("propfind", DAV);
+        }
+        name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
+        return Method.body(xml.getSerializer(), document);
     }
 }

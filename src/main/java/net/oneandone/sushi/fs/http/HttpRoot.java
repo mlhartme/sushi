@@ -101,22 +101,6 @@ public class HttpRoot implements Root<HttpNode> {
 
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        HttpRoot root;
-
-        if (obj instanceof HttpRoot) {
-            root = (HttpRoot) obj;
-            return filesystem == root.filesystem /* TODO params etc */;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return hostname.hashCode();
-    }
-
     public HttpFilesystem getFilesystem() {
         return filesystem;
     }
@@ -143,6 +127,29 @@ public class HttpRoot implements Root<HttpNode> {
         } else {
             return connect();
         }
+    }
+
+    public HttpConnection connect() throws IOException {
+        Socket socket;
+        int buffersize;
+        InputStream input;
+        OutputStream output;
+
+        if ("https".equals(protocol)) {
+            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        } else {
+            socket = new Socket(hostname, port);
+        }
+        socket.setTcpNoDelay(true);
+        socket.setSoTimeout(soTimeout);
+        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
+        input = socket.getInputStream();
+        output = socket.getOutputStream();
+        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
+            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
+            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
+        }
+        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
     }
 
     public synchronized void free(Response response, HttpConnection connection) throws IOException {
@@ -183,6 +190,24 @@ public class HttpRoot implements Root<HttpNode> {
 
     //--
 
+    @Override
+    public boolean equals(Object obj) {
+        HttpRoot root;
+
+        if (obj instanceof HttpRoot) {
+            root = (HttpRoot) obj;
+            return filesystem == root.filesystem /* TODO params etc */;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return hostname.hashCode();
+    }
+
+    //--
+
     public void send(HttpConnection connection, Request request) throws IOException {
         // TODO: side effect
         request.headerList.add(Header.HOST, hostname);
@@ -200,30 +225,4 @@ public class HttpRoot implements Root<HttpNode> {
             throw e;
         }
     }
-
-    //--
-
-    public HttpConnection connect() throws IOException {
-        Socket socket;
-        int buffersize;
-        InputStream input;
-        OutputStream output;
-
-        if ("https".equals(protocol)) {
-            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
-        } else {
-            socket = new Socket(hostname, port);
-        }
-        socket.setTcpNoDelay(true);
-        socket.setSoTimeout(soTimeout);
-        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
-        input = socket.getInputStream();
-        output = socket.getOutputStream();
-        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
-            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
-            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
-        }
-        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
-    }
-
 }

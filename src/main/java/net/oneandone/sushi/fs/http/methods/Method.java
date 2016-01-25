@@ -102,9 +102,7 @@ public abstract class Method<T> {
 
         connection = resource.getRoot().allocate();
         try {
-            connection.sendRequestHeader(request);
-            connection.sendRequestBody(request);
-            connection.flush();
+            connection.sendRequest(request);
         } catch (IOException e) {
             try {
                 connection.close();

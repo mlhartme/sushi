@@ -52,14 +52,12 @@ public class HttpConnection implements Closeable {
 
     //--
 
-    public void sendRequestHeader(Request request) throws IOException {
+    public void sendRequest(Request request) throws IOException {
         request.write(output);
-    }
-
-    public void sendRequestBody(Request request) throws IOException {
         if (request.body != null) {
             serialize(output, request.headerList, request.body);
         }
+        output.flush();
     }
 
     public Response receiveResponseHeader() throws IOException {
@@ -68,10 +66,6 @@ public class HttpConnection implements Closeable {
 
     public void receiveResponseBody(Response response) throws IOException {
         response.setBody(deserialize(input, response.getHeaderList()));
-    }
-
-    public void flush() throws IOException {
-        output.flush();
     }
 
     public void close() throws IOException {

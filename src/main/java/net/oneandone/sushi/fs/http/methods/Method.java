@@ -67,15 +67,8 @@ public abstract class Method<T> {
         this.request = new Request(method, resource.getAbsPath(), body);
 
         // prepare header
-
         resource.getRoot().addDefaultHeader(request.headerList);
-        addRequestHeader("Expires", "0");
-        addRequestHeader("Pragma", "no-cache");
-        addRequestHeader("Cache-control", "no-cache");
-        addRequestHeader("Cache-store", "no-store");
-        addRequestHeader("User-Agent", "Sushi Http");
         contentLength();
-
         if (body != null) {
             if (body.type != null) {
                 request.headerList.add(body.type);
@@ -113,8 +106,12 @@ public abstract class Method<T> {
             connection.sendRequestBody(request);
             connection.flush();
         } catch (IOException e) {
-            connection.close();
-            resource.getRoot().free(connection);
+            try {
+                connection.close();
+                resource.getRoot().free(connection);
+            } catch (IOException e2) {
+                e.addSuppressed(e2);
+            }
             throw e;
         }
         return connection;

@@ -18,11 +18,8 @@ package net.oneandone.sushi.fs.http;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
-import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
-import net.oneandone.sushi.fs.http.model.Request;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.io.LineLogger;
 import net.oneandone.sushi.io.LoggingAsciiInputStream;
 import net.oneandone.sushi.io.LoggingAsciiOutputStream;
@@ -173,6 +170,11 @@ public class HttpRoot implements Root<HttpNode> {
         if (authorization != null) {
             headerList.add("Authorization", authorization);
         }
+        headerList.add("Expires", "0");
+        headerList.add("Pragma", "no-cache");
+        headerList.add("Cache-control", "no-cache");
+        headerList.add("Cache-store", "no-store");
+        headerList.add("User-Agent", "Sushi Http");
     }
 
     //--

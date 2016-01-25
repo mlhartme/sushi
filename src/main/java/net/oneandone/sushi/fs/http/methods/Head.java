@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class Head extends Method<Void> {
     public Head(HttpNode resource) {
-        super("HEAD", resource, true);
+        super("HEAD", resource, true, null);
     }
 
     @Override

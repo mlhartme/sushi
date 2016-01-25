@@ -23,11 +23,16 @@ public class Request {
     private final RequestLine requestline;
     private final HeaderList headerList;
 
-    private Body body;
+    private final Body body;
 
     public Request(String method, String uri) {
+        this(method, uri, null);
+    }
+
+    public Request(String method, String uri, Body body) {
         this.headerList = new HeaderList();
         this.requestline = new RequestLine(method, uri, StatusLine.HTTP_1_1);
+        this.body = body;
     }
 
     public String getUri() {
@@ -40,10 +45,6 @@ public class Request {
 
     public Body getBody() {
         return body;
-    }
-
-    public void setBody(Body body) {
-        this.body = body;
     }
 
     public void write(AsciiOutputStream dest) throws IOException {

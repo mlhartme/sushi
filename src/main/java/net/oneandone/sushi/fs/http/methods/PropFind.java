@@ -33,7 +33,7 @@ import java.util.List;
 
 public class PropFind extends Method<List<MultiStatus>> {
     public PropFind(HttpNode resource, Name name, int depth) {
-    	super("PROPFIND", resource, propfindBody(resource.getWorld().getXml(), name));
+    	super("PROPFIND", resource, false, propfindBody(resource.getWorld().getXml(), name));
         addRequestHeader("Depth", String.valueOf(depth));
     }
 

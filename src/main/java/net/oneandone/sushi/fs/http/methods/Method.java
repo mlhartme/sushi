@@ -60,18 +60,13 @@ public abstract class Method<T> {
     private final boolean head;
 
     public Method(String method, HttpNode resource) {
-        this(method, resource, false);
+        this(method, resource, false, null);
     }
 
-    public Method(String method, HttpNode resource, boolean head) {
+    public Method(String method, HttpNode resource, boolean head, Body body) {
         this.resource = resource;
         this.head = head;
-        this.request = new Request(method, resource.getAbsPath());
-    }
-
-    public Method(String method, HttpNode resource, Body body) {
-        this(method, resource, false);
-        this.request.setBody(body);
+        this.request = new Request(method, resource.getAbsPath(), body);
     }
 
     public void addRequestHeader(String name, String value) {

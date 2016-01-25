@@ -18,8 +18,12 @@ package net.oneandone.sushi.fs.http;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
+import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
+import net.oneandone.sushi.fs.http.model.ProtocolException;
+import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.io.LineLogger;
 import net.oneandone.sushi.io.LoggingAsciiInputStream;
 import net.oneandone.sushi.io.LoggingAsciiOutputStream;
@@ -28,7 +32,9 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -127,29 +133,6 @@ public class HttpRoot implements Root<HttpNode> {
         }
     }
 
-    public HttpConnection connect() throws IOException {
-        Socket socket;
-        int buffersize;
-        InputStream input;
-        OutputStream output;
-
-        if ("https".equals(protocol)) {
-            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
-        } else {
-            socket = new Socket(hostname, port);
-        }
-        socket.setTcpNoDelay(true);
-        socket.setSoTimeout(soTimeout);
-        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
-        input = socket.getInputStream();
-        output = socket.getOutputStream();
-        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
-            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
-            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
-        }
-        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
-    }
-
     public synchronized void free(HttpConnection connection) throws IOException {
         if (allocated == 0) {
             throw new IllegalStateException();
@@ -164,6 +147,72 @@ public class HttpRoot implements Root<HttpNode> {
         return allocated;
     }
 
+    public HttpConnection connect() throws IOException {
+        Socket socket;
+        int buffersize;
+        InputStream input;
+        OutputStream output;
+        URL proxyUrl;
+
+        if ("https".equals(protocol)) {
+            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        } else {
+            proxyUrl = proxyUrl();
+            socket = proxyUrl != null ? proxyconnect(proxyUrl) : new Socket(hostname, port);
+        }
+        socket.setTcpNoDelay(true);
+        socket.setSoTimeout(soTimeout);
+        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
+        input = socket.getInputStream();
+        output = socket.getOutputStream();
+        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
+            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
+            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
+        }
+        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
+    }
+
+    private URL proxyUrl() {
+        String url;
+
+        url = System.getenv("HTTP_PROXY");
+        if (url == null) {
+            return null;
+        }
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private Socket proxyconnect(URL proxyUrl) throws IOException {
+        Request request;
+        Socket proxy;
+        InputStream input;
+        OutputStream output;
+        AsciiOutputStream aOut;
+        AsciiInputStream aIn;
+        Response response;
+
+        request = new Request("CONNECT", hostname, null);
+        proxy = new Socket(proxyUrl.getHost(), proxyUrl.getPort());
+        input = proxy.getInputStream();
+        output = proxy.getOutputStream();
+        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
+            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
+            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
+        }
+        aOut = new AsciiOutputStream(output, 1024);
+        aIn = new AsciiInputStream(input, 1024);
+        request.write(aOut);
+        aOut.flush();
+        response = Response.parse(aIn);
+        if (response.getStatusLine().statusCode != Method.STATUSCODE_OK) {
+            throw new ProtocolException("connect failed: " + response.getStatusLine());
+        }
+        return proxy;
+    }
 
     public void addDefaultHeader(HeaderList headerList) {
         headerList.add(Header.HOST, hostname);

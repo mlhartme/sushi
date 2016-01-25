@@ -31,7 +31,7 @@ public class Get extends Method<InputStream> {
     }
 
     @Override
-    public InputStream processResponse(HttpConnection connection, Response response) throws IOException {
+    public InputStream process(HttpConnection connection, Response response) throws IOException {
     	int status;
 
         status = response.getStatusLine().statusCode;

@@ -35,7 +35,7 @@ public class Put extends Method<Void> {
     }
 
     @Override
-    public Void processResponse(HttpConnection connection, Response response) throws IOException {
+    public Void process(HttpConnection connection, Response response) throws IOException {
     	int status;
 
     	status = response.getStatusLine().statusCode;

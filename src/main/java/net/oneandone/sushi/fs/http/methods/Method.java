@@ -91,7 +91,7 @@ public abstract class Method<T> {
         return MultiStatus.fromResponse(resource.getWorld().getXml(), response);
     }
 
-    //--
+    //-- main api
 
     public T invoke() throws IOException {
     	return response(request());
@@ -121,7 +121,7 @@ public abstract class Method<T> {
 
         response = receive(connection);
         try {
-            result = processResponse(connection, response);
+            result = process(connection, response);
         } catch (IOException e) {
             try {
                 free(response, connection);
@@ -133,6 +133,11 @@ public abstract class Method<T> {
         freeOnSuccess(response, connection);
         return result;
     }
+
+    // TODO: connection argument needed for GetMethod ...
+    public abstract T process(HttpConnection connection, Response response) throws IOException;
+
+    //--
 
     /** CAUTION when overriding this method: it's called during super class construction, i.e. you class is not initialized yet! */
     protected void contentLength() {
@@ -148,9 +153,6 @@ public abstract class Method<T> {
         }
         request.headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
     }
-
-    // TODO: connection argument needed for GetMethod ...
-    public abstract T processResponse(HttpConnection connection, Response response) throws IOException;
 
     protected void freeOnSuccess(Response response, HttpConnection connection) throws IOException {
         free(response, connection);

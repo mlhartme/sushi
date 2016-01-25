@@ -58,4 +58,23 @@ public class Response {
         this.body = body;
     }
 
+    public boolean free() throws IOException {
+        if (body != null) {
+            body.content.close();
+        }
+        return wantsClose(this);
+    }
+
+    private static boolean wantsClose(Response response) {
+        Header header;
+
+        if (response == null) {
+            // no response yet
+            return true;
+        }
+        header = response.getHeaderList().getFirst(Header.CONNECTION);
+        return header != null && "close".equalsIgnoreCase(header.value);
+    }
+
+
 }

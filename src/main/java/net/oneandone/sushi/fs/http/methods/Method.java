@@ -137,7 +137,7 @@ public abstract class Method<T> {
 
     /** called after processResponse finished normally or with an exception */
     protected void processResponseFinally(Response response, HttpConnection connection) throws IOException {
-        if (resource.getRoot().free(response)) {
+        if (response.free()) {
             connection.close();
         }
     	resource.getRoot().free(connection);
@@ -189,7 +189,7 @@ public abstract class Method<T> {
                     connection.receiveResponseBody(response);
                 }
             } catch (IOException | RuntimeException e) {
-                if (resource.getRoot().free(response)) {
+                if (response.free()) {
                     connection.close();
                 }
                 resource.getRoot().free(connection);

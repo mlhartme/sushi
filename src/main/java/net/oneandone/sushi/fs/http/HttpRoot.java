@@ -152,18 +152,6 @@ public class HttpRoot implements Root<HttpNode> {
         return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
     }
 
-    public boolean free(Response response) throws IOException {
-        Body body;
-
-        if (response != null) {
-            body = response.getBody();
-            if (body != null) {
-                body.content.close();
-            }
-        }
-        return wantsClose(response);
-    }
-
     public synchronized void free(HttpConnection connection) throws IOException {
         if (allocated == 0) {
             throw new IllegalStateException();
@@ -176,17 +164,6 @@ public class HttpRoot implements Root<HttpNode> {
 
     public synchronized int getAllocated() {
         return allocated;
-    }
-
-    private static boolean wantsClose(Response response) {
-        Header header;
-
-        if (response == null) {
-            // no response yet
-            return true;
-        }
-        header = response.getHeaderList().getFirst(Header.CONNECTION);
-        return header != null && "close".equalsIgnoreCase(header.value);
     }
 
     //--

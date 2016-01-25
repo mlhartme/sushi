@@ -136,8 +136,11 @@ public abstract class Method<T> {
     public abstract T processResponse(HttpConnection connection, Response response) throws IOException;
 
     /** called after processResponse finished normally or with an exception */
-    protected void processResponseFinally(Response response, HttpConnection conn) throws IOException {
-    	resource.getRoot().free(response, conn);
+    protected void processResponseFinally(Response response, HttpConnection connection) throws IOException {
+        if (resource.getRoot().free(response)) {
+            connection.close();
+        }
+    	resource.getRoot().free(connection);
     }
 
     //--
@@ -173,18 +176,27 @@ public abstract class Method<T> {
     private Response receive(HttpConnection connection) throws IOException {
         Response response;
 
-        response = null;
-        try {
-            do {
+        do {
+            try {
                 response = connection.receiveResponseHeader();
+            } catch (IOException e) {
+                connection.close();
+                resource.getRoot().free(connection);
+                throw e;
+            }
+            try {
                 if (receiveBody(response)) {
                     connection.receiveResponseBody(response);
                 }
-            } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
-            return response;
-        } catch (IOException | RuntimeException e) {
-            resource.getRoot().free(response, connection);
-            throw e;
-        }
+            } catch (IOException | RuntimeException e) {
+                if (resource.getRoot().free(response)) {
+                    connection.close();
+                }
+                resource.getRoot().free(connection);
+                throw e;
+            }
+
+        } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
+        return response;
     }
 }

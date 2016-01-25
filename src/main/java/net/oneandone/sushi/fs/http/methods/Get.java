@@ -44,7 +44,10 @@ public class Get extends Method<InputStream> {
         		public void close() throws IOException {
                     if (!freed) {
                         freed = true;
-                        resource.getRoot().free(response, connection);
+                        if (resource.getRoot().free(response)) {
+                            connection.close();
+                        }
+                        resource.getRoot().free(connection);
                     }
                     super.close();
         		}
@@ -52,10 +55,16 @@ public class Get extends Method<InputStream> {
         case STATUSCODE_NOT_FOUND:
         case STATUSCODE_GONE:
         case STATUSCODE_MOVED_PERMANENTLY:
-            resource.getRoot().free(response, connection);
+            if (resource.getRoot().free(response)) {
+                connection.close();
+            }
+            resource.getRoot().free(connection);
             throw new FileNotFoundException(resource);
         default:
-            resource.getRoot().free(response, connection);
+            if (resource.getRoot().free(response)) {
+                connection.close();
+            }
+            resource.getRoot().free(connection);
         	throw new StatusException(response.getStatusLine());
         }
     }

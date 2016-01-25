@@ -22,8 +22,6 @@ public class Header {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String HOST = "Host";
     public static final String TRANSFER_ENCODING = "Transfer-Encoding";
-    public static final String USER_AGENT = "User-Agent";
-
 
     public static Header parse(String line) throws ProtocolException {
         int colon;

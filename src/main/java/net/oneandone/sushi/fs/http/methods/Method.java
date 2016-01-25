@@ -100,7 +100,7 @@ public abstract class Method<T> {
         addRequestHeader("Pragma", "no-cache");
         addRequestHeader("Cache-control", "no-cache");
         addRequestHeader("Cache-store", "no-store");
-        addRequestHeader(Header.USER_AGENT, "Sushi Http");
+        addRequestHeader("User-Agent", "Sushi Http");
         contentLength();
         connection = resource.getRoot().allocate();
         resource.getRoot().send(connection, request);
@@ -114,7 +114,7 @@ public abstract class Method<T> {
         try {
             return processResponse(connection, response);
         } finally {
-        	processResponseFinally(response, connection);
+        	 processResponseFinally(response, connection);
         }
     }
 

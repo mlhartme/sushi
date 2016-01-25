@@ -190,7 +190,7 @@ public class HttpRoot implements Root<HttpNode> {
 
     //--
 
-    public void send(HttpConnection conn, Request request) throws IOException {
+    public void send(HttpConnection connection, Request request) throws IOException {
         // TODO: side effect
         request.headerList.add(Header.HOST, hostname);
         if (authorization != null) {
@@ -199,11 +199,11 @@ public class HttpRoot implements Root<HttpNode> {
         // TODO: request.addHeader("Keep-Alive", "300");
 
         try {
-            conn.sendRequestHeader(request);
-            conn.sendRequestBody(request);
-            conn.flush();
+            connection.sendRequestHeader(request);
+            connection.sendRequestBody(request);
+            connection.flush();
         } catch (IOException | RuntimeException e) {
-            free(null, conn);
+            free(null, connection);
             throw e;
         }
     }

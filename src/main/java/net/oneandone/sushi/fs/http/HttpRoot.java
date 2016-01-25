@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.io.LineLogger;
@@ -186,22 +187,10 @@ public class HttpRoot implements Root<HttpNode> {
 
     //--
 
-    public void send(HttpConnection connection, Request request) throws IOException {
-        // TODO: side effect
-        request.headerList.add(Header.HOST, hostname);
+    public void addDefaultHeader(HeaderList headerList) {
+        headerList.add(Header.HOST, hostname);
         if (authorization != null) {
-            request.headerList.add("Authorization", authorization);
-        }
-        // TODO: request.addHeader("Keep-Alive", "300");
-
-        try {
-            connection.sendRequestHeader(request);
-            connection.sendRequestBody(request);
-            connection.flush();
-        } catch (IOException | RuntimeException e) {
-            connection.close();
-            free(connection);
-            throw e;
+            headerList.add("Authorization", authorization);
         }
     }
 }

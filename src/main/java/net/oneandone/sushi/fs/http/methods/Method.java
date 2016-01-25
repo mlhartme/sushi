@@ -96,14 +96,23 @@ public abstract class Method<T> {
     public HttpConnection request() throws IOException {
         HttpConnection connection;
 
-    	addRequestHeader("Expires", "0");
+        resource.getRoot().addDefaultHeader(request.headerList);
+        addRequestHeader("Expires", "0");
         addRequestHeader("Pragma", "no-cache");
         addRequestHeader("Cache-control", "no-cache");
         addRequestHeader("Cache-store", "no-store");
         addRequestHeader("User-Agent", "Sushi Http");
         contentLength();
         connection = resource.getRoot().allocate();
-        resource.getRoot().send(connection, request);
+        try {
+            connection.sendRequestHeader(request);
+            connection.sendRequestBody(request);
+            connection.flush();
+        } catch (IOException e) {
+            connection.close();
+            resource.getRoot().free(connection);
+            throw e;
+        }
         return connection;
     }
 

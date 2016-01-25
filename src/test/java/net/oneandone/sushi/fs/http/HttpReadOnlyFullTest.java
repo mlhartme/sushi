@@ -17,6 +17,7 @@ package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeReadOnlyTest;
+import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -57,6 +58,15 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
         node = (HttpNode) WORLD.node("http://englishediting.de/index.html?foo=1");
         assertEquals(node, WORLD.node("http://englishediting.de/index.html?foo=1"));
         assertFalse(node.equals(WORLD.node("http://englishediting.de/index.html?foo=2")));
+    }
+
+    private static final String GITHUB = "https://github.com/mlhartme/sushi";
+
+    @Test
+    public void github() throws Exception {
+        assertTrue(WORLD.node(GITHUB).exists());
+        assertFalse(WORLD.node(GITHUB + "nosuchfile").exists());
+       // System.out.println("size: " + WORLD.node(GITHUB).size());
     }
 
     @Test

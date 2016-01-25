@@ -52,24 +52,15 @@ public class Get extends Method<InputStream> {
         case STATUSCODE_NOT_FOUND:
         case STATUSCODE_GONE:
         case STATUSCODE_MOVED_PERMANENTLY:
-            free(response, connection);
             throw new FileNotFoundException(resource);
         default:
-            free(response, connection);
         	throw new StatusException(response.getStatusLine());
         }
     }
 
     @Override
-    public void processResponseFinally(Response response, HttpConnection connection) {
+    public void freeOnSuccess(Response response, HttpConnection connection) {
     	// do nothing - the resulting stream perform the close
-    }
-
-    private void free(Response response, HttpConnection connection) throws IOException {
-        if (response.close()) {
-            connection.close();
-        }
-        resource.getRoot().free(connection);
     }
 
 }

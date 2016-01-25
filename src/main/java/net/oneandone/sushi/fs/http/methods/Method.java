@@ -109,13 +109,21 @@ public abstract class Method<T> {
 
     public T response(HttpConnection connection) throws IOException {
         Response response;
+        T result;
 
         response = receive(connection);
         try {
-            return processResponse(connection, response);
-        } finally {
-        	 processResponseFinally(response, connection);
+            result = processResponse(connection, response);
+        } catch (IOException e) {
+            try {
+                free(response, connection);
+            } catch (Exception e2) {
+                e.addSuppressed(e2);
+            }
+            throw e;
         }
+        freeOnSuccess(response, connection);
+        return result;
     }
 
     protected void contentLength() {
@@ -135,12 +143,15 @@ public abstract class Method<T> {
     // TODO: connection argument needed for GetMethod ...
     public abstract T processResponse(HttpConnection connection, Response response) throws IOException;
 
-    /** called after processResponse finished normally or with an exception */
-    protected void processResponseFinally(Response response, HttpConnection connection) throws IOException {
+    protected void freeOnSuccess(Response response, HttpConnection connection) throws IOException {
+        free(response, connection);
+    }
+
+    protected void free(Response response, HttpConnection connection) throws IOException {
         if (response.close()) {
             connection.close();
         }
-    	resource.getRoot().free(connection);
+        resource.getRoot().free(connection);
     }
 
     //--

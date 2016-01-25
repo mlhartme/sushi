@@ -4,6 +4,7 @@
     <release date="2015-08-xx" version="2.9.0">
       <action date="2016-01-22" dev="mlhartme" type="update">
         Renamed webdav to http, changed naming prefixes accordingly.
+        Replaced the implementation by built-in classes inspired by Apache HTTP core (which adds about 18k to sushi.jar).
       </action>
       <action date="2015-12-30" dev="mlhartme" type="update">
         Simplified Buffer.file methods: dump the static methods (create a buffer instead) and the eof argument (test if result < size()

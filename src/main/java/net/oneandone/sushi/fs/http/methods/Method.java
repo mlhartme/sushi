@@ -17,13 +17,13 @@ package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.xml.Namespace;
 import net.oneandone.sushi.xml.Serializer;
-import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.dom.DOMSource;
@@ -31,6 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class Method<T> {
     public static final Namespace DAV = Namespace.getNamespace("D", "DAV:");
@@ -85,8 +86,8 @@ public abstract class Method<T> {
     	return request.requestline.uri;
     }
 
-    public Xml getXml() {
-        return resource.getRoot().getFilesystem().getWorld().getXml();
+    public List<MultiStatus> multistatus(Response response) throws IOException {
+        return MultiStatus.fromResponse(resource.getWorld().getXml(), response);
     }
 
     //--

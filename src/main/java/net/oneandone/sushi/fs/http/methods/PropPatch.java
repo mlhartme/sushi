@@ -52,7 +52,7 @@ public class PropPatch extends Method<Void> {
         case STATUSCODE_MOVED_PERMANENTLY:
         	throw new MovedException();
     	case STATUSCODE_MULTI_STATUS:
-    		lst = MultiStatus.fromResponse(getXml(), response);
+    		lst = multistatus(response);
     		ms = MultiStatus.lookupOne(lst, dest);
     		if (ms.status != STATUSCODE_OK) {
     			throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));

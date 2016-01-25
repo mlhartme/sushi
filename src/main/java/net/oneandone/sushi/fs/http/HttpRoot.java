@@ -211,7 +211,6 @@ public class HttpRoot implements Root<HttpNode> {
 
     public Response receive(HttpConnection connection, boolean head) throws IOException {
         Response response;
-        int statuscode;
 
         response = null;
         try {
@@ -220,8 +219,7 @@ public class HttpRoot implements Root<HttpNode> {
                 if (canResponseHaveBody(response, head)) {
                     connection.receiveResponseBody(response);
                 }
-                statuscode = response.getStatusLine().statusCode;
-            } while (statuscode < Method.STATUSCODE_OK);
+            } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
             return response;
         } catch (IOException | RuntimeException e) {
             free(response, connection);

@@ -56,14 +56,14 @@ public class PropPatch extends Method<Void> {
         MultiStatus ms;
 
     	switch (response.getStatusLine().statusCode) {
-    	case Method.STATUSCODE_OK:
+    	case STATUSCODE_OK:
     		return null;
-        case Method.STATUSCODE_MOVED_PERMANENTLY:
+        case STATUSCODE_MOVED_PERMANENTLY:
         	throw new MovedException();
-    	case Method.STATUSCODE_MULTI_STATUS:
+    	case STATUSCODE_MULTI_STATUS:
     		lst = MultiStatus.fromResponse(getXml(), response);
     		ms = MultiStatus.lookupOne(lst, dest);
-    		if (ms.status != Method.STATUSCODE_OK) {
+    		if (ms.status != STATUSCODE_OK) {
     			throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));
     		}
     		return null;

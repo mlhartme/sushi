@@ -48,12 +48,12 @@ public class PropFind extends Method<List<MultiStatus>> {
     @Override
     public List<MultiStatus> processResponse(HttpConnection connection, Response response) throws IOException {
         switch (response.getStatusLine().statusCode) {
-        case Method.STATUSCODE_MULTI_STATUS:
+        case STATUSCODE_MULTI_STATUS:
             return MultiStatus.fromResponse(getXml(), response);
-        case Method.STATUSCODE_BAD_REQUEST: // TODO
-        case Method.STATUSCODE_MOVED_PERMANENTLY:
+        case STATUSCODE_BAD_REQUEST: // TODO
+        case STATUSCODE_MOVED_PERMANENTLY:
         	throw new MovedException();
-        case Method.STATUSCODE_NOT_FOUND:
+        case STATUSCODE_NOT_FOUND:
         	throw new FileNotFoundException(resource);
         default:
         	throw new StatusException(response.getStatusLine());

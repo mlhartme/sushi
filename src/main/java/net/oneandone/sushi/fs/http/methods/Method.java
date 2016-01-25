@@ -110,7 +110,7 @@ public abstract class Method<T> {
     public T response(HttpConnection connection) throws IOException {
         Response response;
 
-        response = receive(connection, this instanceof Head);
+        response = receive(connection);
         try {
             return processResponse(connection, response);
         } finally {
@@ -160,14 +160,24 @@ public abstract class Method<T> {
 
     //--
 
-    private Response receive(HttpConnection connection, boolean head) throws IOException {
+    protected boolean receiveBody(Response response) {
+        int status;
+
+        status = response.getStatusLine().statusCode;
+        return status >= Method.STATUSCODE_OK
+                && status != Method.STATUSCODE_NO_CONTENT
+                && status != Method.STATUSCODE_NOT_MODIFIED
+                && status != Method.STATUSCODE_RESET_CONTENT;
+    }
+
+    private Response receive(HttpConnection connection) throws IOException {
         Response response;
 
         response = null;
         try {
             do {
                 response = connection.receiveResponseHeader();
-                if (canResponseHaveBody(response, head)) {
+                if (receiveBody(response)) {
                     connection.receiveResponseBody(response);
                 }
             } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
@@ -176,18 +186,5 @@ public abstract class Method<T> {
             resource.getRoot().free(response, connection);
             throw e;
         }
-    }
-
-    private static boolean canResponseHaveBody(Response response, boolean head) {
-        int status;
-
-        status = response.getStatusLine().statusCode;
-        if (status == Method.STATUSCODE_OK && head) {
-            return false;
-        }
-        return status >= Method.STATUSCODE_OK
-                && status != Method.STATUSCODE_NO_CONTENT
-                && status != Method.STATUSCODE_NOT_MODIFIED
-                && status != Method.STATUSCODE_RESET_CONTENT;
     }
 }

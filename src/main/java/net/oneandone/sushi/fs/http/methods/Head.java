@@ -39,4 +39,16 @@ public class Head extends Method<Void> {
         	throw new StatusException(response.getStatusLine());
         }
     }
+
+    @Override
+    protected boolean receiveBody(Response response) {
+        int status;
+
+        status = response.getStatusLine().statusCode;
+        if (status == Method.STATUSCODE_OK) {
+            return false;
+        } else {
+            return super.receiveBody(response);
+        }
+    }
 }

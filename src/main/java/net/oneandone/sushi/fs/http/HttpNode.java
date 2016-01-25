@@ -42,6 +42,7 @@ import net.oneandone.sushi.fs.http.methods.Move;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
+import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
 
@@ -140,6 +141,14 @@ public class HttpNode extends Node {
 
     @Override
     public long size() throws SizeException {
+        if (getRoot().getFilesystem().isDav()) {
+            return davSize();
+        } else {
+            return headSize();
+        }
+    }
+
+    public long davSize() throws SizeException {
         boolean oldTryDir;
         Property property;
 
@@ -155,6 +164,21 @@ public class HttpNode extends Node {
             return Long.parseLong((String) property.getValue());
         }
     }
+
+    public long headSize() throws SizeException {
+        String result;
+
+        try {
+            result = new Head(this).invoke();
+            if (result == null) {
+                throw new ProtocolException("head request did not return content length");
+            }
+            return Long.parseLong(result);
+        } catch (IOException | NumberFormatException e) {
+            throw new SizeException(this, e);
+        }
+    }
+
 
     private static final SimpleDateFormat FMT;
 

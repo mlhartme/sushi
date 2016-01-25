@@ -17,6 +17,7 @@ package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeReadOnlyTest;
+import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /** Accesses external hosts and might need proxy configuration =&gt; Full test */
 public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
@@ -41,11 +43,13 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     @Test
     public void normal() throws Exception {
         HttpNode node;
+        int size;
 
         node = (HttpNode) WORLD.node("http://englishediting.de/index.html");
         assertTrue(node.isFile());
         assertTrue(node.exists());
-        assertTrue(node.readString().length() > 1);
+        size = node.readBytes().length;
+        assertEquals(size, node.size());
         assertEquals("//englishediting.de/", node.getRoot().getId());
         assertEquals("index.html", node.getPath());
         assertEquals("", node.getParent().getPath());
@@ -66,7 +70,13 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     public void github() throws Exception {
         assertTrue(WORLD.node(GITHUB).exists());
         assertFalse(WORLD.node(GITHUB + "nosuchfile").exists());
-       // System.out.println("size: " + WORLD.node(GITHUB).size());
+        try {
+            WORLD.node(GITHUB).size();
+            fail();
+        } catch (SizeException e) {
+            // ok -- github does not return a length
+        }
+
     }
 
     @Test

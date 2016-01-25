@@ -67,6 +67,14 @@ public abstract class Method<T> {
         this.resource = resource;
         this.head = head;
         this.request = new Request(method, resource.getAbsPath(), body);
+        if (body != null) {
+            if (body.type != null) {
+                request.getHeaderList().add(body.type);
+            }
+            if (body.encoding != null) {
+                request.getHeaderList().add(body.encoding);
+            }
+        }
     }
 
     public void addRequestHeader(String name, String value) {
@@ -95,7 +103,7 @@ public abstract class Method<T> {
         addRequestHeader("Cache-control", "no-cache");
         addRequestHeader("Cache-store", "no-store");
         addRequestHeader(Header.USER_AGENT, "Sushi Http");
-        setContentHeader();
+        contentLength();
         connection = resource.getRoot().allocate();
         resource.getRoot().send(connection, request);
         return connection;
@@ -112,7 +120,7 @@ public abstract class Method<T> {
         }
     }
 
-    protected void setContentHeader() {
+    protected void contentLength() {
         Body body;
 
         body = request.getBody();
@@ -124,13 +132,6 @@ public abstract class Method<T> {
         	throw new IllegalStateException();
         }
         request.getHeaderList().add(Header.CONTENT_LENGTH, Long.toString(body.length));
-        if (body.type != null) {
-            request.getHeaderList().add(body.type);
-        }
-        if (body.encoding != null) {
-            request.getHeaderList().add(body.encoding);
-        }
-
     }
 
     // TODO: connection argument needed for GetMethod ...

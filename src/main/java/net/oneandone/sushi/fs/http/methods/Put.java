@@ -30,7 +30,7 @@ public class Put extends Method<Void> {
     }
 
     @Override
-    protected void setContentHeader() {
+    protected void contentLength() {
         addRequestHeader(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
     }
 

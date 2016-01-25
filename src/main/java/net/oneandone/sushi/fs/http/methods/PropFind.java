@@ -16,14 +16,14 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
+import net.oneandone.sushi.fs.http.HttpConnection;
+import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedException;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.HttpConnection;
-import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.xml.Builder;
 import org.w3c.dom.Document;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class PropFind extends Method<List<MultiStatus>> {
         Document document;
         Builder builder;
 
-        setRequestHeader("Depth", String.valueOf(depth));
+        addRequestHeader("Depth", String.valueOf(depth));
         builder = getXml().getBuilder();
         synchronized (builder) {
             document = builder.createDocument("propfind", DAV);

@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.memory;
 
+import net.oneandone.sushi.fs.CopyFileFromException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -27,10 +29,8 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
-import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 
 import java.io.IOException;

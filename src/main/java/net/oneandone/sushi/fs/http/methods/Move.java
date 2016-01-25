@@ -16,10 +16,10 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.http.MovedException;
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.MovedException;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
@@ -27,19 +27,19 @@ import java.io.IOException;
 public class Move extends Method<Void> {
     public Move(HttpNode source, HttpNode destination, boolean overwrite) {
         super("MOVE", source);
-        setRequestHeader("Destination", destination.getInternalURI().toString());
-        setRequestHeader("Overwrite", overwrite ? "T" : "F");
+        addRequestHeader("Destination", destination.getInternalURI().toString());
+        addRequestHeader("Overwrite", overwrite ? "T" : "F");
     }
 
     @Override
     public Void processResponse(HttpConnection conection, Response response) throws IOException {
     	switch (response.getStatusLine().statusCode) {
-    	case Method.STATUSCODE_NO_CONTENT:
-    	case Method.STATUSCODE_CREATED:
+    	case STATUSCODE_NO_CONTENT:
+    	case STATUSCODE_CREATED:
     		return null;
-    	case Method.STATUSCODE_MOVED_PERMANENTLY:
+    	case STATUSCODE_MOVED_PERMANENTLY:
     		throw new MovedException();
-        case Method.STATUSCODE_NOT_FOUND:
+        case STATUSCODE_NOT_FOUND:
             throw new FileNotFoundException(resource);
     	default:
         	throw new StatusException(response.getStatusLine());

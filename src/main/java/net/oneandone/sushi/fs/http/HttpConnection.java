@@ -15,22 +15,22 @@
  */
 package net.oneandone.sushi.fs.http;
 
+import net.oneandone.sushi.fs.http.io.AsciiInputStream;
+import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
+import net.oneandone.sushi.fs.http.io.ChunkedInputStream;
+import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
+import net.oneandone.sushi.fs.http.model.Body;
+import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
+import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.io.LineLogger;
 import net.oneandone.sushi.io.LoggingAsciiInputStream;
 import net.oneandone.sushi.io.LoggingAsciiOutputStream;
-import net.oneandone.sushi.fs.http.model.Body;
-import net.oneandone.sushi.fs.http.io.ChunkedInputStream;
-import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
-import net.oneandone.sushi.io.WindowInputStream;
 import net.oneandone.sushi.io.OpenInputStream;
 import net.oneandone.sushi.io.OpenOutputStream;
-import net.oneandone.sushi.fs.http.io.AsciiInputStream;
-import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
-import net.oneandone.sushi.fs.http.model.Header;
-import net.oneandone.sushi.fs.http.model.Request;
-import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.fs.http.model.HeaderList;
+import net.oneandone.sushi.io.WindowInputStream;
 
 import java.io.Closeable;
 import java.io.IOException;

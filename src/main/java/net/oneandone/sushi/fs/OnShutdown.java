@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs;
 
 import net.oneandone.sushi.fs.file.FileNode;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;

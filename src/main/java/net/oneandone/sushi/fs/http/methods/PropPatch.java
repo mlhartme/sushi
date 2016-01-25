@@ -15,16 +15,16 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
+import net.oneandone.sushi.fs.http.HttpConnection;
+import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedException;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.Property;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.HttpConnection;
-import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
+import net.oneandone.sushi.xml.Builder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

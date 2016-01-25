@@ -18,7 +18,6 @@ package net.oneandone.sushi.fs.http.model;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 public class Request {
     private final RequestLine requestline;

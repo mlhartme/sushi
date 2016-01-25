@@ -15,8 +15,8 @@
  */
 package net.oneandone.sushi.fs.http.io;
 
-import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.HeaderList;
+import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.Scanner;
 
 import java.io.IOException;

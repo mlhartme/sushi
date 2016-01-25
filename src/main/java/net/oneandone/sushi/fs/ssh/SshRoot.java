@@ -19,7 +19,6 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import net.oneandone.sushi.fs.OnShutdown;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.io.MultiOutputStream;
 import net.oneandone.sushi.launcher.ExitCode;

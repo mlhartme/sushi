@@ -16,9 +16,9 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.FilterInputStream;
@@ -36,7 +36,7 @@ public class Get extends Method<InputStream> {
 
         status = response.getStatusLine().statusCode;
         switch (status) {
-        case Method.STATUSCODE_OK:
+        case STATUSCODE_OK:
         	return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
 
@@ -49,9 +49,9 @@ public class Get extends Method<InputStream> {
                     super.close();
         		}
         	};
-        case Method.STATUSCODE_NOT_FOUND:
-        case Method.STATUSCODE_GONE:
-        case Method.STATUSCODE_MOVED_PERMANENTLY:
+        case STATUSCODE_NOT_FOUND:
+        case STATUSCODE_GONE:
+        case STATUSCODE_MOVED_PERMANENTLY:
             resource.getRoot().free(response, connection);
             throw new FileNotFoundException(resource);
         default:

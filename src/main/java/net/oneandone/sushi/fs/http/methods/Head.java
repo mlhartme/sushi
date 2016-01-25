@@ -15,9 +15,9 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class Head extends Method<Void> {
 
         status = response.getStatusLine().statusCode;
         switch (status) {
-        case Method.STATUSCODE_OK:
+        case STATUSCODE_OK:
         	return null;
         default:
         	throw new StatusException(response.getStatusLine());

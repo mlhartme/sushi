@@ -15,14 +15,15 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
 
+/** the output stream is added manually by the user */
 public class Put extends Method<Void> {
     public Put(HttpNode resource) {
         super("PUT", resource);
@@ -30,7 +31,7 @@ public class Put extends Method<Void> {
 
     @Override
     protected void setContentHeader() {
-        setRequestHeader(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
+        addRequestHeader(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
     }
 
     @Override

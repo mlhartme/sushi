@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.http;
 
+import net.oneandone.sushi.fs.CopyFileFromException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -28,10 +30,9 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.NewOutputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
-import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.CopyFileToException;
+import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.methods.Delete;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
@@ -43,7 +44,6 @@ import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
-import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -496,7 +496,7 @@ public class HttpNode extends Node {
                 }
                 return result;
             } catch (StatusException e) {
-                if (e.getStatusLine().statusCode == 400) {
+                if (e.getStatusLine().statusCode == Method.STATUSCODE_BAD_REQUEST) {
                     return null; // this is a file
                 }
                 throw new ListException(this, e);
@@ -601,11 +601,9 @@ public class HttpNode extends Node {
     }
 
     private Property getPropertyOpt(Name name) throws IOException {
-        PropFind method;
         List<MultiStatus> response;
 
-        method = new PropFind(this, name, 0);
-        response = method.invoke();
+        response = new PropFind(this, name, 0).invoke();
         return MultiStatus.lookupOne(response, name).property;
     }
 
@@ -643,7 +641,7 @@ public class HttpNode extends Node {
         property = getProperty(Name.RESOURCETYPE);
         node = (org.w3c.dom.Node) property.getValue();
         if (node == null) {
-            return tryDir == false;
+            return !tryDir;
         }
         return tryDir == "collection".equals(node.getLocalName());
     }

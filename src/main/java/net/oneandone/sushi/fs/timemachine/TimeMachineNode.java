@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.timemachine;
 
+import net.oneandone.sushi.fs.CopyFileFromException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.DirectoryNotFoundException;
 import net.oneandone.sushi.fs.ExistsException;
@@ -27,11 +29,9 @@ import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.file.FileNode;
 
 import java.io.IOException;

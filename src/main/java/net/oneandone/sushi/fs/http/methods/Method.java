@@ -17,13 +17,13 @@ package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.xml.Namespace;
 import net.oneandone.sushi.xml.Serializer;
 import net.oneandone.sushi.xml.Xml;
-import net.oneandone.sushi.fs.http.model.Body;
-import net.oneandone.sushi.fs.http.model.Request;
-import net.oneandone.sushi.fs.http.model.Response;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.dom.DOMSource;
@@ -71,7 +71,7 @@ public abstract class Method<T> {
 
     //--
 
-    public void setRequestHeader(String name, String value) {
+    public void addRequestHeader(String name, String value) {
     	request.getHeaderList().add(name, value);
     }
 
@@ -106,17 +106,17 @@ public abstract class Method<T> {
     }
 
     public HttpConnection request() throws IOException {
-        HttpConnection conn;
+        HttpConnection connection;
 
-    	setRequestHeader("Expires", "0");
-        setRequestHeader("Pragma", "no-cache");
-        setRequestHeader("Cache-control", "no-cache");
-        setRequestHeader("Cache-store", "no-store");
-        setRequestHeader(Header.USER_AGENT, "Sushi Http");
+    	addRequestHeader("Expires", "0");
+        addRequestHeader("Pragma", "no-cache");
+        addRequestHeader("Cache-control", "no-cache");
+        addRequestHeader("Cache-store", "no-store");
+        addRequestHeader(Header.USER_AGENT, "Sushi Http");
         setContentHeader();
-        conn = resource.getRoot().allocate();
-        resource.getRoot().send(conn, request);
-        return conn;
+        connection = resource.getRoot().allocate();
+        resource.getRoot().send(connection, request);
+        return connection;
     }
 
     public T response(HttpConnection connection) throws IOException {

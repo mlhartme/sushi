@@ -15,14 +15,14 @@
  */
 package net.oneandone.sushi.fs.console;
 
+import net.oneandone.sushi.fs.CopyFileFromException;
+import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
-import net.oneandone.sushi.fs.CopyFileFromException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
-import net.oneandone.sushi.fs.CopyFileToException;
 
 import java.io.InputStream;
 import java.io.OutputStream;

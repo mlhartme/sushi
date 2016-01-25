@@ -16,10 +16,10 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.http.MovedException;
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.MovedException;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
@@ -32,11 +32,11 @@ public class Delete extends Method<Void> {
     @Override
     public Void processResponse(HttpConnection connection, Response response) throws IOException {
         switch (response.getStatusLine().statusCode) {
-        case Method.STATUSCODE_NO_CONTENT:
+        case STATUSCODE_NO_CONTENT:
         	return null;
-        case Method.STATUSCODE_MOVED_PERMANENTLY:
+        case STATUSCODE_MOVED_PERMANENTLY:
         	throw new MovedException();
-        case Method.STATUSCODE_NOT_FOUND:
+        case STATUSCODE_NOT_FOUND:
         	throw new FileNotFoundException(resource);
        	default:
         	throw new StatusException(response.getStatusLine());

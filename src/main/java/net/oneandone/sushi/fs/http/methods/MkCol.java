@@ -15,9 +15,9 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
-import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class MkCol extends Method<Void> {
 
     @Override
     public Void processResponse(HttpConnection conection, Response response) throws IOException {
-        if (response.getStatusLine().statusCode != Method.STATUSCODE_CREATED) {
+        if (response.getStatusLine().statusCode != STATUSCODE_CREATED) {
         	throw new StatusException(response.getStatusLine());
         }
         return null;

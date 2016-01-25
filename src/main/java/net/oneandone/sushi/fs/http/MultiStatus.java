@@ -16,12 +16,12 @@
 package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.http.methods.Method;
+import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.ChildElements;
 import net.oneandone.sushi.xml.Dom;
 import net.oneandone.sushi.xml.Xml;
-import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.fs.http.model.StatusLine;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 

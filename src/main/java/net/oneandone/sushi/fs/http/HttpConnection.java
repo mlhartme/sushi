@@ -40,28 +40,6 @@ import java.net.Socket;
 import java.util.logging.Level;
 
 public class HttpConnection implements Closeable {
-    public static HttpConnection open(Socket socket, HttpRoot root) throws IOException {
-        int linger;
-        int buffersize;
-        InputStream input;
-        OutputStream output;
-
-        socket.setTcpNoDelay(root.getTcpNoDelay());
-        socket.setSoTimeout(root.getSoTimeout());
-        linger = root.getLinger();
-        if (linger >= 0) {
-            socket.setSoLinger(linger > 0, linger);
-        }
-        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
-        input = socket.getInputStream();
-        output = socket.getOutputStream();
-        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
-            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
-            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
-		}
-        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
-    }
-
     private final Socket socket;
     private final AsciiInputStream input;
     private final AsciiOutputStream output;
@@ -101,11 +79,10 @@ public class HttpConnection implements Closeable {
     }
 
     public void close() throws IOException {
-        if (!open) {
-            return;
+        if (open) {
+            open = false;
+            socket.close();
         }
-        open = false;
-        socket.close();
     }
 
     public boolean isOpen() {

@@ -16,17 +16,25 @@
 package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.Root;
+import net.oneandone.sushi.fs.http.io.AsciiInputStream;
+import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.io.LineLogger;
+import net.oneandone.sushi.io.LoggingAsciiInputStream;
+import net.oneandone.sushi.io.LoggingAsciiOutputStream;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
 
 public class HttpRoot implements Root<HttpNode> {
     private final HttpFilesystem filesystem;
@@ -84,14 +92,6 @@ public class HttpRoot implements Root<HttpNode> {
         connectionTimeout = timeout;
     }
 
-    public boolean getTcpNoDelay() {
-        return true;
-    }
-
-    public int getLinger() {
-        return -1;
-    }
-
     public int getSoTimeout() {
         return soTimeout;
     }
@@ -141,14 +141,7 @@ public class HttpRoot implements Root<HttpNode> {
         if (size > 0) {
             return pool.remove(size - 1);
         } else {
-        	Socket socket;
-
-            if ("https".equals(protocol)) {
-                socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
-            } else {
-                socket = new Socket(hostname, port);
-            }
-            return HttpConnection.open(socket, this);
+            return connect();
         }
     }
 
@@ -207,4 +200,30 @@ public class HttpRoot implements Root<HttpNode> {
             throw e;
         }
     }
+
+    //--
+
+    public HttpConnection connect() throws IOException {
+        Socket socket;
+        int buffersize;
+        InputStream input;
+        OutputStream output;
+
+        if ("https".equals(protocol)) {
+            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        } else {
+            socket = new Socket(hostname, port);
+        }
+        socket.setTcpNoDelay(true);
+        socket.setSoTimeout(soTimeout);
+        buffersize = Math.max(socket.getReceiveBufferSize(), 1024);
+        input = socket.getInputStream();
+        output = socket.getOutputStream();
+        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
+            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
+            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
+        }
+        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
+    }
+
 }

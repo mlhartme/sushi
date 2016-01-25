@@ -16,6 +16,7 @@
 package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.http.methods.Method;
+import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;
@@ -74,7 +75,7 @@ public class MultiStatus {
         Dom.require(response, Method.XML_RESPONSE, Method.DAV);
 		href = Dom.getFirstChildElement(response, "href", Method.DAV);
         if (href == null) {
-            throw new IOException("missing href");
+            throw new ProtocolException("missing href");
         }
         str = Dom.getString(href).trim();
         iter = Method.DAV.childElements(response, XML_PROPSTAT);

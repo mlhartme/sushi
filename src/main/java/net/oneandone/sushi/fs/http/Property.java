@@ -25,6 +25,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /** For MultiStatus */
 public class Property {
@@ -91,32 +92,37 @@ public class Property {
 
     @Override
     public boolean equals(Object obj) {
+        Property p;
+
         if (obj instanceof Property) {
-            Property prop = (Property) obj;
-            boolean equalName = getName().equals(prop.getName());
-            boolean equalValue = (getValue() == null) ? prop.getValue() == null : getValue().equals(prop.getValue());
-            return equalName && equalValue;
+            p = (Property) obj;
+            return name.equals(p.name) && Objects.equals(value, p.value);
         }
         return false;
     }
 
     public Element addXml(Element parent) {
-    	Document document = parent.getOwnerDocument();
-        Element elem = getName().addXml(parent);
-        Object value = getValue();
+        Document document;
+        Element elem;
+        Object value;
+        Node n;
+
+    	document = parent.getOwnerDocument();
+        elem = getName().addXml(parent);
+        value = getValue();
         if (value != null) {
             if (value instanceof Node) {
-                Node n = document.importNode((Node)value, true);
+                n = document.importNode((Node)value, true);
                 elem.appendChild(n);
             } else if (value instanceof Node[]) {
                 for (int i = 0; i < ((Node[])value).length; i++) {
-                    Node n = document.importNode(((Node[])value)[i], true);
+                    n = document.importNode(((Node[])value)[i], true);
                     elem.appendChild(n);
                 }
             } else if (value instanceof Collection<?>) {
                 for (Object entry : (Collection<?>) value) {
                     if (entry instanceof Node) {
-                        Node n = document.importNode((Node)entry, true);
+                        n = document.importNode((Node)entry, true);
                         elem.appendChild(n);
                     } else {
                         Dom.addTextOpt(elem, entry.toString());

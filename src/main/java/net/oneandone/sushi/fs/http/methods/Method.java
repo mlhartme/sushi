@@ -186,7 +186,7 @@ public abstract class Method<T> {
 
     //--
 
-    protected boolean isReceiveBody(Response response) {
+    protected boolean hasBody(Response response) {
         int status;
 
         status = response.getStatusLine().statusCode;
@@ -212,7 +212,7 @@ public abstract class Method<T> {
                 throw e;
             }
             try {
-                if (isReceiveBody(response)) {
+                if (hasBody(response)) {
                     connection.receiveResponseBody(response);
                 }
             } catch (IOException e) {

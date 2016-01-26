@@ -44,14 +44,14 @@ public class Head extends Method<String> {
     }
 
     @Override
-    protected boolean isReceiveBody(Response response) {
+    protected boolean hasBody(Response response) {
         int status;
 
         status = response.getStatusLine().statusCode;
         if (status == Method.STATUSCODE_OK) {
             return false;
         } else {
-            return super.isReceiveBody(response);
+            return super.hasBody(response);
         }
     }
 }

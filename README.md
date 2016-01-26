@@ -100,6 +100,8 @@ Make sure to can ssh to the host specified in test.properties, authenticating wi
 
 ## Webdav Setup
 
+Note: I used https://github.com/adamfisk/LittleProxy for proxy tests.
+
 ### Ubuntu 10.10 or later
 
 (see also: http://how-to.linuxcareer.com/webdav-server-setup-on-ubuntu-linux)

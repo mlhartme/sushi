@@ -3,7 +3,8 @@
   <body>
     <release date="2015-08-xx" version="2.9.0">
       <action date="2016-01-26" dev="mlhartme" type="update">
-        Support http proxy specified by HTTP_PROXY environment variable.
+        Support http proxy specified by the properties http.proxyHost, http.proxyPort, http.nonProxyHosts,
+        https.proxyHost, https.proxyPort, and https.nonProxyHosts
       </action>
       <action date="2016-01-25" dev="mlhartme" type="update">
         HttpNode.size() and getLastModified() now use head requests if webdav is not available.

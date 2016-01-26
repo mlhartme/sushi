@@ -20,9 +20,11 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.util.NetRc;
+import net.oneandone.sushi.util.Separator;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -114,7 +116,7 @@ public class HttpFilesystem extends Filesystem {
         if (port == -1) {
         	port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
-        result = new HttpRoot(this, internalScheme, uri.getHost(), port);
+        result = new HttpRoot(this, internalScheme, uri.getHost(), port, proxy(uri));
         info = uri.getUserInfo();
         if (info != null) {
             result.setUserInfo(info);
@@ -125,6 +127,52 @@ public class HttpFilesystem extends Filesystem {
             }
         }
         return result;
+    }
+
+    public URI proxy(URI uri) {
+        String scheme;
+        String proxyHost;
+        String proxyPort;
+
+        scheme = uri.getScheme();
+        proxyHost = System.getProperty(scheme + ".proxyHost");
+        if (proxyHost == null) {
+            return null;
+        }
+        proxyPort = System.getProperty(scheme + ".proxyPort");
+        if (proxyPort == null) {
+            throw new IllegalStateException("missing proxy port for host " + proxyHost);
+        }
+        if (excludeProxy(uri, System.getProperty(scheme + ".nonProxyHosts"))) {
+            return null;
+        }
+        try {
+            return new URI(scheme, null, proxyHost, Integer.parseInt(proxyPort), null, null, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private static final Separator NON_PROXY_SEP = Separator.on('|').trim().skipEmpty();
+
+    public static boolean excludeProxy(URI uri, String nonProxyHosts) {
+        String host;
+
+        if (nonProxyHosts != null) {
+            host = uri.getHost();
+            for (String exclude : NON_PROXY_SEP.split(nonProxyHosts)) {
+                if (exclude.startsWith("*")) {
+                    if (host.endsWith(exclude.substring(1))) {
+                        return true;
+                    }
+                } else {
+                    if (host.equals(exclude)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public int getDefaultConnectionTimeout() {

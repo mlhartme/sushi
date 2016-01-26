@@ -32,8 +32,8 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -50,13 +50,15 @@ public class HttpRoot implements Root<HttpNode> {
     private int soTimeout = 0;
     private int connectionTimeout = 0;
     private String authorization;
+    private final URI proxy;
 
-    public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port) {
+    public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port, URI proxy) {
         this.filesystem = filesystem;
         this.protocol = protocol;
         this.hostname = hostname;
         this.port = port;
         this.authorization = null;
+        this.proxy = proxy;
     }
 
     public String getProtocol() {
@@ -80,6 +82,10 @@ public class HttpRoot implements Root<HttpNode> {
         } else {
             setCredentials(userinfo.substring(0, idx), userinfo.substring(idx + 1));
         }
+    }
+
+    public URI getProxy() {
+        return proxy;
     }
 
     //-- configuration
@@ -148,17 +154,31 @@ public class HttpRoot implements Root<HttpNode> {
     }
 
     public HttpConnection connect() throws IOException {
+        String connectProtocol;
+        String connectHostname;
+        int connectPort;
         Socket socket;
         int buffersize;
         InputStream input;
         OutputStream output;
-        URL proxyUrl;
+        Request request;
+        AsciiOutputStream aOut;
+        AsciiInputStream aIn;
+        Response response;
 
-        if ("https".equals(protocol)) {
-            socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        if (proxy != null) {
+            connectProtocol = proxy.getScheme();
+            connectHostname = proxy.getHost();
+            connectPort = proxy.getPort();
         } else {
-            proxyUrl = proxyUrl();
-            socket = proxyUrl != null ? proxyconnect(proxyUrl) : new Socket(hostname, port);
+            connectProtocol = protocol;
+            connectHostname = hostname;
+            connectPort = port;
+        }
+        if ("https".equals(connectProtocol)) {
+            socket = SSLSocketFactory.getDefault().createSocket(connectHostname, connectPort);
+        } else {
+            socket = new Socket(connectHostname, connectPort);
         }
         socket.setTcpNoDelay(true);
         socket.setSoTimeout(soTimeout);
@@ -169,49 +189,19 @@ public class HttpRoot implements Root<HttpNode> {
             input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
             output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
         }
-        return new HttpConnection(socket, new AsciiInputStream(input, buffersize), new AsciiOutputStream(output, buffersize));
-    }
+        aIn = new AsciiInputStream(input, buffersize);
+        aOut = new AsciiOutputStream(output, buffersize);
+        if (proxy != null) {
+            request = new Request("CONNECT", hostname, null);
+            request.write(aOut);
+            aOut.flush();
+            response = Response.parse(aIn);
+            if (response.getStatusLine().statusCode != Method.STATUSCODE_OK) {
+                throw new ProtocolException("connect failed: " + response.getStatusLine());
+            }
 
-    private URL proxyUrl() {
-        String url;
-
-        url = System.getenv("HTTP_PROXY");
-        if (url == null) {
-            return null;
         }
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    private Socket proxyconnect(URL proxyUrl) throws IOException {
-        Request request;
-        Socket proxy;
-        InputStream input;
-        OutputStream output;
-        AsciiOutputStream aOut;
-        AsciiInputStream aIn;
-        Response response;
-
-        request = new Request("CONNECT", hostname, null);
-        proxy = new Socket(proxyUrl.getHost(), proxyUrl.getPort());
-        input = proxy.getInputStream();
-        output = proxy.getOutputStream();
-        if (HttpFilesystem.WIRE.isLoggable(Level.FINE)) {
-            input = new LoggingAsciiInputStream(input, new LineLogger(HttpFilesystem.WIRE, "<<< "));
-            output = new LoggingAsciiOutputStream(output, new LineLogger(HttpFilesystem.WIRE, ">>> "));
-        }
-        aOut = new AsciiOutputStream(output, 1024);
-        aIn = new AsciiInputStream(input, 1024);
-        request.write(aOut);
-        aOut.flush();
-        response = Response.parse(aIn);
-        if (response.getStatusLine().statusCode != Method.STATUSCODE_OK) {
-            throw new ProtocolException("connect failed: " + response.getStatusLine());
-        }
-        return proxy;
+        return new HttpConnection(socket, aIn, aOut);
     }
 
     public void addDefaultHeader(HeaderList headerList) {

@@ -69,13 +69,15 @@ public class HttpFilesystem extends Filesystem {
     private final String internalScheme;
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
+    private final Boolean dav;
 
-    public HttpFilesystem(World io, String scheme, String internalScheme) {
+    public HttpFilesystem(World io, String scheme, String internalScheme, Boolean dav) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
 
         this.internalScheme = internalScheme;
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
+        this.dav = dav;
     }
 
     @Override
@@ -110,7 +112,7 @@ public class HttpFilesystem extends Filesystem {
         if (port == -1) {
         	port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
-        result = new HttpRoot(this, internalScheme, uri.getHost(), port, proxy(uri));
+        result = new HttpRoot(this, internalScheme, uri.getHost(), port, proxy(uri), dav);
         info = uri.getUserInfo();
         if (info != null) {
             result.setUserInfo(info);

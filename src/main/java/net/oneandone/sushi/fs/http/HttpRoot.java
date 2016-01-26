@@ -50,14 +50,16 @@ public class HttpRoot implements Root<HttpNode> {
     private int connectionTimeout = 0;
     private String authorization;
     private final URI proxy;
+    private final Boolean dav;
 
-    public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port, URI proxy) {
+    public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port, URI proxy, Boolean dav) {
         this.filesystem = filesystem;
         this.protocol = protocol;
         this.hostname = hostname;
         this.port = port;
         this.authorization = null;
         this.proxy = proxy;
+        this.dav = dav;
     }
 
     public String getProtocol() {
@@ -120,7 +122,7 @@ public class HttpRoot implements Root<HttpNode> {
     }
 
     public HttpNode node(String path, String encodedQuery) {
-        return new HttpNode(this, path, encodedQuery, false, null);
+        return new HttpNode(this, path, encodedQuery, false, dav);
     }
 
     private final List<HttpConnection> pool = new ArrayList<>();

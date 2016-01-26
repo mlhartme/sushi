@@ -2,6 +2,9 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2015-08-xx" version="2.9.0">
+      <action date="2016-01-26" dev="mlhartme" type="update">
+        Support http proxy specified by HTTP_PROXY environment variable.
+      </action>
       <action date="2016-01-25" dev="mlhartme" type="update">
         HttpNode.size() and getLastModified() now use head requests if webdav is not available.
       </action>

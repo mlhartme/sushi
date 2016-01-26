@@ -786,7 +786,7 @@ public class HttpNode extends Node {
     //--
 
     /** see http://tools.ietf.org/html/rfc2616#section-5.1.2 */
-    public String getAbsPath() {
+    public String getRequestPath() {
         StringBuilder builder;
 
         synchronized (tryLock) {

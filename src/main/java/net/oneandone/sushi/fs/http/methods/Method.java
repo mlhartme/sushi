@@ -65,7 +65,7 @@ public abstract class Method<T> {
 
     public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
-        this.request = new Request(method, resource.getAbsPath(), body);
+        this.request = new Request(method, resource.getRequestPath(), body);
 
         // prepare header
         resource.getRoot().addDefaultHeader(request.headerList);

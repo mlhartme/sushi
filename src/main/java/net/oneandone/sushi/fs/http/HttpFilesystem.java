@@ -67,15 +67,13 @@ public class HttpFilesystem extends Filesystem {
 	}
 
     private final String internalScheme;
-    private final boolean dav;
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
 
-    public HttpFilesystem(World io, String scheme, String internalScheme, boolean dav) {
-        super(io, new Features(dav, true, false, false, false, false, false), scheme);
+    public HttpFilesystem(World io, String scheme, String internalScheme) {
+        super(io, new Features(true, true, false, false, false, false, false), scheme);
 
         this.internalScheme = internalScheme;
-        this.dav = dav;
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
     }
@@ -96,10 +94,6 @@ public class HttpFilesystem extends Filesystem {
 
     public String getInternalScheme() {
         return internalScheme;
-    }
-
-    public boolean isDav() {
-        return dav;
     }
 
     public HttpRoot root(URI uri) {

@@ -80,8 +80,11 @@ public class HttpNode extends Node {
 
     private final Object tryLock;
 
+    /** true if this node is know to accep webdav commands, false if it's know to not accept them. Null if unknown */
+    private Boolean isDav;
+
     /** @param encodedQuery null or query without initial "?" */
-    public HttpNode(HttpRoot root, String path, String encodedQuery, boolean tryDir) {
+    public HttpNode(HttpRoot root, String path, String encodedQuery, boolean tryDir, Boolean isDav) {
         if (path.startsWith("/")) {
             throw new IllegalArgumentException(path);
         }
@@ -93,7 +96,9 @@ public class HttpNode extends Node {
         this.encodedQuery = encodedQuery;
         this.tryDir = tryDir;
         this.tryLock = new Object();
+        this.isDav = isDav;
     }
+
 
     public URI getURI() {
         return getURI(root.getFilesystem().getScheme());
@@ -142,14 +147,40 @@ public class HttpNode extends Node {
 
     @Override
     public long size() throws SizeException {
-        if (getRoot().getFilesystem().isDav()) {
-            return davSize();
-        } else {
-            return headSize();
+        String result;
+
+        try {
+            if (isDav == null) {
+                try {
+                    result = davSize();
+                    isDav = true;
+                } catch (StatusException e) {
+                    if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                        isDav = false;
+                        result = headSize();
+                    } else {
+                        throw e;
+                    }
+                } catch (FileNotFoundException e) {
+                    // isDav remains null
+                    result = headSize();
+                }
+            } else if (isDav) {
+                result = davSize();
+            } else {
+                result = headSize();
+            }
+        } catch (IOException e) {
+            throw new SizeException(this, e);
+        }
+        try {
+            return Long.parseLong(result);
+        } catch (NumberFormatException e) {
+            throw new SizeException(this, e);
         }
     }
 
-    public long davSize() throws SizeException {
+    public String davSize() throws IOException {
         boolean oldTryDir;
         Property property;
 
@@ -160,24 +191,30 @@ public class HttpNode extends Node {
                 property = getProperty(Name.GETCONTENTLENGTH);
             } catch (IOException e) {
                 tryDir = oldTryDir;
-                throw new SizeException(this, e);
+                throw e;
             }
-            return Long.parseLong((String) property.getValue());
+            return (String) property.getValue();
         }
     }
 
-    public long headSize() throws SizeException {
+    public String headSize() throws IOException {
+        boolean oldTryDir;
         String result;
 
-        try {
-            result = new Head(this, Header.CONTENT_LENGTH).invoke();
-            if (result == null) {
-                throw new ProtocolException("head request did not return content length");
+        synchronized (tryLock) {
+            oldTryDir = tryDir;
+            try {
+                tryDir = false;
+                result = new Head(this, Header.CONTENT_LENGTH).invoke();
+            } catch (IOException e) {
+                tryDir = oldTryDir;
+                throw e;
             }
-            return Long.parseLong(result);
-        } catch (IOException | NumberFormatException e) {
-            throw new SizeException(this, e);
         }
+        if (result == null) {
+            throw new ProtocolException("head request did not return content length");
+        }
+        return result;
     }
 
 
@@ -195,51 +232,70 @@ public class HttpNode extends Node {
 
     @Override
     public long getLastModified() throws GetLastModifiedException {
-        if (getRoot().getFilesystem().isDav()) {
-            return davGetLastModified();
-        } else {
-            return headGetLastModified();
-        }
-    }
-
-    public long davGetLastModified() throws GetLastModifiedException {
-        Property property;
+        String result;
 
         try {
-            synchronized (tryLock) {
+            if (isDav == null) {
                 try {
-                    property = getProperty(Name.GETLASTMODIFIED);
-                } catch (MovedException e) {
-                    tryDir = !tryDir;
-                    property = getProperty(Name.GETLASTMODIFIED);
+                    result = davGetLastModified();
+                    isDav = true;
+                } catch (StatusException e) {
+                    if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                        isDav = false;
+                        result = headGetLastModified();
+                    } else {
+                        throw e;
+                    }
+                } catch (FileNotFoundException e) {
+                    // isDav remains null
+                    result = headGetLastModified();
                 }
+            } else if (isDav) {
+                result = davGetLastModified();
+            } else {
+                result = headGetLastModified();
             }
         } catch (IOException e) {
             throw new GetLastModifiedException(this, e);
         }
         try {
             synchronized (FMT) {
-                return FMT.parse((String) property.getValue()).getTime();
+                return FMT.parse(result).getTime();
             }
         } catch (ParseException e) {
             throw new GetLastModifiedException(this, e);
         }
     }
 
-    public long headGetLastModified() throws GetLastModifiedException {
-        String result;
-
-        try {
-            result = new Head(this, "Last-Modified").invoke();
-            if (result == null) {
-                throw new ProtocolException("head request did not return last-modified header");
+    public String davGetLastModified() throws IOException {
+        synchronized (tryLock) {
+            try {
+                return (String) getProperty(Name.GETLASTMODIFIED).getValue();
+            } catch (MovedException e) {
+                tryDir = !tryDir;
+                return (String) getProperty(Name.GETLASTMODIFIED).getValue();
             }
-            synchronized (FMT) {
-                return FMT.parse(result).getTime();
-            }
-        } catch (IOException | ParseException e) {
-            throw new GetLastModifiedException(this, e);
         }
+    }
+
+    public String headGetLastModified() throws IOException {
+        synchronized (tryLock) {
+            try {
+                return doHeadGetLastModified();
+            } catch (MovedException e) {
+                tryDir = !tryDir;
+                return doHeadGetLastModified();
+            }
+        }
+    }
+
+    private String doHeadGetLastModified() throws IOException {
+        String result;
+        result = new Head(this, "Last-Modified").invoke();
+        if (result == null) {
+            throw new ProtocolException("head request did not return last-modified header");
+        }
+        return result;
     }
 
 
@@ -436,12 +492,12 @@ public class HttpNode extends Node {
 
     @Override
     public boolean isFile() throws ExistsException {
-        return tryDir(false);
+        return isNode(false);
     }
 
     @Override
     public boolean isDirectory() throws ExistsException {
-        return tryDir(true);
+        return isNode(true);
     }
 
     @Override
@@ -593,7 +649,7 @@ public class HttpNode extends Node {
         if (!childPath.startsWith(path)) {
             throw new IllegalStateException();
         }
-		result = new HttpNode(root, childPath, null, dir);
+		result = new HttpNode(root, childPath, null, dir, isDav);
 		return result;
 	}
 
@@ -657,18 +713,33 @@ public class HttpNode extends Node {
         return MultiStatus.lookupOne(response, name).property;
     }
 
-    private boolean tryDir(boolean tryTryDir) throws ExistsException {
+    private boolean isNode(boolean directory) throws ExistsException {
         boolean reset;
         boolean result;
 
         synchronized (tryLock) {
             reset = tryDir;
-            tryDir = tryTryDir;
+            tryDir = directory;
             try {
-                if (getRoot().getFilesystem().isDav()) {
-                    result = doTryDirDav();
+                if (isDav == null) {
+                    try {
+                        result = davIsNode();
+                        isDav = true;
+                    } catch (StatusException e) {
+                        if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                            isDav = false;
+                            result = headIsNode();
+                        } else {
+                            throw e;
+                        }
+                    } catch (FileNotFoundException e) {
+                        // isDav remains null null;
+                        result = headIsNode();
+                    }
+                } else if (isDav) {
+                    result = davIsNode();
                 } else {
-                    result = doTryDirHttp();
+                    result = headIsNode();
                 }
             } catch (MovedException | FileNotFoundException e) {
                 tryDir = reset;
@@ -684,7 +755,7 @@ public class HttpNode extends Node {
         return result;
     }
 
-    private boolean doTryDirDav() throws IOException {
+    private boolean davIsNode() throws IOException {
         Property property;
         org.w3c.dom.Node node;
 
@@ -696,18 +767,18 @@ public class HttpNode extends Node {
         return tryDir == "collection".equals(node.getLocalName());
     }
 
-    private boolean doTryDirHttp() throws IOException {
+    private boolean headIsNode() throws IOException {
         try {
             new Head(this, null).invoke();
             return true;
-        } catch (StatusException e2) {
-            switch (e2.getStatusLine().statusCode) {
+        } catch (StatusException e) {
+            switch (e.getStatusLine().statusCode) {
                 case Method.STATUSCODE_MOVED_PERMANENTLY:
                     return false;
                 case Method.STATUSCODE_NOT_FOUND:
                     return false;
                 default:
-                    throw e2;
+                    throw e;
             }
         }
     }

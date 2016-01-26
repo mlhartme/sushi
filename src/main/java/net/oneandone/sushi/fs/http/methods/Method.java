@@ -50,6 +50,7 @@ public abstract class Method<T> {
 
     public static final int STATUSCODE_BAD_REQUEST = 400;
     public static final int STATUSCODE_NOT_FOUND = 404;
+    public static final int STATUSCODE_METHOD_NOT_ALLOWED = 405;
     public static final int STATUSCODE_GONE = 410;
 
     //--

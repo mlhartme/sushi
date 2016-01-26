@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -121,7 +120,7 @@ public class HttpRoot implements Root<HttpNode> {
     }
 
     public HttpNode node(String path, String encodedQuery) {
-        return new HttpNode(this, path, encodedQuery, false);
+        return new HttpNode(this, path, encodedQuery, false, null);
     }
 
     private final List<HttpConnection> pool = new ArrayList<>();

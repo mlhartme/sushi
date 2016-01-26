@@ -83,7 +83,7 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
             WORLD.node(GITHUB).size();
             fail();
         } catch (SizeException e) {
-            // ok -- github does not return a length
+            // ok -- github does not return a size
         }
 
     }

@@ -146,8 +146,8 @@ public class World {
         addFilesystem(new TimeMachineFilesystem(this, "tm"));
         addFilesystemOpt("net.oneandone.sushi.fs.ssh.SshFilesystem", this, "ssh", trySshAgent);
         addFilesystemOpt("net.oneandone.sushi.fs.svn.SvnFilesystem", this, "svn");
-        addFilesystemOpt("net.oneandone.sushi.fs.http.HttpFilesystem", this, "http", "http");
-        addFilesystemOpt("net.oneandone.sushi.fs.http.HttpFilesystem", this, "https", "https");
+        addFilesystemOpt("net.oneandone.sushi.fs.http.HttpFilesystem", this, "http");
+        addFilesystemOpt("net.oneandone.sushi.fs.http.HttpFilesystem", this, "https");
         return this;
     }
 

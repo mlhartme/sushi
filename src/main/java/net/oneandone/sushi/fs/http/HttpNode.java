@@ -101,16 +101,8 @@ public class HttpNode extends Node {
 
 
     public URI getURI() {
-        return getURI(root.getFilesystem().getScheme());
-    }
-
-    public URI getInternalURI() {
-        return getURI(root.getFilesystem().getInternalScheme());
-    }
-
-    private URI getURI(String scheme) {
         try {
-            return new URI(scheme, null, root.getHostname(), root.getPort(), "/" + path, getQuery(), null);
+            return new URI(root.getFilesystem().getScheme(), null, root.getHostname(), root.getPort(), "/" + path, getQuery(), null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }

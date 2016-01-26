@@ -27,7 +27,7 @@ import java.io.IOException;
 public class Move extends Method<Void> {
     public Move(HttpNode source, HttpNode destination, boolean overwrite) {
         super("MOVE", source);
-        addRequestHeader("Destination", destination.getInternalURI().toString());
+        addRequestHeader("Destination", destination.getURI().toString());
         addRequestHeader("Overwrite", overwrite ? "T" : "F");
     }
 

@@ -66,15 +66,13 @@ public class HttpFilesystem extends Filesystem {
         WIRE.addHandler(handler);
 	}
 
-    private final String internalScheme;
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
     private Boolean defaultDav;
 
-    public HttpFilesystem(World io, String scheme, String internalScheme) {
+    public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
 
-        this.internalScheme = internalScheme;
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
         this.defaultDav = null;
@@ -94,10 +92,6 @@ public class HttpFilesystem extends Filesystem {
         return root(uri).node(getCheckedPath(uri), uri.getRawQuery());
     }
 
-    public String getInternalScheme() {
-        return internalScheme;
-    }
-
     public HttpRoot root(URI uri) {
         HttpRoot result;
         String info;
@@ -112,7 +106,7 @@ public class HttpFilesystem extends Filesystem {
         if (port == -1) {
         	port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
-        result = new HttpRoot(this, internalScheme, uri.getHost(), port, proxy(uri), defaultDav);
+        result = new HttpRoot(this, getScheme(), uri.getHost(), port, proxy(uri), defaultDav);
         info = uri.getUserInfo();
         if (info != null) {
             result.setUserInfo(info);

@@ -601,7 +601,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     static {
         StringBuilder builder;
 
-        builder = new StringBuilder(Character.MIN_HIGH_SURROGATE);
+        builder = new StringBuilder((int) Character.MIN_HIGH_SURROGATE);
         for (int i = 0; i < Character.MIN_HIGH_SURROGATE; i++) {
             builder.append((char) i);
         }

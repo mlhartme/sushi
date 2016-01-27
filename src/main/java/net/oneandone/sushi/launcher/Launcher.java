@@ -160,7 +160,8 @@ public class Launcher {
         } else {
             pserr = null;
         }
-        if (stdin != null && !stdinInherit) {
+        if (stdin != null) {
+            // note that stdinInherit == false
             psin = Pumper.create(stdin, process.getOutputStream(), true, true, encoding);
             psin.start();
         } else {

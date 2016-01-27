@@ -4,6 +4,7 @@ import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 import net.oneandone.sushi.fs.http.io.ChunkedInputStream;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
+import net.oneandone.sushi.io.Buffer;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -21,7 +22,7 @@ public class ChunkTest {
         dest.write("hello, world\n".getBytes());
         dest.write("second line".getBytes());
         dest.close();
-        ChunkedInputStream src = new ChunkedInputStream(new AsciiInputStream(new ByteArrayInputStream(data.toByteArray()), 10));
+        ChunkedInputStream src = new ChunkedInputStream(new AsciiInputStream(new ByteArrayInputStream(data.toByteArray()), 10), new Buffer());
         data = new ByteArrayOutputStream();
         while (true) {
             c = src.read();

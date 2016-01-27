@@ -167,6 +167,7 @@ public class Buffer {
         return all;
     }
 
+    /** skip the specified number of bytes - or less, if eof is reached */
     public long skip(InputStream src, long n) throws IOException {
         long done;
         int chunk;

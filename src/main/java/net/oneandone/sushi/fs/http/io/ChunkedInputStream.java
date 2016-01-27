@@ -18,6 +18,7 @@ package net.oneandone.sushi.fs.http.io;
 import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.Scanner;
+import net.oneandone.sushi.io.Buffer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,7 @@ public class ChunkedInputStream extends InputStream {
     private static final int UNKNOWN = -1;
 
     private final AsciiInputStream src;
+    private final Buffer skipBuffer;
 
     /** length of current chunk, UNKNOWN if it's not yet read */
     private int length;
@@ -33,12 +35,13 @@ public class ChunkedInputStream extends InputStream {
     private boolean eof;
     private boolean closed;
 
-    public ChunkedInputStream(AsciiInputStream src) {
+    public ChunkedInputStream(AsciiInputStream src, Buffer skipBuffer) {
         this.src = src;
         this.length = UNKNOWN;
         this.pos = 0;
         this.eof = false;
         this.closed = false;
+        this.skipBuffer = skipBuffer;
     }
 
     @Override
@@ -96,11 +99,7 @@ public class ChunkedInputStream extends InputStream {
         }
         try {
             if (!eof) {
-                // TODO: expensive
-                // dump remaining content
-                while (read() != -1) {
-                    // empty
-                }
+                skipBuffer.skip(this, Long.MAX_VALUE);
             }
         } finally {
             eof = true;

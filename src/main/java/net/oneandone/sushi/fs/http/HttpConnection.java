@@ -142,7 +142,7 @@ public class HttpConnection implements Closeable {
         type = list.getFirst(Header.CONTENT_TYPE);
         encoding = list.getFirst(Header.CONTENT_ENCODING);
         if (length == CHUNKED) {
-            return new Body(type, encoding, -1, new ChunkedInputStream(src), true);
+            return new Body(type, encoding, -1, new ChunkedInputStream(src, buffer), true);
         } else if (length == IDENTITY) {
             return new Body(type, encoding, -1, new OpenInputStream(src), false);
         } else {

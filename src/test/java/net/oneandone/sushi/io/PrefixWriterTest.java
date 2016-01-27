@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PrefixWriterTest {
     @Test
-    public void test() throws IOException {
+    public void test() {
         check("");
         check("", "");
         check("-a", "a");
@@ -35,7 +35,7 @@ public class PrefixWriterTest {
         check("-1\n-2\n-3\n", "1\n", "2\n", "3\n");
     }
 
-    private void check(String expected, String ... args) throws IOException {
+    private void check(String expected, String ... args) {
         StringWriter dest;
         PrefixWriter pw;
 
@@ -58,7 +58,7 @@ public class PrefixWriterTest {
         check2("-1/n-2/n-3/n", "1/n", "2/n", "3/n");
     }
 
-    private void check2(String expected, String ... args) throws IOException {
+    private void check2(String expected, String ... args) {
         StringWriter dest;
         PrefixWriter pw;
 

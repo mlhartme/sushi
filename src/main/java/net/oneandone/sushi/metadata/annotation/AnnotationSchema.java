@@ -36,9 +36,7 @@ public class AnnotationSchema extends Schema {
         }
 
         modifier = clazz.getModifiers();
-        if (Modifier.isAbstract(modifier)) {
-            constr = null;
-        } else {
+        if (!Modifier.isAbstract(modifier)) {
             if (!Modifier.isPublic(modifier)) {
                 throw new IllegalArgumentException(clazz.getName());
             }

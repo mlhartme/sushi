@@ -48,10 +48,6 @@ public class Head extends Method<String> {
         int status;
 
         status = response.getStatusLine().statusCode;
-        if (status == Method.STATUSCODE_OK) {
-            return false;
-        } else {
-            return super.hasBody(response);
-        }
+        return status != Method.STATUSCODE_OK && super.hasBody(response);
     }
 }

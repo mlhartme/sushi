@@ -17,14 +17,12 @@ package net.oneandone.sushi.fs.multi;
 
 import net.oneandone.sushi.fs.Node;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertNotNull;
 
 public class XmlTarget {
     private final Node file;
 
-    public XmlTarget(Node file) throws IOException {
+    public XmlTarget(Node file) {
         this.file = file;
     }
 

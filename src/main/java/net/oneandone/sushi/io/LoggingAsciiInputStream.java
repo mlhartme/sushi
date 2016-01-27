@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class LoggingAsciiInputStream extends FilterInputStream {
     private final LineLogger logger;
 
-    public LoggingAsciiInputStream(InputStream src, LineLogger logger) throws IOException {
+    public LoggingAsciiInputStream(InputStream src, LineLogger logger) {
         super(src);
         this.logger = logger;
     }

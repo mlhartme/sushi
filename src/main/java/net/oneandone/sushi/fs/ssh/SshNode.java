@@ -248,11 +248,7 @@ public class SshNode extends Node {
             }
             throw new DeleteException(this, e);
         } finally {
-            try {
-                free(sftp);
-            } catch (JSchException e) {
-                throw new DeleteException(this, e);
-            }
+            free(sftp);
         }
         return this;
     }
@@ -274,11 +270,7 @@ public class SshNode extends Node {
             }
             throw new DeleteException(this, e);
         } finally {
-            try {
-                free(sftp);
-            } catch (JSchException e) {
-                throw new DeleteException(this, e);
-            }
+            free(sftp);
         }
         return this;
     }
@@ -295,11 +287,7 @@ public class SshNode extends Node {
         try {
             doDelete(sftp);
         } finally {
-            try {
-                free(sftp);
-            } catch (JSchException e) {
-                throw new DeleteException(this, e);
-            }
+            free(sftp);
         }
         return this;
     }
@@ -335,29 +323,31 @@ public class SshNode extends Node {
         SshNode dest;
         ChannelSftp sftp;
 
-        if (!(destNode instanceof SshNode)) {
-            super.move(destNode, override);
-        }
-        dest = (SshNode) destNode;
-        try {
-            if (!exists()) {
-                throw new NodeNotFoundException(this);
-            }
-            if (!override) {
-                dest.checkNotExists();
-            }
-            sftp = alloc();
+        if (destNode instanceof SshNode) {
+            dest = (SshNode) destNode;
             try {
-                sftp.rename(escape(slashPath), escape(dest.slashPath));
-            } finally {
-                free(sftp);
+                if (!exists()) {
+                    throw new NodeNotFoundException(this);
+                }
+                if (!override) {
+                    dest.checkNotExists();
+                }
+                sftp = alloc();
+                try {
+                    sftp.rename(escape(slashPath), escape(dest.slashPath));
+                } finally {
+                    free(sftp);
+                }
+            } catch (NodeNotFoundException e) {
+                throw e;
+            } catch (SftpException | JSchException | IOException e) {
+                throw new MoveException(this, dest, "ssh failure", e);
             }
-        } catch (NodeNotFoundException e) {
-            throw e;
-        } catch (SftpException | JSchException | IOException e) {
-            throw new MoveException(this, dest, "ssh failure", e);
+            return dest;
+        } else {
+            super.move(destNode, override);
+            return destNode;
         }
-        return dest;
     }
 
     @Override
@@ -772,7 +762,7 @@ public class SshNode extends Node {
         return root.allocateChannelSftp();
     }
 
-    private void free(ChannelSftp channel) throws JSchException {
+    private void free(ChannelSftp channel) {
         root.freeChannelSftp(channel);
     }
 

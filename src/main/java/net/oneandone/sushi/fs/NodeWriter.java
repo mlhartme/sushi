@@ -20,7 +20,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 public class NodeWriter extends OutputStreamWriter {
-    public static NodeWriter create(Node node, boolean append) throws FileNotFoundException, NewOutputStreamException {
+    public static NodeWriter create(Node node, boolean append) throws NewOutputStreamException {
         try {
             return new NodeWriter(node, node.newOutputStream(append), node.getWorld().getSettings().encoding);
         } catch (UnsupportedEncodingException e) {

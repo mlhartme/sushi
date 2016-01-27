@@ -92,7 +92,7 @@ public abstract class Cli {
     
     @Child("help")
     public Command help() {
-        return () -> printHelp();
+        return this::printHelp;
     }
     
     @Child("version")

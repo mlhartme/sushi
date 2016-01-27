@@ -293,10 +293,8 @@ public class World {
         if (root == null) {
             if (working == null) {
                 throw new IllegalStateException("working directory is missing");
-            } else if (working instanceof FileNode) {
-                return ((FileNode) working).join(path);
             } else {
-                throw new IllegalStateException("working directory is not a file: " + working.getURI());
+                return working.join(path);
             }
         } else {
             return root.node(path, null);
@@ -435,7 +433,7 @@ public class World {
 
     //--
 
-    public List<FileNode> path(String path) throws URISyntaxException, NodeInstantiationException {
+    public List<FileNode> path(String path) {
         List<FileNode> result;
 
         result = new ArrayList<>();
@@ -445,7 +443,7 @@ public class World {
         return result;
     }
 
-    public List<FileNode> classpath(String path) throws URISyntaxException, IOException {
+    public List<FileNode> classpath(String path) throws IOException {
         List<FileNode> result;
 
         result = path(path);

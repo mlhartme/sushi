@@ -46,7 +46,7 @@ public class ConnectionFullTest {
         return WORLD.getFilesystem("ssh", SshFilesystem.class).root(host(), user(), null);
     }
 
-    public static String host() throws JSchException, IOException {
+    public static String host(){
         String host;
         InetAddress addr;
 
@@ -62,7 +62,7 @@ public class ConnectionFullTest {
         return host;
     }
 
-    public static String user() throws JSchException, IOException {
+    public static String user() {
         String user;
 
         user = TestProperties.get("ssh.user");

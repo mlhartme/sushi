@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -136,13 +135,13 @@ public class LauncherTest {
     }
 
     @Test
-    public void stdin() throws Failure, UnsupportedEncodingException {
+    public void stdin() throws Failure {
         stdin("");
         stdin("hello");
         stdin("foo\nbar\n");
     }
 
-    private void stdin(String str) throws Failure, UnsupportedEncodingException {
+    private void stdin(String str) throws Failure {
         Launcher launcher;
         StringWriter out;
         StringReader in;

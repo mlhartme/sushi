@@ -48,7 +48,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
         this(filesystem, filesystem.connect(host, port, user, password, timeout));
     }
 
-    public SshRoot(SshFilesystem filesystem, Session session) throws JSchException {
+    public SshRoot(SshFilesystem filesystem, Session session) {
         if (!session.isConnected()) {
             throw new IllegalArgumentException();
         }

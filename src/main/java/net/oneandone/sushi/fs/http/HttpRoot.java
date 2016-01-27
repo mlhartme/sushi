@@ -140,7 +140,7 @@ public class HttpRoot implements Root<HttpNode> {
         }
     }
 
-    public synchronized void free(HttpConnection connection) throws IOException {
+    public synchronized void free(HttpConnection connection) {
         if (allocated == 0) {
             throw new IllegalStateException();
         }

@@ -438,7 +438,6 @@ public class SvnNode extends Node {
         throw new SetLastModifiedException(this);
     }
 
-    /** @return revision */
     public void copyFileFrom(InputStream content) throws CopyFileFromException {
         try {
             copyFileFrom(content, root.getComment());

@@ -26,7 +26,7 @@ public class ChunkedOutputStream extends OutputStream {
     private int pos;
     private boolean closed;
 
-    public ChunkedOutputStream(AsciiOutputStream out) throws IOException {
+    public ChunkedOutputStream(AsciiOutputStream out) {
         this(2048, out);
     }
 

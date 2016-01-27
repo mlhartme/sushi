@@ -294,7 +294,7 @@ public abstract class Node {
 
     /**
      * Tests if this is a file, directory or link.
-     * @return true if the file exists, even if it's a dangling link.
+     * @return true if the node exists, even if it's a dangling link.
      */
     public abstract boolean exists() throws ExistsException;
 

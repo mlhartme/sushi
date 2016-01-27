@@ -31,13 +31,16 @@ public class Buffer {
 
     private final byte[] buffer;
 
-    /** Create a Buffer with UTF-8 encoding */
     public Buffer() {
         this(DEFAULT_SIZE);
     }
 
     public Buffer(int bufferSize) {
-        this.buffer = new byte[bufferSize];
+        this(new byte[bufferSize]);
+    }
+
+    public Buffer(byte[] buffer) {
+        this.buffer = buffer;
     }
 
     public Buffer(Buffer orig) {

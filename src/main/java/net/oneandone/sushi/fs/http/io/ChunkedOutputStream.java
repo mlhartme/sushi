@@ -26,13 +26,16 @@ public class ChunkedOutputStream extends OutputStream {
     private int pos;
     private boolean closed;
 
-    // TODO: reuse buffer
     public ChunkedOutputStream(AsciiOutputStream out) throws IOException {
         this(2048, out);
     }
 
     public ChunkedOutputStream(int bufferSize, AsciiOutputStream out) {
-        this.buffer = new byte[bufferSize];
+        this(new byte[bufferSize], out);
+    }
+
+    public ChunkedOutputStream(byte[] buffer, AsciiOutputStream out) {
+        this.buffer = buffer;
         this.dest = out;
         this.pos = 0;
         this.closed = false;

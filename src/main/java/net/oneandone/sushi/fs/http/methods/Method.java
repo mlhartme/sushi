@@ -135,7 +135,6 @@ public abstract class Method<T> {
         return result;
     }
 
-    // TODO: connection argument needed for GetMethod ...
     public abstract T process(HttpConnection connection, Response response) throws IOException;
 
     //--

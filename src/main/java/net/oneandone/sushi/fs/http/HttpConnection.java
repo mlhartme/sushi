@@ -40,6 +40,7 @@ public class HttpConnection implements Closeable {
     private final Socket socket;
     private final AsciiInputStream input;
     private final AsciiOutputStream output;
+    private final byte[] bufferBytes;
     private final Buffer buffer;
     private boolean open;
 
@@ -48,7 +49,8 @@ public class HttpConnection implements Closeable {
         this.input = input;
         this.output = output;
         this.open = true;
-        this.buffer = new Buffer(4096);
+        this.bufferBytes = new byte[4096];
+        this.buffer = new Buffer(bufferBytes);
     }
 
     //--
@@ -99,18 +101,11 @@ public class HttpConnection implements Closeable {
     private static final int CHUNKED = -2;
 
     public void serialize(AsciiOutputStream dest, HeaderList headerList, Body body) throws IOException {
-        OutputStream result;
-
-        if (serializeLength(headerList) == CHUNKED) {
-            result = new ChunkedOutputStream(dest);
-        } else {
-            result = new OpenOutputStream(dest);
+        try (OutputStream result = (serializeLength(headerList) == CHUNKED ? new ChunkedOutputStream(bufferBytes, dest) : new OpenOutputStream(dest))) {
+            try (InputStream in = body.content) {
+                buffer.copy(in, result);
+            }
         }
-
-        try (InputStream in = body.content) {
-            buffer.copy(in, result);
-        }
-        result.close();
     }
 
     private static long serializeLength(HeaderList list) throws ProtocolException {

@@ -40,15 +40,15 @@ public class HttpConnection implements Closeable {
     private final Socket socket;
     private final AsciiInputStream input;
     private final AsciiOutputStream output;
+    private final Buffer buffer;
     private boolean open;
-    private final byte[] serializeBuffer;
 
     public HttpConnection(Socket socket, AsciiInputStream input, AsciiOutputStream output) {
     	this.socket = socket;
         this.input = input;
         this.output = output;
         this.open = true;
-        this.serializeBuffer = new byte[4096];
+        this.buffer = new Buffer(4096);
     }
 
     //--
@@ -100,7 +100,6 @@ public class HttpConnection implements Closeable {
 
     public void serialize(AsciiOutputStream dest, HeaderList headerList, Body body) throws IOException {
         OutputStream result;
-        int length;
 
         if (serializeLength(headerList) == CHUNKED) {
             result = new ChunkedOutputStream(dest);
@@ -108,17 +107,8 @@ public class HttpConnection implements Closeable {
             result = new OpenOutputStream(dest);
         }
 
-        // TODO: user buffer copy code
-        synchronized (serializeBuffer) {
-            try (InputStream in = body.content) {
-                while (true) {
-                    length = in.read(serializeBuffer);
-                    if (length == -1) {
-                        break;
-                    }
-                    result.write(serializeBuffer, 0, length);
-                }
-            }
+        try (InputStream in = body.content) {
+            buffer.copy(in, result);
         }
         result.close();
     }
@@ -143,7 +133,7 @@ public class HttpConnection implements Closeable {
         return IDENTITY;
     }
 
-    private static Body deserialize(AsciiInputStream src, HeaderList list) throws IOException {
+    private Body deserialize(AsciiInputStream src, HeaderList list) throws IOException {
         long length;
         Header type;
         Header encoding;
@@ -156,7 +146,7 @@ public class HttpConnection implements Closeable {
         } else if (length == IDENTITY) {
             return new Body(type, encoding, -1, new OpenInputStream(src), false);
         } else {
-            return new Body(type, encoding, length, new WindowInputStream(src, length, new Buffer(2048)), false);
+            return new Body(type, encoding, length, new WindowInputStream(src, length, buffer), false);
         }
     }
 

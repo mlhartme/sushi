@@ -20,18 +20,18 @@ import java.io.InputStream;
 
 /** Wraps an input stream to read exactly the specified number of bytes. The wrapped stream is never closed. */
 public class WindowInputStream extends InputStream {
-    private static final int BUFFER_SIZE = 2048;
-
     private final long length;
     private long pos;
     private boolean closed;
-    private InputStream in;
+    private final InputStream in;
+    private final Buffer skipBuffer;
 
-    public WindowInputStream(InputStream in, long length) {
+    public WindowInputStream(InputStream in, long length, Buffer skipBuffer) {
         this.in = in;
         this.pos = 0;
         this.closed = false;
         this.length = length;
+        this.skipBuffer = skipBuffer;
     }
 
     @Override
@@ -108,25 +108,6 @@ public class WindowInputStream extends InputStream {
 
     @Override
     public long skip(long n) throws IOException {
-        byte[] buffer;
-        long remaining;
-        long count;
-        int chunk;
-
-        if (n <= 0) {
-            return 0;
-        }
-        buffer = new byte[BUFFER_SIZE];
-        remaining = Math.min(n, length - pos);
-        count = 0;
-        while (remaining > 0) {
-            chunk = read(buffer, 0, (int) Math.min(BUFFER_SIZE, remaining));
-            if (chunk == -1) {
-                break;
-            }
-            count += chunk;
-            remaining -= chunk;
-        }
-        return count;
+        return skipBuffer.skip(this, Math.min(n, length - pos));
     }
 }

@@ -25,6 +25,7 @@ import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.io.OpenInputStream;
 import net.oneandone.sushi.io.OpenOutputStream;
 import net.oneandone.sushi.io.WindowInputStream;
@@ -155,7 +156,7 @@ public class HttpConnection implements Closeable {
         } else if (length == IDENTITY) {
             return new Body(type, encoding, -1, new OpenInputStream(src), false);
         } else {
-            return new Body(type, encoding, length, new WindowInputStream(src, length), false);
+            return new Body(type, encoding, length, new WindowInputStream(src, length, new Buffer(2048)), false);
         }
     }
 

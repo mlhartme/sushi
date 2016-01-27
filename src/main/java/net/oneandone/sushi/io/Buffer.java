@@ -166,4 +166,22 @@ public class Buffer {
         out.flush();
         return all;
     }
+
+    public long skip(InputStream src, long n) throws IOException {
+        long done;
+        int chunk;
+
+        if (n <= 0) {
+            return 0;
+        }
+        done = 0;
+        while (done < n) {
+            chunk = src.read(buffer, 0, (int) Math.min(Integer.MAX_VALUE, n - done));
+            if (chunk == -1) {
+                break;
+            }
+            done += chunk;
+        }
+        return done;
+    }
 }

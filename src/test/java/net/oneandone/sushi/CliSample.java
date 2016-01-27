@@ -20,7 +20,6 @@ import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
-import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.util.ArrayList;

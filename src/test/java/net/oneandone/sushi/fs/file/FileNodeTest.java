@@ -15,9 +15,7 @@
  */
 package net.oneandone.sushi.fs.file;
 
-import net.oneandone.sushi.fs.DeleteException;
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeTest;
 import net.oneandone.sushi.io.OS;

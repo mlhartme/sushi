@@ -19,7 +19,6 @@ import net.oneandone.sushi.fs.GetLastModifiedException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeReadOnlyTest;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.World;
 import org.junit.Test;
 
 import java.io.IOException;

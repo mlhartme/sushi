@@ -718,7 +718,8 @@ public class HttpNode extends Node {
                         result = davIsNode();
                         isDav = true;
                     } catch (StatusException e) {
-                        if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                        if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED
+                                || e.getStatusLine().statusCode == Method.STATUSCODE_OK) {
                             isDav = false;
                             result = headIsNode();
                         } else {

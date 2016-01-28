@@ -21,6 +21,8 @@ import java.lang.reflect.Modifier;
 
 public class CommandMethod {
     public static CommandMethod create(String name, Method method) {
+        Class<?> returnType;
+
         if (Modifier.isStatic(method.getModifiers())) {
             throw new IllegalArgumentException(method + ": static not allowed");
         }
@@ -30,10 +32,12 @@ public class CommandMethod {
         if (method.getParameterTypes().length != 0) {
             throw new IllegalArgumentException("unexpected arguments");
         }
-        if (!Void.TYPE.equals(method.getReturnType())) {
-            throw new IllegalArgumentException("void method expected");
+        returnType = method.getReturnType();
+        if (Void.TYPE.equals(returnType) || Integer.TYPE.equals(returnType)) {
+            return new CommandMethod(name, method);
+        } else {
+            throw new IllegalArgumentException("unsupported return type: " + returnType);
         }
-        return new CommandMethod(name, method);
     }
 
     //--
@@ -50,11 +54,12 @@ public class CommandMethod {
         return name;
     }
 
-    public void invoke(Object obj) {
+    public int invoke(Object obj) {
         Throwable cause;
+        Object result;
         
         try {
-            method.invoke(obj);
+            result = method.invoke(obj);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -69,6 +74,11 @@ public class CommandMethod {
                 throw new RuntimeException(name, cause);
             }
             throw new RuntimeException("unexpected exception" , cause);
+        }
+        if (result instanceof Integer) {
+            return (Integer) result;
+        } else {
+            return 0;
         }
     }
 }

@@ -83,28 +83,27 @@ public class Cli {
         return this;
     }
 
-    public boolean run(String... args) {
+    public int run(String... args) {
         return run(Arrays.asList(args));
     }
 
-    public boolean run(List<String> args) {
+    public int run(List<String> args) {
         Object[] result;
 
         try {
             result = parse(args);
             console.verbose.println("command line: " + args);
-            ((CommandMethod) result[0]).invoke(result[1]);
+            return ((CommandMethod) result[0]).invoke(result[1]);
         } catch (ArgumentException e) {
             console.error.println(e.getMessage());
             console.info.println("Specify 'help' to get a usage message.");
             e.printStackTrace(exception ? console.error : console.verbose);
-            return false;
+            return -1;
         } catch (Exception e) {
             console.error.println(e.getMessage());
             e.printStackTrace(exception ? console.error : console.verbose);
-            return false;
+            return -1;
         }
-        return true;
     }
 
     public Object[] parse(String... args) {

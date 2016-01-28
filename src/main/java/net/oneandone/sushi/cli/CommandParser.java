@@ -19,7 +19,9 @@ import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.SimpleType;
 import net.oneandone.sushi.metadata.SimpleTypeException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,27 +29,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A command line parser defined by option, value and child annotations taken from the defining class
- * used to create the parser. The resulting syntax is
- * 
- * line = option* child
- *      | option* value1 ... valueN value0*
- *      
- * Running the parser configures an instance of the defining class. It takes a command line and an 
- * instance of the defining class, options and values perform side effects, children create 
- * sub-instances.
- */
-public class Parser {
-    public static Parser create(Schema metadata, Class<?> cl) {
-        Parser parser;
+public class CommandParser {
+    public static CommandParser create(Schema metadata, Class<?> commandClass) {
+        CommandParser parser;
         Option option;
         Value value;
         Remaining remaining;
-        Child child;
-        
-        parser = new Parser(metadata);
-        for (Method m : cl.getMethods()) {
+        Command command;
+
+        parser = new CommandParser(commandClass);
+        for (Method m : commandClass.getMethods()) {
+            command = m.getAnnotation(Command.class);
+            if (command != null) {
+                parser.addCommand(CommandMethod.create(command.value(), m));
+            }
             option = m.getAnnotation(Option.class);
             if (option != null) {
                 parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, m));
@@ -60,13 +55,9 @@ public class Parser {
             if (remaining != null) {
                 parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, m));
             }
-            child = m.getAnnotation(Child.class);
-            if (child != null) {
-                parser.addChild(new ChildMethod(child.value(), m));
-            }
         }
-        while (!Object.class.equals(cl)) {
-            for (Field f: cl.getDeclaredFields()) {
+        while (!Object.class.equals(commandClass)) {
+            for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
                     parser.addOption(option.value(), ArgumentField.create(option.value(), metadata, f));
@@ -80,24 +71,31 @@ public class Parser {
                     parser.addValue(0, ArgumentField.create(remaining.name(), metadata, f));
                 }
             }
-            cl = cl.getSuperclass();
+            commandClass = commandClass.getSuperclass();
+        }
+        if (parser.commands.size() == 0) {
+            throw new IllegalStateException(commandClass + ": missing command");
         }
         return parser;
     }
 
     //--
-    
-    private final Schema metadata;
+
+    private final Class<?> clazz;
+    private final List<CommandMethod> commands;
     private final Map<String, Argument> options;
-    private final List<Argument> values; // and remaining at index 0
-    private final Map<String, ChildMethod> children;
-    
-    public Parser(Schema metadata) {
-        this.metadata = metadata;
+    private final List<Argument> values; // and "remaining" at index 0
+
+    public CommandParser(Class<?> clazz) {
+        this.clazz = clazz;
+        this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
         values.add(null);
-        this.children = new HashMap<>();
+    }
+
+    public void addCommand(CommandMethod command) {
+        commands.add(command);
     }
 
     public void addOption(String name, Argument arg) {
@@ -116,32 +114,37 @@ public class Parser {
         values.set(position, arg);
     }
 
-    public void addChild(ChildMethod factory) {
-        if (children.put(factory.getName(), factory) != null) {
-            throw new IllegalArgumentException("duplicate child command " + factory.getName());
-        }
-    }
-    
     private static boolean isBoolean(Argument arg) {
         return arg.getType().getType().equals(Boolean.class);
     }
 
     //--
-    
-    /** convenience methode */
-    public Object run(Object target, String... args) {
-        return run(target, 0, Arrays.asList(args));
+
+    public CommandMethod lookup(String name) {
+        for (CommandMethod command : commands) {
+            if (name.equals(command.getName())) {
+                return command;
+            }
+        }
+        return null;
     }
 
-    /** @return target object or child object */
-    public Object run(Object target, int start, List<String> args) {
+    /** Convenience for Testing */
+    public Object run(String ... args) {
+        return run(new ArrayList<>(), Arrays.asList(args));
+    }
+
+    /** @return Target */
+    public Object run(List<Object> context, List<String> args) {
         int i, max;
         String arg;
         Argument argument;
         String value;
-        
+        Object target;
+
+        target = newInstance(context);
         max = args.size();
-        for (i = start; i < max; i++) {
+        for (i = 0; i < max; i++) {
             arg = args.get(i);
             if (arg.length() > 1 && arg.startsWith("-")) {
                 argument = options.get(arg.substring(1));
@@ -163,14 +166,6 @@ public class Parser {
             }
         }
 
-        if (children.size() > 0 && i < max) {
-            ChildMethod child = lookupChild(args.get(i));
-            if (child != null) {
-                // dispatch to child command
-                target = child.invoke(target);
-                return Parser.create(metadata, target.getClass()).run(target, i + 1, args);
-            }
-        }
         // don't dispatch, target remains unchanged
         for (int position = 1; position < values.size(); position++, i++) {
             if (i >= max) {
@@ -184,26 +179,68 @@ public class Parser {
             }
         }
         if (i != max) {
-            if (children.size() > 0 && values.size() == 1 && values.get(0) == null) {
-                throw new ArgumentException("unknown command, expected on of " + children.keySet());
-            } else {
-                StringBuilder builder;
-                
-                builder = new StringBuilder("unknown value(s):");
-                for ( ; i < max; i++) {
-                    builder.append(' ');
-                    builder.append(args.get(i));
-                }
-                throw new ArgumentException(builder.toString());
+            StringBuilder builder;
+
+            builder = new StringBuilder("unknown value(s):");
+            for ( ; i < max; i++) {
+                builder.append(' ');
+                builder.append(args.get(i));
             }
+            throw new ArgumentException(builder.toString());
         }
         return target;
     }
 
-    public ChildMethod lookupChild(String name) {
-        return children.get(name);
+    private Object newInstance(List<Object> context) {
+        Object[] candidate;
+        Constructor found;
+        Object[] arguments;
+
+        found = null;
+        arguments = null;
+        for (Constructor constructor : clazz.getDeclaredConstructors()) {
+            candidate = match(constructor, context);
+            if (candidate != null) {
+                if (found != null) {
+                    throw new IllegalStateException("constructor is ambiguous");
+                }
+                found = constructor;
+                arguments = candidate;
+            }
+        }
+        if (found == null) {
+            throw new IllegalStateException("no matching constructor");
+        }
+        try {
+            return found.newInstance(arguments);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException("TODO", e);
+        }
     }
-    
+
+    private Object[] match(Constructor constructor, List<Object> context) {
+        Class<?>[] formals;
+        Object[] actuals;
+
+        formals = constructor.getParameterTypes();
+        actuals = new Object[formals.length];
+        for (int i = 0; i < formals.length; i++) {
+            if ((actuals[i] = find(context, formals[i])) == null) {
+                return null;
+            }
+        }
+        return actuals;
+    }
+
+    private Object find(List<Object> context, Class<?> type) {
+        for (Object obj : context) {
+            if (type.isAssignableFrom(obj.getClass())) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
     //--
     
     public void set(Argument arg, Object obj, String value) {

@@ -15,7 +15,13 @@
  */
 package net.oneandone.sushi.cli;
 
-public interface Command {
-    /** No return code - throwning an exception is more expressive */
-    void invoke() throws Exception;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD})
+public @interface Command {
+    String value();
 }

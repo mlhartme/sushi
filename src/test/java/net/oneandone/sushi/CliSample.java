@@ -17,9 +17,11 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
+import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
+import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,41 +33,41 @@ import java.util.List;
   * mvn org.codehaus.mojo:exec-maven-plugin:1.2.1:java -Dexec.classpathScope=test -Dexec.mainClass=net.oneandone.sushi.CliSample -Dexec.args=&quot;-flag -number 8 first second third&quot;
   * </tt>
 */
-public class CliSample extends Cli implements Command {
+public class CliSample {
     public static void main(String[] args) throws IOException {
-        System.exit(new CliSample().run(args));
+        System.exit(new Cli().addCommand(SampleCommand.class).run("run", "abc") ? 0 : -1);
     }
 
-    @Option("flag")
-    private boolean flag = false;
-    
-    @Option("number")
-    private int number = 7;
-    
-    @Value(name = "first", position = 1)
-    private String first = null;
+    public static class SampleCommand {
+        private final Console console;
 
-    private List<String> remaining = new ArrayList<>();
+        @Option("flag")
+        private boolean flag = false;
 
-    public CliSample() throws IOException {
-    }
+        @Option("number")
+        private int number = 7;
 
-    @Remaining
-    public void addRemaining(String str) {
-        remaining.add(str);
-    }
-    
-    @Override
-    public void invoke() {
-        console.info.println("command invoked with ");
-        console.info.println("   flag = " + flag);
-        console.info.println("   number = " + number);
-        console.info.println("   first = " + first);
-        console.info.println("   remaining = " + remaining);
-    }
-    
-    @Override
-    public void printHelp() {
-        console.info.println("usage: [-flag | -number n] first remaining*");
+        @Value(name = "first", position = 1)
+        private String first = null;
+
+        private List<String> remaining = new ArrayList<>();
+
+        public SampleCommand(Console console) {
+            this.console = console;
+        }
+
+        @Remaining
+        public void addRemaining(String str) {
+            remaining.add(str);
+        }
+
+        @Command("run")
+        public void run() {
+            console.info.println("command invoked with ");
+            console.info.println("   flag = " + flag);
+            console.info.println("   number = " + number);
+            console.info.println("   first = " + first);
+            console.info.println("   remaining = " + remaining);
+        }
     }
 }

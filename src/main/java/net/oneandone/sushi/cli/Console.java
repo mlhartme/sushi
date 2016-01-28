@@ -27,7 +27,6 @@ import java.util.Scanner;
 
 /**
  * Configurable replacement for System.out, System.err and System.in. 
- * TODO: name clash with java.world.Console in Java 6.
  */
 public class Console {
     public static Console create(World world) {

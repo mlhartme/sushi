@@ -35,7 +35,11 @@ import java.util.List;
 */
 public class CliSample {
     public static void main(String[] args) throws IOException {
-        System.exit(new Cli().addCommand(SampleCommand.class).run("run", "abc"));
+        System.exit(new Cli()
+                .addVersion()
+                .addHelp("demo help text")
+                .addCommand(SampleCommand.class)
+                .run(args));
     }
 
     public static class SampleCommand {

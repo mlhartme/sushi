@@ -43,6 +43,7 @@ public class Cli {
 
     private final List<CommandParser> commands;
     private final List<Object> context;
+    private String help;
 
     public Cli() throws IOException {
         this(World.create());
@@ -63,7 +64,25 @@ public class Cli {
         this.context = new ArrayList<>();
         addContext(console);
         addContext(console.world);
+        addContext(this);
+    }
+
+    public Cli addVersion() {
         addCommand(Version.class);
+        return this;
+    }
+
+    public String getHelp() {
+        return help;
+    }
+
+    public Cli addHelp(final String str) {
+        if (help != null) {
+            throw new IllegalStateException();
+        }
+        help = str;
+        addCommand(Help.class);
+        return this;
     }
 
     public Cli addCommand(Class<?> ... commands) {
@@ -138,14 +157,14 @@ public class Cli {
     */
 
     public static class Version {
-        private Console console;
+        private final Console console;
 
         public Version(Console console) {
             this.console = console;
         }
 
         @Command("version")
-        public void invoke() throws Exception {
+        public void invoke() {
             Package pkg;
 
             pkg = getClass().getPackage();
@@ -163,6 +182,21 @@ public class Cli {
             console.verbose.println("Platform encoding: " + System.getProperty("file.encoding"));
             console.verbose.println("Default Locale: " + Locale.getDefault());
             console.verbose.println("Scanner Locale: " + console.input.locale());
+        }
+    }
+
+    public static class Help {
+        private final Cli cli;
+        private final Console console;
+
+        public Help(Cli cli, Console console) {
+            this.cli = cli;
+            this.console = console;
+        }
+
+        @Command("help")
+        public void invoke() {
+            console.info.println(cli.getHelp());
         }
     }
 }

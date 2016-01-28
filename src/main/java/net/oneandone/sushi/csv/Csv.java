@@ -15,8 +15,8 @@
  */
 package net.oneandone.sushi.csv;
 
-import net.oneandone.sushi.fs.LineFormat;
-import net.oneandone.sushi.fs.LineReader;
+import net.oneandone.sushi.io.LineFormat;
+import net.oneandone.sushi.io.LineReader;
 import net.oneandone.sushi.fs.Node;
 
 import java.io.IOException;

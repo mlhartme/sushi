@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs;
 
+import net.oneandone.sushi.io.LineFormat;
+import net.oneandone.sushi.io.LineReader;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
 

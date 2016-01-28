@@ -39,7 +39,11 @@ public class ArgumentMethod extends Argument {
             throw new IllegalArgumentException("1 argument expected");
         }
         type = metadata.type(formals[0]);
-        return new ArgumentMethod(name, type instanceof SimpleType ? (SimpleType) type : null, method);
+        if (type instanceof SimpleType) {
+            return new ArgumentMethod(name, (SimpleType) type, method);
+        } else {
+            throw new IllegalStateException(type.toString());
+        }
     }
     
     //--

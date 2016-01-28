@@ -126,18 +126,6 @@ public class Parser {
         return arg.getType().getType().equals(Boolean.class);
     }
 
-    public void checkValues() {
-        int i;
-        int max;
-        
-        max = values.size();
-        for (i = 0; i < max; i++) {
-            if (values.get(i) == null) {
-                throw new IllegalStateException("missing value " + i);
-            }
-        }
-    }
-
     //--
     
     /** convenience methode */

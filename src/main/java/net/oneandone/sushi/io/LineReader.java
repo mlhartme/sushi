@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.fs;
+package net.oneandone.sushi.io;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -24,6 +24,8 @@ import java.util.regex.Matcher;
 /**
  * Reads a node line-by-line. In some sense, this class is similar to Buffer, but operates on chars.
  * Closing the LineReader also closes the underlying read.
+ *
+ * Note that there's no LineWriter because you can easily write strings into Writer.
  */
 public class LineReader implements AutoCloseable {
     public static final int INITIAL_BUFFER_SIZE = 256;

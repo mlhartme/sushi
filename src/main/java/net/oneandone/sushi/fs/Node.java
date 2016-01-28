@@ -17,6 +17,8 @@ package net.oneandone.sushi.fs;
 
 import net.oneandone.sushi.fs.filter.Filter;
 import net.oneandone.sushi.io.Buffer;
+import net.oneandone.sushi.io.LineFormat;
+import net.oneandone.sushi.io.LineReader;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Serializer;

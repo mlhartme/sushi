@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs;
 
+import net.oneandone.sushi.io.LineFormat;
 import org.junit.Test;
 
 import java.util.regex.Pattern;

@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs;
 
+import net.oneandone.sushi.io.LineFormat;
 import net.oneandone.sushi.io.OS;
 import net.oneandone.sushi.util.Separator;
 

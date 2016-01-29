@@ -30,15 +30,14 @@ public class Actuals {
         this.actuals = new HashMap<>();
     }
 
-    public void define(Collection<Argument> collection) {
-        for (Argument a : collection) {
-            if (a == null) {
-                // "remaining" - ignore
-            } else {
-                if (actuals.put(a, new ArrayList<>()) != null) {
-                    throw new IllegalStateException("duplicate argument: " + a);
-                }
-            }
+    public void defineAll(Collection<Argument> formals) {
+        for (Argument formal : formals) {
+            define(formal);
+        }
+    }
+    public void define(Argument formal) {
+        if (actuals.put(formal, new ArrayList<>()) != null) {
+            throw new IllegalStateException("duplicate argument: " + formal);
         }
     }
 

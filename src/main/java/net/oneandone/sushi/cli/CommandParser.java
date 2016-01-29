@@ -69,7 +69,7 @@ public class CommandParser {
             }
             remaining = m.getAnnotation(Remaining.class);
             if (remaining != null) {
-                parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, 0, Integer.MAX_VALUE, null, m));
+                parser.addRemaining(ArgumentMethod.create(remaining.name(), metadata, 0, Integer.MAX_VALUE, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
@@ -84,7 +84,7 @@ public class CommandParser {
                 }
                 remaining = f.getAnnotation(Remaining.class);
                 if (remaining != null) {
-                    parser.addValue(0, ArgumentField.create(remaining.name(), 0, Integer.MAX_VALUE, metadata, f));
+                    parser.addRemaining(ArgumentField.create(remaining.name(), 0, Integer.MAX_VALUE, metadata, f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -147,7 +147,8 @@ public class CommandParser {
     private final Object[] context;
     private final List<CommandMethod> commands;
     private final Map<String, Argument> options;
-    private final List<Argument> values; // and "remaining" at index 0
+    private final List<Argument> values;
+    private Argument remainingValues;
 
     public CommandParser(Constructor<?> constructor, Object[] context) {
         this.constructor = constructor;
@@ -155,7 +156,7 @@ public class CommandParser {
         this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
-        values.add(null);
+        this.remainingValues = null;
     }
 
     public void addCommand(CommandMethod command) {
@@ -173,13 +174,23 @@ public class CommandParser {
     }
     
     public void addValue(int position, Argument arg) {
-        while (position >= values.size()) {
+        int idx;
+
+        idx = position - 1;
+        while (idx >= values.size()) {
             values.add(null);
         }
-        if (values.get(position) != null) {
+        if (values.get(idx) != null) {
             throw new IllegalArgumentException("duplicate argument for position " + position);
         }
-        values.set(position, arg);
+        values.set(idx, arg);
+    }
+
+    public void addRemaining(Argument arg) {
+        if (remainingValues != null) {
+            throw new IllegalArgumentException("too many remaining arguments");
+        }
+        remainingValues = arg;
     }
 
     private static boolean isBoolean(Argument arg) {
@@ -198,8 +209,11 @@ public class CommandParser {
         Object target;
 
         actuals = new Actuals();
-        actuals.define(options.values());
-        actuals.define(values);
+        actuals.defineAll(options.values());
+        actuals.defineAll(values);
+        if (remainingValues != null) {
+            actuals.define(remainingValues);
+        }
         matchArguments(actuals, args);
         actuals.checkCardinality();
         actuals.apply(null);
@@ -226,7 +240,7 @@ public class CommandParser {
         Argument argument;
         String value;
 
-        position = 1;
+        position = 0;
         for (int i = 0, max = args.size(); i < max; i++) {
             arg = args.get(i);
             if (isOption(arg)) {
@@ -244,8 +258,10 @@ public class CommandParser {
                     value = args.get(i);
                 }
             } else {
-                if (position >= values.size()) {
-                    argument = values.get(0);
+                if (position < values.size()) {
+                    argument = values.get(position);
+                } else {
+                    argument = remainingValues;
                     if (argument == null) {
                         StringBuilder builder;
 
@@ -256,8 +272,6 @@ public class CommandParser {
                         }
                         throw new ArgumentException(builder.toString());
                     }
-                } else {
-                    argument = values.get(position);
                 }
                 value = arg;
                 position++;

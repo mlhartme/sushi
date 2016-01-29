@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class CommandMethod {
-    public static CommandMethod create(String name, Method method) {
+    public static CommandMethod create(CommandParser parser, String name, Method method) {
         Class<?> returnType;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -34,7 +34,7 @@ public class CommandMethod {
         }
         returnType = method.getReturnType();
         if (Void.TYPE.equals(returnType) || Integer.TYPE.equals(returnType)) {
-            return new CommandMethod(name, method);
+            return new CommandMethod(parser, name, method);
         } else {
             throw new IllegalArgumentException("unsupported return type: " + returnType);
         }
@@ -42,12 +42,18 @@ public class CommandMethod {
 
     //--
 
+    private final CommandParser parser;
     private final String name;
     private final Method method;
 
-    public CommandMethod(String name, Method method) {
+    public CommandMethod(CommandParser parser, String name, Method method) {
+        this.parser = parser;
         this.name = name;
         this.method = method;
+    }
+
+    public CommandParser getParser() {
+        return parser;
     }
 
     public String getName() {

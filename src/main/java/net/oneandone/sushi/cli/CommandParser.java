@@ -41,7 +41,7 @@ public class CommandParser {
         for (Method m : commandClass.getMethods()) {
             command = m.getAnnotation(Command.class);
             if (command != null) {
-                parser.addCommand(CommandMethod.create(command.value(), m));
+                parser.addCommand(CommandMethod.create(parser, command.value(), m));
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
@@ -98,6 +98,10 @@ public class CommandParser {
         commands.add(command);
     }
 
+    public List<CommandMethod> getCommands() {
+        return commands;
+    }
+
     public void addOption(String name, Argument arg) {
         if (options.put(name, arg) != null) {
             throw new IllegalArgumentException("duplicate option: " + name);
@@ -118,16 +122,6 @@ public class CommandParser {
         return arg.getType().getType().equals(Boolean.class);
     }
 
-    //--
-
-    public CommandMethod lookup(String name) {
-        for (CommandMethod command : commands) {
-            if (name.equals(command.getName())) {
-                return command;
-            }
-        }
-        return null;
-    }
 
     /** Convenience for Testing */
     public Object run(String ... args) {

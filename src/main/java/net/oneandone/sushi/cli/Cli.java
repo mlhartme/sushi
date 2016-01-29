@@ -41,7 +41,8 @@ public class Cli {
     protected final Schema schema;
     protected boolean exception;
 
-    private final List<CommandParser> commands;
+    private final List<CommandMethod> commands;
+    private CommandMethod defaultCommand;
     private final List<Object> context;
     private String help;
 
@@ -62,6 +63,7 @@ public class Cli {
         this.schema = schema;
         this.commands = new ArrayList<>();
         this.context = new ArrayList<>();
+        this.defaultCommand = null;
         addContext(console);
         addContext(console.world);
         addContext(this);
@@ -85,9 +87,22 @@ public class Cli {
         return this;
     }
 
+    public Cli addDefaultCommand(String name) {
+        defaultCommand = command(name);
+        return this;
+    }
+
     public Cli addCommand(Class<?> ... commands) {
+        CommandParser parser;
+
         for (Class<?> command : commands) {
-            this.commands.add(CommandParser.create(schema, command));
+            parser = CommandParser.create(schema, command);
+            for (CommandMethod method : parser.getCommands()) {
+                if (lookup(method.getName()) != null) {
+                    throw new IllegalArgumentException("duplicate command: " + method.getName());
+                }
+                this.commands.add(method);
+            }
         }
         return this;
     }
@@ -135,26 +150,38 @@ public class Cli {
         List<String> lst;
 
         if (args.isEmpty()) {
-            throw new ArgumentException("missing command");
-        }
-        name = args.get(0);
-        for (CommandParser command : commands) {
-            c = command.lookup(name);
-            if (c != null) {
-                lst = new ArrayList<>(args);
-                lst.remove(0);
-                return new Object[] { c, command.run(context, lst) };
+            c = defaultCommand;
+            if (c == null) {
+                throw new ArgumentException("missing command");
             }
+            lst = args;
+        } else {
+            name = args.get(0);
+            c = command(name);
+            lst = new ArrayList<>(args);
+            lst.remove(0);
         }
-        throw new ArgumentException("command not found: " + name);
+        return new Object[] { c, c.getParser().run(context, lst) };
     }
 
-    /* TODO
-    @Child("help")
-    public Command help() {
-        return this::printHelp;
+    public CommandMethod command(String name) {
+        CommandMethod result;
+
+        result = lookup(name);
+        if (result == null) {
+            throw new ArgumentException("command not found: " + name);
+        }
+        return result;
     }
-    */
+
+    public CommandMethod lookup(String name) {
+        for (CommandMethod method : commands) {
+            if (name.equals(method.getName())) {
+                return method;
+            }
+        }
+        return null;
+    }
 
     public static class Version {
         private final Console console;

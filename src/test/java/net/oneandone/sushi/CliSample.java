@@ -39,6 +39,7 @@ public class CliSample {
                 .addVersion()
                 .addHelp("demo help text")
                 .addCommand(SampleCommand.class)
+                .addDefaultCommand("help")
                 .run(args));
     }
 

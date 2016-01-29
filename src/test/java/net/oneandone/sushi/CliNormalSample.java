@@ -15,7 +15,6 @@
  */
 package net.oneandone.sushi;
 
-import net.oneandone.sushi.cli.ConsoleCommand;
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
@@ -40,10 +39,12 @@ public class CliNormalSample {
                 .addCommand(SecondCommand.class)
                 .addHelp("demo help").addDefaultCommand("help")
                 .addVersion()
-                .run(args));
+                .run("-v"));
     }
 
-    public static class FirstCommand extends ConsoleCommand {
+    public static class FirstCommand {
+        private final Console console;
+
         @Option("flag")
         private boolean flag = false;
 
@@ -56,7 +57,7 @@ public class CliNormalSample {
         private List<String> remaining = new ArrayList<>();
 
         public FirstCommand(Console console) {
-            super(console);
+            this.console = console;
         }
 
         @Remaining
@@ -74,9 +75,11 @@ public class CliNormalSample {
         }
     }
 
-    public static class SecondCommand extends ConsoleCommand {
+    public static class SecondCommand {
+        private final Console console;
+
         public SecondCommand(Console console) {
-            super(console);
+            this.console = console;
         }
 
         @Command("second")

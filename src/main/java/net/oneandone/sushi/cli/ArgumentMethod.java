@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(String name, Schema metadata, Method method) {
+    public static ArgumentMethod create(String name, Schema metadata, Object context, Method method) {
         Class<?>[] formals;
         Type type;
         
@@ -40,18 +40,20 @@ public class ArgumentMethod extends Argument {
         }
         type = metadata.type(formals[0]);
         if (type instanceof SimpleType) {
-            return new ArgumentMethod(name, (SimpleType) type, method);
+            return new ArgumentMethod(name, (SimpleType) type, context, method);
         } else {
             throw new IllegalStateException(type.toString());
         }
     }
     
     //--
-    
+
+    private final Object context;
     private final Method method;
     
-    public ArgumentMethod(String name, SimpleType simple, Method method) {
+    public ArgumentMethod(String name, SimpleType simple, Object context, Method method) {
         super(name, simple);
+        this.context = context;
         this.method = method;
     }
 
@@ -60,7 +62,7 @@ public class ArgumentMethod extends Argument {
         Throwable cause;
         
         try {
-            method.invoke(obj, value);
+            method.invoke(context == null ? obj : context, value);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(getName() + ": " + value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {

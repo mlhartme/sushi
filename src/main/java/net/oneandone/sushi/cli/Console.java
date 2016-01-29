@@ -63,6 +63,7 @@ public class Console implements ExceptionHandler {
         return stacktraces;
     }
 
+    @Option("e")
     public void setStacktraces(boolean s) {
         stacktraces = s;
     }
@@ -70,7 +71,8 @@ public class Console implements ExceptionHandler {
     public boolean getVerbose() {
         return verboseSwitch.dests().size() == 1;
     }
-    
+
+    @Option("v")
     public void setVerbose(boolean verbose) {
         verboseSwitch.dests().clear();
         if (verbose) {

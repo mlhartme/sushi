@@ -47,6 +47,15 @@ public class CommandParser {
         Command command;
 
         parser = createParser(commandClass, context);
+        for (Object oneContext : parser.context) {
+            for (Method m : oneContext.getClass().getMethods()) {
+                option = m.getAnnotation(Option.class);
+                if (option != null) {
+                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, oneContext, m));
+                }
+            }
+        }
+
         for (Method m : commandClass.getMethods()) {
             command = m.getAnnotation(Command.class);
             if (command != null) {
@@ -54,15 +63,15 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, m));
+                parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, m));
+                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, null, m));
             }
             remaining = m.getAnnotation(Remaining.class);
             if (remaining != null) {
-                parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, m));
+                parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {

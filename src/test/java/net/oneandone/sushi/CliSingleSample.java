@@ -17,12 +17,9 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
-import net.oneandone.sushi.cli.Console;
-import net.oneandone.sushi.cli.ConsoleCommand;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
-import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,38 +34,35 @@ import java.util.List;
 public class CliSingleSample {
     public static void main(String[] args) throws IOException {
         System.exit(new Cli()
-                .addCommand(SampleCommand.class)
+                .addCommand(CliSingleSample.class)
                 .run(args));
     }
 
-    public static class SampleCommand extends ConsoleCommand {
-        @Option("flag")
-        private boolean flag = false;
+    @Option("flag")
+    private boolean flag = false;
 
-        @Option("number")
-        private int number = 7;
+    @Option("number")
+    private int number = 7;
 
-        @Value(name = "first", position = 1)
-        private String first = null;
+    @Value(name = "first", position = 1)
+    private String first = null;
 
-        private List<String> remaining = new ArrayList<>();
+    private List<String> remaining = new ArrayList<>();
 
-        public SampleCommand(Console console) {
-            super(console);
-        }
+    public CliSingleSample() {
+    }
 
-        @Remaining
-        public void addRemaining(String str) {
-            remaining.add(str);
-        }
+    @Remaining
+    public void addRemaining(String str) {
+        remaining.add(str);
+    }
 
-        @Command("run")
-        public void run() {
-            console.info.println("command invoked with ");
-            console.info.println("   flag = " + flag);
-            console.info.println("   number = " + number);
-            console.info.println("   first = " + first);
-            console.info.println("   remaining = " + remaining);
-        }
+    @Command("run")
+    public void run() {
+        System.out.println("command invoked with ");
+        System.out.println("   flag = " + flag);
+        System.out.println("   number = " + number);
+        System.out.println("   first = " + first);
+        System.out.println("   remaining = " + remaining);
     }
 }

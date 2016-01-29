@@ -21,12 +21,18 @@ import net.oneandone.sushi.metadata.SimpleType;
 public abstract class Argument {
     private final String name;
     private final SimpleType type;
+    private final int min;
+    private final int max;
 
-    protected Argument(String name, SimpleType type) {
+    protected Argument(String name, SimpleType type, int min, int max) {
         this.name = name;
         this.type = type;
+        this.min = min;
+        this.max = max;
     }
-    
+
+    public abstract boolean before();
+
     public String getName() {
         return name;
     }
@@ -35,5 +41,23 @@ public abstract class Argument {
         return type;
     }
 
+    public void checkCardinality(int size) {
+        if (size < min) {
+            throw new ArgumentException(name + ": missing value(s). Expected " + min + ", got " + size);
+        }
+        if (size > max) {
+            throw new ArgumentException(name + ": too many values. Expected " + max + ", got " + size);
+        }
+    }
+
+    public boolean isOptional() {
+        return min == 0;
+    }
+
+    public boolean isList() {
+        return max > 1;
+    }
+
     public abstract void set(Object obj, Object value);
+
 }

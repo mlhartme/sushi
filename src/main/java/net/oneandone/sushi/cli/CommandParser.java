@@ -16,7 +16,6 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
-import net.oneandone.sushi.metadata.SimpleType;
 import net.oneandone.sushi.metadata.SimpleTypeException;
 
 import java.lang.reflect.Constructor;
@@ -51,7 +50,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, oneContext, m));
+                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, 0, 1, oneContext, m));
                 }
             }
         }
@@ -63,30 +62,30 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, null, m));
+                parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, 0, 1, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, null, m));
+                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, 0, 1, null, m));
             }
             remaining = m.getAnnotation(Remaining.class);
             if (remaining != null) {
-                parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, null, m));
+                parser.addValue(0, ArgumentMethod.create(remaining.name(), metadata, 0, Integer.MAX_VALUE, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentField.create(option.value(), metadata, f));
+                    parser.addOption(option.value(), ArgumentField.create(option.value(), 0, 1, metadata, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addValue(value.position(), ArgumentField.create(value.name(), metadata, f));
+                    parser.addValue(value.position(), ArgumentField.create(value.name(), 1, 1, metadata, f));
                 }
                 remaining = f.getAnnotation(Remaining.class);
                 if (remaining != null) {
-                    parser.addValue(0, ArgumentField.create(remaining.name(), metadata, f));
+                    parser.addValue(0, ArgumentField.create(remaining.name(), 0, Integer.MAX_VALUE, metadata, f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -196,15 +195,55 @@ public class CommandParser {
 
     /** @return Target */
     public Object run(List<String> args) throws Throwable {
-        int i, max;
+        Map<Argument, List<String>> actuals;
+        Object target;
+
+        actuals = emptyActuals();
+        matchArguments(actuals, args);
+        checkCardinality(actuals);
+        setAll(null, actuals);
+        target = newInstance();
+        setAll(target, actuals);
+        return target;
+    }
+
+    private Object newInstance() throws Throwable {
+        try {
+            return constructor.newInstance(context);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException("TODO", e);
+        }
+    }
+
+    //-- actuals
+
+    private void setAll(Object target, Map<Argument, List<String>> actuals) throws SimpleTypeException {
+        Argument argument;
+
+        for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
+            argument = entry.getKey();
+            if (argument.before() == (target == null)) {
+                set(argument, target, entry.getValue());
+            }
+        }
+    }
+
+    private void checkCardinality(Map<Argument, List<String>> actuals) {
+        for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
+            entry.getKey().checkCardinality(entry.getValue().size());
+        }
+    }
+
+    private void matchArguments(Map<Argument, List<String>> actuals, List<String> args) {
+        int position;
         String arg;
         Argument argument;
         String value;
-        Object target;
 
-        target = newInstance();
-        max = args.size();
-        for (i = 0; i < max; i++) {
+        position = 1;
+        for (int i = 0, max = args.size(); i < max; i++) {
             arg = args.get(i);
             if (isOption(arg)) {
                 argument = options.get(arg.substring(1));
@@ -220,65 +259,66 @@ public class CommandParser {
                     i++;
                     value = args.get(i);
                 }
-                set(argument, target, value);
             } else {
-                break;
-            }
-        }
+                if (position >= values.size()) {
+                    argument = values.get(0);
+                    if (argument == null) {
+                        StringBuilder builder;
 
-        // don't dispatch, target remains unchanged
-        for (int position = 1; position < values.size(); position++, i++) {
-            if (i >= max) {
-                throw new ArgumentException("missing argument '" + values.get(position).getName() + "'");
+                        builder = new StringBuilder("unknown value(s):");
+                        for ( ; i < max; i++) {
+                            builder.append(' ');
+                            builder.append(args.get(i));
+                        }
+                        throw new ArgumentException(builder.toString());
+                    }
+                } else {
+                    argument = values.get(position);
+                }
+                value = arg;
+                position++;
             }
-            set(values.get(position), target, args.get(i));
-        }
-        if (values.get(0) != null) {
-            for ( ; i < max; i++) {
-                set(values.get(0), target, args.get(i));
-            }
-        }
-        if (i != max) {
-            StringBuilder builder;
-
-            builder = new StringBuilder("unknown value(s):");
-            for ( ; i < max; i++) {
-                builder.append(' ');
-                builder.append(args.get(i));
-            }
-            throw new ArgumentException(builder.toString());
-        }
-        return target;
-    }
-
-    private Object newInstance() throws Throwable {
-        try {
-            return constructor.newInstance(context);
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalStateException("TODO", e);
+            actuals.get(argument).add(value);
         }
     }
 
-    //--
-    
-    public void set(Argument arg, Object obj, String value) {
+    private Map<Argument, List<String>> emptyActuals() {
+        Map<Argument, List<String>> actuals;
+
+        actuals = new HashMap<>();
+        for (Argument option : options.values()) {
+            actuals.put(option, new ArrayList<>());
+        }
+        for (Argument v : values) {
+            if (v == null) {
+                // no remaining - ignore
+            } else {
+                actuals.put(v, new ArrayList<>());
+            }
+        }
+        return actuals;
+    }
+
+    private void set(Argument argument, Object target, List<String> value) {
         Object converted;
-        
-        try {
-            converted = run(arg.getType(), value);
-        } catch (ArgumentException e) {
-            throw new ArgumentException("invalid argument " + arg.getName() + ": " + e.getMessage());
-        }
-        arg.set(obj, converted);
-    }
-    
-    public Object run(SimpleType simple, String arg) {
-        try {
-            return simple.stringToValue(arg);
-        } catch (SimpleTypeException e) {
-            throw new ArgumentException(e.getMessage(), e);
+
+        if (argument.isList()) {
+            for (String str : value) {
+                try {
+                    argument.set(target, argument.getType().stringToValue(str));
+                } catch (SimpleTypeException e) {
+                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+                }
+            }
+        } else {
+            if (!value.isEmpty()) {
+                try {
+                    converted = argument.getType().stringToValue(value.get(0));
+                    argument.set(target, converted);
+                } catch (SimpleTypeException e) {
+                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+                }
+            }
         }
     }
 }

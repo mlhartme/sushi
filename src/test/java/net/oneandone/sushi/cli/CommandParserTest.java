@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -154,20 +155,32 @@ public class CommandParserTest {
     }
 
     @Test
-    public void compound() throws IOException {
+    public void normal() throws IOException {
         Cli cli;
         Options options;
 
         cli = new Cli().addCommand(Empty.class, Options.class, Values.class);
-        assertTrue(cli.parse("empty")[1] instanceof Empty);
-        options = (Options) cli.parse("options", "-first", "32")[1];
+        assertTrue(cli.parseNormal("empty")[1] instanceof Empty);
+        options = (Options) cli.parseNormal("options", "-first", "32")[1];
         assertEquals(32, options.first);
         try {
-            cli.parse("notfound");
+            cli.parseNormal("notfound");
             fail();
         } catch (ArgumentException e) {
             assertTrue(e.getMessage(), e.getMessage().contains("command not found"));
         }
+    }
+
+    @Test
+    public void single() throws IOException {
+        Cli cli;
+        Values values;
+
+        cli = new Cli().addCommand(Values.class);
+        values = (Values) cli.parseSingle(Arrays.asList("first", "second", "32"))[1];
+        assertEquals("first", values.first.getName());
+        assertEquals("second", values.second);
+        assertEquals(1, values.remaining.size());
     }
 
     //-- various defining classes

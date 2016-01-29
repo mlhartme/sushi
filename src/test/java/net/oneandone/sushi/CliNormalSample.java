@@ -21,29 +21,28 @@ import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
-import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Usage sample.
+ * Cli example with a single command.
   * <tt>
   * mvn org.codehaus.mojo:exec-maven-plugin:1.2.1:java -Dexec.classpathScope=test -Dexec.mainClass=net.oneandone.sushi.CliSample -Dexec.args=&quot;-flag -number 8 first second third&quot;
   * </tt>
 */
-public class CliSample {
+public class CliNormalSample {
     public static void main(String[] args) throws IOException {
         System.exit(new Cli()
+                .addCommand(FirstCommand.class)
+                .addCommand(SecondCommand.class)
+                .addHelp("demo help").addDefaultCommand("help")
                 .addVersion()
-                .addHelp("demo help text")
-                .addCommand(SampleCommand.class)
-                .addDefaultCommand("help")
                 .run(args));
     }
 
-    public static class SampleCommand {
+    public static class FirstCommand {
         private final Console console;
 
         @Option("flag")
@@ -57,7 +56,7 @@ public class CliSample {
 
         private List<String> remaining = new ArrayList<>();
 
-        public SampleCommand(Console console) {
+        public FirstCommand(Console console) {
             this.console = console;
         }
 
@@ -66,13 +65,26 @@ public class CliSample {
             remaining.add(str);
         }
 
-        @Command("run")
+        @Command("first")
         public void run() {
-            console.info.println("command invoked with ");
+            console.info.println("'first' invoked with ");
             console.info.println("   flag = " + flag);
             console.info.println("   number = " + number);
             console.info.println("   first = " + first);
             console.info.println("   remaining = " + remaining);
+        }
+    }
+
+    public static class SecondCommand {
+        private final Console console;
+
+        public SecondCommand(Console console) {
+            this.console = console;
+        }
+
+        @Command("second")
+        public void run() {
+            console.info.println("'second' invoked");
         }
     }
 }

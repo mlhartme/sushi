@@ -125,7 +125,11 @@ public class Cli {
         Object[] result;
 
         try {
-            result = parse(args);
+            if (commands.size() == 1) {
+                result = parseSingle(args);
+            } else {
+                result = parseNormal(args);
+            }
             console.verbose.println("command line: " + args);
             return ((CommandMethod) result[0]).invoke(result[1]);
         } catch (ArgumentException e) {
@@ -140,11 +144,11 @@ public class Cli {
         }
     }
 
-    public Object[] parse(String... args) {
-        return parse(Arrays.asList(args));
+    public Object[] parseNormal(String... args) {
+        return parseNormal(Arrays.asList(args));
     }
 
-    public Object[] parse(List<String> args) {
+    public Object[] parseNormal(List<String> args) {
         CommandMethod c;
         String name;
         List<String> lst;
@@ -162,6 +166,13 @@ public class Cli {
             lst.remove(0);
         }
         return new Object[] { c, c.getParser().run(context, lst) };
+    }
+
+    public Object[] parseSingle(List<String> args) {
+        CommandMethod c;
+
+        c = commands.get(0);
+        return new Object[] { c, c.getParser().run(context, args) };
     }
 
     public CommandMethod command(String name) {

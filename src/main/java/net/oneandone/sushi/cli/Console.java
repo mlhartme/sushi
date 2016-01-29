@@ -28,7 +28,7 @@ import java.util.Scanner;
 /**
  * Configurable replacement for System.out, System.err and System.in. 
  */
-public class Console {
+public class Console implements ExceptionHandler {
     public static Console create(World world) {
         return new Console(world, new PrintWriter(System.out, true), new PrintWriter(System.err, true), System.in);
     }
@@ -45,6 +45,7 @@ public class Console {
     public final PrintWriter verbose;
     public final PrintWriter error;
     public final Scanner input;
+    private boolean stacktraces;
     
     private final MultiWriter verboseSwitch;
     
@@ -55,8 +56,17 @@ public class Console {
         this.verbose = new PrintWriter(verboseSwitch, true);
         this.error = error;
         this.input = new Scanner(in);
+        this.stacktraces = false;
     }
-    
+
+    public boolean getStacktraces() {
+        return stacktraces;
+    }
+
+    public void setStacktraces(boolean s) {
+        stacktraces = s;
+    }
+
     public boolean getVerbose() {
         return verboseSwitch.dests().size() == 1;
     }
@@ -87,5 +97,22 @@ public class Console {
         } else {
             return str;
         }
+    }
+
+    //--
+
+    public int handleException(Throwable throwable) {
+        if (throwable instanceof ArgumentException) {
+            error.println(throwable.getMessage());
+            info.println("Specify 'help' to get a usage message.");
+            throwable.printStackTrace(stacktraces ? error : verbose);
+            return -1;
+        }
+        if (throwable instanceof RuntimeException) {
+            throw (RuntimeException) throwable;
+        }
+        error.println(throwable.getMessage());
+        throwable.printStackTrace(stacktraces ? error : verbose);
+        return -1;
     }
 }

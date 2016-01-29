@@ -7,6 +7,11 @@ public abstract class ConsoleCommand {
         this.console = console;
     }
 
+    @Option("e")
+    public void setExceptions(boolean exceptions) {
+        console.setStacktraces(exceptions);
+    }
+
     @Option("v")
     public void setVerbose(boolean verbose) {
         console.setVerbose(verbose);

@@ -45,6 +45,7 @@ public class Cli {
     private CommandMethod defaultCommand;
     private final List<Object> context;
     private String help;
+    private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
         this(World.create());
@@ -112,6 +113,12 @@ public class Cli {
             if (obj == null) {
                 throw new IllegalArgumentException();
             }
+            if (obj instanceof ExceptionHandler) {
+                if (exceptionHandler != null) {
+                    throw new IllegalStateException("duplicate exception handler: " + exceptionHandler + " vs "+ obj);
+                }
+                exceptionHandler = (ExceptionHandler) obj;
+            }
             this.context.add(obj);
         }
         return this;
@@ -124,6 +131,9 @@ public class Cli {
     public int run(List<String> args) {
         Object[] result;
 
+        if (exceptionHandler == null) {
+            throw new IllegalStateException("missing exception handler");
+        }
         try {
             if (commands.size() == 1) {
                 result = parseSingle(args);
@@ -132,15 +142,8 @@ public class Cli {
             }
             console.verbose.println("command line: " + args);
             return ((CommandMethod) result[0]).invoke(result[1]);
-        } catch (ArgumentException e) {
-            console.error.println(e.getMessage());
-            console.info.println("Specify 'help' to get a usage message.");
-            e.printStackTrace(exception ? console.error : console.verbose);
-            return -1;
-        } catch (Exception e) {
-            console.error.println(e.getMessage());
-            e.printStackTrace(exception ? console.error : console.verbose);
-            return -1;
+        } catch (Throwable e) {
+            return exceptionHandler.handleException(e);
         }
     }
 

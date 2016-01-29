@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +36,17 @@ public class CommandParser {
     }
 
     public static CommandParser create(Schema metadata, Class<?> commandClass) {
+        return create(metadata, Collections.emptyList(), commandClass);
+    }
+
+    public static CommandParser create(Schema metadata, List<Object> context, Class<?> commandClass) {
         CommandParser parser;
         Option option;
         Value value;
         Remaining remaining;
         Command command;
 
-        parser = new CommandParser(commandClass);
+        parser = createParser(commandClass, context);
         for (Method m : commandClass.getMethods()) {
             command = m.getAnnotation(Command.class);
             if (command != null) {
@@ -83,15 +88,63 @@ public class CommandParser {
         return parser;
     }
 
+    private static CommandParser createParser(Class<?> clazz, List<Object> context) {
+        Object[] candidate;
+        Constructor found;
+        Object[] arguments;
+
+        found = null;
+        arguments = null;
+        for (Constructor constructor : clazz.getDeclaredConstructors()) {
+            candidate = match(constructor, context);
+            if (candidate != null) {
+                if (found != null) {
+                    throw new IllegalStateException("constructor is ambiguous");
+                }
+                found = constructor;
+                arguments = candidate;
+            }
+        }
+        if (found == null) {
+            throw new IllegalStateException(clazz + ": no matching constructor");
+        }
+        return new CommandParser(found, arguments);
+    }
+
+    private static Object[] match(Constructor constructor, List<Object> context) {
+        Class<?>[] formals;
+        Object[] actuals;
+
+        formals = constructor.getParameterTypes();
+        actuals = new Object[formals.length];
+        for (int i = 0; i < formals.length; i++) {
+            if ((actuals[i] = find(context, formals[i])) == null) {
+                return null;
+            }
+        }
+        return actuals;
+    }
+
+    private static Object find(List<Object> context, Class<?> type) {
+        for (Object obj : context) {
+            if (type.isAssignableFrom(obj.getClass())) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
     //--
 
-    private final Class<?> clazz;
+    private final Constructor<?> constructor;
+    private final Object[] context;
     private final List<CommandMethod> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values; // and "remaining" at index 0
 
-    public CommandParser(Class<?> clazz) {
-        this.clazz = clazz;
+    public CommandParser(Constructor<?> constructor, Object[] context) {
+        this.constructor = constructor;
+        this.context = context;
         this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
@@ -128,19 +181,19 @@ public class CommandParser {
 
 
     /** Convenience for Testing */
-    public Object run(String ... args) {
-        return run(new ArrayList<>(), Arrays.asList(args));
+    public Object run(String ... args) throws Throwable {
+        return run(Arrays.asList(args));
     }
 
     /** @return Target */
-    public Object run(List<Object> context, List<String> args) {
+    public Object run(List<String> args) throws Throwable {
         int i, max;
         String arg;
         Argument argument;
         String value;
         Object target;
 
-        target = newInstance(context);
+        target = newInstance();
         max = args.size();
         for (i = 0; i < max; i++) {
             arg = args.get(i);
@@ -189,54 +242,14 @@ public class CommandParser {
         return target;
     }
 
-    private Object newInstance(List<Object> context) {
-        Object[] candidate;
-        Constructor found;
-        Object[] arguments;
-
-        found = null;
-        arguments = null;
-        for (Constructor constructor : clazz.getDeclaredConstructors()) {
-            candidate = match(constructor, context);
-            if (candidate != null) {
-                if (found != null) {
-                    throw new IllegalStateException("constructor is ambiguous");
-                }
-                found = constructor;
-                arguments = candidate;
-            }
-        }
-        if (found == null) {
-            throw new IllegalStateException("no matching constructor");
-        }
+    private Object newInstance() throws Throwable {
         try {
-            return found.newInstance(arguments);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            return constructor.newInstance(context);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException("TODO", e);
         }
-    }
-
-    private Object[] match(Constructor constructor, List<Object> context) {
-        Class<?>[] formals;
-        Object[] actuals;
-
-        formals = constructor.getParameterTypes();
-        actuals = new Object[formals.length];
-        for (int i = 0; i < formals.length; i++) {
-            if ((actuals[i] = find(context, formals[i])) == null) {
-                return null;
-            }
-        }
-        return actuals;
-    }
-
-    private Object find(List<Object> context, Class<?> type) {
-        for (Object obj : context) {
-            if (type.isAssignableFrom(obj.getClass())) {
-                return obj;
-            }
-        }
-        return null;
     }
 
     //--

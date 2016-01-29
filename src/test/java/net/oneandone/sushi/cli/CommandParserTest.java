@@ -21,7 +21,6 @@ import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +36,7 @@ public class CommandParserTest {
     private static final Schema METADATA = new ReflectSchema(WORLD);
 
     @Test
-    public void empty() {
+    public void empty() throws Throwable {
         CommandParser parser;
 
         parser = CommandParser.create(METADATA, Empty.class);
@@ -63,7 +62,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void values() throws Exception {
+    public void values() throws Throwable {
         CommandParser parser;
         Values values;
 
@@ -102,7 +101,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void options() {
+    public void options() throws Throwable {
         CommandParser parser;
         Options options;
 
@@ -155,7 +154,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void normal() throws IOException {
+    public void normal() throws Throwable {
         Cli cli;
         Options options;
 
@@ -172,7 +171,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void single() throws IOException {
+    public void single() throws Throwable {
         Cli cli;
         Values values;
 

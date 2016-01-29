@@ -97,7 +97,7 @@ public class Cli {
         CommandParser parser;
 
         for (Class<?> command : commands) {
-            parser = CommandParser.create(schema, command);
+            parser = CommandParser.create(schema, context, command);
             for (CommandMethod method : parser.getCommands()) {
                 if (lookup(method.getName()) != null) {
                     throw new IllegalArgumentException("duplicate command: " + method.getName());
@@ -147,18 +147,18 @@ public class Cli {
         }
     }
 
-    public Object[] parseSingle(List<String> args) {
+    public Object[] parseSingle(List<String> args) throws Throwable {
         CommandMethod c;
 
         c = commands.get(0);
-        return new Object[] { c, c.getParser().run(context, args) };
+        return new Object[] { c, c.getParser().run(args) };
     }
 
-    public Object[] parseNormal(String... args) {
+    public Object[] parseNormal(String... args) throws Throwable {
         return parseNormal(Arrays.asList(args));
     }
 
-    public Object[] parseNormal(List<String> args) {
+    public Object[] parseNormal(List<String> args) throws Throwable {
         CommandMethod c;
         String name;
         List<String> lst;
@@ -173,7 +173,7 @@ public class Cli {
         } else {
             c = command(name);
         }
-        return new Object[] { c, c.getParser().run(context, lst) };
+        return new Object[] { c, c.getParser().run(lst) };
     }
 
     private String eatCommand(List<String> args) {

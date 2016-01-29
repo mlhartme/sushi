@@ -144,6 +144,13 @@ public class Cli {
         }
     }
 
+    public Object[] parseSingle(List<String> args) {
+        CommandMethod c;
+
+        c = commands.get(0);
+        return new Object[] { c, c.getParser().run(context, args) };
+    }
+
     public Object[] parseNormal(String... args) {
         return parseNormal(Arrays.asList(args));
     }
@@ -153,26 +160,30 @@ public class Cli {
         String name;
         List<String> lst;
 
-        if (args.isEmpty()) {
+        lst = new ArrayList<>(args);
+        name = eatCommand(lst);
+        if (name == null) {
             c = defaultCommand;
             if (c == null) {
                 throw new ArgumentException("missing command");
             }
-            lst = args;
         } else {
-            name = args.get(0);
             c = command(name);
-            lst = new ArrayList<>(args);
-            lst.remove(0);
         }
         return new Object[] { c, c.getParser().run(context, lst) };
     }
 
-    public Object[] parseSingle(List<String> args) {
-        CommandMethod c;
+    private String eatCommand(List<String> args) {
+        String arg;
 
-        c = commands.get(0);
-        return new Object[] { c, c.getParser().run(context, args) };
+        for (int i = 0, max = args.size(); i < max; i++) {
+            arg = args.get(i);
+            if (!CommandParser.isOption(arg)) {
+                args.remove(i);
+                return arg;
+            }
+        }
+        return null;
     }
 
     public CommandMethod command(String name) {

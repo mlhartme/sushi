@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandParser {
+    public static boolean isOption(String arg) {
+        return arg.length() > 1 && arg.startsWith("-");
+    }
+
     public static CommandParser create(Schema metadata, Class<?> commandClass) {
         CommandParser parser;
         Option option;
@@ -140,7 +144,7 @@ public class CommandParser {
         max = args.size();
         for (i = 0; i < max; i++) {
             arg = args.get(i);
-            if (arg.length() > 1 && arg.startsWith("-")) {
+            if (isOption(arg)) {
                 argument = options.get(arg.substring(1));
                 if (argument == null) {
                     throw new ArgumentException("unknown option " + arg);

@@ -18,6 +18,7 @@ package net.oneandone.sushi;
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
+import net.oneandone.sushi.cli.ConsoleCommand;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
@@ -40,9 +41,7 @@ public class CliSingleSample {
                 .run(args));
     }
 
-    public static class SampleCommand {
-        private final Console console;
-
+    public static class SampleCommand extends ConsoleCommand {
         @Option("flag")
         private boolean flag = false;
 
@@ -55,7 +54,7 @@ public class CliSingleSample {
         private List<String> remaining = new ArrayList<>();
 
         public SampleCommand(Console console) {
-            this.console = console;
+            super(console);
         }
 
         @Remaining

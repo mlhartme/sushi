@@ -205,6 +205,10 @@ public class Cli {
         return null;
     }
 
+    public void setException(boolean exception) {
+        this.exception = exception;
+    }
+
     public static class Version {
         private final Console console;
 

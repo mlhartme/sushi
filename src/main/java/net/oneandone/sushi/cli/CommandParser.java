@@ -16,7 +16,6 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
-import net.oneandone.sushi.metadata.SimpleTypeException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -195,15 +194,17 @@ public class CommandParser {
 
     /** @return Target */
     public Object run(List<String> args) throws Throwable {
-        Map<Argument, List<String>> actuals;
+        Actuals actuals;
         Object target;
 
-        actuals = emptyActuals();
+        actuals = new Actuals();
+        actuals.define(options.values());
+        actuals.define(values);
         matchArguments(actuals, args);
-        checkCardinality(actuals);
-        setAll(null, actuals);
+        actuals.checkCardinality();
+        actuals.apply(null);
         target = newInstance();
-        setAll(target, actuals);
+        actuals.apply(target);
         return target;
     }
 
@@ -219,24 +220,7 @@ public class CommandParser {
 
     //-- actuals
 
-    private void setAll(Object target, Map<Argument, List<String>> actuals) throws SimpleTypeException {
-        Argument argument;
-
-        for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
-            argument = entry.getKey();
-            if (argument.before() == (target == null)) {
-                set(argument, target, entry.getValue());
-            }
-        }
-    }
-
-    private void checkCardinality(Map<Argument, List<String>> actuals) {
-        for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
-            entry.getKey().checkCardinality(entry.getValue().size());
-        }
-    }
-
-    private void matchArguments(Map<Argument, List<String>> actuals, List<String> args) {
+    private void matchArguments(Actuals actuals, List<String> args) {
         int position;
         String arg;
         Argument argument;
@@ -278,47 +262,7 @@ public class CommandParser {
                 value = arg;
                 position++;
             }
-            actuals.get(argument).add(value);
-        }
-    }
-
-    private Map<Argument, List<String>> emptyActuals() {
-        Map<Argument, List<String>> actuals;
-
-        actuals = new HashMap<>();
-        for (Argument option : options.values()) {
-            actuals.put(option, new ArrayList<>());
-        }
-        for (Argument v : values) {
-            if (v == null) {
-                // no remaining - ignore
-            } else {
-                actuals.put(v, new ArrayList<>());
-            }
-        }
-        return actuals;
-    }
-
-    private void set(Argument argument, Object target, List<String> value) {
-        Object converted;
-
-        if (argument.isList()) {
-            for (String str : value) {
-                try {
-                    argument.set(target, argument.getType().stringToValue(str));
-                } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
-                }
-            }
-        } else {
-            if (!value.isEmpty()) {
-                try {
-                    converted = argument.getType().stringToValue(value.get(0));
-                    argument.set(target, converted);
-                } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
-                }
-            }
+            actuals.add(argument, value);
         }
     }
 }

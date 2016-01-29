@@ -66,7 +66,7 @@ public class CliNormalSample {
 
         @Command("first")
         public void run() {
-            console.info.println("'first' invoked with ");
+            console.info.println("invoked 'first' with ");
             console.info.println("   flag = " + flag);
             console.info.println("   number = " + number);
             console.info.println("   first = " + first);
@@ -81,7 +81,7 @@ public class CliNormalSample {
 
         @Command("second")
         public void run() {
-            console.info.println("'second' invoked");
+            console.info.println("invoked 'second'");
         }
     }
 }

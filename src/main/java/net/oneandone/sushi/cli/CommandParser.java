@@ -41,7 +41,6 @@ public class CommandParser {
         CommandParser parser;
         Option option;
         Value value;
-        Remaining remaining;
         Command command;
 
         parser = createParser(commandClass, context);
@@ -65,26 +64,18 @@ public class CommandParser {
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, 0, 1, null, m));
-            }
-            remaining = m.getAnnotation(Remaining.class);
-            if (remaining != null) {
-                parser.addRemaining(ArgumentMethod.create(remaining.name(), metadata, 0, Integer.MAX_VALUE, null, m));
+                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, value.min(), value.max(), null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentField.create(option.value(), 0, 1, metadata, f));
+                    parser.addOption(option.value(), ArgumentField.create(option.value(), metadata, 0, 1, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addValue(value.position(), ArgumentField.create(value.name(), 1, 1, metadata, f));
-                }
-                remaining = f.getAnnotation(Remaining.class);
-                if (remaining != null) {
-                    parser.addRemaining(ArgumentField.create(remaining.name(), 0, Integer.MAX_VALUE, metadata, f));
+                    parser.addValue(value.position(), ArgumentField.create(value.name(), metadata, value.min(), value.max(), f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -257,6 +248,7 @@ public class CommandParser {
                     i++;
                     value = args.get(i);
                 }
+                actuals.add(argument, value);
             } else {
                 if (position < values.size()) {
                     argument = values.get(position);
@@ -274,9 +266,10 @@ public class CommandParser {
                     }
                 }
                 value = arg;
-                position++;
+                if (actuals.add(argument, value)) {
+                    position++;
+                }
             }
-            actuals.add(argument, value);
         }
     }
 }

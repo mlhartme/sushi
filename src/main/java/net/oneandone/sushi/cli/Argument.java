@@ -31,6 +31,10 @@ public abstract class Argument {
         this.max = max;
     }
 
+    public int max() {
+        return max;
+    }
+
     public abstract boolean before();
 
     public String getName() {

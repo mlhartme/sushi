@@ -19,7 +19,6 @@ import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Option;
-import net.oneandone.sushi.cli.Remaining;
 import net.oneandone.sushi.cli.Value;
 
 import java.io.IOException;
@@ -60,7 +59,7 @@ public class CliNormalSample {
             this.console = console;
         }
 
-        @Remaining
+        @Value(name = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
         public void addRemaining(String str) {
             remaining.add(str);
         }

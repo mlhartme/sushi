@@ -218,7 +218,7 @@ public class CommandParserTest {
             this.first = first;
         }
 
-        @Remaining(name = "remaining")
+        @Value(name = "remaining", position = 3, min = 0, max = Integer.MAX_VALUE)
         public void remaining(FileNode str) {
             remaining.add(str);
         }

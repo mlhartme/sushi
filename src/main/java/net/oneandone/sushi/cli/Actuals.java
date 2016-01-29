@@ -47,8 +47,13 @@ public class Actuals {
         }
     }
 
-    public void add(Argument formal, String value) {
-        actuals.get(formal).add(value);
+    /** @return true if this formal argument has reached the max number of items. */
+    public boolean add(Argument formal, String item) {
+        List<String> value;
+
+        value = actuals.get(formal);
+        value.add(item);
+        return value.size() == formal.max();
     }
 
     public void apply(Object target) throws SimpleTypeException {

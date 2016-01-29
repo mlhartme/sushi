@@ -25,4 +25,6 @@ import java.lang.annotation.Target;
 public @interface Value {
     String name();
     int position();
+    int min() default 1;
+    int max() default 1;
 }

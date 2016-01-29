@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(String name, int minCount, int maxCount, Schema metadata, Field field) {
+    public static ArgumentField create(String name, Schema metadata, int minCount, int maxCount, Field field) {
         Type type;
         
         if (Modifier.isStatic(field.getModifiers())) {

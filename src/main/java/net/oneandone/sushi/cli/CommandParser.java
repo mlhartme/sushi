@@ -174,7 +174,6 @@ public class CommandParser {
     private final List<CommandDefinition> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
-    private Argument remainingValues;
 
     public CommandParser(Constructor<?> constructor, Object[] constructorActuals) {
         this.constructor = constructor;
@@ -182,7 +181,6 @@ public class CommandParser {
         this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
-        this.remainingValues = null;
     }
 
     public void addCommand(CommandDefinition command) {
@@ -212,13 +210,6 @@ public class CommandParser {
         values.set(idx, arg);
     }
 
-    public void addRemaining(Argument arg) {
-        if (remainingValues != null) {
-            throw new IllegalArgumentException("too many remaining arguments");
-        }
-        remainingValues = arg;
-    }
-
     private static boolean isBoolean(Argument arg) {
         return arg.getType().getType().equals(Boolean.class);
     }
@@ -237,9 +228,6 @@ public class CommandParser {
         actuals = new Actuals();
         actuals.defineAll(options.values());
         actuals.defineAll(values);
-        if (remainingValues != null) {
-            actuals.define(remainingValues);
-        }
         matchArguments(actuals, args);
         actuals.checkCardinality();
         actuals.apply(null);
@@ -288,17 +276,14 @@ public class CommandParser {
                 if (position < values.size()) {
                     argument = values.get(position);
                 } else {
-                    argument = remainingValues;
-                    if (argument == null) {
-                        StringBuilder builder;
+                    StringBuilder builder;
 
-                        builder = new StringBuilder("unknown value(s):");
-                        for ( ; i < max; i++) {
-                            builder.append(' ');
-                            builder.append(args.get(i));
-                        }
-                        throw new ArgumentException(builder.toString());
+                    builder = new StringBuilder("unknown value(s):");
+                    for ( ; i < max; i++) {
+                        builder.append(' ');
+                        builder.append(args.get(i));
                     }
+                    throw new ArgumentException(builder.toString());
                 }
                 value = arg;
                 if (actuals.add(argument, value)) {

@@ -154,6 +154,15 @@ public class CommandParserTest {
     }
 
     @Test
+    public void constr() throws Throwable {
+        CommandParser parser;
+        Constr constr;
+
+        parser = CommandParser.create(METADATA, Constr.class);
+        constr = (Constr) parser.run("a");
+        assertEquals("a", constr.v);
+    }
+    @Test
     public void normal() throws Throwable {
         Cli cli;
         Options options;
@@ -224,6 +233,18 @@ public class CommandParserTest {
         }
 
         @Command("values")
+        public void run() {
+        }
+    }
+
+    public static class Constr {
+        public final String v;
+
+        public Constr(@Value(name = "v", position = 1, min = 1, max = 1) String v) {
+            this.v = v;
+        }
+
+        @Command("constr")
         public void run() {
         }
     }

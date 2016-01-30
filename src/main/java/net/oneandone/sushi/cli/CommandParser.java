@@ -21,6 +21,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,18 +38,18 @@ public class CommandParser {
         return create(metadata, Collections.emptyList(), commandClass);
     }
 
-    public static CommandParser create(Schema metadata, List<Object> context, Class<?> commandClass) {
+    public static CommandParser create(Schema schema, List<Object> context, Class<?> commandClass) {
         CommandParser parser;
         Option option;
         Value value;
         Command command;
 
-        parser = createParser(commandClass, context);
-        for (Object oneContext : parser.context) {
+        parser = createParser(schema, commandClass, context);
+        for (Object oneContext : context) {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, 0, 1, oneContext, m));
+                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), schema, 0, 1, oneContext, m));
                 }
             }
         }
@@ -60,22 +61,22 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addOption(option.value(), ArgumentMethod.create(option.value(), metadata, 0, 1, null, m));
+                parser.addOption(option.value(), ArgumentMethod.create(option.value(), schema, 0, 1, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(value.position(), ArgumentMethod.create(value.name(), metadata, value.min(), value.max(), null, m));
+                parser.addValue(value.position(), ArgumentMethod.create(value.name(), schema, value.min(), value.max(), null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentField.create(option.value(), metadata, 0, 1, f));
+                    parser.addOption(option.value(), ArgumentField.create(option.value(), schema, 0, 1, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addValue(value.position(), ArgumentField.create(value.name(), metadata, value.min(), value.max(), f));
+                    parser.addValue(value.position(), ArgumentField.create(value.name(), schema, value.min(), value.max(), f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -86,39 +87,73 @@ public class CommandParser {
         return parser;
     }
 
-    private static CommandParser createParser(Class<?> clazz, List<Object> context) {
-        Object[] candidate;
+    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context) {
+        Object[] actuals;
+        List<ArgumentParameter> arguments;
         Constructor found;
-        Object[] arguments;
+        Object[] foundActuals;
+        List<ArgumentParameter> foundArguments;
+        CommandParser result;
 
         found = null;
-        arguments = null;
+        foundActuals = null;
+        foundArguments = null;
+        arguments = new ArrayList<>();
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
-            candidate = match(constructor, context);
-            if (candidate != null) {
+            arguments.clear();
+            actuals = match(schema, constructor, context, arguments);
+            if (actuals != null) {
                 if (found != null) {
                     throw new IllegalStateException("constructor is ambiguous");
                 }
                 found = constructor;
-                arguments = candidate;
+                foundActuals = actuals;
+                foundArguments = new ArrayList<>(arguments);
             }
         }
         if (found == null) {
             throw new IllegalStateException(clazz + ": no matching constructor");
         }
-        return new CommandParser(found, arguments);
+        result = new CommandParser(found, foundActuals);
+        for (ArgumentParameter a : foundArguments) {
+            result.addValue(a.position, a);
+        }
+        return result;
     }
 
-    private static Object[] match(Constructor constructor, List<Object> context) {
-        Class<?>[] formals;
+    private static Object[] match(Schema schema, Constructor constructor, List<Object> context, List<ArgumentParameter> result) {
+        Parameter[] formals;
         Object[] actuals;
+        Parameter formal;
+        Value value;
+        Option option;
+        Object c;
 
-        formals = constructor.getParameterTypes();
+        formals = constructor.getParameters();
         actuals = new Object[formals.length];
         for (int i = 0; i < formals.length; i++) {
-            if ((actuals[i] = find(context, formals[i])) == null) {
-                return null;
+            formal = formals[i];
+            value = formal.getAnnotation(Value.class);
+            option = formal.getAnnotation(Option.class);
+            if (value != null && option != null) {
+                throw new IllegalStateException();
             }
+            if (value == null && option == null) {
+                c = find(context, formal.getType());
+                if (c == null) {
+                    return null;
+                }
+                actuals[i] = c;
+            } else if (value != null) {
+                result.add(new ArgumentParameter(formal.getName(),
+                        schema.simple(formal.getType()), value.min(), value.max(),
+                        value.position(), actuals, i));
+            } else if (option != null) {
+                throw new IllegalStateException("TODO");
+            } else {
+                throw new IllegalStateException();
+            }
+
         }
         return actuals;
     }
@@ -135,15 +170,15 @@ public class CommandParser {
     //--
 
     private final Constructor<?> constructor;
-    private final Object[] context;
+    private final Object[] constructorActuals;
     private final List<CommandDefinition> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
     private Argument remainingValues;
 
-    public CommandParser(Constructor<?> constructor, Object[] context) {
+    public CommandParser(Constructor<?> constructor, Object[] constructorActuals) {
         this.constructor = constructor;
-        this.context = context;
+        this.constructorActuals = constructorActuals;
         this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
@@ -215,7 +250,7 @@ public class CommandParser {
 
     private Object newInstance() throws Throwable {
         try {
-            return constructor.newInstance(context);
+            return constructor.newInstance(constructorActuals);
         } catch (InvocationTargetException e) {
             throw e.getCause();
         } catch (InstantiationException | IllegalAccessException e) {

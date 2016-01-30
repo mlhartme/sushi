@@ -19,6 +19,7 @@ import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Option;
+import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.cli.Value;
 import net.oneandone.sushi.fs.World;
 
@@ -41,9 +42,9 @@ public class CliNormalSample {
                 .addContext(Console.create(world))
                 .addCommand(FirstCommand.class)
                 .addCommand(SecondCommand.class)
+                .addCommand(PackageVersion.class)
                 .addHelp("demo help").addDefaultCommand("help")
-                .addVersion()
-                .run("first", "value"));
+                .run(args));
     }
 
     public static class FirstCommand {

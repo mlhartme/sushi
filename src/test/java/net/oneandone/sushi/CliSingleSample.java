@@ -17,6 +17,7 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
+import net.oneandone.sushi.cli.ExceptionHandler;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Value;
 
@@ -33,6 +34,13 @@ import java.util.List;
 public class CliSingleSample {
     public static void main(String[] args) throws IOException {
         System.exit(new Cli()
+                .addContext(new ExceptionHandler() {
+                    @Override
+                    public int handleException(Throwable throwable) {
+                        throwable.printStackTrace();
+                        return -1;
+                    }
+                })
                 .addCommand(CliSingleSample.class)
                 .run(args));
     }

@@ -20,6 +20,7 @@ import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.Value;
+import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,12 +34,16 @@ import java.util.List;
 */
 public class CliNormalSample {
     public static void main(String[] args) throws IOException {
-        System.exit(new Cli()
+        World world;
+
+        world = World.create();
+        System.exit(new Cli(world)
+                .addContext(Console.create(world))
                 .addCommand(FirstCommand.class)
                 .addCommand(SecondCommand.class)
                 .addHelp("demo help").addDefaultCommand("help")
                 .addVersion()
-                .run("-v"));
+                .run("first", "value"));
     }
 
     public static class FirstCommand {

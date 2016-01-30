@@ -26,18 +26,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A command line parser defined by option, value and child annotations taken from the defining class
- * used to create the parser. The resulting syntax is
- *
- * line = option* child
- *      | option* value1 ... valueN value0*
- *
- * Running the parser configures an instance of the defining class. It takes a command line and an
- * instance of the defining class, options and values perform side effects, children create
- * sub-instances.
+ * A command line parser defined by option and value annotations taken from the command classes.
+ * Running the parser instantiates one of the command classes.
  */
 public class Cli {
-    protected final Console console;
     protected final Schema schema;
     protected boolean exception;
 
@@ -50,23 +42,17 @@ public class Cli {
     public Cli() throws IOException {
         this(World.create());
     }
-    
+
     public Cli(World world) {
-        this(Console.create(world));
+        this(world, new ReflectSchema(world));
     }
     
-    public Cli(Console console) {
-        this(console, new ReflectSchema(console.world));
-    }
-    
-    public Cli(Console console, Schema schema) {
-        this.console = console;
+    public Cli(World world, Schema schema) {
         this.schema = schema;
         this.commands = new ArrayList<>();
         this.context = new ArrayList<>();
         this.defaultCommand = null;
-        addContext(console);
-        addContext(console.world);
+        addContext(world);
         addContext(this);
     }
 
@@ -140,7 +126,6 @@ public class Cli {
             } else {
                 result = parseNormal(args);
             }
-            console.verbose.println("command line: " + args);
             return ((CommandMethod) result[0]).invoke(result[1]);
         } catch (Throwable e) {
             return exceptionHandler.handleException(e);

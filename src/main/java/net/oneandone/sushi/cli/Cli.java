@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A command line parser defined by option and value annotations taken from the command classes.
@@ -33,8 +32,8 @@ public class Cli {
     protected final Schema schema;
     protected boolean exception;
 
-    private final List<CommandMethod> commands;
-    private CommandMethod defaultCommand;
+    private final List<CommandDefinition> commands;
+    private CommandDefinition defaultCommand;
     private final List<Object> context;
     private String help;
     private ExceptionHandler exceptionHandler;
@@ -56,39 +55,6 @@ public class Cli {
         addContext(this);
     }
 
-    public String getHelp() {
-        return help;
-    }
-
-    public Cli addHelp(final String str) {
-        if (help != null) {
-            throw new IllegalStateException();
-        }
-        help = str;
-        addCommand(Help.class);
-        return this;
-    }
-
-    public Cli addDefaultCommand(String name) {
-        defaultCommand = command(name);
-        return this;
-    }
-
-    public Cli addCommand(Class<?> ... commands) {
-        CommandParser parser;
-
-        for (Class<?> command : commands) {
-            parser = CommandParser.create(schema, context, command);
-            for (CommandMethod method : parser.getCommands()) {
-                if (lookup(method.getName()) != null) {
-                    throw new IllegalArgumentException("duplicate command: " + method.getName());
-                }
-                this.commands.add(method);
-            }
-        }
-        return this;
-    }
-
     public Cli addContext(Object ... context) {
         for (Object obj : context) {
             if (obj == null) {
@@ -102,6 +68,36 @@ public class Cli {
             }
             this.context.add(obj);
         }
+        return this;
+    }
+
+    public Cli addDefaultCommand(String name) {
+        defaultCommand = command(name);
+        return this;
+    }
+
+    public Cli addCommand(Class<?> ... commands) {
+        for (Class<?> command : commands) {
+            for (CommandDefinition method : CommandParser.create(schema, context, command).getCommands()) {
+                if (lookup(method.getName()) != null) {
+                    throw new IllegalArgumentException("duplicate command: " + method.getName());
+                }
+                this.commands.add(method);
+            }
+        }
+        return this;
+    }
+
+    public String getHelp() {
+        return help;
+    }
+
+    public Cli addHelp(final String str) {
+        if (help != null) {
+            throw new IllegalStateException();
+        }
+        help = str;
+        addCommand(Help.class);
         return this;
     }
 
@@ -121,14 +117,14 @@ public class Cli {
             } else {
                 result = parseNormal(args);
             }
-            return ((CommandMethod) result[0]).invoke(result[1]);
+            return ((CommandDefinition) result[0]).invoke(result[1]);
         } catch (Throwable e) {
             return exceptionHandler.handleException(e);
         }
     }
 
     public Object[] parseSingle(List<String> args) throws Throwable {
-        CommandMethod c;
+        CommandDefinition c;
 
         c = commands.get(0);
         return new Object[] { c, c.getParser().run(args) };
@@ -139,7 +135,7 @@ public class Cli {
     }
 
     public Object[] parseNormal(List<String> args) throws Throwable {
-        CommandMethod c;
+        CommandDefinition c;
         String name;
         List<String> lst;
 
@@ -169,8 +165,8 @@ public class Cli {
         return null;
     }
 
-    public CommandMethod command(String name) {
-        CommandMethod result;
+    public CommandDefinition command(String name) {
+        CommandDefinition result;
 
         result = lookup(name);
         if (result == null) {
@@ -179,17 +175,13 @@ public class Cli {
         return result;
     }
 
-    public CommandMethod lookup(String name) {
-        for (CommandMethod method : commands) {
+    public CommandDefinition lookup(String name) {
+        for (CommandDefinition method : commands) {
             if (name.equals(method.getName())) {
                 return method;
             }
         }
         return null;
-    }
-
-    public void setException(boolean exception) {
-        this.exception = exception;
     }
 
     public static class Help {

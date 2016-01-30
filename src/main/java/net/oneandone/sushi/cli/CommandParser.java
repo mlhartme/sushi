@@ -56,7 +56,7 @@ public class CommandParser {
         for (Method m : commandClass.getMethods()) {
             command = m.getAnnotation(Command.class);
             if (command != null) {
-                parser.addCommand(CommandMethod.create(parser, command.value(), m));
+                parser.addCommand(CommandDefinition.create(parser, command.value(), m));
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
@@ -136,7 +136,7 @@ public class CommandParser {
 
     private final Constructor<?> constructor;
     private final Object[] context;
-    private final List<CommandMethod> commands;
+    private final List<CommandDefinition> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
     private Argument remainingValues;
@@ -150,11 +150,11 @@ public class CommandParser {
         this.remainingValues = null;
     }
 
-    public void addCommand(CommandMethod command) {
+    public void addCommand(CommandDefinition command) {
         commands.add(command);
     }
 
-    public List<CommandMethod> getCommands() {
+    public List<CommandDefinition> getCommands() {
         return commands;
     }
 

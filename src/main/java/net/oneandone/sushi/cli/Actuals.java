@@ -68,7 +68,6 @@ public class Actuals {
     }
 
     private void apply(Argument argument, Object target, List<String> actual) {
-        String value;
         Object converted;
 
         if (argument.isList()) {
@@ -81,19 +80,15 @@ public class Actuals {
             }
         } else {
             if (actual.isEmpty()) {
-                value = argument.getDefault();
-                if (Argument.DEFAULT_UNDEFINED.equals(value)) {
-                    value = argument.getType().valueToString(argument.getType().newInstance());
-                }
+                converted = argument.getDefault();
             } else {
-                value = actual.get(0);
+                try {
+                    converted = argument.getType().stringToValue(actual.get(0));
+                } catch (SimpleTypeException e) {
+                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+                }
             }
-            try {
-                converted = argument.getType().stringToValue(value);
-                argument.set(target, converted);
-            } catch (SimpleTypeException e) {
-                throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
-            }
+            argument.set(target, converted);
         }
     }
 }

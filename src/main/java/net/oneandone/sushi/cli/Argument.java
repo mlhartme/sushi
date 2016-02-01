@@ -16,6 +16,7 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.SimpleType;
+import net.oneandone.sushi.metadata.SimpleTypeException;
 
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
@@ -27,7 +28,7 @@ public abstract class Argument {
     private final SimpleType type;
     private final int min;
     private final int max;
-    private final String dflt;
+    private final Object dflt;
 
     protected Argument(int position, String name, SimpleType type, int min, int max, String dflt) {
         this.position = position;
@@ -35,7 +36,15 @@ public abstract class Argument {
         this.type = type;
         this.min = min;
         this.max = max;
-        this.dflt = dflt;
+        if (DEFAULT_UNDEFINED.equals(dflt)) {
+            this.dflt = type.newInstance();
+        } else {
+            try {
+                this.dflt = type.stringToValue(dflt);
+            } catch (SimpleTypeException e) {
+                throw new IllegalArgumentException("cannot convert default value to type " + type.getType() + ": " + dflt);
+            }
+        }
     }
 
     public int position() {
@@ -65,7 +74,7 @@ public abstract class Argument {
         }
     }
 
-    public String getDefault() {
+    public Object getDefault() {
         return dflt;
     }
 

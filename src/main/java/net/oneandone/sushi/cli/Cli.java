@@ -35,7 +35,6 @@ public class Cli {
     private final List<CommandDefinition> commands;
     private CommandDefinition defaultCommand;
     private final List<Object> context;
-    private String help;
     private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
@@ -52,7 +51,6 @@ public class Cli {
         this.context = new ArrayList<>();
         this.defaultCommand = null;
         addContext(world);
-        addContext(this);
     }
 
     public Cli addContext(Object ... context) {
@@ -76,28 +74,23 @@ public class Cli {
         return this;
     }
 
-    public Cli addCommand(Class<?> ... commands) {
-        for (Class<?> command : commands) {
-            for (CommandDefinition method : CommandParser.create(schema, context, command).getCommands()) {
+    public Cli addCommandInstance(Object ... instance) {
+        return addCommandOrInstance(instance);
+    }
+
+    public Cli addCommand(Class<?> ... command) {
+        return addCommandOrInstance(command);
+    }
+
+    private Cli addCommandOrInstance(Object ... commandOrInstance) {
+        for (Object ci : commandOrInstance) {
+            for (CommandDefinition method : CommandParser.create(schema, context, ci).getCommands()) {
                 if (lookup(method.getName()) != null) {
                     throw new IllegalArgumentException("duplicate command: " + method.getName());
                 }
                 this.commands.add(method);
             }
         }
-        return this;
-    }
-
-    public String getHelp() {
-        return help;
-    }
-
-    public Cli addHelp(final String str) {
-        if (help != null) {
-            throw new IllegalStateException();
-        }
-        help = str;
-        addCommand(Help.class);
         return this;
     }
 
@@ -184,18 +177,4 @@ public class Cli {
         return null;
     }
 
-    public static class Help {
-        private final Cli cli;
-        private final Console console;
-
-        public Help(@Context Cli cli, @Context Console console) {
-            this.cli = cli;
-            this.console = console;
-        }
-
-        @Command("help")
-        public void invoke() {
-            console.info.println(cli.getHelp());
-        }
-    }
 }

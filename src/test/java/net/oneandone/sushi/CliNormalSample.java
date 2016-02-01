@@ -19,6 +19,7 @@ import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Context;
+import net.oneandone.sushi.cli.Help;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.cli.Value;
@@ -36,16 +37,17 @@ import java.util.List;
 */
 public class CliNormalSample {
     public static void main(String[] args) throws IOException {
-        World world;
+        Console console;
 
-        world = World.create();
-        System.exit(new Cli(world)
-                .addContext(Console.create(world))
+        console = Console.create(World.create());
+        System.exit(new Cli(console.world)
+                .addContext(console)
                 .addCommand(FirstCommand.class)
                 .addCommand(SecondCommand.class)
                 .addCommand(PackageVersion.class)
-                .addHelp("demo help").addDefaultCommand("help")
-                .run("first", "-number", "8", "second"));
+                .addCommandInstance(new Help(console, "demo help"))
+                .addDefaultCommand("help")
+                .run(args));
     }
 
     public static class FirstCommand {

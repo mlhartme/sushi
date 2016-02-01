@@ -34,17 +34,24 @@ public class CommandParser {
         return arg.length() > 1 && arg.startsWith("-");
     }
 
-    public static CommandParser create(Schema metadata, Class<?> commandClass) {
-        return create(metadata, Collections.emptyList(), commandClass);
+    public static CommandParser create(Schema metadata, Object commandClassOrInstance) {
+        return create(metadata, Collections.emptyList(), commandClassOrInstance);
     }
 
-    public static CommandParser create(Schema schema, List<Object> context, Class<?> commandClass) {
+    public static CommandParser create(Schema schema, List<Object> context, Object commandClassOrInstance) {
+        Class<?> commandClass;
         CommandParser parser;
         Option option;
         Value value;
         Command command;
 
-        parser = createParser(schema, commandClass, context);
+        if (commandClassOrInstance instanceof Class) {
+            commandClass = (Class<?>) commandClassOrInstance;
+            parser = createParser(schema, commandClass, context);
+        } else {
+            commandClass = commandClassOrInstance.getClass();
+            parser = new CommandParser(commandClassOrInstance);
+        }
         for (Object oneContext : context) {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
@@ -203,13 +210,23 @@ public class CommandParser {
 
     //--
 
+    private final Object commandInstance;
     private final Constructor<?> constructor;
     private final Object[] constructorActuals;
     private final List<CommandDefinition> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
+    public CommandParser(Object commandInstance) {
+        this(commandInstance, null, null);
+    }
+
     public CommandParser(Constructor<?> constructor, Object[] constructorActuals) {
+        this(null, constructor, constructorActuals);
+    }
+
+    private CommandParser(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+        this.commandInstance = commandInstance;
         this.constructor = constructor;
         this.constructorActuals = constructorActuals;
         this.commands = new ArrayList<>();
@@ -267,7 +284,7 @@ public class CommandParser {
         matchArguments(actuals, args);
         actuals.checkCardinality();
         actuals.apply(null);
-        target = newInstance();
+        target = commandInstance == null ? newInstance() : commandInstance;
         actuals.apply(target);
         return target;
     }

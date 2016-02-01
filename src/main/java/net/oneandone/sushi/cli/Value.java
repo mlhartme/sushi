@@ -27,4 +27,5 @@ public @interface Value {
     int position();
     int min() default 1;
     int max() default 1;
+    String dflt() default Argument.DEFAULT_UNDEFINED;
 }

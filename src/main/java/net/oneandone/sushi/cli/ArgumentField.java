@@ -28,7 +28,7 @@ public class ArgumentField extends Argument {
     }
 
     public static ArgumentField create(Schema schema, Value value, Field field) {
-        return create(value.position(), value.name(), schema, value.min(), value.max(), field, null);
+        return create(value.position(), value.name(), schema, value.min(), value.max(), field, value.dflt());
     }
 
     public static ArgumentField create(int position, String name, Schema schema, int minCount, int maxCount, Field field, String dflt) {

@@ -31,6 +31,9 @@ public abstract class Argument {
     private final Object dflt;
 
     protected Argument(int position, String name, SimpleType type, int min, int max, String dflt) {
+        if (dflt == null) {
+            throw new IllegalArgumentException();
+        }
         this.position = position;
         this.name = name;
         this.type = type;

@@ -145,9 +145,8 @@ public class CommandParser {
                 }
                 actuals[i] = c;
             } else if (value != null) {
-                result.add(new ArgumentParameter(value.position(), value.name(),
-                        schema.simple(formal.getType()), value.min(), value.max(),
-                        actuals, i, null));
+                result.add(new ArgumentParameter(value.position(), value.name(), schema.simple(formal.getType()), value.min(), value.max(),
+                        actuals, i, value.dflt()));
             } else if (option != null) {
                 result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
             } else {

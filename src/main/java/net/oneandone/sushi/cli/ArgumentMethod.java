@@ -24,11 +24,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
+    public static ArgumentMethod create(Schema schema, Value value, Method method) {
+        return ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), null, method, null);
+
+    }
     public static ArgumentMethod create(Schema schema, Option option, Method method) {
-        return ArgumentMethod.create(0, option.value(), schema, 0, 1, null, method);
+        return ArgumentMethod.create(0, option.value(), schema, 0, 1, null, method, option.dflt());
     }
 
-    public static ArgumentMethod create(int position, String name, Schema metadata, int min, int max, Object context, Method method) {
+    public static ArgumentMethod create(int position, String name, Schema metadata, int min, int max, Object context, Method method, String dflt) {
         Class<?>[] formals;
         Type type;
         
@@ -44,7 +48,7 @@ public class ArgumentMethod extends Argument {
         }
         type = metadata.type(formals[0]);
         if (type instanceof SimpleType) {
-            return new ArgumentMethod(position, name, (SimpleType) type, min, max, context, method);
+            return new ArgumentMethod(position, name, (SimpleType) type, min, max, context, method, dflt);
         } else {
             throw new IllegalStateException(type.toString());
         }
@@ -55,8 +59,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(int position, String name, SimpleType simple, int min, int max, Object context, Method method) {
-        super(position, name, simple, min, max);
+    public ArgumentMethod(int position, String name, SimpleType simple, int min, int max, Object context, Method method, String dflt) {
+        super(position, name, simple, min, max, dflt);
         this.context = context;
         this.method = method;
     }

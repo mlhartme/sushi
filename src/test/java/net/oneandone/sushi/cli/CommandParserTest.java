@@ -27,7 +27,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -108,12 +107,12 @@ public class CommandParserTest {
         parser = CommandParser.create(METADATA, Options.class);
         options = (Options) parser.run();
         assertEquals(0, options.first);
-        assertNull(options.second);
+        assertEquals("", options.second);
         assertFalse(options.third);
 
         options = (Options) parser.run("-first", "1");
         assertEquals(1, options.first);
-        assertNull(options.second);
+        assertEquals("", options.second);
         assertFalse(options.third);
 
         try {
@@ -130,7 +129,7 @@ public class CommandParserTest {
 
         options = (Options) parser.run("-third");
         assertEquals(0, options.first);
-        assertNull(options.second);
+        assertEquals("", options.second);
         assertTrue(options.third);
 
         options = (Options) parser.run("-third", "-first", "-1", "-second", "bar");
@@ -162,8 +161,13 @@ public class CommandParserTest {
         constr = (Constr) parser.run("a", "-o", "1");
         assertEquals("a", constr.v);
         assertEquals(1, constr.o);
+        assertEquals(7, constr.l);
+
+        constr = (Constr) parser.run("a", "-l", "11");
+        assertEquals(0, constr.o);
+        assertEquals(11, constr.l);
     }
-    
+
     @Test
     public void normal() throws Throwable {
         Cli cli;
@@ -242,11 +246,14 @@ public class CommandParserTest {
     public static class Constr {
         public final String v;
         public final int o;
+        public final long l;
 
         public Constr(@Value(name = "v", position = 1, min = 1, max = 1) String v,
-                      @Option("o") int o) {
+                      @Option("o") int o,
+                      @Option(value = "l", dflt = "7") long l) {
             this.v = v;
             this.o = o;
+            this.l = l;
         }
 
         @Command("constr")

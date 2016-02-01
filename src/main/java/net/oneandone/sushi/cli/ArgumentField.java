@@ -24,14 +24,14 @@ import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
     public static ArgumentField create(Schema schema, Option option, Field field) {
-        return create(0, option.value(), schema, 0, 1, field);
+        return create(0, option.value(), schema, 0, 1, field, option.dflt());
     }
 
     public static ArgumentField create(Schema schema, Value value, Field field) {
-        return create(value.position(), value.name(), schema, value.min(), value.max(), field);
+        return create(value.position(), value.name(), schema, value.min(), value.max(), field, null);
     }
 
-    public static ArgumentField create(int position, String name, Schema schema, int minCount, int maxCount, Field field) {
+    public static ArgumentField create(int position, String name, Schema schema, int minCount, int maxCount, Field field, String dflt) {
         Type type;
         
         if (Modifier.isStatic(field.getModifiers())) {
@@ -39,7 +39,7 @@ public class ArgumentField extends Argument {
         }
         type = schema.type(field.getType());
         if (type instanceof SimpleType) {
-            return new ArgumentField(position, name, (SimpleType) type, minCount, maxCount, field);
+            return new ArgumentField(position, name, (SimpleType) type, minCount, maxCount, field, dflt);
         } else {
             throw new IllegalArgumentException("argument type not supported: " + field.getType());
         }
@@ -49,8 +49,8 @@ public class ArgumentField extends Argument {
 
     private final Field field;
     
-    public ArgumentField(int position, String name, SimpleType simple, int min, int max, Field field) {
-        super(position, name, simple, min, max);
+    public ArgumentField(int position, String name, SimpleType simple, int min, int max, Field field, String dflt) {
+        super(position, name, simple, min, max, dflt);
         this.field = field;
     }
 

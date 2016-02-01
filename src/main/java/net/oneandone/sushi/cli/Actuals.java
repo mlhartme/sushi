@@ -67,11 +67,12 @@ public class Actuals {
         }
     }
 
-    private void apply(Argument argument, Object target, List<String> value) {
+    private void apply(Argument argument, Object target, List<String> actual) {
+        String value;
         Object converted;
 
         if (argument.isList()) {
-            for (String str : value) {
+            for (String str : actual) {
                 try {
                     argument.set(target, argument.getType().stringToValue(str));
                 } catch (SimpleTypeException e) {
@@ -79,13 +80,19 @@ public class Actuals {
                 }
             }
         } else {
-            if (!value.isEmpty()) {
-                try {
-                    converted = argument.getType().stringToValue(value.get(0));
-                    argument.set(target, converted);
-                } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+            if (actual.isEmpty()) {
+                value = argument.getDefault();
+                if (Argument.DEFAULT_UNDEFINED.equals(value)) {
+                    value = argument.getType().valueToString(argument.getType().newInstance());
                 }
+            } else {
+                value = actual.get(0);
+            }
+            try {
+                converted = argument.getType().stringToValue(value);
+                argument.set(target, converted);
+            } catch (SimpleTypeException e) {
+                throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
             }
         }
     }

@@ -23,10 +23,10 @@ public class DoubleType extends SimpleType {
     public DoubleType(Schema schema) {
         super(schema, Double.class, "double");
     }
-    
+
     @Override
     public Object newInstance() {
-        return 0;
+        return (double) 0;
     }
 
     @Override

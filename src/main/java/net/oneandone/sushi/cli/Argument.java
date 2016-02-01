@@ -19,19 +19,23 @@ import net.oneandone.sushi.metadata.SimpleType;
 
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
+    public static final String DEFAULT_UNDEFINED = "_default_undefined_";
+
     /** 0 for options */
     private final int position;
     private final String name;
     private final SimpleType type;
     private final int min;
     private final int max;
+    private final String dflt;
 
-    protected Argument(int position, String name, SimpleType type, int min, int max) {
+    protected Argument(int position, String name, SimpleType type, int min, int max, String dflt) {
         this.position = position;
         this.name = name;
         this.type = type;
         this.min = min;
         this.max = max;
+        this.dflt = dflt;
     }
 
     public int position() {
@@ -59,6 +63,10 @@ public abstract class Argument {
         if (size > max) {
             throw new ArgumentException(name + ": too many values. Expected " + max + ", got " + size);
         }
+    }
+
+    public String getDefault() {
+        return dflt;
     }
 
     public boolean isOptional() {

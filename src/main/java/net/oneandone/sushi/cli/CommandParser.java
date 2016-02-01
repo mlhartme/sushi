@@ -65,7 +65,7 @@ public class CommandParser {
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addArgument(ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), null, m));
+                parser.addArgument(ArgumentMethod.create(schema, value, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
@@ -147,9 +147,9 @@ public class CommandParser {
             } else if (value != null) {
                 result.add(new ArgumentParameter(value.position(), value.name(),
                         schema.simple(formal.getType()), value.min(), value.max(),
-                        actuals, i));
+                        actuals, i, null));
             } else if (option != null) {
-                result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i));
+                result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
             } else {
                 throw new IllegalStateException();
             }

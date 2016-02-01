@@ -28,7 +28,7 @@ public class BooleanType extends SimpleType {
     public Object newInstance() {
         return Boolean.FALSE;
     }
-    
+
     @Override
     public String valueToString(Object obj) {
         return obj.toString();

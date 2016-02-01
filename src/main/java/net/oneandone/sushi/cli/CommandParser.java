@@ -49,7 +49,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(ArgumentMethod.create(0, option.value(), schema, 0, 1, oneContext, m));
+                    parser.addArgument(ArgumentMethod.create(0, option.value(), schema, 0, 1, oneContext, m));
                 }
             }
         }
@@ -61,22 +61,22 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addOption(ArgumentMethod.create(0, option.value(), schema, 0, 1, null, m));
+                parser.addArgument(ArgumentMethod.create(0, option.value(), schema, 0, 1, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), null, m));
+                parser.addArgument(ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(ArgumentField.create(0, option.value(), schema, 0, 1, f));
+                    parser.addArgument(ArgumentField.create(0, option.value(), schema, 0, 1, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addValue(ArgumentField.create(value.position(), value.name(), schema, value.min(), value.max(), f));
+                    parser.addArgument(ArgumentField.create(value.position(), value.name(), schema, value.min(), value.max(), f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -116,7 +116,7 @@ public class CommandParser {
         }
         result = new CommandParser(found, foundActuals);
         for (Argument a : foundArguments) {
-            result.addValue(a);
+            result.addArgument(a);
         }
         return result;
     }
@@ -191,26 +191,25 @@ public class CommandParser {
         return commands;
     }
 
-    public void addOption(Argument arg) {
+    public void addArgument(Argument arg) {
         String name;
-
-        name = arg.getName();
-        if (options.put(name, arg) != null) {
-            throw new IllegalArgumentException("duplicate option: " + name);
-        }
-    }
-    
-    public void addValue(Argument arg) {
         int idx;
 
-        idx = arg.position() - 1;
-        while (idx >= values.size()) {
-            values.add(null);
+        if (arg.position() == 0) {
+            name = arg.getName();
+            if (options.put(name, arg) != null) {
+                throw new IllegalArgumentException("duplicate option: " + name);
+            }
+        } else {
+            idx = arg.position() - 1;
+            while (idx >= values.size()) {
+                values.add(null);
+            }
+            if (values.get(idx) != null) {
+                throw new IllegalArgumentException("duplicate argument for position " + arg.position());
+            }
+            values.set(idx, arg);
         }
-        if (values.get(idx) != null) {
-            throw new IllegalArgumentException("duplicate argument for position " + arg.position());
-        }
-        values.set(idx, arg);
     }
 
     private static boolean isBoolean(Argument arg) {

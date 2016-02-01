@@ -159,9 +159,11 @@ public class CommandParserTest {
         Constr constr;
 
         parser = CommandParser.create(METADATA, Constr.class);
-        constr = (Constr) parser.run("a");
+        constr = (Constr) parser.run("a", "-o", "1");
         assertEquals("a", constr.v);
+        assertEquals(1, constr.o);
     }
+    
     @Test
     public void normal() throws Throwable {
         Cli cli;
@@ -239,9 +241,12 @@ public class CommandParserTest {
 
     public static class Constr {
         public final String v;
+        public final int o;
 
-        public Constr(@Value(name = "v", position = 1, min = 1, max = 1) String v) {
+        public Constr(@Value(name = "v", position = 1, min = 1, max = 1) String v,
+                      @Option("o") int o) {
             this.v = v;
+            this.o = o;
         }
 
         @Command("constr")

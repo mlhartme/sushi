@@ -149,7 +149,7 @@ public class CommandParser {
                         schema.simple(formal.getType()), value.min(), value.max(),
                         actuals, i));
             } else if (option != null) {
-                throw new IllegalStateException("TODO");
+                result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i));
             } else {
                 throw new IllegalStateException();
             }

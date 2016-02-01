@@ -17,18 +17,25 @@ package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.SimpleType;
 
-/** TODO: merge with Item? */
+/** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
+    /** 0 for options */
+    private final int position;
     private final String name;
     private final SimpleType type;
     private final int min;
     private final int max;
 
-    protected Argument(String name, SimpleType type, int min, int max) {
+    protected Argument(int position, String name, SimpleType type, int min, int max) {
+        this.position = position;
         this.name = name;
         this.type = type;
         this.min = min;
         this.max = max;
+    }
+
+    public int position() {
+        return position;
     }
 
     public int max() {

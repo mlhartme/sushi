@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(String name, Schema metadata, int minCount, int maxCount, Field field) {
+    public static ArgumentField create(int position, String name, Schema metadata, int minCount, int maxCount, Field field) {
         Type type;
         
         if (Modifier.isStatic(field.getModifiers())) {
@@ -31,7 +31,7 @@ public class ArgumentField extends Argument {
         }
         type = metadata.type(field.getType());
         if (type instanceof SimpleType) {
-            return new ArgumentField(name, (SimpleType) type, minCount, maxCount, field);
+            return new ArgumentField(position, name, (SimpleType) type, minCount, maxCount, field);
         } else {
             throw new IllegalArgumentException("argument type not supported: " + field.getType());
         }
@@ -41,8 +41,8 @@ public class ArgumentField extends Argument {
 
     private final Field field;
     
-    public ArgumentField(String name, SimpleType simple, int min, int max, Field field) {
-        super(name, simple, min, max);
+    public ArgumentField(int position, String name, SimpleType simple, int min, int max, Field field) {
+        super(position, name, simple, min, max);
         this.field = field;
     }
 

@@ -56,13 +56,13 @@ public class CliNormalSample {
         @Option("number")
         private int number = 7;
 
-        @Value(name = "first", position = 1)
-        private String first = null;
+        private final String first;
 
-        private List<String> remaining = new ArrayList<>();
+        private final List<String> remaining = new ArrayList<>();
 
-        public FirstCommand(Console console) {
+        public FirstCommand(Console console, @Value(name = "first", position = 1) String first) {
             this.console = console;
+            this.first = first;
         }
 
         @Value(name = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)

@@ -32,7 +32,7 @@ public class ArgumentFieldTest {
     private void check(String expected) {
         Argument arg;
         
-        arg = ArgumentField.create("fld", new ReflectSchema(World.createMinimal()), 1, 1, getField("fld"));
+        arg = ArgumentField.create(0, "fld", new ReflectSchema(World.createMinimal()), 1, 1, getField("fld"));
         arg.set(this, expected);
         assertEquals(expected, fld);
     }

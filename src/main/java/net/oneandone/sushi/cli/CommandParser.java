@@ -49,7 +49,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentMethod.create(option.value(), schema, 0, 1, oneContext, m));
+                    parser.addOption(option.value(), ArgumentMethod.create(0, option.value(), schema, 0, 1, oneContext, m));
                 }
             }
         }
@@ -61,22 +61,22 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addOption(option.value(), ArgumentMethod.create(option.value(), schema, 0, 1, null, m));
+                parser.addOption(option.value(), ArgumentMethod.create(0, option.value(), schema, 0, 1, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addValue(value.position(), ArgumentMethod.create(value.name(), schema, value.min(), value.max(), null, m));
+                parser.addValue(value.position(), ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addOption(option.value(), ArgumentField.create(option.value(), schema, 0, 1, f));
+                    parser.addOption(option.value(), ArgumentField.create(0, option.value(), schema, 0, 1, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addValue(value.position(), ArgumentField.create(value.name(), schema, value.min(), value.max(), f));
+                    parser.addValue(value.position(), ArgumentField.create(value.position(), value.name(), schema, value.min(), value.max(), f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -116,7 +116,7 @@ public class CommandParser {
         }
         result = new CommandParser(found, foundActuals);
         for (ArgumentParameter a : foundArguments) {
-            result.addValue(a.position, a);
+            result.addValue(a.position(), a);
         }
         return result;
     }
@@ -145,9 +145,9 @@ public class CommandParser {
                 }
                 actuals[i] = c;
             } else if (value != null) {
-                result.add(new ArgumentParameter(formal.getName(),
+                result.add(new ArgumentParameter(value.position(), value.name(),
                         schema.simple(formal.getType()), value.min(), value.max(),
-                        value.position(), actuals, i));
+                        actuals, i));
             } else if (option != null) {
                 throw new IllegalStateException("TODO");
             } else {

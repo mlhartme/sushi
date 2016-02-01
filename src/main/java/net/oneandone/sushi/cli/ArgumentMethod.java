@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(String name, Schema metadata, int min, int max, Object context, Method method) {
+    public static ArgumentMethod create(int position, String name, Schema metadata, int min, int max, Object context, Method method) {
         Class<?>[] formals;
         Type type;
         
@@ -40,7 +40,7 @@ public class ArgumentMethod extends Argument {
         }
         type = metadata.type(formals[0]);
         if (type instanceof SimpleType) {
-            return new ArgumentMethod(name, (SimpleType) type, min, max, context, method);
+            return new ArgumentMethod(position, name, (SimpleType) type, min, max, context, method);
         } else {
             throw new IllegalStateException(type.toString());
         }
@@ -51,8 +51,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(String name, SimpleType simple, int min, int max, Object context, Method method) {
-        super(name, simple, min, max);
+    public ArgumentMethod(int position, String name, SimpleType simple, int min, int max, Object context, Method method) {
+        super(position, name, simple, min, max);
         this.context = context;
         this.method = method;
     }

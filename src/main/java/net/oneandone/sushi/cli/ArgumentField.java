@@ -23,13 +23,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(int position, String name, Schema metadata, int minCount, int maxCount, Field field) {
+    public static ArgumentField create(Schema schema, Option option, Field field) {
+        return create(0, option.value(), schema, 0, 1, field);
+    }
+
+    public static ArgumentField create(Schema schema, Value value, Field field) {
+        return create(value.position(), value.name(), schema, value.min(), value.max(), field);
+    }
+
+    public static ArgumentField create(int position, String name, Schema schema, int minCount, int maxCount, Field field) {
         Type type;
         
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        type = metadata.type(field.getType());
+        type = schema.type(field.getType());
         if (type instanceof SimpleType) {
             return new ArgumentField(position, name, (SimpleType) type, minCount, maxCount, field);
         } else {

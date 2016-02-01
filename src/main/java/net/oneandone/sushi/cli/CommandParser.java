@@ -49,7 +49,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addArgument(ArgumentMethod.create(0, option.value(), schema, 0, 1, oneContext, m));
+                    parser.addArgument(ArgumentMethod.create(schema, option, m));
                 }
             }
         }
@@ -61,7 +61,7 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addArgument(ArgumentMethod.create(0, option.value(), schema, 0, 1, null, m));
+                parser.addArgument(ArgumentMethod.create(schema, option, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
@@ -72,11 +72,11 @@ public class CommandParser {
             for (Field f: commandClass.getDeclaredFields()) {
                 option = f.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addArgument(ArgumentField.create(0, option.value(), schema, 0, 1, f));
+                    parser.addArgument(ArgumentField.create(schema, option, f));
                 }
                 value = f.getAnnotation(Value.class);
                 if (value != null) {
-                    parser.addArgument(ArgumentField.create(value.position(), value.name(), schema, value.min(), value.max(), f));
+                    parser.addArgument(ArgumentField.create(schema, value, f));
                 }
             }
             commandClass = commandClass.getSuperclass();

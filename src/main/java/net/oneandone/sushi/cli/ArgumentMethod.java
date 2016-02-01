@@ -24,6 +24,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
+    public static ArgumentMethod create(Schema schema, Option option, Method method) {
+        return ArgumentMethod.create(0, option.value(), schema, 0, 1, null, method);
+    }
+
     public static ArgumentMethod create(int position, String name, Schema metadata, int min, int max, Object context, Method method) {
         Class<?>[] formals;
         Type type;

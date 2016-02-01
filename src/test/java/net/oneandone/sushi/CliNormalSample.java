@@ -61,8 +61,7 @@ public class CliNormalSample {
 
         private final List<String> remaining = new ArrayList<>();
 
-        public FirstCommand(@Context Console console,
-                            @Value(name = "first", position = 1) String first) {
+        public FirstCommand(@Context Console console, @Value(name = "first") String first) {
             this.console = console;
             this.first = first;
         }

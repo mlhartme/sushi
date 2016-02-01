@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Value {
     String name();
-    int position();
+    int position() default Argument.POSITION_UNDEFINED;
     int min() default 1;
     int max() default 1;
     String dflt() default Argument.DEFAULT_UNDEFINED;

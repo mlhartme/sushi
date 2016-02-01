@@ -248,7 +248,7 @@ public class CommandParserTest {
         public final int o;
         public final long l;
 
-        public Constr(@Value(name = "v", position = 1, min = 1, max = 1) String v,
+        public Constr(@Value(name = "v") String v,
                       @Option("o") int o,
                       @Option(value = "l", dflt = "7") long l) {
             this.v = v;

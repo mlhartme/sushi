@@ -133,9 +133,12 @@ public class CommandParser {
         Value value;
         Option option;
         Object c;
+        int position;
+        int currentPosition;
 
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
+        position = 1;
         for (int i = 0; i < formals.length; i++) {
             formal = formals[i];
             ctx = formal.getAnnotation(Context.class);
@@ -152,8 +155,13 @@ public class CommandParser {
                         }
                         actuals[i] = c;
                     } else if (value != null) {
-                        result.add(new ArgumentParameter(value.position(), value.name(), schema.simple(formal.getType()), value.min(), value.max(),
+                        currentPosition = value.position();
+                        if (currentPosition == Argument.POSITION_UNDEFINED) {
+                            currentPosition = position;
+                        }
+                        result.add(new ArgumentParameter(currentPosition, value.name(), schema.simple(formal.getType()), value.min(), value.max(),
                                 actuals, i, value.dflt()));
+                        position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
                     } else {

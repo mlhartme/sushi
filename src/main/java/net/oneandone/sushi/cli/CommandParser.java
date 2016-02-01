@@ -51,6 +51,10 @@ public class CommandParser {
                 if (option != null) {
                     parser.addArgument(ArgumentMethod.create(schema, option, oneContext, m));
                 }
+                value = m.getAnnotation(Value.class);
+                if (value != null) {
+                    parser.addArgument(ArgumentMethod.create(schema, value, oneContext, m));
+                }
             }
         }
 

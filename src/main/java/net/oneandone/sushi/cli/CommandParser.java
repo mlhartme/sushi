@@ -89,10 +89,10 @@ public class CommandParser {
 
     private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context) {
         Object[] actuals;
-        List<ArgumentParameter> arguments;
+        List<Argument> arguments;
         Constructor found;
         Object[] foundActuals;
-        List<ArgumentParameter> foundArguments;
+        List<Argument> foundArguments;
         CommandParser result;
 
         found = null;
@@ -115,13 +115,13 @@ public class CommandParser {
             throw new IllegalStateException(clazz + ": no matching constructor");
         }
         result = new CommandParser(found, foundActuals);
-        for (ArgumentParameter a : foundArguments) {
+        for (Argument a : foundArguments) {
             result.addValue(a);
         }
         return result;
     }
 
-    private static Object[] match(Schema schema, Constructor constructor, List<Object> context, List<ArgumentParameter> result) {
+    private static Object[] match(Schema schema, Constructor constructor, List<Object> context, List<Argument> result) {
         Parameter[] formals;
         Object[] actuals;
         Parameter formal;

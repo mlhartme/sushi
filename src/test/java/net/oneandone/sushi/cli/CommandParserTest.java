@@ -224,16 +224,16 @@ public class CommandParserTest {
 
     public static class Values {
         public FileNode first;
-        @Value(name = "second", position = 2)
+        @Value(value = "second", position = 2)
         public String second;
         public List<FileNode> remaining = new ArrayList<>();
 
-        @Value(name = "first", position = 1)
+        @Value(value = "first", position = 1)
         public void first(FileNode first) {
             this.first = first;
         }
 
-        @Value(name = "remaining", position = 3, min = 0, max = Integer.MAX_VALUE)
+        @Value(value = "remaining", position = 3, min = 0, max = Integer.MAX_VALUE)
         public void remaining(FileNode str) {
             remaining.add(str);
         }
@@ -248,7 +248,7 @@ public class CommandParserTest {
         public final int o;
         public final long l;
 
-        public Constr(@Value(name = "v") String v,
+        public Constr(@Value("v") String v,
                       @Option("o") int o,
                       @Option(value = "l", dflt = "7") long l) {
             this.v = v;

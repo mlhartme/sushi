@@ -51,7 +51,7 @@ public class CliSingleSample {
     @Option("number")
     private int number = 7;
 
-    @Value(name = "first", position = 1)
+    @Value(value = "first", position = 1)
     private String first = null;
 
     private List<String> remaining = new ArrayList<>();
@@ -59,7 +59,7 @@ public class CliSingleSample {
     public CliSingleSample() {
     }
 
-    @Value(name = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
+    @Value(value = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
     public void addRemaining(String str) {
         remaining.add(str);
     }

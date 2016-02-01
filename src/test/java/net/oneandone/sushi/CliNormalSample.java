@@ -45,7 +45,7 @@ public class CliNormalSample {
                 .addCommand(SecondCommand.class)
                 .addCommand(PackageVersion.class)
                 .addHelp("demo help").addDefaultCommand("help")
-                .run(args));
+                .run("first", "second"));
     }
 
     public static class FirstCommand {
@@ -61,12 +61,12 @@ public class CliNormalSample {
 
         private final List<String> remaining = new ArrayList<>();
 
-        public FirstCommand(@Context Console console, @Value(name = "first") String first) {
+        public FirstCommand(@Context Console console, @Value("first") String first) {
             this.console = console;
             this.first = first;
         }
 
-        @Value(name = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
+        @Value(value = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
         public void addRemaining(String str) {
             remaining.add(str);
         }

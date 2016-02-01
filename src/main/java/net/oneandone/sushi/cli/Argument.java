@@ -21,6 +21,7 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
+    public static final String NAME_UNDEFINED = "_name_undefined_";
     public static final String DEFAULT_UNDEFINED = "_default_undefined_";
 
     /** 0 for options */

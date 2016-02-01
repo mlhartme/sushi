@@ -135,6 +135,7 @@ public class CommandParser {
         Object c;
         int position;
         int currentPosition;
+        String name;
 
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
@@ -159,7 +160,11 @@ public class CommandParser {
                         if (currentPosition == Argument.POSITION_UNDEFINED) {
                             currentPosition = position;
                         }
-                        result.add(new ArgumentParameter(currentPosition, value.name(), schema.simple(formal.getType()), value.min(), value.max(),
+                        name = value.value();
+                        if (name.equals(Argument.NAME_UNDEFINED)) {
+                            name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
+                        }
+                        result.add(new ArgumentParameter(currentPosition, name, schema.simple(formal.getType()), value.min(), value.max(),
                                 actuals, i, value.dflt()));
                         position++;
                     } else if (option != null) {

@@ -25,7 +25,7 @@ import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
     public static ArgumentMethod create(Schema schema, Value value, Object context, Method method) {
-        return ArgumentMethod.create(value.position(), value.name(), schema, value.min(), value.max(), context, method, value.dflt());
+        return ArgumentMethod.create(value.position(), value.value(), schema, value.min(), value.max(), context, method, value.dflt());
 
     }
     public static ArgumentMethod create(Schema schema, Option option, Object context, Method method) {

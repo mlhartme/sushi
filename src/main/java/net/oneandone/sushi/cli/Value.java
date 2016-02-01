@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Value {
-    String name();
+    String value() default Argument.NAME_UNDEFINED;
     int position() default Argument.POSITION_UNDEFINED;
     int min() default 1;
     int max() default 1;

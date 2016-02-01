@@ -17,7 +17,6 @@ package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.SimpleType;
-import net.oneandone.sushi.metadata.Type;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,10 +31,9 @@ public class ArgumentMethod extends Argument {
         return ArgumentMethod.create(0, option.value(), schema, 0, 1, context, method, option.dflt());
     }
 
-    public static ArgumentMethod create(int position, String name, Schema metadata, int min, int max, Object context, Method method, String dflt) {
+    public static ArgumentMethod create(int position, String name, Schema schema, int min, int max, Object context, Method method, String dflt) {
         Class<?>[] formals;
-        Type type;
-        
+
         if (Modifier.isStatic(method.getModifiers())) {
             throw new IllegalArgumentException(method + ": static not allowed");
         }
@@ -46,12 +44,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        type = metadata.type(formals[0]);
-        if (type instanceof SimpleType) {
-            return new ArgumentMethod(position, name, (SimpleType) type, min, max, context, method, dflt);
-        } else {
-            throw new IllegalStateException(type.toString());
-        }
+        return new ArgumentMethod(position, name, schema.simple(formals[0]), min, max, context, method, dflt);
     }
     
     //--

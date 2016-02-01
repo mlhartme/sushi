@@ -18,6 +18,7 @@ package net.oneandone.sushi;
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
+import net.oneandone.sushi.cli.Context;
 import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.cli.Value;
@@ -60,7 +61,8 @@ public class CliNormalSample {
 
         private final List<String> remaining = new ArrayList<>();
 
-        public FirstCommand(Console console, @Value(name = "first", position = 1) String first) {
+        public FirstCommand(@Context Console console,
+                            @Value(name = "first", position = 1) String first) {
             this.console = console;
             this.first = first;
         }
@@ -83,7 +85,7 @@ public class CliNormalSample {
     public static class SecondCommand {
         private final Console console;
 
-        public SecondCommand(Console console) {
+        public SecondCommand(@Context Console console) {
             this.console = console;
         }
 

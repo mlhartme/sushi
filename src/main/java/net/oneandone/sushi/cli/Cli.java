@@ -188,7 +188,7 @@ public class Cli {
         private final Cli cli;
         private final Console console;
 
-        public Help(Cli cli, Console console) {
+        public Help(@Context Cli cli, @Context Console console) {
             this.cli = cli;
             this.console = console;
         }

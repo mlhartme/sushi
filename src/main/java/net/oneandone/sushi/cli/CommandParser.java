@@ -49,7 +49,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 option = m.getAnnotation(Option.class);
                 if (option != null) {
-                    parser.addArgument(ArgumentMethod.create(schema, option, m));
+                    parser.addArgument(ArgumentMethod.create(schema, option, oneContext, m));
                 }
             }
         }
@@ -61,11 +61,11 @@ public class CommandParser {
             }
             option = m.getAnnotation(Option.class);
             if (option != null) {
-                parser.addArgument(ArgumentMethod.create(schema, option, m));
+                parser.addArgument(ArgumentMethod.create(schema, option, null, m));
             }
             value = m.getAnnotation(Value.class);
             if (value != null) {
-                parser.addArgument(ArgumentMethod.create(schema, value, m));
+                parser.addArgument(ArgumentMethod.create(schema, value, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
@@ -125,6 +125,7 @@ public class CommandParser {
         Parameter[] formals;
         Object[] actuals;
         Parameter formal;
+        Context ctx;
         Value value;
         Option option;
         Object c;
@@ -133,28 +134,45 @@ public class CommandParser {
         actuals = new Object[formals.length];
         for (int i = 0; i < formals.length; i++) {
             formal = formals[i];
+            ctx = formal.getAnnotation(Context.class);
             value = formal.getAnnotation(Value.class);
             option = formal.getAnnotation(Option.class);
-            if (value != null && option != null) {
-                throw new IllegalStateException();
+            switch (count(ctx, value, option)) {
+                case 0:
+                    return null; // not fully annotated
+                case 1:
+                    if (ctx != null) {
+                        c = find(context, formal.getType());
+                        if (c == null) {
+                            throw new IllegalStateException("context object not found: " + formal);
+                        }
+                        actuals[i] = c;
+                    } else if (value != null) {
+                        result.add(new ArgumentParameter(value.position(), value.name(), schema.simple(formal.getType()), value.min(), value.max(),
+                                actuals, i, value.dflt()));
+                    } else if (option != null) {
+                        result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
+                    } else {
+                        throw new IllegalStateException();
+                    }
+                    break;
+                default:
+                    throw new IllegalStateException("duplicate annotations");
             }
-            if (value == null && option == null) {
-                c = find(context, formal.getType());
-                if (c == null) {
-                    return null;
-                }
-                actuals[i] = c;
-            } else if (value != null) {
-                result.add(new ArgumentParameter(value.position(), value.name(), schema.simple(formal.getType()), value.min(), value.max(),
-                        actuals, i, value.dflt()));
-            } else if (option != null) {
-                result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
-            } else {
-                throw new IllegalStateException();
-            }
-
         }
         return actuals;
+    }
+
+    private static int count(Object ... args) {
+        int count;
+
+        count = 0;
+        for (Object arg : args) {
+            if (arg != null) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private static Object find(List<Object> context, Class<?> type) {

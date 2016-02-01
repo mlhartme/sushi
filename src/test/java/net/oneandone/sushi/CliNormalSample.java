@@ -45,25 +45,25 @@ public class CliNormalSample {
                 .addCommand(SecondCommand.class)
                 .addCommand(PackageVersion.class)
                 .addHelp("demo help").addDefaultCommand("help")
-                .run("first", "second"));
+                .run("first", "-number", "8", "second"));
     }
 
     public static class FirstCommand {
         private final Console console;
 
-        @Option("flag")
-        private boolean flag = false;
-
-        @Option("number")
-        private int number = 7;
-
         private final String first;
-
+        private final boolean flag;
+        private final int number;
         private final List<String> remaining = new ArrayList<>();
 
-        public FirstCommand(@Context Console console, @Value("first") String first) {
+        public FirstCommand(@Context Console console,
+                            @Value("first") String first,
+                            @Option("flag") boolean flag,
+                            @Option(value = "number", dflt = "7") int number) {
             this.console = console;
             this.first = first;
+            this.flag = flag;
+            this.number = number;
         }
 
         @Value(value = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)

@@ -264,7 +264,7 @@ public class CommandParser {
     }
 
     private static boolean isBoolean(Argument arg) {
-        return arg.getType().getType().equals(Boolean.class);
+        return arg.getType().getRawType().equals(Boolean.class);
     }
 
 

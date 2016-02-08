@@ -119,7 +119,7 @@ public class Schema {
     }
 
     public void add(Type type) {
-        map.put(type.getType(), type);
+        map.put(type.getRawType(), type);
     }
     
     public void complex(ComplexType type) {

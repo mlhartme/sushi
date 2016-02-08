@@ -19,7 +19,7 @@ import java.util.Set;
 
 
 public abstract class SimpleType extends Type {
-    public SimpleType(Schema schema, Class<?> type, String name) {
+    public SimpleType(Schema schema, java.lang.reflect.Type type, String name) {
         super(schema, type, name);
     }
 

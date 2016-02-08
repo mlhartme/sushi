@@ -39,7 +39,7 @@ public class Saver {
     }
 
     public void save(Type type, Object obj, String key) {
-        if (obj != null && !type.getType().equals(obj.getClass())) {
+        if (obj != null && !type.getRawType().equals(obj.getClass())) {
             // saving derived object
             type = type.getSchema().type(obj.getClass());
         }
@@ -71,7 +71,7 @@ public class Saver {
         if (type instanceof SimpleType) {
             dest.put(key, ((SimpleType) type).valueToString(obj));
         } else if (obj == null) {
-            dest.put(key, type.getType().getName());
+            dest.put(key, type.getRawType().getName());
         } else {
             // instanceof ComplexType
             clazz = obj.getClass();
@@ -86,7 +86,7 @@ public class Saver {
     }
 
     private static boolean needsMarker(Type type, Class<?> clazz) {
-        if (!type.getType().equals(clazz)) {
+        if (!type.getRawType().equals(clazz)) {
             return true;
         }
         return ((type instanceof ComplexType) && ((ComplexType) type).items().isEmpty());

@@ -47,7 +47,7 @@ public abstract class Argument {
             try {
                 this.dflt = type.stringToValue(dflt);
             } catch (SimpleTypeException e) {
-                throw new IllegalArgumentException("cannot convert default value to type " + type.getType() + ": " + dflt);
+                throw new IllegalArgumentException("cannot convert default value to type " + type.getRawType() + ": " + dflt);
             }
         }
     }

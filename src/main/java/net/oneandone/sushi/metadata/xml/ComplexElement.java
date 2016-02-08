@@ -35,7 +35,7 @@ public class ComplexElement extends Element {
     public ComplexElement(Item<?> owner, ComplexType type) {
         super(owner);
         
-        if (owner != null && !owner.getType().getType().isAssignableFrom(type.getType())) {
+        if (owner != null && !owner.getType().getRawType().isAssignableFrom(type.getRawType())) {
             throw new IllegalArgumentException();
         }
         this.type = type;

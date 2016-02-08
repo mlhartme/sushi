@@ -23,6 +23,7 @@ import org.xml.sax.InputSource;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,21 +41,31 @@ public abstract class Type {
         "  </xs:attributeGroup>\n";
         
     protected final Schema schema;
-    protected final Class<?> type;
+    protected final java.lang.reflect.Type type;
+    protected final Class<?> rawType;
     protected final String name;
 
-    public Type(Schema schema, Class<?> type, String name) {
-        if (type.isPrimitive()) {
-            throw new IllegalArgumentException(type.getName());
-        }
-        if (type.isArray()) {
-            throw new IllegalArgumentException(type.getName());
-        }
-        if (Collection.class.isAssignableFrom(type)) {
-            throw new IllegalArgumentException(type.getName());
-        }
+    public Type(Schema schema, java.lang.reflect.Type type, String name) {
         this.schema = schema;
         this.type = type;
+        if (type instanceof Class) {
+            rawType = (Class) type;
+        } else {
+            try {
+                rawType = (Class) ((ParameterizedType) type).getRawType();
+            } catch (ClassCastException e) {
+                throw new UnsupportedOperationException();
+            }
+        }
+        if (rawType.isPrimitive()) {
+            throw new IllegalArgumentException(rawType.getName());
+        }
+        if (rawType.isArray()) {
+            throw new IllegalArgumentException(rawType.getName());
+        }
+        if (Collection.class.isAssignableFrom(rawType)) {
+            throw new IllegalArgumentException(rawType.getName());
+        }
         this.name = name;
     }
 
@@ -62,10 +73,14 @@ public abstract class Type {
         return schema;
     }
     
-    public Class<?> getType() {
+    public Class<?> getRawType() {
+        return rawType;
+    }
+
+    public java.lang.reflect.Type getType() {
         return type;
     }
-    
+
     public String getName() {
         return name;
     }

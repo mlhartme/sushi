@@ -43,7 +43,7 @@ public class ComplexTypeTest {
 
         item = type.lookup("name");
         assertEquals("name", item.getName());
-        assertEquals(String.class, item.getType().getType());
+        assertEquals(String.class, item.getType().getRawType());
         assertEquals("", item.getOne(demo));
         item.setOne(demo, "foo");
         assertEquals("foo", item.getOne(demo));
@@ -51,7 +51,7 @@ public class ComplexTypeTest {
 
         item = type.lookup("seats");
         assertEquals("seats", item.getName());
-        assertEquals(Integer.class, item.getType().getType());
+        assertEquals(Integer.class, item.getType().getRawType());
         item.setOne(demo, 7);
         assertEquals(7, item.getOne(demo));
     }

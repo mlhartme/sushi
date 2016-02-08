@@ -57,7 +57,7 @@ public class Serializer {
             if (actualType.equals(declaredType)) {
                 typeAttribute = null;
             } else {
-                typeAttribute = actualType.getType().getName();
+                typeAttribute = actualType.getRawType().getName();
             }
             if (actualType instanceof SimpleType) {
                 tree.text(name, typeAttribute, ((SimpleType) actualType).valueToString(obj));

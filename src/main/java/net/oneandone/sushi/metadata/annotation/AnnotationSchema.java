@@ -30,7 +30,7 @@ public class AnnotationSchema extends Schema {
         int modifier;
         Constructor<?> constr;
 
-        clazz = type.getType();
+        clazz = type.getRawType();
         if (clazz.getAnnotation(net.oneandone.sushi.metadata.annotation.Type.class) == null) {
             throw new IllegalArgumentException("missing type annotation: " + clazz);
         }

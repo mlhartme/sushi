@@ -23,7 +23,7 @@ import java.util.Set;
 public class ComplexType extends Type {
     private final List<Item<?>> items;
 
-    public ComplexType(Schema schema, Class<?> type, String name) {
+    public ComplexType(Schema schema, java.lang.reflect.Type type, String name) {
         super(schema, type, name);
 
         this.items = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ComplexType extends Type {
     @Override
     public Object newInstance() {
         try {
-            return type.newInstance();
+            return rawType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

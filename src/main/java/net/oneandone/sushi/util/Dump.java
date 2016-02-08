@@ -109,7 +109,7 @@ public class Dump {
     protected String toDump(SimpleType simpleType, Object obj) {
         Class<?> type;
         
-        type = simpleType.getType();
+        type = simpleType.getRawType();
         if (type == String.class) {
             return '"' + ((String) obj) + '"'; 
         } else if (type == Character.class) {

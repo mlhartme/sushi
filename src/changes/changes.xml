@@ -2,6 +2,9 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
     <release date="2015-08-xx" version="2.9.0">
+      <action date="2016-02-02" dev="mlhartme" type="update">
+        Generic type information now available in metadata.
+      </action>
       <action date="2016-01-28" dev="mlhartme" type="remove">
         Moved LineReader and LineFormat from fs package to io package.
       </action>

@@ -39,7 +39,7 @@ public class ReflectSchema extends Schema {
         Class<?> fieldType;
         Item<?> item;
         
-        for (Field field : type.getType().getDeclaredFields()) {
+        for (Field field : type.getRawType().getDeclaredFields()) {
             fieldType = field.getType();
             field.setAccessible(true);
             if (Modifier.isStatic(field.getModifiers())) {

@@ -172,12 +172,13 @@ public class CommandParser {
                             name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
                         }
                         result.add(new ArgumentParameter(
-                                new ArgumentDeclaration(currentPosition, name, schema.simple(formal.getType()), value.min(), value.max(), value.dflt()),
-                                actuals, i));
+                                new ArgumentDeclaration(currentPosition, name, value.min(), value.max(), value.dflt()),
+                                schema.simple(formal.getType()), actuals, i));
                         position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(
-                                new ArgumentDeclaration(0, option.value(), schema.simple(formal.getType()), 0, 1, option.dflt()), actuals, i));
+                                new ArgumentDeclaration(0, option.value(), 0, 1, option.dflt()),
+                                schema.simple(formal.getType()), actuals, i));
                     } else {
                         throw new IllegalStateException();
                     }
@@ -268,7 +269,7 @@ public class CommandParser {
     }
 
     private static boolean isBoolean(Argument arg) {
-        return arg.declaration().getType().getRawType().equals(Boolean.class);
+        return arg.type().getRawType().equals(Boolean.class);
     }
 
 

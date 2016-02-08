@@ -69,23 +69,33 @@ public class Actuals {
 
     private void apply(Argument argument, Object target, List<String> actual) {
         ArgumentDeclaration declaration;
+        String d;
         Object converted;
 
         declaration = argument.declaration();
         if (declaration.isList()) {
             for (String str : actual) {
                 try {
-                    argument.set(target, declaration.getType().stringToValue(str));
+                    argument.set(target, argument.type().stringToValue(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
             }
         } else {
             if (actual.isEmpty()) {
-                converted = declaration.getDefault();
+                d = declaration.getDefaultString();
+                if (ArgumentDeclaration.DEFAULT_UNDEFINED.equals(d)) {
+                    converted = argument.type().newInstance();
+                } else {
+                    try {
+                        converted = argument.type().stringToValue(d);
+                    } catch (SimpleTypeException e) {
+                        throw new IllegalArgumentException("cannot convert default value to type " + argument.type() + ": " + d);
+                    }
+                }
             } else {
                 try {
-                    converted = declaration.getType().stringToValue(actual.get(0));
+                    converted = argument.type().stringToValue(actual.get(0));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }

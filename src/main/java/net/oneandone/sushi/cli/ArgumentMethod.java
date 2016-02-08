@@ -44,7 +44,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(new ArgumentDeclaration(position, name, schema.simple(formals[0]), min, max, dflt), context, method);
+        return new ArgumentMethod(new ArgumentDeclaration(position, name, min, max, dflt), schema.simple(formals[0]), context, method);
     }
     
     //--
@@ -52,8 +52,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(ArgumentDeclaration declaration, Object context, Method method) {
-        super(declaration);
+    public ArgumentMethod(ArgumentDeclaration declaration, SimpleType type, Object context, Method method) {
+        super(declaration, type);
         this.context = context;
         this.method = method;
     }

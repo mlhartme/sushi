@@ -16,9 +16,42 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.SimpleType;
-import net.oneandone.sushi.metadata.SimpleTypeException;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+
+/** Value, Option and Remaining annotations result in Declarations */
 public class ArgumentDeclaration {
+
+    public static ArgumentDeclaration forAnnotation(AnnotatedElement element) {
+        ArgumentDeclaration result;
+
+        result = null;
+        for (Annotation a : element.getAnnotations()) {
+            if (a instanceof Option) {
+                result = merge(result, toDeclaration((Option) a));
+            } else if (a instanceof Value) {
+                result = merge(result, toDeclaration((Value) a));
+            }
+        }
+        return result;
+    }
+
+    private static ArgumentDeclaration merge(ArgumentDeclaration prev, ArgumentDeclaration next) {
+        if (prev != null) {
+            throw new IllegalArgumentException("ambiguous annotations");
+        }
+        return next;
+    }
+
+    public static ArgumentDeclaration toDeclaration(Option option) {
+        return new ArgumentDeclaration(0, option.value(), 0, 1, option.dflt());
+    }
+
+    public static ArgumentDeclaration toDeclaration(Value value) {
+        return new ArgumentDeclaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
+    }
+
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
     public static final String NAME_UNDEFINED = "_name_undefined_";
     public static final String DEFAULT_UNDEFINED = "_default_undefined_";
@@ -26,29 +59,19 @@ public class ArgumentDeclaration {
     /** 0 for options */
     private final int position;
     private final String name;
-    private final SimpleType type;
     private final int min;
     private final int max;
-    private final Object dflt;
+    private final String dflt;
 
-    public ArgumentDeclaration(int position, String name, SimpleType type, int min, int max, String dflt) {
+    public ArgumentDeclaration(int position, String name, int min, int max, String dflt) {
         if (dflt == null) {
             throw new IllegalArgumentException();
         }
         this.position = position;
         this.name = name;
-        this.type = type;
         this.min = min;
         this.max = max;
-        if (DEFAULT_UNDEFINED.equals(dflt)) {
-            this.dflt = type.newInstance();
-        } else {
-            try {
-                this.dflt = type.stringToValue(dflt);
-            } catch (SimpleTypeException e) {
-                throw new IllegalArgumentException("cannot convert default value to type " + type.getRawType() + ": " + dflt);
-            }
-        }
+        this.dflt = dflt;
     }
 
     public int position() {
@@ -62,10 +85,6 @@ public class ArgumentDeclaration {
     public String getName() {
         return name;
     }
-    
-    public SimpleType getType() {
-        return type;
-    }
 
     public void checkCardinality(int size) {
         if (size < min) {
@@ -76,7 +95,7 @@ public class ArgumentDeclaration {
         }
     }
 
-    public Object getDefault() {
+    public String getDefaultString() {
         return dflt;
     }
 

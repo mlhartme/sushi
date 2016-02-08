@@ -15,18 +15,23 @@
  */
 package net.oneandone.sushi.cli;
 
+import net.oneandone.sushi.metadata.SimpleType;
+
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     private final ArgumentDeclaration declaration;
+    private final SimpleType type;
 
-    protected Argument(ArgumentDeclaration declaration) {
+    protected Argument(ArgumentDeclaration declaration, SimpleType type) {
         this.declaration = declaration;
+        this.type = type;
     }
 
     public ArgumentDeclaration declaration() {
         return declaration;
     }
 
+    public SimpleType type() { return type; }
     public abstract boolean before();
     public abstract void set(Object obj, Object value);
 

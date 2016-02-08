@@ -23,15 +23,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(Schema schema, Value value, Object context, Method method) {
-        return ArgumentMethod.create(value.position(), value.value(), schema, value.min(), value.max(), context, method, value.dflt());
-
-    }
-    public static ArgumentMethod create(Schema schema, Option option, Object context, Method method) {
-        return ArgumentMethod.create(0, option.value(), schema, 0, 1, context, method, option.dflt());
-    }
-
-    public static ArgumentMethod create(int position, String name, Schema schema, int min, int max, Object context, Method method, String dflt) {
+    public static ArgumentMethod create(ArgumentDeclaration declaration, Schema schema, Object context, Method method) {
         Class<?>[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -44,7 +36,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(new ArgumentDeclaration(position, name, min, max, dflt), schema.simple(formals[0]), context, method);
+        return new ArgumentMethod(declaration, schema.simple(formals[0]), context, method);
     }
     
     //--

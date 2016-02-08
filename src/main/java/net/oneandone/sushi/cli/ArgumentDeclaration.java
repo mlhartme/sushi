@@ -15,8 +15,6 @@
  */
 package net.oneandone.sushi.cli;
 
-import net.oneandone.sushi.metadata.SimpleType;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
@@ -39,7 +37,7 @@ public class ArgumentDeclaration {
 
     private static ArgumentDeclaration merge(ArgumentDeclaration prev, ArgumentDeclaration next) {
         if (prev != null) {
-            throw new IllegalArgumentException("ambiguous annotations");
+            throw new IllegalArgumentException("ambiguous annotations: " + prev + " vs " + next);
         }
         return next;
     }

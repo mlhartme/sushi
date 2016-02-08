@@ -41,6 +41,7 @@ public class CommandParser {
     public static CommandParser create(Schema schema, List<Object> context, Object commandClassOrInstance) {
         Class<?> commandClass;
         CommandParser parser;
+        ArgumentDeclaration declaration;
         Option option;
         Value value;
         Command command;
@@ -54,13 +55,9 @@ public class CommandParser {
         }
         for (Object oneContext : context) {
             for (Method m : oneContext.getClass().getMethods()) {
-                option = m.getAnnotation(Option.class);
-                if (option != null) {
-                    parser.addArgument(ArgumentMethod.create(schema, option, oneContext, m));
-                }
-                value = m.getAnnotation(Value.class);
-                if (value != null) {
-                    parser.addArgument(ArgumentMethod.create(schema, value, oneContext, m));
+                declaration = ArgumentDeclaration.forAnnotation(m);
+                if (declaration != null) {
+                    parser.addArgument(ArgumentMethod.create(declaration, schema, oneContext, m));
                 }
             }
         }
@@ -70,24 +67,16 @@ public class CommandParser {
             if (command != null) {
                 parser.addCommand(CommandDefinition.create(parser, command.value(), m));
             }
-            option = m.getAnnotation(Option.class);
-            if (option != null) {
-                parser.addArgument(ArgumentMethod.create(schema, option, null, m));
-            }
-            value = m.getAnnotation(Value.class);
-            if (value != null) {
-                parser.addArgument(ArgumentMethod.create(schema, value, null, m));
+            declaration = ArgumentDeclaration.forAnnotation(m);
+            if (declaration != null) {
+                parser.addArgument(ArgumentMethod.create(declaration, schema, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
-                option = f.getAnnotation(Option.class);
-                if (option != null) {
-                    parser.addArgument(ArgumentField.create(schema, option, f));
-                }
-                value = f.getAnnotation(Value.class);
-                if (value != null) {
-                    parser.addArgument(ArgumentField.create(schema, value, f));
+                declaration = ArgumentDeclaration.forAnnotation(f);
+                if (declaration != null) {
+                    parser.addArgument(ArgumentField.create(declaration, schema, f));
                 }
             }
             commandClass = commandClass.getSuperclass();

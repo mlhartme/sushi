@@ -22,19 +22,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(Schema schema, Option option, Field field) {
-        return create(0, option.value(), schema, 0, 1, field, option.dflt());
-    }
-
-    public static ArgumentField create(Schema schema, Value value, Field field) {
-        return create(value.position(), value.value(), schema, value.min(), value.max(), field, value.dflt());
-    }
-
-    public static ArgumentField create(int position, String name, Schema schema, int minCount, int maxCount, Field field, String dflt) {
+    public static ArgumentField create(ArgumentDeclaration declaration, Schema schema, Field field) {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        return new ArgumentField(new ArgumentDeclaration(position, name, minCount, maxCount, dflt), schema.simple(field.getType()), field);
+        return new ArgumentField(declaration, schema.simple(field.getType()), field);
     }
     
     //--

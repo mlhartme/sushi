@@ -43,7 +43,7 @@ public class Actuals {
 
     public void checkCardinality() {
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
-            entry.getKey().checkCardinality(entry.getValue().size());
+            entry.getKey().declaration().checkCardinality(entry.getValue().size());
         }
     }
 
@@ -53,7 +53,7 @@ public class Actuals {
 
         value = actuals.get(formal);
         value.add(item);
-        return value.size() == formal.max();
+        return value.size() == formal.declaration().max();
     }
 
     public void apply(Object target) throws SimpleTypeException {
@@ -68,24 +68,26 @@ public class Actuals {
     }
 
     private void apply(Argument argument, Object target, List<String> actual) {
+        ArgumentDeclaration declaration;
         Object converted;
 
-        if (argument.isList()) {
+        declaration = argument.declaration();
+        if (declaration.isList()) {
             for (String str : actual) {
                 try {
-                    argument.set(target, argument.getType().stringToValue(str));
+                    argument.set(target, declaration.getType().stringToValue(str));
                 } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
             }
         } else {
             if (actual.isEmpty()) {
-                converted = argument.getDefault();
+                converted = declaration.getDefault();
             } else {
                 try {
-                    converted = argument.getType().stringToValue(actual.get(0));
+                    converted = declaration.getType().stringToValue(actual.get(0));
                 } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + argument.getName() + ": " + e.getMessage());
+                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
             }
             argument.set(target, converted);

@@ -16,7 +16,6 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
-import net.oneandone.sushi.metadata.SimpleType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -34,18 +33,19 @@ public class ArgumentField extends Argument {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        return new ArgumentField(position, name, schema.simple(field.getType()), minCount, maxCount, field, dflt);
+        return new ArgumentField(new ArgumentDeclaration(position, name, schema.simple(field.getType()), minCount, maxCount, dflt), field);
     }
     
     //--
 
     private final Field field;
     
-    public ArgumentField(int position, String name, SimpleType simple, int min, int max, Field field, String dflt) {
-        super(position, name, simple, min, max, dflt);
+    public ArgumentField(ArgumentDeclaration declaration, Field field) {
+        super(declaration);
         this.field = field;
     }
 
+    @Override
     public boolean before() {
         return false;
     }

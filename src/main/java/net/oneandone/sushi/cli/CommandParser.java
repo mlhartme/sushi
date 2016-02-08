@@ -164,18 +164,20 @@ public class CommandParser {
                         actuals[i] = c;
                     } else if (value != null) {
                         currentPosition = value.position();
-                        if (currentPosition == Argument.POSITION_UNDEFINED) {
+                        if (currentPosition == ArgumentDeclaration.POSITION_UNDEFINED) {
                             currentPosition = position;
                         }
                         name = value.value();
-                        if (name.equals(Argument.NAME_UNDEFINED)) {
+                        if (name.equals(ArgumentDeclaration.NAME_UNDEFINED)) {
                             name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
                         }
-                        result.add(new ArgumentParameter(currentPosition, name, schema.simple(formal.getType()), value.min(), value.max(),
-                                actuals, i, value.dflt()));
+                        result.add(new ArgumentParameter(
+                                new ArgumentDeclaration(currentPosition, name, schema.simple(formal.getType()), value.min(), value.max(), value.dflt()),
+                                actuals, i));
                         position++;
                     } else if (option != null) {
-                        result.add(new ArgumentParameter(0, option.value(), schema.simple(formal.getType()), 0, 1, actuals, i, option.dflt()));
+                        result.add(new ArgumentParameter(
+                                new ArgumentDeclaration(0, option.value(), schema.simple(formal.getType()), 0, 1, option.dflt()), actuals, i));
                     } else {
                         throw new IllegalStateException();
                     }
@@ -243,28 +245,30 @@ public class CommandParser {
     }
 
     public void addArgument(Argument arg) {
+        ArgumentDeclaration declaration;
         String name;
         int idx;
 
-        if (arg.position() == 0) {
-            name = arg.getName();
+        declaration = arg.declaration();
+        if (declaration.position() == 0) {
+            name = declaration.getName();
             if (options.put(name, arg) != null) {
                 throw new IllegalArgumentException("duplicate option: " + name);
             }
         } else {
-            idx = arg.position() - 1;
+            idx = declaration.position() - 1;
             while (idx >= values.size()) {
                 values.add(null);
             }
             if (values.get(idx) != null) {
-                throw new IllegalArgumentException("duplicate argument for position " + arg.position());
+                throw new IllegalArgumentException("duplicate argument for position " + declaration.position());
             }
             values.set(idx, arg);
         }
     }
 
     private static boolean isBoolean(Argument arg) {
-        return arg.getType().getRawType().equals(Boolean.class);
+        return arg.declaration().getType().getRawType().equals(Boolean.class);
     }
 
 

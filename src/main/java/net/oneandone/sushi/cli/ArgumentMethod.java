@@ -44,7 +44,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(position, name, schema.simple(formals[0]), min, max, context, method, dflt);
+        return new ArgumentMethod(new ArgumentDeclaration(position, name, schema.simple(formals[0]), min, max, dflt), context, method);
     }
     
     //--
@@ -52,8 +52,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(int position, String name, SimpleType simple, int min, int max, Object context, Method method, String dflt) {
-        super(position, name, simple, min, max, dflt);
+    public ArgumentMethod(ArgumentDeclaration declaration, Object context, Method method) {
+        super(declaration);
         this.context = context;
         this.method = method;
     }
@@ -69,7 +69,7 @@ public class ArgumentMethod extends Argument {
         try {
             method.invoke(context == null ? obj : context, value);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(getName() + ": " + value + ":" + value.getClass(), e);
+            throw new RuntimeException(declaration().getName() + ": " + value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -81,7 +81,7 @@ public class ArgumentMethod extends Argument {
                 throw (ArgumentException) cause;
             }
             if (cause instanceof RuntimeException) {
-                throw new RuntimeException(getName(), cause);
+                throw new RuntimeException(declaration().getName(), cause);
             }
             throw new RuntimeException("unexpected exception" , cause);
         }

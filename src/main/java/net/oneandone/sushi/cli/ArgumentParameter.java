@@ -1,14 +1,11 @@
 package net.oneandone.sushi.cli;
 
-import net.oneandone.sushi.metadata.SimpleType;
-
 public class ArgumentParameter extends Argument {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(int position, String name, SimpleType type, int min, int max,
-                                Object[] actuals, int idx, String dflt) {
-        super(position, name, type, min, max, dflt);
+    protected ArgumentParameter(ArgumentDeclaration declaration, Object[] actuals, int idx) {
+        super(declaration);
         this.actuals = actuals;
         this.idx = idx;
     }

@@ -6,7 +6,7 @@ public class ArgumentParameter extends Argument {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(ArgumentDeclaration declaration, SimpleType type, Object[] actuals, int idx) {
+    protected ArgumentParameter(Declaration declaration, SimpleType type, Object[] actuals, int idx) {
         super(declaration, type);
         this.actuals = actuals;
         this.idx = idx;

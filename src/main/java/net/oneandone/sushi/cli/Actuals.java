@@ -68,7 +68,7 @@ public class Actuals {
     }
 
     private void apply(Argument argument, Object target, List<String> actual) {
-        ArgumentDeclaration declaration;
+        Declaration declaration;
         String d;
         Object converted;
 
@@ -84,7 +84,7 @@ public class Actuals {
         } else {
             if (actual.isEmpty()) {
                 d = declaration.getDefaultString();
-                if (ArgumentDeclaration.DEFAULT_UNDEFINED.equals(d)) {
+                if (Declaration.DEFAULT_UNDEFINED.equals(d)) {
                     converted = argument.type().newInstance();
                 } else {
                     try {

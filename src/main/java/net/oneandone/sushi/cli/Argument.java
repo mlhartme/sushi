@@ -19,15 +19,15 @@ import net.oneandone.sushi.metadata.SimpleType;
 
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
-    private final ArgumentDeclaration declaration;
+    private final Declaration declaration;
     private final SimpleType type;
 
-    protected Argument(ArgumentDeclaration declaration, SimpleType type) {
+    protected Argument(Declaration declaration, SimpleType type) {
         this.declaration = declaration;
         this.type = type;
     }
 
-    public ArgumentDeclaration declaration() {
+    public Declaration declaration() {
         return declaration;
     }
 

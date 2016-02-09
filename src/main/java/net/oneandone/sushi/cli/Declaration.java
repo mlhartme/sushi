@@ -19,10 +19,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
 /** Value, Option and Remaining annotations result in Declarations */
-public class ArgumentDeclaration {
+public class Declaration {
 
-    public static ArgumentDeclaration forAnnotation(AnnotatedElement element) {
-        ArgumentDeclaration result;
+    public static Declaration forAnnotation(AnnotatedElement element) {
+        Declaration result;
 
         result = null;
         for (Annotation a : element.getAnnotations()) {
@@ -35,19 +35,19 @@ public class ArgumentDeclaration {
         return result;
     }
 
-    private static ArgumentDeclaration merge(ArgumentDeclaration prev, ArgumentDeclaration next) {
+    private static Declaration merge(Declaration prev, Declaration next) {
         if (prev != null) {
             throw new IllegalArgumentException("ambiguous annotations: " + prev + " vs " + next);
         }
         return next;
     }
 
-    public static ArgumentDeclaration toDeclaration(Option option) {
-        return new ArgumentDeclaration(0, option.value(), 0, 1, option.dflt());
+    public static Declaration toDeclaration(Option option) {
+        return new Declaration(0, option.value(), 0, 1, option.dflt());
     }
 
-    public static ArgumentDeclaration toDeclaration(Value value) {
-        return new ArgumentDeclaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
+    public static Declaration toDeclaration(Value value) {
+        return new Declaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
     }
 
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
@@ -61,7 +61,7 @@ public class ArgumentDeclaration {
     private final int max;
     private final String dflt;
 
-    public ArgumentDeclaration(int position, String name, int min, int max, String dflt) {
+    public Declaration(int position, String name, int min, int max, String dflt) {
         if (dflt == null) {
             throw new IllegalArgumentException();
         }

@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(ArgumentDeclaration declaration, Schema schema, Field field) {
+    public static ArgumentField create(Declaration declaration, Schema schema, Field field) {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
@@ -33,7 +33,7 @@ public class ArgumentField extends Argument {
 
     private final Field field;
     
-    public ArgumentField(ArgumentDeclaration declaration, SimpleType type, Field field) {
+    public ArgumentField(Declaration declaration, SimpleType type, Field field) {
         super(declaration, type);
         this.field = field;
     }

@@ -41,7 +41,7 @@ public class CommandParser {
     public static CommandParser create(Schema schema, List<Object> context, Object commandClassOrInstance) {
         Class<?> commandClass;
         CommandParser parser;
-        ArgumentDeclaration declaration;
+        Declaration declaration;
         Option option;
         Value value;
         Command command;
@@ -55,7 +55,7 @@ public class CommandParser {
         }
         for (Object oneContext : context) {
             for (Method m : oneContext.getClass().getMethods()) {
-                declaration = ArgumentDeclaration.forAnnotation(m);
+                declaration = Declaration.forAnnotation(m);
                 if (declaration != null) {
                     parser.addArgument(ArgumentMethod.create(declaration, schema, oneContext, m));
                 }
@@ -67,14 +67,14 @@ public class CommandParser {
             if (command != null) {
                 parser.addCommand(CommandDefinition.create(parser, command.value(), m));
             }
-            declaration = ArgumentDeclaration.forAnnotation(m);
+            declaration = Declaration.forAnnotation(m);
             if (declaration != null) {
                 parser.addArgument(ArgumentMethod.create(declaration, schema, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
-                declaration = ArgumentDeclaration.forAnnotation(f);
+                declaration = Declaration.forAnnotation(f);
                 if (declaration != null) {
                     parser.addArgument(ArgumentField.create(declaration, schema, f));
                 }
@@ -153,20 +153,20 @@ public class CommandParser {
                         actuals[i] = c;
                     } else if (value != null) {
                         currentPosition = value.position();
-                        if (currentPosition == ArgumentDeclaration.POSITION_UNDEFINED) {
+                        if (currentPosition == Declaration.POSITION_UNDEFINED) {
                             currentPosition = position;
                         }
                         name = value.value();
-                        if (name.equals(ArgumentDeclaration.NAME_UNDEFINED)) {
+                        if (name.equals(Declaration.NAME_UNDEFINED)) {
                             name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
                         }
                         result.add(new ArgumentParameter(
-                                new ArgumentDeclaration(currentPosition, name, value.min(), value.max(), value.dflt()),
+                                new Declaration(currentPosition, name, value.min(), value.max(), value.dflt()),
                                 schema.simple(formal.getType()), actuals, i));
                         position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(
-                                new ArgumentDeclaration(0, option.value(), 0, 1, option.dflt()),
+                                new Declaration(0, option.value(), 0, 1, option.dflt()),
                                 schema.simple(formal.getType()), actuals, i));
                     } else {
                         throw new IllegalStateException();
@@ -235,7 +235,7 @@ public class CommandParser {
     }
 
     public void addArgument(Argument arg) {
-        ArgumentDeclaration declaration;
+        Declaration declaration;
         String name;
         int idx;
 

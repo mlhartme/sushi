@@ -23,9 +23,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Value {
-    String value() default ArgumentDeclaration.NAME_UNDEFINED;
-    int position() default ArgumentDeclaration.POSITION_UNDEFINED;
+    String value() default Declaration.NAME_UNDEFINED;
+    int position() default Declaration.POSITION_UNDEFINED;
     int min() default 1;
     int max() default 1;
-    String dflt() default ArgumentDeclaration.DEFAULT_UNDEFINED;
+    String dflt() default Declaration.DEFAULT_UNDEFINED;
 }

@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(ArgumentDeclaration declaration, Schema schema, Object context, Method method) {
+    public static ArgumentMethod create(Declaration declaration, Schema schema, Object context, Method method) {
         Class<?>[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -44,7 +44,7 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(ArgumentDeclaration declaration, SimpleType type, Object context, Method method) {
+    public ArgumentMethod(Declaration declaration, SimpleType type, Object context, Method method) {
         super(declaration, type);
         this.context = context;
         this.method = method;

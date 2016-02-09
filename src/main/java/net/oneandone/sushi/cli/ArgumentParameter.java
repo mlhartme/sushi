@@ -16,7 +16,7 @@ public class ArgumentParameter extends Argument {
     }
 
     @Override
-    public void set(Object obj, Object value) {
+    public void doSet(Object obj, Object value) {
         actuals[idx] = value;
     }
 }

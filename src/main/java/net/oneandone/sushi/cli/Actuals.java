@@ -62,7 +62,7 @@ public class Actuals {
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
             argument = entry.getKey();
             if (argument.before() == (target == null)) {
-                argument.apply(target, entry.getValue());
+                argument.set(target, entry.getValue());
             }
         }
     }

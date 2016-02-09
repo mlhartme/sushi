@@ -35,7 +35,7 @@ public class ArgumentFieldTest {
         arg = ArgumentField.create(
                 new Declaration(0, "fld", 1, 1, Declaration.DEFAULT_UNDEFINED),
                 new ReflectSchema(World.createMinimal()), getField("fld"));
-        arg.set(this, expected);
+        arg.doSet(this, expected);
         assertEquals(expected, fld);
     }
 

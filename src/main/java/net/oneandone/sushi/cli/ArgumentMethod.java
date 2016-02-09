@@ -56,7 +56,7 @@ public class ArgumentMethod extends Argument {
     }
 
     @Override
-    public void set(Object obj, Object value) {
+    public void doSet(Object obj, Object value) {
         Throwable cause;
         
         try {

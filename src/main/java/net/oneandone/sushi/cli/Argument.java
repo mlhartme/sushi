@@ -35,11 +35,11 @@ public abstract class Argument {
 
     public ArgumentType type() { return type; }
     public abstract boolean before();
-    public abstract void set(Object obj, Object value);
+    public abstract void doSet(Object obj, Object value);
 
     //-- TODO
 
-    public void apply(Object target, List<String> actual) {
+    public void set(Object target, List<String> actual) {
         Declaration declaration;
         String d;
         Object converted;
@@ -48,7 +48,7 @@ public abstract class Argument {
         if (declaration.isList()) {
             for (String str : actual) {
                 try {
-                    set(target, type().stringToValue(str));
+                    doSet(target, type().stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
@@ -57,23 +57,22 @@ public abstract class Argument {
             if (actual.isEmpty()) {
                 d = declaration.getDefaultString();
                 if (Declaration.DEFAULT_UNDEFINED.equals(d)) {
-                    converted = type().newInstance();
+                    converted = type().newComponent();
                 } else {
                     try {
-                        converted = type().stringToValue(d);
+                        converted = type().stringToComponent(d);
                     } catch (SimpleTypeException e) {
                         throw new IllegalArgumentException("cannot convert default value to type " + type() + ": " + d);
                     }
                 }
             } else {
                 try {
-                    converted = type().stringToValue(actual.get(0));
+                    converted = type().stringToComponent(actual.get(0));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
             }
-            set(target, converted);
+            doSet(target, converted);
         }
     }
-
 }

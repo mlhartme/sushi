@@ -43,7 +43,7 @@ public class ArgumentField extends Argument {
     }
 
     @Override
-    public void set(Object obj, Object value) {
+    public void doSet(Object obj, Object value) {
         field.setAccessible(true);
         try {
             field.set(obj, value);

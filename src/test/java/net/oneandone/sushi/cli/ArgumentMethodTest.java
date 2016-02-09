@@ -34,7 +34,7 @@ public class ArgumentMethodTest {
         
         arg = ArgumentMethod.create(new Declaration(0, "setInt", 1, 1, Declaration.DEFAULT_UNDEFINED),
                 new ReflectSchema(World.createMinimal()), null, getMethod());
-        arg.set(this, expected);
+        arg.doSet(this, expected);
         assertEquals(expected, i);
     }
 

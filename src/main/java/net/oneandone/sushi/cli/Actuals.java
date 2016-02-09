@@ -62,45 +62,8 @@ public class Actuals {
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
             argument = entry.getKey();
             if (argument.before() == (target == null)) {
-                apply(argument, target, entry.getValue());
+                argument.apply(target, entry.getValue());
             }
-        }
-    }
-
-    private void apply(Argument argument, Object target, List<String> actual) {
-        Declaration declaration;
-        String d;
-        Object converted;
-
-        declaration = argument.declaration();
-        if (declaration.isList()) {
-            for (String str : actual) {
-                try {
-                    argument.set(target, argument.type().stringToValue(str));
-                } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
-                }
-            }
-        } else {
-            if (actual.isEmpty()) {
-                d = declaration.getDefaultString();
-                if (Declaration.DEFAULT_UNDEFINED.equals(d)) {
-                    converted = argument.type().newInstance();
-                } else {
-                    try {
-                        converted = argument.type().stringToValue(d);
-                    } catch (SimpleTypeException e) {
-                        throw new IllegalArgumentException("cannot convert default value to type " + argument.type() + ": " + d);
-                    }
-                }
-            } else {
-                try {
-                    converted = argument.type().stringToValue(actual.get(0));
-                } catch (SimpleTypeException e) {
-                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
-                }
-            }
-            argument.set(target, converted);
         }
     }
 }

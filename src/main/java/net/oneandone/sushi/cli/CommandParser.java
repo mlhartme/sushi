@@ -42,8 +42,6 @@ public class CommandParser {
         Class<?> commandClass;
         CommandParser parser;
         Declaration declaration;
-        Option option;
-        Value value;
         Command command;
 
         if (commandClassOrInstance instanceof Class) {
@@ -162,12 +160,12 @@ public class CommandParser {
                         }
                         result.add(new ArgumentParameter(
                                 new Declaration(currentPosition, name, value.min(), value.max(), value.dflt()),
-                                schema.simple(formal.getType()), actuals, i));
+                                ArgumentType.forReflect(schema, formal.getParameterizedType()), actuals, i));
                         position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(
                                 new Declaration(0, option.value(), 0, 1, option.dflt()),
-                                schema.simple(formal.getType()), actuals, i));
+                                ArgumentType.forReflect(schema, formal.getParameterizedType()), actuals, i));
                     } else {
                         throw new IllegalStateException();
                     }
@@ -258,7 +256,7 @@ public class CommandParser {
     }
 
     private static boolean isBoolean(Argument arg) {
-        return arg.type().getRawType().equals(Boolean.class);
+        return arg.type().isBoolean();
     }
 
 

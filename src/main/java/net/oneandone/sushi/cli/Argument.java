@@ -15,14 +15,16 @@
  */
 package net.oneandone.sushi.cli;
 
-import net.oneandone.sushi.metadata.SimpleType;
+import net.oneandone.sushi.metadata.SimpleTypeException;
+
+import java.util.List;
 
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     private final Declaration declaration;
-    private final SimpleType type;
+    private final ArgumentType type;
 
-    protected Argument(Declaration declaration, SimpleType type) {
+    protected Argument(Declaration declaration, ArgumentType type) {
         this.declaration = declaration;
         this.type = type;
     }
@@ -31,8 +33,47 @@ public abstract class Argument {
         return declaration;
     }
 
-    public SimpleType type() { return type; }
+    public ArgumentType type() { return type; }
     public abstract boolean before();
     public abstract void set(Object obj, Object value);
+
+    //-- TODO
+
+    public void apply(Object target, List<String> actual) {
+        Declaration declaration;
+        String d;
+        Object converted;
+
+        declaration = declaration();
+        if (declaration.isList()) {
+            for (String str : actual) {
+                try {
+                    set(target, type().stringToValue(str));
+                } catch (SimpleTypeException e) {
+                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
+                }
+            }
+        } else {
+            if (actual.isEmpty()) {
+                d = declaration.getDefaultString();
+                if (Declaration.DEFAULT_UNDEFINED.equals(d)) {
+                    converted = type().newInstance();
+                } else {
+                    try {
+                        converted = type().stringToValue(d);
+                    } catch (SimpleTypeException e) {
+                        throw new IllegalArgumentException("cannot convert default value to type " + type() + ": " + d);
+                    }
+                }
+            } else {
+                try {
+                    converted = type().stringToValue(actual.get(0));
+                } catch (SimpleTypeException e) {
+                    throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
+                }
+            }
+            set(target, converted);
+        }
+    }
 
 }

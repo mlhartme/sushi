@@ -16,15 +16,15 @@
 package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
-import net.oneandone.sushi.metadata.SimpleType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 
 public class ArgumentMethod extends Argument {
     public static ArgumentMethod create(Declaration declaration, Schema schema, Object context, Method method) {
-        Class<?>[] formals;
+        Parameter[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
             throw new IllegalArgumentException(method + ": static not allowed");
@@ -32,11 +32,12 @@ public class ArgumentMethod extends Argument {
         if (!Modifier.isPublic(method.getModifiers())) {
             throw new IllegalArgumentException(method + ": public expected");
         }
-        formals = method.getParameterTypes();
+        formals = method.getParameters();
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(declaration, schema.simple(formals[0]), context, method);
+        return new ArgumentMethod(declaration, ArgumentType.forReflect(schema, formals[0].getParameterizedType()),
+                context, method);
     }
     
     //--
@@ -44,7 +45,7 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(Declaration declaration, SimpleType type, Object context, Method method) {
+    public ArgumentMethod(Declaration declaration, ArgumentType type, Object context, Method method) {
         super(declaration, type);
         this.context = context;
         this.method = method;

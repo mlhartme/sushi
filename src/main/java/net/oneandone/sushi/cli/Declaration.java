@@ -30,6 +30,8 @@ public class Declaration {
                 result = merge(result, toDeclaration((Option) a));
             } else if (a instanceof Value) {
                 result = merge(result, toDeclaration((Value) a));
+            } else if (a instanceof Remaining) {
+                result = merge(result, toDeclaration((Remaining) a));
             }
         }
         return result;
@@ -42,12 +44,16 @@ public class Declaration {
         return next;
     }
 
+    public static Declaration toDeclaration(Value value) {
+        return new Declaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
+    }
+
     public static Declaration toDeclaration(Option option) {
         return new Declaration(0, option.value(), 0, 1, option.dflt());
     }
 
-    public static Declaration toDeclaration(Value value) {
-        return new Declaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
+    public static Declaration toDeclaration(Remaining remaining) {
+        return new Declaration(remaining.position(), remaining.value(), 0, Integer.MAX_VALUE, DEFAULT_UNDEFINED);
     }
 
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;

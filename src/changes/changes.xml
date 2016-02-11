@@ -111,6 +111,8 @@
       <action date="2015-12-29" dev="mlhartme" type="update">
         Compile for Java 8.
       </action>
+    </release>
+    <release date="2016-02-11" version="2.8.19">
       <action date="2015-09-22" dev="mlhartme" type="update">
         Make World fileFilesystem and memoryFilesystem configurable for improved testability.
       </action>

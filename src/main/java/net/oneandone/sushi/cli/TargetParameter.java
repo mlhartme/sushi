@@ -2,11 +2,11 @@ package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.Schema;
 
-public class ArgumentParameter extends Target {
+public class TargetParameter extends Target {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(Schema schema, java.lang.reflect.Type type, Object[] actuals, int idx) {
+    protected TargetParameter(Schema schema, java.lang.reflect.Type type, Object[] actuals, int idx) {
         super(schema, type);
         this.actuals = actuals;
         this.idx = idx;

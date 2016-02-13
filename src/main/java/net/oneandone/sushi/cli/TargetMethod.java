@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
-public class ArgumentMethod extends Target {
-    public static ArgumentMethod create(Schema schema, Object context, Method method) {
+public class TargetMethod extends Target {
+    public static TargetMethod create(Schema schema, Object context, Method method) {
         Parameter[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -36,7 +36,7 @@ public class ArgumentMethod extends Target {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(schema, formals[0].getParameterizedType(), context, method);
+        return new TargetMethod(schema, formals[0].getParameterizedType(), context, method);
     }
     
     //--
@@ -44,7 +44,7 @@ public class ArgumentMethod extends Target {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(Schema schema, java.lang.reflect.Type type, Object context, Method method) {
+    public TargetMethod(Schema schema, java.lang.reflect.Type type, Object context, Method method) {
         super(schema, type);
         this.context = context;
         this.method = method;

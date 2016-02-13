@@ -23,16 +23,16 @@ import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertEquals;
 
-public class ArgumentFieldTest {
+public class TargetFieldTest {
     @Test
     public void integer() {
         check("XY");
     }
     
     private void check(String expected) {
-        ArgumentField arg;
+        TargetField arg;
         
-        arg = ArgumentField.create(
+        arg = TargetField.create(
                 new ReflectSchema(World.createMinimal()), getField("fld"));
         arg.doSet(this, expected);
         assertEquals(expected, fld);

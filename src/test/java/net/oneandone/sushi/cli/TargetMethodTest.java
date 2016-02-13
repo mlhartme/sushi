@@ -23,16 +23,16 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertEquals;
 
-public class ArgumentMethodTest {
+public class TargetMethodTest {
     @Test
     public void integer() {
         check(1);
     }
     
     private void check(int expected) {
-        ArgumentMethod arg;
+        TargetMethod arg;
         
-        arg = ArgumentMethod.create(
+        arg = TargetMethod.create(
                 new ReflectSchema(World.createMinimal()), null, getMethod());
         arg.doSet(this, expected);
         assertEquals(expected, i);

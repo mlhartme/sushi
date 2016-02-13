@@ -237,7 +237,7 @@ public class CommandParser {
         String name;
         int idx;
 
-        source = arg.declaration();
+        source = arg.source();
         if (source.position() == 0) {
             name = source.getName();
             if (options.put(name, arg) != null) {

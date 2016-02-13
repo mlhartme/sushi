@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
 /**
- * Defines the part of a command line that comprive one argument.
+ * Defines the part of a command line that comprise one argument.
  * Value, Option and Remaining annotations result in Source objects */
 public class Source {
 

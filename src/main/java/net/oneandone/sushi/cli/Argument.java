@@ -29,7 +29,7 @@ public abstract class Argument {
         this.type = type;
     }
 
-    public Source declaration() {
+    public Source source() {
         return source;
     }
 
@@ -47,7 +47,7 @@ public abstract class Argument {
         String d;
         Object converted;
 
-        source = declaration();
+        source = source();
         if (source.isList()) {
             for (String str : actual) {
                 try {

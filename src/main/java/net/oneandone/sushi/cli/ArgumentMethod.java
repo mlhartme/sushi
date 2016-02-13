@@ -62,7 +62,7 @@ public class ArgumentMethod extends Argument {
         try {
             method.invoke(context == null ? obj : context, value);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(declaration().getName() + ": " + value + ":" + value.getClass(), e);
+            throw new RuntimeException(source().getName() + ": " + value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -74,7 +74,7 @@ public class ArgumentMethod extends Argument {
                 throw (ArgumentException) cause;
             }
             if (cause instanceof RuntimeException) {
-                throw new RuntimeException(declaration().getName(), cause);
+                throw new RuntimeException(source().getName(), cause);
             }
             throw new RuntimeException("unexpected exception" , cause);
         }

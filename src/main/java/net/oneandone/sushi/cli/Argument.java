@@ -22,7 +22,7 @@ import java.util.List;
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     private final Declaration declaration;
-    private final ArgumentType type;
+    private final ArgumentType type; // where to store
 
     protected Argument(Declaration declaration, ArgumentType type) {
         this.declaration = declaration;
@@ -33,7 +33,10 @@ public abstract class Argument {
         return declaration;
     }
 
-    public ArgumentType type() { return type; }
+    public boolean isBoolean() {
+        return type.isBoolean();
+    }
+
     public abstract boolean before();
     public abstract void doSet(Object obj, Object value);
 
@@ -48,7 +51,7 @@ public abstract class Argument {
         if (declaration.isList()) {
             for (String str : actual) {
                 try {
-                    doSet(target, type().stringToComponent(str));
+                    doSet(target, type.stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }
@@ -57,17 +60,17 @@ public abstract class Argument {
             if (actual.isEmpty()) {
                 d = declaration.getDefaultString();
                 if (Declaration.DEFAULT_UNDEFINED.equals(d)) {
-                    converted = type().newComponent();
+                    converted = type.newComponent();
                 } else {
                     try {
-                        converted = type().stringToComponent(d);
+                        converted = type.stringToComponent(d);
                     } catch (SimpleTypeException e) {
-                        throw new IllegalArgumentException("cannot convert default value to type " + type() + ": " + d);
+                        throw new IllegalArgumentException("cannot convert default value to type " + type + ": " + d);
                     }
                 }
             } else {
                 try {
-                    converted = type().stringToComponent(actual.get(0));
+                    converted = type.stringToComponent(actual.get(0));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + declaration.getName() + ": " + e.getMessage());
                 }

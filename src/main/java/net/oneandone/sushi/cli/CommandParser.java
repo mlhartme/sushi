@@ -255,11 +255,6 @@ public class CommandParser {
         }
     }
 
-    private static boolean isBoolean(Argument arg) {
-        return arg.type().isBoolean();
-    }
-
-
     /** Convenience for Testing */
     public Object run(String ... args) throws Throwable {
         return run(Arrays.asList(args));
@@ -307,7 +302,7 @@ public class CommandParser {
                 if (argument == null) {
                     throw new ArgumentException("unknown option " + arg);
                 }
-                if (isBoolean(argument)) {
+                if (argument.isBoolean()) {
                     value = "true";
                 } else {
                     if (i + 1 >= max) {

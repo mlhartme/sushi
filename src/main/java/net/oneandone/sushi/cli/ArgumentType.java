@@ -8,12 +8,16 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public class ArgumentType {
-    protected static ArgumentType forReflect(Schema schema, java.lang.reflect.Type type) {
+    private final boolean list;
+    private final SimpleType component;
+
+    public ArgumentType(Schema schema, java.lang.reflect.Type type) {
         ParameterizedType p;
         java.lang.reflect.Type[] args;
 
         if (type instanceof Class) {
-            return new ArgumentType(false, schema.simple((Class) type));
+            this.list = false;
+            this.component = schema.simple((Class) type);
         } else if (type instanceof ParameterizedType) {
             p = (ParameterizedType) type;
             args = p.getActualTypeArguments();
@@ -26,19 +30,11 @@ public class ArgumentType {
             if (!(args[0] instanceof Class)) {
                 throw new IllegalArgumentException("too much nesting: " + type.toString());
             }
-            return new ArgumentType(true, schema.simple((Class) args[0]));
+            this.list = true;
+            this.component = schema.simple((Class) args[0]);
         } else {
             throw new IllegalArgumentException("unsupported type: " + type);
         }
-    }
-
-
-    private final boolean list;
-    private final SimpleType component;
-
-    public ArgumentType(boolean list, SimpleType component) {
-        this.list = list;
-        this.component = component;
     }
 
     public boolean isList() {

@@ -36,7 +36,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(source, ArgumentType.forReflect(schema, formals[0].getParameterizedType()),
+        return new ArgumentMethod(source, new ArgumentType(schema, formals[0].getParameterizedType()),
                 context, method);
     }
     

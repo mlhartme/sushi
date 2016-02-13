@@ -30,10 +30,9 @@ public class ArgumentFieldTest {
     }
     
     private void check(String expected) {
-        Argument arg;
+        ArgumentField arg;
         
         arg = ArgumentField.create(
-                new Source(0, "fld", 1, 1, Source.DEFAULT_UNDEFINED),
                 new ReflectSchema(World.createMinimal()), getField("fld"));
         arg.doSet(this, expected);
         assertEquals(expected, fld);

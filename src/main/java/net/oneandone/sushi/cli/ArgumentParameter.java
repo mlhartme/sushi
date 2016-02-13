@@ -1,11 +1,13 @@
 package net.oneandone.sushi.cli;
 
-public class ArgumentParameter extends Argument {
+import net.oneandone.sushi.metadata.Schema;
+
+public class ArgumentParameter extends Target {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(Source source, Target type, Object[] actuals, int idx) {
-        super(source, type);
+    protected ArgumentParameter(Schema schema, java.lang.reflect.Type type, Object[] actuals, int idx) {
+        super(schema, type);
         this.actuals = actuals;
         this.idx = idx;
     }

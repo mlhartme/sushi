@@ -7,7 +7,7 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-public class Target {
+public abstract class Target {
     private final boolean list;
     private final SimpleType component;
 
@@ -36,6 +36,9 @@ public class Target {
             throw new IllegalArgumentException("unsupported type: " + type);
         }
     }
+
+    public abstract boolean before();
+    public abstract void doSet(Object obj, Object value);
 
     public boolean isList() {
         return list;

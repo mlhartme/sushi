@@ -55,7 +55,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 source = Source.forAnnotation(m);
                 if (source != null) {
-                    parser.addArgument(ArgumentMethod.create(source, schema, oneContext, m));
+                    parser.addArgument(new Argument(source, ArgumentMethod.create(schema, oneContext, m)));
                 }
             }
         }
@@ -67,14 +67,14 @@ public class CommandParser {
             }
             source = Source.forAnnotation(m);
             if (source != null) {
-                parser.addArgument(ArgumentMethod.create(source, schema, null, m));
+                parser.addArgument(new Argument(source, ArgumentMethod.create(schema, null, m)));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 source = Source.forAnnotation(f);
                 if (source != null) {
-                    parser.addArgument(ArgumentField.create(source, schema, f));
+                    parser.addArgument(new Argument(source, ArgumentField.create(schema, f)));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -158,14 +158,14 @@ public class CommandParser {
                         if (name.equals(Source.NAME_UNDEFINED)) {
                             name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
                         }
-                        result.add(new ArgumentParameter(
+                        result.add(new Argument(
                                 new Source(currentPosition, name, value.min(), value.max(), value.dflt()),
-                                new Target(schema, formal.getParameterizedType()), actuals, i));
+                                new ArgumentParameter(schema, formal.getParameterizedType(), actuals, i)));
                         position++;
                     } else if (option != null) {
-                        result.add(new ArgumentParameter(
+                        result.add(new Argument(
                                 new Source(0, option.value(), 0, 1, option.dflt()),
-                                new Target(schema, formal.getParameterizedType()), actuals, i));
+                                new ArgumentParameter(schema, formal.getParameterizedType(), actuals, i)));
                     } else {
                         throw new IllegalStateException();
                     }
@@ -302,7 +302,7 @@ public class CommandParser {
                 if (argument == null) {
                     throw new ArgumentException("unknown option " + arg);
                 }
-                if (argument.isBoolean()) {
+                if (argument.target.isBoolean()) {
                     value = "true";
                 } else {
                     if (i + 1 >= max) {

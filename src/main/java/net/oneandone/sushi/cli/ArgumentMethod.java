@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
-public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(Source source, Schema schema, Object context, Method method) {
+public class ArgumentMethod extends Target {
+    public static ArgumentMethod create(Schema schema, Object context, Method method) {
         Parameter[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -36,8 +36,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(source, new Target(schema, formals[0].getParameterizedType()),
-                context, method);
+        return new ArgumentMethod(schema, formals[0].getParameterizedType(), context, method);
     }
     
     //--
@@ -45,8 +44,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(Source source, Target type, Object context, Method method) {
-        super(source, type);
+    public ArgumentMethod(Schema schema, java.lang.reflect.Type type, Object context, Method method) {
+        super(schema, type);
         this.context = context;
         this.method = method;
     }
@@ -62,7 +61,7 @@ public class ArgumentMethod extends Argument {
         try {
             method.invoke(context == null ? obj : context, value);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(source().getName() + ": " + value + ":" + value.getClass(), e);
+            throw new RuntimeException(value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -74,7 +73,7 @@ public class ArgumentMethod extends Argument {
                 throw (ArgumentException) cause;
             }
             if (cause instanceof RuntimeException) {
-                throw new RuntimeException(source().getName(), cause);
+                throw (RuntimeException) cause;
             }
             throw new RuntimeException("unexpected exception" , cause);
         }

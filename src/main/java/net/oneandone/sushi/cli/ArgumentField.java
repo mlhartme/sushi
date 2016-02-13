@@ -20,20 +20,20 @@ import net.oneandone.sushi.metadata.Schema;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-public class ArgumentField extends Argument {
-    public static ArgumentField create(Source source, Schema schema, Field field) {
+public class ArgumentField extends Target {
+    public static ArgumentField create(Schema schema, Field field) {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        return new ArgumentField(source, new Target(schema, field.getGenericType()), field);
+        return new ArgumentField(schema, field.getGenericType(), field);
     }
     
     //--
 
     private final Field field;
     
-    public ArgumentField(Source source, Target type, Field field) {
-        super(source, type);
+    public ArgumentField(Schema schema, java.lang.reflect.Type type, Field field) {
+        super(schema, type);
         this.field = field;
     }
 

@@ -20,11 +20,11 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 import java.util.List;
 
 /** Defines where to store one command line argument (or a list of command line arguments) */
-public abstract class Argument {
-    private final Source source;
-    private final Target target; // type of the argument/field where to store
+public class Argument {
+    public final Source source;
+    public final Target target; // type of the argument/field where to store
 
-    protected Argument(Source source, Target type) {
+    public Argument(Source source, Target type) {
         this.source = source;
         this.target = type;
     }
@@ -32,13 +32,6 @@ public abstract class Argument {
     public Source source() {
         return source;
     }
-
-    public boolean isBoolean() {
-        return target.isBoolean();
-    }
-
-    public abstract boolean before();
-    public abstract void doSet(Object obj, Object value);
 
     //-- TODO
 
@@ -51,7 +44,7 @@ public abstract class Argument {
         if (source.isList()) {
             for (String str : actual) {
                 try {
-                    doSet(obj, target.stringToComponent(str));
+                    target.doSet(obj, target.stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
@@ -75,7 +68,7 @@ public abstract class Argument {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
             }
-            doSet(obj, converted);
+            target.doSet(obj, converted);
         }
     }
 }

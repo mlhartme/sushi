@@ -43,7 +43,7 @@ public class Actuals {
 
     public void checkCardinality() {
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
-            entry.getKey().source().checkCardinality(entry.getValue().size());
+            entry.getKey().source.checkCardinality(entry.getValue().size());
         }
     }
 
@@ -53,7 +53,7 @@ public class Actuals {
 
         value = actuals.get(formal);
         value.add(item);
-        return value.size() == formal.source().max();
+        return value.size() == formal.source.max();
     }
 
     public void apply(Object target) throws SimpleTypeException {

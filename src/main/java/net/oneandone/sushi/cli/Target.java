@@ -7,6 +7,7 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+/** Defines where to store values from the command line. */
 public abstract class Target {
     private final boolean list;
     private final SimpleType component;

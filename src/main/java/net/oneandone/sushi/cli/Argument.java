@@ -19,7 +19,7 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 
 import java.util.List;
 
-/** Defines where to store one command line argument (or a list of command line arguments) */
+/** Associates a source with a target. */
 public class Argument {
     public final Source source;
     public final Target target; // type of the argument/field where to store
@@ -29,18 +29,12 @@ public class Argument {
         this.target = type;
     }
 
-    public Source source() {
-        return source;
-    }
-
     //-- TODO
 
     public void set(Object obj, List<String> actual) {
-        Source source;
         String d;
         Object converted;
 
-        source = source();
         if (source.isList()) {
             for (String str : actual) {
                 try {

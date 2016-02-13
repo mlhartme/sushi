@@ -18,7 +18,7 @@ package net.oneandone.sushi.cli;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-/** Value, Option and Remaining annotations result in Declarations */
+/** Source type. Value, Option and Remaining annotations result in Declarations */
 public class Declaration {
 
     public static Declaration forAnnotation(AnnotatedElement element) {

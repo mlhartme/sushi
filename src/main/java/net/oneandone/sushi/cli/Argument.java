@@ -22,7 +22,7 @@ import java.util.List;
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     private final Declaration declaration;
-    private final ArgumentType type; // where to store
+    private final ArgumentType type; // type of the argument/field where to store
 
     protected Argument(Declaration declaration, ArgumentType type) {
         this.declaration = declaration;

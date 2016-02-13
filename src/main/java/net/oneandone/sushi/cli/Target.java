@@ -7,11 +7,11 @@ import net.oneandone.sushi.metadata.SimpleTypeException;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-public class ArgumentType {
+public class Target {
     private final boolean list;
     private final SimpleType component;
 
-    public ArgumentType(Schema schema, java.lang.reflect.Type type) {
+    public Target(Schema schema, java.lang.reflect.Type type) {
         ParameterizedType p;
         java.lang.reflect.Type[] args;
 

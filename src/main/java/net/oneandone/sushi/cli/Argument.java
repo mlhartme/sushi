@@ -22,11 +22,11 @@ import java.util.List;
 /** Defines where to store one command line argument (or a list of command line arguments) */
 public abstract class Argument {
     private final Source source;
-    private final ArgumentType type; // type of the argument/field where to store
+    private final Target target; // type of the argument/field where to store
 
-    protected Argument(Source source, ArgumentType type) {
+    protected Argument(Source source, Target type) {
         this.source = source;
-        this.type = type;
+        this.target = type;
     }
 
     public Source source() {
@@ -34,7 +34,7 @@ public abstract class Argument {
     }
 
     public boolean isBoolean() {
-        return type.isBoolean();
+        return target.isBoolean();
     }
 
     public abstract boolean before();
@@ -42,7 +42,7 @@ public abstract class Argument {
 
     //-- TODO
 
-    public void set(Object target, List<String> actual) {
+    public void set(Object obj, List<String> actual) {
         Source source;
         String d;
         Object converted;
@@ -51,7 +51,7 @@ public abstract class Argument {
         if (source.isList()) {
             for (String str : actual) {
                 try {
-                    doSet(target, type.stringToComponent(str));
+                    doSet(obj, target.stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
@@ -60,22 +60,22 @@ public abstract class Argument {
             if (actual.isEmpty()) {
                 d = source.getDefaultString();
                 if (Source.DEFAULT_UNDEFINED.equals(d)) {
-                    converted = type.newComponent();
+                    converted = target.newComponent();
                 } else {
                     try {
-                        converted = type.stringToComponent(d);
+                        converted = target.stringToComponent(d);
                     } catch (SimpleTypeException e) {
-                        throw new IllegalArgumentException("cannot convert default value to type " + type + ": " + d);
+                        throw new IllegalArgumentException("cannot convert default value to type " + target + ": " + d);
                     }
                 }
             } else {
                 try {
-                    converted = type.stringToComponent(actual.get(0));
+                    converted = target.stringToComponent(actual.get(0));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
             }
-            doSet(target, converted);
+            doSet(obj, converted);
         }
     }
 }

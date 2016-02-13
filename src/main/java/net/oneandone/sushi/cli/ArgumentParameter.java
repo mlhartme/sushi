@@ -4,7 +4,7 @@ public class ArgumentParameter extends Argument {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(Source source, ArgumentType type, Object[] actuals, int idx) {
+    protected ArgumentParameter(Source source, Target type, Object[] actuals, int idx) {
         super(source, type);
         this.actuals = actuals;
         this.idx = idx;

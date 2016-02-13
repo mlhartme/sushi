@@ -25,14 +25,14 @@ public class ArgumentField extends Argument {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        return new ArgumentField(source, new ArgumentType(schema, field.getGenericType()), field);
+        return new ArgumentField(source, new Target(schema, field.getGenericType()), field);
     }
     
     //--
 
     private final Field field;
     
-    public ArgumentField(Source source, ArgumentType type, Field field) {
+    public ArgumentField(Source source, Target type, Field field) {
         super(source, type);
         this.field = field;
     }

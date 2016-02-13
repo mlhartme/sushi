@@ -36,7 +36,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(source, new ArgumentType(schema, formals[0].getParameterizedType()),
+        return new ArgumentMethod(source, new Target(schema, formals[0].getParameterizedType()),
                 context, method);
     }
     
@@ -45,7 +45,7 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(Source source, ArgumentType type, Object context, Method method) {
+    public ArgumentMethod(Source source, Target type, Object context, Method method) {
         super(source, type);
         this.context = context;
         this.method = method;

@@ -160,12 +160,12 @@ public class CommandParser {
                         }
                         result.add(new ArgumentParameter(
                                 new Source(currentPosition, name, value.min(), value.max(), value.dflt()),
-                                new ArgumentType(schema, formal.getParameterizedType()), actuals, i));
+                                new Target(schema, formal.getParameterizedType()), actuals, i));
                         position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(
                                 new Source(0, option.value(), 0, 1, option.dflt()),
-                                new ArgumentType(schema, formal.getParameterizedType()), actuals, i));
+                                new Target(schema, formal.getParameterizedType()), actuals, i));
                     } else {
                         throw new IllegalStateException();
                     }

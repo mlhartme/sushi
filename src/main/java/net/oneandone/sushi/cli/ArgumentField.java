@@ -21,19 +21,19 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ArgumentField extends Argument {
-    public static ArgumentField create(Declaration declaration, Schema schema, Field field) {
+    public static ArgumentField create(Source source, Schema schema, Field field) {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException(field + ": static not allowed");
         }
-        return new ArgumentField(declaration, ArgumentType.forReflect(schema, field.getGenericType()), field);
+        return new ArgumentField(source, ArgumentType.forReflect(schema, field.getGenericType()), field);
     }
     
     //--
 
     private final Field field;
     
-    public ArgumentField(Declaration declaration, ArgumentType type, Field field) {
-        super(declaration, type);
+    public ArgumentField(Source source, ArgumentType type, Field field) {
+        super(source, type);
         this.field = field;
     }
 

@@ -24,5 +24,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Option {
     String value();
-    String dflt() default Declaration.DEFAULT_UNDEFINED;
+    String dflt() default Source.DEFAULT_UNDEFINED;
 }

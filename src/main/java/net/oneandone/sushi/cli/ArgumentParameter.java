@@ -4,8 +4,8 @@ public class ArgumentParameter extends Argument {
     private final Object[] actuals;
     private final int idx;
 
-    protected ArgumentParameter(Declaration declaration, ArgumentType type, Object[] actuals, int idx) {
-        super(declaration, type);
+    protected ArgumentParameter(Source source, ArgumentType type, Object[] actuals, int idx) {
+        super(source, type);
         this.actuals = actuals;
         this.idx = idx;
     }

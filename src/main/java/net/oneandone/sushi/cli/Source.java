@@ -18,42 +18,44 @@ package net.oneandone.sushi.cli;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-/** Source type. Value, Option and Remaining annotations result in Declarations */
-public class Declaration {
+/**
+ * Defines the part of a command line that comprive one argument.
+ * Value, Option and Remaining annotations result in Source objects */
+public class Source {
 
-    public static Declaration forAnnotation(AnnotatedElement element) {
-        Declaration result;
+    public static Source forAnnotation(AnnotatedElement element) {
+        Source result;
 
         result = null;
         for (Annotation a : element.getAnnotations()) {
             if (a instanceof Option) {
-                result = merge(result, toDeclaration((Option) a));
+                result = merge(result, toSource((Option) a));
             } else if (a instanceof Value) {
-                result = merge(result, toDeclaration((Value) a));
+                result = merge(result, toSource((Value) a));
             } else if (a instanceof Remaining) {
-                result = merge(result, toDeclaration((Remaining) a));
+                result = merge(result, toSource((Remaining) a));
             }
         }
         return result;
     }
 
-    private static Declaration merge(Declaration prev, Declaration next) {
+    private static Source merge(Source prev, Source next) {
         if (prev != null) {
             throw new IllegalArgumentException("ambiguous annotations: " + prev + " vs " + next);
         }
         return next;
     }
 
-    public static Declaration toDeclaration(Value value) {
-        return new Declaration(value.position(), value.value(), value.min(), value.max(), value.dflt());
+    public static Source toSource(Value value) {
+        return new Source(value.position(), value.value(), value.min(), value.max(), value.dflt());
     }
 
-    public static Declaration toDeclaration(Option option) {
-        return new Declaration(0, option.value(), 0, 1, option.dflt());
+    public static Source toSource(Option option) {
+        return new Source(0, option.value(), 0, 1, option.dflt());
     }
 
-    public static Declaration toDeclaration(Remaining remaining) {
-        return new Declaration(remaining.position(), remaining.value(), 0, Integer.MAX_VALUE, DEFAULT_UNDEFINED);
+    public static Source toSource(Remaining remaining) {
+        return new Source(remaining.position(), remaining.value(), 0, Integer.MAX_VALUE, DEFAULT_UNDEFINED);
     }
 
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
@@ -67,7 +69,7 @@ public class Declaration {
     private final int max;
     private final String dflt;
 
-    public Declaration(int position, String name, int min, int max, String dflt) {
+    public Source(int position, String name, int min, int max, String dflt) {
         if (dflt == null) {
             throw new IllegalArgumentException();
         }

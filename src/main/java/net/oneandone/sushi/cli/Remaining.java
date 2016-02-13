@@ -23,6 +23,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface Remaining {
-    String value() default Declaration.NAME_UNDEFINED;
-    int position() default Declaration.POSITION_UNDEFINED;
+    String value() default Source.NAME_UNDEFINED;
+    int position() default Source.POSITION_UNDEFINED;
 }

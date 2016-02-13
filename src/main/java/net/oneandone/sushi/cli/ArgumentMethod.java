@@ -23,7 +23,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
 public class ArgumentMethod extends Argument {
-    public static ArgumentMethod create(Declaration declaration, Schema schema, Object context, Method method) {
+    public static ArgumentMethod create(Source source, Schema schema, Object context, Method method) {
         Parameter[] formals;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -36,7 +36,7 @@ public class ArgumentMethod extends Argument {
         if (formals.length != 1) {
             throw new IllegalArgumentException("1 argument expected");
         }
-        return new ArgumentMethod(declaration, ArgumentType.forReflect(schema, formals[0].getParameterizedType()),
+        return new ArgumentMethod(source, ArgumentType.forReflect(schema, formals[0].getParameterizedType()),
                 context, method);
     }
     
@@ -45,8 +45,8 @@ public class ArgumentMethod extends Argument {
     private final Object context;
     private final Method method;
     
-    public ArgumentMethod(Declaration declaration, ArgumentType type, Object context, Method method) {
-        super(declaration, type);
+    public ArgumentMethod(Source source, ArgumentType type, Object context, Method method) {
+        super(source, type);
         this.context = context;
         this.method = method;
     }

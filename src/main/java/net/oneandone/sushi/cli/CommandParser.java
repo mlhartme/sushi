@@ -41,7 +41,7 @@ public class CommandParser {
     public static CommandParser create(Schema schema, List<Object> context, Object commandClassOrInstance) {
         Class<?> commandClass;
         CommandParser parser;
-        Declaration declaration;
+        Source source;
         Command command;
 
         if (commandClassOrInstance instanceof Class) {
@@ -53,9 +53,9 @@ public class CommandParser {
         }
         for (Object oneContext : context) {
             for (Method m : oneContext.getClass().getMethods()) {
-                declaration = Declaration.forAnnotation(m);
-                if (declaration != null) {
-                    parser.addArgument(ArgumentMethod.create(declaration, schema, oneContext, m));
+                source = Source.forAnnotation(m);
+                if (source != null) {
+                    parser.addArgument(ArgumentMethod.create(source, schema, oneContext, m));
                 }
             }
         }
@@ -65,16 +65,16 @@ public class CommandParser {
             if (command != null) {
                 parser.addCommand(CommandDefinition.create(parser, command.value(), m));
             }
-            declaration = Declaration.forAnnotation(m);
-            if (declaration != null) {
-                parser.addArgument(ArgumentMethod.create(declaration, schema, null, m));
+            source = Source.forAnnotation(m);
+            if (source != null) {
+                parser.addArgument(ArgumentMethod.create(source, schema, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
-                declaration = Declaration.forAnnotation(f);
-                if (declaration != null) {
-                    parser.addArgument(ArgumentField.create(declaration, schema, f));
+                source = Source.forAnnotation(f);
+                if (source != null) {
+                    parser.addArgument(ArgumentField.create(source, schema, f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -151,20 +151,20 @@ public class CommandParser {
                         actuals[i] = c;
                     } else if (value != null) {
                         currentPosition = value.position();
-                        if (currentPosition == Declaration.POSITION_UNDEFINED) {
+                        if (currentPosition == Source.POSITION_UNDEFINED) {
                             currentPosition = position;
                         }
                         name = value.value();
-                        if (name.equals(Declaration.NAME_UNDEFINED)) {
+                        if (name.equals(Source.NAME_UNDEFINED)) {
                             name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
                         }
                         result.add(new ArgumentParameter(
-                                new Declaration(currentPosition, name, value.min(), value.max(), value.dflt()),
+                                new Source(currentPosition, name, value.min(), value.max(), value.dflt()),
                                 ArgumentType.forReflect(schema, formal.getParameterizedType()), actuals, i));
                         position++;
                     } else if (option != null) {
                         result.add(new ArgumentParameter(
-                                new Declaration(0, option.value(), 0, 1, option.dflt()),
+                                new Source(0, option.value(), 0, 1, option.dflt()),
                                 ArgumentType.forReflect(schema, formal.getParameterizedType()), actuals, i));
                     } else {
                         throw new IllegalStateException();
@@ -233,23 +233,23 @@ public class CommandParser {
     }
 
     public void addArgument(Argument arg) {
-        Declaration declaration;
+        Source source;
         String name;
         int idx;
 
-        declaration = arg.declaration();
-        if (declaration.position() == 0) {
-            name = declaration.getName();
+        source = arg.declaration();
+        if (source.position() == 0) {
+            name = source.getName();
             if (options.put(name, arg) != null) {
                 throw new IllegalArgumentException("duplicate option: " + name);
             }
         } else {
-            idx = declaration.position() - 1;
+            idx = source.position() - 1;
             while (idx >= values.size()) {
                 values.add(null);
             }
             if (values.get(idx) != null) {
-                throw new IllegalArgumentException("duplicate argument for position " + declaration.position());
+                throw new IllegalArgumentException("duplicate argument for position " + source.position());
             }
             values.set(idx, arg);
         }

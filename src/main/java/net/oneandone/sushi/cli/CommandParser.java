@@ -55,7 +55,7 @@ public class CommandParser {
             for (Method m : oneContext.getClass().getMethods()) {
                 source = Source.forAnnotation(m);
                 if (source != null) {
-                    parser.addArgument(new Argument(source, TargetMethod.create(schema, oneContext, m)));
+                    parser.addArgument(source, TargetMethod.create(schema, oneContext, m));
                 }
             }
         }
@@ -67,14 +67,14 @@ public class CommandParser {
             }
             source = Source.forAnnotation(m);
             if (source != null) {
-                parser.addArgument(new Argument(source, TargetMethod.create(schema, null, m)));
+                parser.addArgument(source, TargetMethod.create(schema, null, m));
             }
         }
         while (!Object.class.equals(commandClass)) {
             for (Field f: commandClass.getDeclaredFields()) {
                 source = Source.forAnnotation(f);
                 if (source != null) {
-                    parser.addArgument(new Argument(source, TargetField.create(schema, f)));
+                    parser.addArgument(source, TargetField.create(schema, f));
                 }
             }
             commandClass = commandClass.getSuperclass();
@@ -230,6 +230,10 @@ public class CommandParser {
 
     public List<CommandDefinition> getCommands() {
         return commands;
+    }
+
+    public void addArgument(Source source, Target target) {
+        addArgument(new Argument(source, target));
     }
 
     public void addArgument(Argument arg) {

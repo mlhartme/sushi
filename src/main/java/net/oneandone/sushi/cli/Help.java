@@ -1,8 +1,5 @@
 package net.oneandone.sushi.cli;
 
-/**
- * Created by mhm on 01.02.16.
- */
 public class Help {
     private final Console console;
     private final String help;

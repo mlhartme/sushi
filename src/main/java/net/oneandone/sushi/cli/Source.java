@@ -31,6 +31,8 @@ public class Source {
     public static final String DEFAULT_UNDEFINED = "_default_undefined_";
 
     public static List<Source> forSyntax(String syntax) {
+        int idx;
+        String dflt;
         List<Source> result;
         int lastPosition;
         int position;
@@ -50,6 +52,13 @@ public class Source {
                 position = lastPosition;
                 name = field;
             }
+            idx = name.indexOf('=');
+            if (idx == -1) {
+                dflt = DEFAULT_UNDEFINED;
+            } else {
+                dflt = name.substring(idx + 1);
+                name = name.substring(0, idx);
+            }
             length = name.length() - 1;
             switch (name.charAt(length)) {
                 case '?':
@@ -68,11 +77,11 @@ public class Source {
                     name = name.substring(0, length - 1);
                     break;
                 default:
-                    min = 1;
+                    min = position == 0 ? 0 : 1;
                     max = 1;
                     break;
             }
-            result.add(new Source(position, name, min, max, DEFAULT_UNDEFINED));
+            result.add(new Source(position, name, min, max, dflt));
         }
         return result;
     }

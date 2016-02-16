@@ -26,7 +26,6 @@ import net.oneandone.sushi.cli.Value;
 import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +46,7 @@ public class CliNormalSample {
                 .addCommand(PackageVersion.class)
                 .addCommandInstance(new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run(args));
+                .run("first", "a", "b", "c"));
     }
 
     public static class FirstCommand {
@@ -56,21 +55,18 @@ public class CliNormalSample {
         private final String first;
         private final boolean flag;
         private final int number;
-        private final List<String> remaining = new ArrayList<>();
+        private final List<String> remaining;
 
         public FirstCommand(@Context Console console,
                             @Value("first") String first,
                             @Option("flag") boolean flag,
-                            @Option(value = "number", dflt = "7") int number) {
+                            @Option(value = "number", dflt = "7") int number,
+                            @Value(value = "remaining", min = 0, max = Integer.MAX_VALUE) List<String> remaining) {
             this.console = console;
             this.first = first;
             this.flag = flag;
             this.number = number;
-        }
-
-        @Value(value = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
-        public void addRemaining(String str) {
-            remaining.add(str);
+            this.remaining = remaining;
         }
 
         @Command("first")

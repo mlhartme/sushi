@@ -38,8 +38,8 @@ public class CliNormalSample {
 
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
-                .with(console)
-                .command("first -flag=true -number=7 first remaining*", FirstCommand.class)
+                .context(console)
+                .command("first -flag=true -number=7 first remaining*", FirstCommand.class, "run")
                 .command("second", SecondCommand.class)
                 .command("version", PackageVersion.class, "invoke")
                 .addCommandInstance(new Help(console, "demo help"))

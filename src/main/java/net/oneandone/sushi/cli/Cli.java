@@ -50,33 +50,31 @@ public class Cli {
         this.commands = new ArrayList<>();
         this.context = new ArrayList<>();
         this.defaultCommand = null;
-        with(world);
+        context(world);
     }
 
-    public Cli with(Object ... context) {
-        for (Object obj : context) {
-            if (obj == null) {
-                throw new IllegalArgumentException();
-            }
-            if (obj instanceof ExceptionHandler) {
-                if (exceptionHandler != null) {
-                    throw new IllegalStateException("duplicate exception handler: " + exceptionHandler + " vs "+ obj);
-                }
-                exceptionHandler = (ExceptionHandler) obj;
-            }
-            this.context.add(obj);
+    public Cli context(Object context) {
+        if (context == null) {
+            throw new IllegalArgumentException();
         }
+        if (context instanceof ExceptionHandler) {
+            if (exceptionHandler != null) {
+                throw new IllegalStateException("duplicate exception handler: " + exceptionHandler + " vs "+ context);
+            }
+            exceptionHandler = (ExceptionHandler) context;
+        }
+        this.context.add(context);
         return this;
     }
 
     public Cli command(String syntax, Class<?> clazz) {
-        return command(syntax, clazz, null);
+        return command(syntax, clazz, "");
     }
 
-    public Cli command(String syntax, Class<?> clazz, String invoke) {
+    public Cli command(String syntax, Class<?> clazz, String mapping) {
         CommandParser parser;
 
-        parser = CommandParser.create(schema, context, syntax, clazz, invoke);
+        parser = CommandParser.create(schema, context, syntax, clazz, mapping);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());

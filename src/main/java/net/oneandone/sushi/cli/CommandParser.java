@@ -36,12 +36,14 @@ public class CommandParser {
 
     //-- from syntax
 
-    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz, String method) {
+    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz, String mappingString) {
         int idx;
         List<Source> sources;
         String cmd;
         CommandParser parser;
+        Mapping mapping;
 
+        mapping = Mapping.parse(mappingString, clazz);
         idx = syntax.indexOf(' ');
         if (idx == -1) {
             cmd = syntax;
@@ -51,17 +53,20 @@ public class CommandParser {
             syntax = syntax.substring(idx + 1);
         }
         sources = Source.forSyntax(syntax);
-        parser = createParser(schema, clazz, context, sources);
-        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, method)));
+        parser = createParser(schema, clazz, context, sources, mapping);
+        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, mapping)));
         return parser;
     }
 
     private static final Class<?>[] NO_ARGS = {};
 
-    private static Method commandMethod(Class<?> clazz, String method) {
+    private static Method commandMethod(Class<?> clazz, Mapping mapping) {
         String name;
 
-        name = method == null ? "run" : method;
+        name = mapping.getCommand();
+        if (name == null) {
+            name = "run";
+        }
         try {
             return clazz.getDeclaredMethod(name, NO_ARGS);
         } catch (NoSuchMethodException e) {
@@ -69,7 +74,9 @@ public class CommandParser {
         }
     }
 
-    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context, List<Source> sources) {
+    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context, List<Source> sources, Mapping mapping) {
+        List<Source> constructorSources;
+        List<Source> extraSources;
         Object[] actuals;
         List<Argument> arguments;
         Constructor found;
@@ -81,9 +88,18 @@ public class CommandParser {
         foundActuals = null;
         foundArguments = null;
         arguments = new ArrayList<>();
+        constructorSources = new ArrayList<>(sources.size());
+        extraSources = new ArrayList<>();
+        for (Source s : sources) {
+            if (mapping.contains(s.getName())) {
+                extraSources.add(s);
+            } else {
+                constructorSources.add(s);
+            }
+        }
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             arguments.clear();
-            actuals = match(schema, constructor, context, sources, arguments);
+            actuals = match(schema, constructor, context, constructorSources, arguments);
             if (actuals != null) {
                 if (found != null) {
                     throw new IllegalStateException("constructor is ambiguous");
@@ -100,10 +116,14 @@ public class CommandParser {
         for (Argument a : foundArguments) {
             result.addArgument(a);
         }
+        for (Source s : extraSources) {
+            result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
+        }
         return result;
     }
 
-    private static Object[] match(Schema schema, Constructor constructor, List<Object> initialContext, List<Source> initialSources, List<Argument> result) {
+    private static Object[] match(Schema schema, Constructor constructor, List<Object> initialContext, List<Source> initialSources,
+                                  List<Argument> result) {
         List<Object> context;
         List<Source> sources;
         Parameter[] formals;
@@ -122,7 +142,7 @@ public class CommandParser {
             if (ctx != null) {
                 actuals[i] = ctx;
             } else if (sources.isEmpty()) {
-                return null; // too many arguments to match
+                return null; // too many constructor arguments
             } else {
                 source = sources.remove(0);
                 result.add(new Argument(source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));

@@ -273,7 +273,6 @@ public class CommandParser {
         actuals.defineAll(options.values());
         actuals.defineAll(values);
         fillActuals(args, actuals);
-        actuals.checkCardinality();
         actuals.save(null);
         target = commandInstance == null ? newInstance() : commandInstance;
         actuals.save(target);

@@ -38,10 +38,16 @@ public abstract class Target {
         }
     }
 
+    public Target(boolean list, SimpleType component) {
+        this.list = list;
+        this.component = component;
+    }
+
     /** return true to set pass values before command object instantiation */
     public abstract boolean before();
 
-    public abstract void doSet(Object obj, Object value);
+    /** value is an instance of the reflection type */
+    public abstract void doSet(Object dest, Object value);
 
     public boolean isList() {
         return list;

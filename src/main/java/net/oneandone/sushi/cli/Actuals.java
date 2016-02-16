@@ -42,12 +42,6 @@ public class Actuals {
         }
     }
 
-    public void checkCardinality() {
-        for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
-            entry.getKey().source.checkCardinality(entry.getValue().size());
-        }
-    }
-
     /** @return true if this formal argument has reached the max number of items. */
     public boolean add(Argument formal, String item) {
         List<String> value;
@@ -63,6 +57,7 @@ public class Actuals {
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
             argument = entry.getKey();
             if (argument.target.before() == (target == null)) {
+                entry.getKey().source.checkCardinality(entry.getValue().size());
                 argument.set(target, entry.getValue());
             }
         }

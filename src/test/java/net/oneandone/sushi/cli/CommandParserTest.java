@@ -107,12 +107,12 @@ public class CommandParserTest {
         parser = CommandParser.create(METADATA, Options.class);
         options = (Options) parser.run();
         assertEquals(0, options.first);
-        assertEquals("", options.second);
+        assertEquals(null, options.second);
         assertFalse(options.third);
 
         options = (Options) parser.run("-first", "1");
         assertEquals(1, options.first);
-        assertEquals("", options.second);
+        assertEquals(null, options.second);
         assertFalse(options.third);
 
         try {
@@ -129,7 +129,7 @@ public class CommandParserTest {
 
         options = (Options) parser.run("-third");
         assertEquals(0, options.first);
-        assertEquals("", options.second);
+        assertEquals(null, options.second);
         assertTrue(options.third);
 
         options = (Options) parser.run("-third", "-first", "-1", "-second", "bar");

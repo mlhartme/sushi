@@ -18,7 +18,7 @@ public class TargetParameter extends Target {
     }
 
     @Override
-    public void doSet(Object obj, Object value) {
+    public void doSet(Object dest, Object value) {
         actuals[idx] = value;
     }
 }

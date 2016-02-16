@@ -25,26 +25,26 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class TargetMethodTest {
+public class TargetMethodIteratedTest {
     @Test
-    public void bool() {
-        check(true);
+    public void integer() {
+        check(1);
     }
     
-    private void check(boolean expected) {
+    private void check(int expected) {
         Target arg;
-        List<Boolean> lst;
+        List<Integer> lst;
         
         arg = TargetMethod.create(new ReflectSchema(World.createMinimal()), null, getMethod());
         lst = new ArrayList<>();
         lst.add(expected);
         arg.doSet(this, lst);
-        assertEquals(lst, this.lst);
+        assertEquals(expected, i);
     }
 
     private Method getMethod() {
         try {
-            return getClass().getMethod("setList", List.class);
+            return getClass().getMethod("setInt", Integer.TYPE);
         } catch (SecurityException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -52,9 +52,9 @@ public class TargetMethodTest {
 
     //--
     
-    private Object lst;
+    private Object i;
     
-    public void setList(List<Boolean> lst) {
-        this.lst = lst;
+    public void setInt(int i) {
+        this.i = i;
     }
 }

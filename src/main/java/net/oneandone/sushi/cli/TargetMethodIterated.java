@@ -15,45 +15,18 @@
  */
 package net.oneandone.sushi.cli;
 
-import net.oneandone.sushi.metadata.Schema;
+import net.oneandone.sushi.metadata.SimpleType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
+import java.util.List;
 
-public class TargetMethod extends Target {
-    public static Target create(Schema schema, Object context, Method method) {
-        Parameter[] formals;
-        java.lang.reflect.Type type;
-        boolean iterated;
-
-        if (Modifier.isStatic(method.getModifiers())) {
-            throw new IllegalArgumentException(method + ": static not allowed");
-        }
-        if (!Modifier.isPublic(method.getModifiers())) {
-            throw new IllegalArgumentException(method + ": public expected");
-        }
-        formals = method.getParameters();
-        if (formals.length != 1) {
-            throw new IllegalArgumentException("1 argument expected");
-        }
-        type = formals[0].getParameterizedType();
-        iterated = (type instanceof Class);
-        if (iterated) {
-            return new TargetMethodIterated(true, schema.simple((Class) type), context, method);
-        } else {
-            return new TargetMethod(schema, type, context, method);
-        }
-    }
-    
-    //--
-
+public class TargetMethodIterated extends Target {
     private final Object context;
     private final Method method;
-    
-    public TargetMethod(Schema schema, java.lang.reflect.Type type, Object context, Method method) {
-        super(schema, type);
+
+    public TargetMethodIterated(boolean list, SimpleType component, Object context, Method method) {
+        super(list, component);
         this.context = context;
         this.method = method;
     }
@@ -64,10 +37,14 @@ public class TargetMethod extends Target {
 
     @Override
     public void doSet(Object dest, Object value) {
+        List<Object> lst;
         Throwable cause;
-        
+
+        lst = (List) value;
         try {
-            method.invoke(context == null ? dest : context, value);
+            for (Object item : lst) {
+                method.invoke(context == null ? dest : context, item);
+            }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {

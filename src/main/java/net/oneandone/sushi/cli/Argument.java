@@ -17,6 +17,7 @@ package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.metadata.SimpleTypeException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Associates a source with a target. */
@@ -31,36 +32,40 @@ public class Argument {
 
     public void set(Object dest, List<String> actual) {
         String d;
-        Object converted;
+        List<Object> lst;
+        Object value;
 
-        if (source.isList()) {
+        if (target.isList()) {
+            lst = new ArrayList<>();
             for (String str : actual) {
                 try {
-                    target.doSet(dest, target.stringToComponent(str));
+                    lst.add(target.stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
             }
+            value = lst;
         } else {
             if (actual.isEmpty()) {
                 d = source.getDefaultString();
                 if (Source.DEFAULT_UNDEFINED.equals(d)) {
-                    converted = target.newComponent();
+                    value = target.newComponent();
                 } else {
                     try {
-                        converted = target.stringToComponent(d);
+                        value = target.stringToComponent(d);
                     } catch (SimpleTypeException e) {
                         throw new IllegalArgumentException("cannot convert default value to type " + target + ": " + d);
                     }
                 }
             } else {
                 try {
-                    converted = target.stringToComponent(actual.get(0));
+                    value = target.stringToComponent(actual.get(0));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
             }
-            target.doSet(dest, converted);
+            target.doSet(dest, value);
         }
+        target.doSet(dest, value);
     }
 }

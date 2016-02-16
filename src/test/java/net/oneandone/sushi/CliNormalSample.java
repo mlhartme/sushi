@@ -58,9 +58,9 @@ public class CliNormalSample {
         private final List<String> remaining;
 
         public FirstCommand(@Context Console console,
-                            @Value("first") String first,
                             @Option("flag") boolean flag,
                             @Option(value = "number", dflt = "7") int number,
+                            @Value("first") String first,
                             @Value(value = "remaining", min = 0, max = Integer.MAX_VALUE) List<String> remaining) {
             this.console = console;
             this.first = first;

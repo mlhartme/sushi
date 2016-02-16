@@ -20,6 +20,7 @@ import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

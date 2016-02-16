@@ -50,10 +50,10 @@ public class Cli {
         this.commands = new ArrayList<>();
         this.context = new ArrayList<>();
         this.defaultCommand = null;
-        addContext(world);
+        with(world);
     }
 
-    public Cli addContext(Object ... context) {
+    public Cli with(Object ... context) {
         for (Object obj : context) {
             if (obj == null) {
                 throw new IllegalArgumentException();
@@ -69,11 +69,11 @@ public class Cli {
         return this;
     }
 
-    public Cli addSyntaxCommand(String syntax, Class<?> clazz) {
-        return addSyntaxCommand(syntax, clazz, null);
+    public Cli command(String syntax, Class<?> clazz) {
+        return command(syntax, clazz, null);
     }
 
-    public Cli addSyntaxCommand(String syntax, Class<?> clazz, String invoke) {
+    public Cli command(String syntax, Class<?> clazz, String invoke) {
         CommandParser parser;
 
         parser = CommandParser.create(schema, context, syntax, clazz, invoke);

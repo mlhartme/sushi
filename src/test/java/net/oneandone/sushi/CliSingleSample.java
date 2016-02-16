@@ -34,7 +34,7 @@ import java.util.List;
 public class CliSingleSample {
     public static void main(String[] args) throws IOException {
         System.exit(new Cli()
-                .addContext(new ExceptionHandler() {
+                .with(new ExceptionHandler() {
                     @Override
                     public int handleException(Throwable throwable) {
                         throwable.printStackTrace();

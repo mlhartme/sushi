@@ -39,12 +39,12 @@ public class CliNormalSample {
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
                 .context(console)
-                .command("first -flag=true -number=7 first remaining*", FirstCommand.class, "run")
+                .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
                 .command("second", SecondCommand.class)
                 .command("version", PackageVersion.class, "invoke")
                 .addCommandInstance(new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run("version"));
+                .run("first", "f"));
     }
 
     public static class FirstCommand {

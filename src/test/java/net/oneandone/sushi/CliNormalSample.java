@@ -40,11 +40,11 @@ public class CliNormalSample {
         System.exit(new Cli(console.world)
                 .addContext(console)
                 .addSyntaxCommand("first -flag=true -number=7 first remaining*", FirstCommand.class)
-                .addCommand(SecondCommand.class)
-                .addCommand(PackageVersion.class)
+                .addSyntaxCommand("second", SecondCommand.class)
+                .addSyntaxCommand("version", PackageVersion.class, "invoke")
                 .addCommandInstance(new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run("first", "a", "b", "c"));
+                .run("version"));
     }
 
     public static class FirstCommand {

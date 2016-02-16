@@ -70,9 +70,13 @@ public class Cli {
     }
 
     public Cli addSyntaxCommand(String syntax, Class<?> clazz) {
+        return addSyntaxCommand(syntax, clazz, null);
+    }
+
+    public Cli addSyntaxCommand(String syntax, Class<?> clazz, String invoke) {
         CommandParser parser;
 
-        parser = CommandParser.create(schema, context, syntax, clazz);
+        parser = CommandParser.create(schema, context, syntax, clazz, invoke);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());

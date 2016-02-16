@@ -36,7 +36,7 @@ public class CommandParser {
 
     //-- from syntax
 
-    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz) {
+    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz, String method) {
         int idx;
         List<Source> sources;
         String cmd;
@@ -44,20 +44,26 @@ public class CommandParser {
 
         idx = syntax.indexOf(' ');
         if (idx == -1) {
-            throw new IllegalArgumentException();
+            cmd = syntax;
+            syntax = "";
+        } else {
+            cmd = syntax.substring(0, idx);
+            syntax = syntax.substring(idx + 1);
         }
-        cmd = syntax.substring(0, idx);
-        sources = Source.forSyntax(syntax.substring(idx + 1));
+        sources = Source.forSyntax(syntax);
         parser = createParser(schema, clazz, context, sources);
-        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz)));
+        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, method)));
         return parser;
     }
 
     private static final Class<?>[] NO_ARGS = {};
 
-    private static Method commandMethod(Class<?> clazz) {
+    private static Method commandMethod(Class<?> clazz, String method) {
+        String name;
+
+        name = method == null ? "run" : method;
         try {
-            return clazz.getDeclaredMethod("run", NO_ARGS);
+            return clazz.getDeclaredMethod(name, NO_ARGS);
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }

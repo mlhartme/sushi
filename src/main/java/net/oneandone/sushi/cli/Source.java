@@ -15,8 +15,12 @@
  */
 package net.oneandone.sushi.cli;
 
+import net.oneandone.sushi.util.Separator;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Defines the part of a command line that comprise one argument.
@@ -25,6 +29,53 @@ public class Source {
     public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
     public static final String NAME_UNDEFINED = "_name_undefined_";
     public static final String DEFAULT_UNDEFINED = "_default_undefined_";
+
+    public static List<Source> forSyntax(String syntax) {
+        List<Source> result;
+        int lastPosition;
+        int position;
+        String name;
+        int min;
+        int max;
+        int length;
+
+        result = new ArrayList<>();
+        lastPosition = 0;
+        for (String field : Separator.SPACE.split(syntax)) {
+            if (field.startsWith("-")) {
+                position = 0;
+                name = field.substring(1);
+            } else {
+                lastPosition++;
+                position = lastPosition;
+                name = field;
+            }
+            length = name.length() - 1;
+            switch (name.charAt(length)) {
+                case '?':
+                    min = 0;
+                    max = 1;
+                    name = name.substring(0, length - 1);
+                    break;
+                case '*':
+                    min = 0;
+                    max = Integer.MAX_VALUE;
+                    name = name.substring(0, length - 1);
+                    break;
+                case '+':
+                    min = 1;
+                    max = Integer.MAX_VALUE;
+                    name = name.substring(0, length - 1);
+                    break;
+                default:
+                    min = 1;
+                    max = 1;
+                    break;
+            }
+            result.add(new Source(position, name, min, max, DEFAULT_UNDEFINED));
+        }
+        return result;
+    }
 
     public static Source forAnnotation(AnnotatedElement element) {
         Source result;

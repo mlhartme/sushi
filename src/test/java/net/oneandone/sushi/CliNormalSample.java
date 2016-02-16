@@ -20,9 +20,7 @@ import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.Console;
 import net.oneandone.sushi.cli.Context;
 import net.oneandone.sushi.cli.Help;
-import net.oneandone.sushi.cli.Option;
 import net.oneandone.sushi.cli.PackageVersion;
-import net.oneandone.sushi.cli.Value;
 import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;
@@ -41,12 +39,12 @@ public class CliNormalSample {
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
                 .addContext(console)
-                .addCommand(FirstCommand.class)
+                .addSyntaxCommand("first flag number first remaining*", FirstCommand.class)
                 .addCommand(SecondCommand.class)
                 .addCommand(PackageVersion.class)
                 .addCommandInstance(new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run("first", "a", "b", "c"));
+                .run("first", "true", "7", "a", "b", "c"));
     }
 
     public static class FirstCommand {
@@ -57,11 +55,7 @@ public class CliNormalSample {
         private final int number;
         private final List<String> remaining;
 
-        public FirstCommand(@Context Console console,
-                            @Option("flag") boolean flag,
-                            @Option(value = "number", dflt = "7") int number,
-                            @Value("first") String first,
-                            @Value(value = "remaining", min = 0, max = Integer.MAX_VALUE) List<String> remaining) {
+        public FirstCommand(Console console, boolean flag, int number, String first, List<String> remaining) {
             this.console = console;
             this.first = first;
             this.flag = flag;

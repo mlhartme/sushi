@@ -34,6 +34,115 @@ public class CommandParser {
         return arg.length() > 1 && arg.startsWith("-");
     }
 
+    //-- from syntax
+
+    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz) {
+        int idx;
+        List<Source> sources;
+        String cmd;
+        CommandParser parser;
+
+        idx = syntax.indexOf(' ');
+        if (idx == -1) {
+            throw new IllegalArgumentException();
+        }
+        cmd = syntax.substring(0, idx);
+        sources = Source.forSyntax(syntax.substring(idx + 1));
+        parser = createParser(schema, clazz, context, sources);
+        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz)));
+        return parser;
+    }
+
+    private static final Class<?>[] NO_ARGS = {};
+
+    private static Method commandMethod(Class<?> clazz) {
+        try {
+            return clazz.getDeclaredMethod("run", NO_ARGS);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context, List<Source> sources) {
+        Object[] actuals;
+        List<Argument> arguments;
+        Constructor found;
+        Object[] foundActuals;
+        List<Argument> foundArguments;
+        CommandParser result;
+
+        found = null;
+        foundActuals = null;
+        foundArguments = null;
+        arguments = new ArrayList<>();
+        for (Constructor constructor : clazz.getDeclaredConstructors()) {
+            arguments.clear();
+            actuals = match(schema, constructor, context, sources, arguments);
+            if (actuals != null) {
+                if (found != null) {
+                    throw new IllegalStateException("constructor is ambiguous");
+                }
+                found = constructor;
+                foundActuals = actuals;
+                foundArguments = new ArrayList<>(arguments);
+            }
+        }
+        if (found == null) {
+            throw new IllegalStateException(clazz + ": no matching constructor");
+        }
+        result = new CommandParser(found, foundActuals);
+        for (Argument a : foundArguments) {
+            result.addArgument(a);
+        }
+        return result;
+    }
+
+    private static Object[] match(Schema schema, Constructor constructor, List<Object> initialContext, List<Source> initialSources, List<Argument> result) {
+        List<Object> context;
+        List<Source> sources;
+        Parameter[] formals;
+        Object[] actuals;
+        Parameter formal;
+        Object ctx;
+        Source source;
+
+        context = new ArrayList<>(initialContext);
+        sources = new ArrayList<>(initialSources);
+        formals = constructor.getParameters();
+        actuals = new Object[formals.length];
+        for (int i = 0; i < formals.length; i++) {
+            formal = formals[i];
+            ctx = eatContext(context, formal.getType());
+            if (ctx != null) {
+                actuals[i] = ctx;
+            } else if (sources.isEmpty()) {
+                return null; // too many arguments to match
+            } else {
+                source = sources.remove(0);
+                result.add(new Argument(source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
+            }
+        }
+        if (!sources.isEmpty()) {
+            return null; // not all arguments matched
+        }
+        return actuals;
+    }
+
+    private static Object eatContext(List<Object> context, Class<?> type) {
+        Object obj;
+
+        for (int i = 0, max = context.size(); i < max; i++) {
+            obj = context.get(i);
+            if (type.isAssignableFrom(obj.getClass())) {
+                context.remove(i);
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    //--
+
     public static CommandParser create(Schema metadata, Object commandClassOrInstance) {
         return create(metadata, Collections.emptyList(), commandClassOrInstance);
     }

@@ -20,7 +20,6 @@ import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +65,19 @@ public class Cli {
                 exceptionHandler = (ExceptionHandler) obj;
             }
             this.context.add(obj);
+        }
+        return this;
+    }
+
+    public Cli addSyntaxCommand(String syntax, Class<?> clazz) {
+        CommandParser parser;
+
+        parser = CommandParser.create(schema, context, syntax, clazz);
+        for (CommandDefinition method : parser.getCommands()) {
+            if (lookup(method.getName()) != null) {
+                throw new IllegalArgumentException("duplicate command: " + method.getName());
+            }
+            this.commands.add(method);
         }
         return this;
     }

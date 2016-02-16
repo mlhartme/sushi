@@ -22,6 +22,9 @@ import java.lang.reflect.AnnotatedElement;
  * Defines the part of a command line that comprise one argument.
  * Value, Option and Remaining annotations result in Source objects */
 public class Source {
+    public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
+    public static final String NAME_UNDEFINED = "_name_undefined_";
+    public static final String DEFAULT_UNDEFINED = "_default_undefined_";
 
     public static Source forAnnotation(AnnotatedElement element) {
         Source result;
@@ -58,11 +61,9 @@ public class Source {
         return new Source(remaining.position(), remaining.value(), 0, Integer.MAX_VALUE, DEFAULT_UNDEFINED);
     }
 
-    public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
-    public static final String NAME_UNDEFINED = "_name_undefined_";
-    public static final String DEFAULT_UNDEFINED = "_default_undefined_";
+    //--
 
-    /** 0 for options */
+    /** 0 for "not positional" - i.e. an option */
     private final int position;
     private final String name;
     private final int min;

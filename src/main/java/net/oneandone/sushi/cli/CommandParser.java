@@ -272,11 +272,11 @@ public class CommandParser {
         actuals = new Actuals();
         actuals.defineAll(options.values());
         actuals.defineAll(values);
-        matchArguments(actuals, args);
+        fillActuals(args, actuals);
         actuals.checkCardinality();
-        actuals.apply(null);
+        actuals.save(null);
         target = commandInstance == null ? newInstance() : commandInstance;
-        actuals.apply(target);
+        actuals.save(target);
         return target;
     }
 
@@ -292,11 +292,12 @@ public class CommandParser {
 
     //-- actuals
 
-    private void matchArguments(Actuals actuals, List<String> args) {
+    private void fillActuals(List<String> args, Actuals actuals) {
         int position;
         String arg;
         Argument argument;
         String value;
+        StringBuilder builder;
 
         position = 0;
         for (int i = 0, max = args.size(); i < max; i++) {
@@ -320,8 +321,6 @@ public class CommandParser {
                 if (position < values.size()) {
                     argument = values.get(position);
                 } else {
-                    StringBuilder builder;
-
                     builder = new StringBuilder("unknown value(s):");
                     for ( ; i < max; i++) {
                         builder.append(' ');

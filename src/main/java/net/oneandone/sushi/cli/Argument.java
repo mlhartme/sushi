@@ -24,21 +24,19 @@ public class Argument {
     public final Source source;
     public final Target target; // type of the argument/field where to store
 
-    public Argument(Source source, Target type) {
+    public Argument(Source source, Target target) {
         this.source = source;
-        this.target = type;
+        this.target = target;
     }
 
-    //-- TODO
-
-    public void set(Object obj, List<String> actual) {
+    public void set(Object dest, List<String> actual) {
         String d;
         Object converted;
 
         if (source.isList()) {
             for (String str : actual) {
                 try {
-                    target.doSet(obj, target.stringToComponent(str));
+                    target.doSet(dest, target.stringToComponent(str));
                 } catch (SimpleTypeException e) {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
@@ -62,7 +60,7 @@ public class Argument {
                     throw new ArgumentException("invalid argument " + source.getName() + ": " + e.getMessage());
                 }
             }
-            target.doSet(obj, converted);
+            target.doSet(dest, converted);
         }
     }
 }

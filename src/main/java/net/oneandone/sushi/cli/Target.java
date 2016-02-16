@@ -38,7 +38,9 @@ public abstract class Target {
         }
     }
 
+    /** return true to set pass values before command object instantiation */
     public abstract boolean before();
+
     public abstract void doSet(Object obj, Object value);
 
     public boolean isList() {
@@ -46,7 +48,7 @@ public abstract class Target {
     }
 
     public boolean isBoolean() {
-        return !list && component.getRawType().equals(Boolean.class);
+        return !list && (component.getRawType().equals(Boolean.TYPE) || component.getRawType().equals(Boolean.class));
     }
 
     public Object stringToComponent(String str) throws SimpleTypeException {

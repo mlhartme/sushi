@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Maps formals to actuals */
 public class Actuals {
     private final Map<Argument, List<String>> actuals;
 
@@ -56,7 +57,7 @@ public class Actuals {
         return value.size() == formal.source.max();
     }
 
-    public void apply(Object target) throws SimpleTypeException {
+    public void save(Object target) throws SimpleTypeException {
         Argument argument;
 
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {

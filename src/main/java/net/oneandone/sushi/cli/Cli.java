@@ -20,6 +20,7 @@ import net.oneandone.sushi.metadata.Schema;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +75,7 @@ public class Cli {
     public Cli command(String syntax, Class<?> clazz) {
         CommandParser parser;
 
-        parser = CommandParser.create(schema, contexts, syntax, clazz);
+        parser = create(syntax, clazz);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());
@@ -82,6 +83,42 @@ public class Cli {
             this.commands.add(method);
         }
         return this;
+    }
+
+    private CommandParser create(String syntax, Class<?> clazz) {
+        Context context;
+        int idx;
+        String cmd;
+        CommandParser parser;
+
+        idx = syntax.indexOf(' ');
+        if (idx == -1) {
+            cmd = syntax;
+            syntax = "";
+        } else {
+            cmd = syntax.substring(0, idx);
+            syntax = syntax.substring(idx + 1);
+        }
+        context = Context.create(clazz, syntax);
+        parser = context.createParser(schema, contexts);
+        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, context.mapping)));
+        return parser;
+    }
+
+    private static final Class<?>[] NO_ARGS = {};
+
+    private static Method commandMethod(Class<?> clazz, Mapping mapping) {
+        String name;
+
+        name = mapping.getCommand();
+        if (name == null) {
+            name = "run";
+        }
+        try {
+            return clazz.getDeclaredMethod(name, NO_ARGS);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public Cli addDefaultCommand(String name) {

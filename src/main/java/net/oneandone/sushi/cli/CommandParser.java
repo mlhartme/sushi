@@ -31,42 +31,6 @@ public class CommandParser {
         return arg.length() > 1 && arg.startsWith("-");
     }
 
-    public static CommandParser create(Schema schema, List<Context> parents, String syntax, Class<?> clazz) {
-        Context co;
-        int idx;
-        String cmd;
-        CommandParser parser;
-
-        idx = syntax.indexOf(' ');
-        if (idx == -1) {
-            cmd = syntax;
-            syntax = "";
-        } else {
-            cmd = syntax.substring(0, idx);
-            syntax = syntax.substring(idx + 1);
-        }
-        co = Context.create(clazz, syntax);
-        parser = co.createParser(schema, parents);
-        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, co.mapping)));
-        return parser;
-    }
-
-    private static final Class<?>[] NO_ARGS = {};
-
-    private static Method commandMethod(Class<?> clazz, Mapping mapping) {
-        String name;
-
-        name = mapping.getCommand();
-        if (name == null) {
-            name = "run";
-        }
-        try {
-            return clazz.getDeclaredMethod(name, NO_ARGS);
-        } catch (NoSuchMethodException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
     //--
 
     private final Object commandInstance;

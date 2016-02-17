@@ -16,10 +16,8 @@
 package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
-import net.oneandone.sushi.cli.ExceptionHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,24 +28,25 @@ import java.util.List;
 */
 public class CliSingleSample {
     public static void main(String[] args) throws IOException {
-        System.exit(new Cli()
-                .context((ExceptionHandler) throwable -> {
-                    throwable.printStackTrace();
-                    return -1;
-                })
-                .command(CliSingleSample.class, "default -flag -number first remaining")
-                .run(args));
+        Cli cli;
+
+        cli = Cli.single(CliSingleSample.class, "default -flag -number first remaining*");
+        System.exit(cli.run("first", "-number", "42"));
     }
 
-    private boolean flag = false;
+    private boolean flag;
 
-    private int number = 7;
+    private int number;
 
-    private String first = null;
+    private String first;
 
-    private List<String> remaining = new ArrayList<>();
+    private List<String> remaining;
 
-    public CliSingleSample() {
+    public CliSingleSample(boolean flag, int number, String first, List<String> remaining) {
+        this.flag = flag;
+        this.number = number;
+        this.first = first;
+        this.remaining = remaining;
     }
 
     public void addRemaining(String str) {

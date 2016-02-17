@@ -30,6 +30,16 @@ import java.util.List;
  * Running the parser instantiates one of the command classes.
  */
 public class Cli {
+    public static Cli single(Class<?> command, String syntax) throws IOException {
+        Console console;
+        Cli cli;
+
+        console = Console.create(World.create());
+        cli = new Cli(console.world).context(console, "-v -e  { setVerbose(v) setStacktraces(e) }");
+        cli.command(command, syntax);
+        return cli;
+    }
+
     public static Cli create(World world, String help) {
         Console console;
         Cli cli;

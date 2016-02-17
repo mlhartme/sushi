@@ -34,7 +34,7 @@ public class Cli {
 
     private final List<CommandDefinition> commands;
     private CommandDefinition defaultCommand;
-    private final List<Object> context;
+    private final List<Ctx> contexts;
     private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
@@ -48,7 +48,7 @@ public class Cli {
     public Cli(World world, Schema schema) {
         this.schema = schema;
         this.commands = new ArrayList<>();
-        this.context = new ArrayList<>();
+        this.contexts = new ArrayList<>();
         this.defaultCommand = null;
         context(world);
     }
@@ -63,7 +63,7 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.context.add(context);
+        this.contexts.add(new Ctx(context));
         return this;
     }
 
@@ -74,7 +74,7 @@ public class Cli {
     public Cli command(String syntax, Class<?> clazz, String mapping) {
         CommandParser parser;
 
-        parser = CommandParser.create(schema, context, syntax, clazz, mapping);
+        parser = CommandParser.create(schema, contexts, syntax, clazz, mapping);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());
@@ -99,7 +99,7 @@ public class Cli {
 
     private Cli addCommandOrInstance(Object ... commandOrInstance) {
         for (Object ci : commandOrInstance) {
-            for (CommandDefinition method : CommandParser.create(schema, context, ci).getCommands()) {
+            for (CommandDefinition method : CommandParser.create(schema, contexts, ci).getCommands()) {
                 if (lookup(method.getName()) != null) {
                     throw new IllegalArgumentException("duplicate command: " + method.getName());
                 }

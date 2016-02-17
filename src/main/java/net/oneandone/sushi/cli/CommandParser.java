@@ -36,7 +36,7 @@ public class CommandParser {
 
     //-- from syntax
 
-    public static CommandParser create(Schema schema, List<Object> context, String syntax, Class<?> clazz, String mappingString) {
+    public static CommandParser create(Schema schema, List<Ctx> contexts, String syntax, Class<?> clazz, String mappingString) {
         int idx;
         List<Source> sources;
         String cmd;
@@ -53,7 +53,7 @@ public class CommandParser {
             syntax = syntax.substring(idx + 1);
         }
         sources = Source.forSyntax(syntax);
-        parser = createParser(schema, clazz, context, sources, mapping);
+        parser = createParser(schema, clazz, contexts, sources, mapping);
         parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, mapping)));
         return parser;
     }
@@ -74,7 +74,7 @@ public class CommandParser {
         }
     }
 
-    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context, List<Source> sources, Mapping mapping) {
+    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Ctx> contexts, List<Source> sources, Mapping mapping) {
         List<Source> constructorSources;
         List<Source> extraSources;
         Object[] actuals;
@@ -99,7 +99,7 @@ public class CommandParser {
         }
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             arguments.clear();
-            actuals = match(schema, constructor, context, constructorSources, arguments);
+            actuals = match(schema, constructor, contexts, constructorSources, arguments);
             if (actuals != null) {
                 if (found != null) {
                     throw new IllegalStateException("constructor is ambiguous");
@@ -122,9 +122,9 @@ public class CommandParser {
         return result;
     }
 
-    private static Object[] match(Schema schema, Constructor constructor, List<Object> initialContext, List<Source> initialSources,
+    private static Object[] match(Schema schema, Constructor constructor, List<Ctx> initialContexts, List<Source> initialSources,
                                   List<Argument> result) {
-        List<Object> context;
+        List<Ctx> contexts;
         List<Source> sources;
         Parameter[] formals;
         Object[] actuals;
@@ -132,13 +132,13 @@ public class CommandParser {
         Object ctx;
         Source source;
 
-        context = new ArrayList<>(initialContext);
+        contexts = new ArrayList<>(initialContexts);
         sources = new ArrayList<>(initialSources);
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
         for (int i = 0; i < formals.length; i++) {
             formal = formals[i];
-            ctx = eatContext(context, formal.getType());
+            ctx = eatContext(contexts, formal.getType());
             if (ctx != null) {
                 actuals[i] = ctx;
             } else if (sources.isEmpty()) {
@@ -154,13 +154,13 @@ public class CommandParser {
         return actuals;
     }
 
-    private static Object eatContext(List<Object> context, Class<?> type) {
+    private static Object eatContext(List<Ctx> contexts, Class<?> type) {
         Object obj;
 
-        for (int i = 0, max = context.size(); i < max; i++) {
-            obj = context.get(i);
+        for (int i = 0, max = contexts.size(); i < max; i++) {
+            obj = contexts.get(i).object;
             if (type.isAssignableFrom(obj.getClass())) {
-                context.remove(i);
+                contexts.remove(i);
                 return obj;
             }
         }
@@ -173,7 +173,7 @@ public class CommandParser {
         return create(metadata, Collections.emptyList(), commandClassOrInstance);
     }
 
-    public static CommandParser create(Schema schema, List<Object> context, Object commandClassOrInstance) {
+    public static CommandParser create(Schema schema, List<Ctx> contexts, Object commandClassOrInstance) {
         Class<?> commandClass;
         CommandParser parser;
         Source source;
@@ -181,16 +181,16 @@ public class CommandParser {
 
         if (commandClassOrInstance instanceof Class) {
             commandClass = (Class<?>) commandClassOrInstance;
-            parser = createParser(schema, commandClass, context);
+            parser = createParser(schema, commandClass, contexts);
         } else {
             commandClass = commandClassOrInstance.getClass();
             parser = new CommandParser(commandClassOrInstance);
         }
-        for (Object oneContext : context) {
-            for (Method m : oneContext.getClass().getMethods()) {
+        for (Ctx oneContext : contexts) {
+            for (Method m : oneContext.object.getClass().getMethods()) {
                 source = Source.forAnnotation(m);
                 if (source != null) {
-                    parser.addArgument(source, TargetMethod.create(schema, oneContext, m));
+                    parser.addArgument(source, TargetMethod.create(schema, oneContext.object, m));
                 }
             }
         }
@@ -220,7 +220,7 @@ public class CommandParser {
         return parser;
     }
 
-    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Object> context) {
+    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Ctx> contexts) {
         Object[] actuals;
         List<Argument> arguments;
         Constructor found;
@@ -234,7 +234,7 @@ public class CommandParser {
         arguments = new ArrayList<>();
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             arguments.clear();
-            actuals = match(schema, constructor, context, arguments);
+            actuals = match(schema, constructor, contexts, arguments);
             if (actuals != null) {
                 if (found != null) {
                     throw new IllegalStateException("constructor is ambiguous");
@@ -254,7 +254,7 @@ public class CommandParser {
         return result;
     }
 
-    private static Object[] match(Schema schema, Constructor constructor, List<Object> context, List<Argument> result) {
+    private static Object[] match(Schema schema, Constructor constructor, List<Ctx> contexts, List<Argument> result) {
         Parameter[] formals;
         Object[] actuals;
         Parameter formal;
@@ -279,7 +279,7 @@ public class CommandParser {
                     return null; // not fully annotated
                 case 1:
                     if (ctx != null) {
-                        c = find(context, formal.getType());
+                        c = find(contexts, formal.getType());
                         if (c == null) {
                             throw new IllegalStateException("context object not found: " + formal);
                         }
@@ -324,10 +324,10 @@ public class CommandParser {
         return count;
     }
 
-    private static Object find(List<Object> context, Class<?> type) {
-        for (Object obj : context) {
-            if (type.isAssignableFrom(obj.getClass())) {
-                return obj;
+    private static Object find(List<Ctx> contexts, Class<?> type) {
+        for (Ctx context : contexts) {
+            if (type.isAssignableFrom(context.object.getClass())) {
+                return context.object;
             }
         }
         return null;

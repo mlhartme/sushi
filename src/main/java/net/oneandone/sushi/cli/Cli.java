@@ -34,7 +34,7 @@ public class Cli {
 
     private final List<CommandDefinition> commands;
     private CommandDefinition defaultCommand;
-    private final List<Ctx> contexts;
+    private final List<Context> contexts;
     private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
@@ -67,7 +67,7 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.contexts.add(Ctx.create(context, syntax, mapping));
+        this.contexts.add(Context.create(context, syntax, mapping));
         return this;
     }
 

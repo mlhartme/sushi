@@ -7,22 +7,22 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ctx {
-    public static Ctx create(Object object, String syntax, String mapping) {
-        return new Ctx(object, Source.forSyntax(syntax), Mapping.parse(mapping, object.getClass()));
+public class Context {
+    public static Context create(Object object, String syntax, String mapping) {
+        return new Context(object, Source.forSyntax(syntax), Mapping.parse(mapping, object.getClass()));
     }
 
     public final Object object;
     public final List<Source> sources;
     public final Mapping mapping;
 
-    public Ctx(Object object, List<Source> sources, Mapping mapping) {
+    public Context(Object object, List<Source> sources, Mapping mapping) {
         this.object = object;
         this.sources = sources;
         this.mapping = mapping;
     }
 
-    public CommandParser createParser(Schema schema, List<Ctx> parents) {
+    public CommandParser createParser(Schema schema, List<Context> parents) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -73,8 +73,8 @@ public class Ctx {
     }
 
     private static Object[] match(Schema schema, Constructor constructor,
-                                  List<Ctx> initialParents, List<Source> initialSources, List<Argument> result) {
-        List<Ctx> remainingContext;
+                                  List<Context> initialParents, List<Source> initialSources, List<Argument> result) {
+        List<Context> remainingContext;
         List<Source> remainingSources;
         Parameter[] formals;
         Object[] actuals;
@@ -104,7 +104,7 @@ public class Ctx {
         return actuals;
     }
 
-    private static Object eatContext(List<Ctx> parents, Class<?> type) {
+    private static Object eatContext(List<Context> parents, Class<?> type) {
         Object obj;
 
         for (int i = 0, max = parents.size(); i < max; i++) {

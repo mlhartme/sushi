@@ -54,6 +54,10 @@ public class Cli {
     }
 
     public Cli context(Object context) {
+        return context(context, "", "");
+    }
+
+    public Cli context(Object context, String syntax, String mapping) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -63,7 +67,7 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.contexts.add(new Ctx(context));
+        this.contexts.add(Ctx.create(context, syntax, mapping));
         return this;
     }
 

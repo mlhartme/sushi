@@ -38,7 +38,7 @@ public class CliNormalSample {
 
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
-                .context(console)
+                .context(console, "-v -e", "setVerbose(v) setStacktrace(e)")
                 .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
                 .command("second", SecondCommand.class)
                 .command("version", PackageVersion.class, "invoke")

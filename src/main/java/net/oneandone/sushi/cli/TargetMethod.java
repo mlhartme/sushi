@@ -23,10 +23,9 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
 public class TargetMethod extends Target {
-    public static Target create(Schema schema, Object context, Method method) {
+    public static Target create(boolean iterated, Schema schema, Object context, Method method) {
         Parameter[] formals;
         java.lang.reflect.Type type;
-        boolean iterated;
 
         if (Modifier.isStatic(method.getModifiers())) {
             throw new IllegalArgumentException(method + ": static not allowed");
@@ -39,7 +38,6 @@ public class TargetMethod extends Target {
             throw new IllegalArgumentException("1 argument expected");
         }
         type = formals[0].getParameterizedType();
-        iterated = (type instanceof Class);
         if (iterated) {
             return new TargetMethodIterated(true, schema.simple((Class) type), context, method);
         } else {

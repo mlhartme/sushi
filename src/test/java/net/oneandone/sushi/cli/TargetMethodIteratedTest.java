@@ -19,7 +19,6 @@ import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,34 +26,23 @@ import static org.junit.Assert.assertEquals;
 
 public class TargetMethodIteratedTest {
     @Test
-    public void integer() {
-        check(1);
-    }
-    
-    private void check(int expected) {
+    public void number() throws NoSuchMethodException {
         Target arg;
-        List<Integer> lst;
-        
-        arg = TargetMethod.create(new ReflectSchema(World.createMinimal()), null, getMethod());
-        lst = new ArrayList<>();
-        lst.add(expected);
-        arg.doSet(this, lst);
-        assertEquals(expected, i);
-    }
+        List<Long> lst;
 
-    private Method getMethod() {
-        try {
-            return getClass().getMethod("setInt", Integer.TYPE);
-        } catch (SecurityException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        arg = TargetMethod.create(true, new ReflectSchema(World.createMinimal()), null, getClass().getMethod("setInt", Long.TYPE));
+        lst = new ArrayList<>();
+        lst.add((long) 1);
+        lst.add((long) 2);
+        arg.doSet(this, lst);
+        assertEquals(lst, values);
     }
 
     //--
     
-    private Object i;
+    private List<Long> values = new ArrayList<>();
     
-    public void setInt(int i) {
-        this.i = i;
+    public void setInt(long l) {
+        values.add(l);
     }
 }

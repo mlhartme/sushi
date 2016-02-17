@@ -12,6 +12,7 @@ public class Mapping {
     public static Mapping parse(String str, Class<?> clazz) {
         Mapping result;
         int idx;
+        String name;
 
         result = new Mapping();
         for (String item : Separator.SPACE.split(str)) {
@@ -41,10 +42,13 @@ public class Mapping {
     /** maps argument names to method names */
     private final Map<String, Method> methods;
 
+    private final Map<String, Method> iteratedMethods;
+
     public Mapping() {
         this.command = null;
         this.fields = new HashMap<>();
         this.methods = new HashMap<>();
+        this.iteratedMethods = new HashMap<>();
     }
 
     public String getCommand() {
@@ -73,8 +77,13 @@ public class Mapping {
 
     public void addMethod(String argument, Class<?> clazz, String name) {
         Method method;
+        boolean iterable;
 
         method = null;
+        iterable = name.endsWith("*");
+        if (iterable) {
+            name = name.substring(name.length() - 1);
+        }
         for (Method candidate : clazz.getMethods()) {
             if (candidate.getParameterCount() == 1 && candidate.getName().equals(name)) {
                 if (method != null) {
@@ -86,7 +95,7 @@ public class Mapping {
         if (method == null) {
             throw new IllegalArgumentException("method not found: " + clazz.getName() + "." + name + "(x)");
         }
-        if (methods.put(argument, method) != null) {
+        if ((iterable ? iteratedMethods : methods).put(argument, method) != null) {
             throw new IllegalArgumentException("duplicate method mapping for argument " + argument);
         }
     }
@@ -105,7 +114,11 @@ public class Mapping {
         }
         method = methods.get(argument);
         if (method != null) {
-            return TargetMethod.create(schema, context, method);
+            return TargetMethod.create(false, schema, context, method);
+        }
+        method = iteratedMethods.get(argument);
+        if (method != null) {
+            return TargetMethod.create(true, schema, context, method);
         }
         throw new IllegalStateException();
     }

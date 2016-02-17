@@ -19,42 +19,44 @@ import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class TargetMethodTest {
     @Test
-    public void bool() {
-        check(true);
-    }
-    
-    private void check(boolean expected) {
+    public void bool() throws NoSuchMethodException {
         Target arg;
-        List<Boolean> lst;
-        
-        arg = TargetMethod.create(new ReflectSchema(World.createMinimal()), null, getMethod());
-        lst = new ArrayList<>();
-        lst.add(expected);
-        arg.doSet(this, lst);
-        assertEquals(lst, this.lst);
+
+        arg = TargetMethod.create(false, new ReflectSchema(World.createMinimal()), null, getClass().getMethod("bool", Boolean.TYPE));
+        arg.doSet(this, true);
+        assertEquals(true, this.b);
     }
 
-    private Method getMethod() {
-        try {
-            return getClass().getMethod("setList", List.class);
-        } catch (SecurityException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+    @Test
+    public void lst() throws NoSuchMethodException {
+        Target arg;
+        List<Integer> lst;
+
+        lst = new ArrayList<>();
+        lst.add(42);
+        arg = TargetMethod.create(false, new ReflectSchema(World.createMinimal()), null, getClass().getMethod("lst", List.class));
+        arg.doSet(this, lst);
+        assertSame(lst, this.lst);
     }
 
     //--
     
-    private Object lst;
+    private boolean b;
+    private List<Integer> lst;
     
-    public void setList(List<Boolean> lst) {
+    public void bool(boolean b) {
+        this.b = b;
+    }
+
+    public void lst(List<Integer> lst) {
         this.lst = lst;
     }
 }

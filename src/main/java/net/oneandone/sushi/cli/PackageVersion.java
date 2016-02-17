@@ -20,7 +20,7 @@ import java.util.Locale;
 public class PackageVersion {
     private final Console console;
 
-    public PackageVersion(@Context Console console) {
+    public PackageVersion(Console console) {
         this.console = console;
     }
 

@@ -17,7 +17,6 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Console;
-import net.oneandone.sushi.cli.Context;
 import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.fs.World;
 
@@ -73,7 +72,7 @@ public class CliNormalSample {
     public static class SecondCommand {
         private final Console console;
 
-        public SecondCommand(@Context Console console) {
+        public SecondCommand(Console console) {
             this.console = console;
         }
 

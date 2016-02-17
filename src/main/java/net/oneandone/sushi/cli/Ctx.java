@@ -22,7 +22,7 @@ public class Ctx {
         this.mapping = mapping;
     }
 
-    public CommandParser createParser(Schema schema, List<Ctx> contexts) {
+    public CommandParser createParser(Schema schema, List<Ctx> parents) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -49,7 +49,7 @@ public class Ctx {
         clazz = (Class<?>) object;
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             arguments.clear();
-            actuals = match(schema, constructor, contexts, constructorSources, arguments);
+            actuals = match(schema, constructor, parents, constructorSources, arguments);
             if (actuals != null) {
                 if (found != null) {
                     throw new IllegalStateException("constructor is ambiguous");
@@ -73,7 +73,7 @@ public class Ctx {
     }
 
     private static Object[] match(Schema schema, Constructor constructor,
-                                  List<Ctx> initialContexts, List<Source> initialSources, List<Argument> result) {
+                                  List<Ctx> initialParents, List<Source> initialSources, List<Argument> result) {
         List<Ctx> remainingContext;
         List<Source> remainingSources;
         Parameter[] formals;
@@ -82,7 +82,7 @@ public class Ctx {
         Object ctx;
         Source source;
 
-        remainingContext = new ArrayList<>(initialContexts);
+        remainingContext = new ArrayList<>(initialParents);
         remainingSources = new ArrayList<>(initialSources);
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
@@ -104,13 +104,13 @@ public class Ctx {
         return actuals;
     }
 
-    private static Object eatContext(List<Ctx> contexts, Class<?> type) {
+    private static Object eatContext(List<Ctx> parents, Class<?> type) {
         Object obj;
 
-        for (int i = 0, max = contexts.size(); i < max; i++) {
-            obj = contexts.get(i).object;
+        for (int i = 0, max = parents.size(); i < max; i++) {
+            obj = parents.get(i).object;
             if (type.isAssignableFrom(obj.getClass())) {
-                contexts.remove(i);
+                parents.remove(i);
                 return obj;
             }
         }

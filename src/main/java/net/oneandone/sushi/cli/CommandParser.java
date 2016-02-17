@@ -33,7 +33,7 @@ public class CommandParser {
 
     //-- from syntax
 
-    public static CommandParser create(Schema schema, List<Ctx> contexts, String syntax, Class<?> clazz, String mappingString) {
+    public static CommandParser create(Schema schema, List<Ctx> parents, String syntax, Class<?> clazz, String mappingString) {
         Ctx co;
         int idx;
         String cmd;
@@ -48,7 +48,7 @@ public class CommandParser {
             syntax = syntax.substring(idx + 1);
         }
         co = Ctx.create(clazz, syntax, mappingString);
-        parser = co.createParser(schema, contexts);
+        parser = co.createParser(schema, parents);
         parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, co.mapping)));
         return parser;
     }

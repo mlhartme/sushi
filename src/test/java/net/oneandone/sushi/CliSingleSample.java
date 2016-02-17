@@ -31,12 +31,9 @@ import java.util.List;
 public class CliSingleSample {
     public static void main(String[] args) throws IOException {
         System.exit(new Cli()
-                .context(new ExceptionHandler() {
-                    @Override
-                    public int handleException(Throwable throwable) {
-                        throwable.printStackTrace();
-                        return -1;
-                    }
+                .context((ExceptionHandler) throwable -> {
+                    throwable.printStackTrace();
+                    return -1;
                 })
                 .command("default -flag -number first remaining", CliSingleSample.class)
                 .run(args));

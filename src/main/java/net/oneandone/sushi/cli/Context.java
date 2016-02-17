@@ -59,25 +59,32 @@ public class Context {
                 constructorSources.add(s);
             }
         }
-        clazz = (Class<?>) classOrInstance;
-        for (Constructor constructor : clazz.getDeclaredConstructors()) {
-            arguments.clear();
-            actuals = match(schema, constructor, parents, constructorSources, arguments);
-            if (actuals != null) {
-                if (found != null) {
-                    throw new IllegalStateException("constructor is ambiguous");
+        if (classOrInstance instanceof Class) {
+            clazz = (Class<?>) classOrInstance;
+            for (Constructor constructor : clazz.getDeclaredConstructors()) {
+                arguments.clear();
+                actuals = match(schema, constructor, parents, constructorSources, arguments);
+                if (actuals != null) {
+                    if (found != null) {
+                        throw new IllegalStateException("constructor is ambiguous");
+                    }
+                    found = constructor;
+                    foundActuals = actuals;
+                    foundArguments = new ArrayList<>(arguments);
                 }
-                found = constructor;
-                foundActuals = actuals;
-                foundArguments = new ArrayList<>(arguments);
             }
-        }
-        if (found == null) {
-            throw new IllegalStateException(clazz + ": no matching constructor");
-        }
-        result = new CommandParser(found, foundActuals);
-        for (Argument a : foundArguments) {
-            result.addArgument(a);
+            if (found == null) {
+                throw new IllegalStateException(clazz + ": no matching constructor");
+            }
+            result = new CommandParser(found, foundActuals);
+            for (Argument a : foundArguments) {
+                result.addArgument(a);
+            }
+        } else {
+            if (!constructorSources.isEmpty()) {
+                throw new IllegalStateException("cannot apply constructor argument to a command instance");
+            }
+            result = new CommandParser(classOrInstance);
         }
         for (Source s : extraSources) {
             result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));

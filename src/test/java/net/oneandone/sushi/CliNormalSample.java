@@ -36,13 +36,13 @@ public class CliNormalSample {
 
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
-                .context(console, "-v -e { setVerbose(v) setStacktrace(e) }")
+                .context(console, "-v -e { setVerbose(v) setStacktraces(e) }")
                 .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
                 .command("second", SecondCommand.class)
                 .command("version { invoke }", PackageVersion.class)
                 .command("help", new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run("first", "f"));
+                .run("-v"));
     }
 
     public static class FirstCommand {

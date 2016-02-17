@@ -9,7 +9,7 @@ public class Help {
         this.help = help;
     }
 
-    public void invoke() {
+    public void run() {
         console.info.println(help);
     }
 }

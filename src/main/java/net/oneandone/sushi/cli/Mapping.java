@@ -84,7 +84,7 @@ public class Mapping {
             }
         }
         if (method == null) {
-            throw new IllegalArgumentException("method not found: " + name);
+            throw new IllegalArgumentException("method not found: " + clazz.getName() + "." + name + "(x)");
         }
         if (methods.put(argument, method) != null) {
             throw new IllegalArgumentException("duplicate method mapping for argument " + argument);

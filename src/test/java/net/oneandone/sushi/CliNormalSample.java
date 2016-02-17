@@ -42,7 +42,7 @@ public class CliNormalSample {
                 .command("version { invoke }", PackageVersion.class)
                 .command("help", new Help(console, "demo help"))
                 .addDefaultCommand("help")
-                .run("second"));
+                .run("-v", "second"));
     }
 
     public static class FirstCommand {

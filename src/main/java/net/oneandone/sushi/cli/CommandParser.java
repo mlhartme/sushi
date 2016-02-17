@@ -62,10 +62,6 @@ public class CommandParser {
         return commands;
     }
 
-    public void addArgument(Source source, Target target) {
-        addArgument(new Argument(source, target));
-    }
-
     public void addArgument(Argument arg) {
         Source source;
         String name;

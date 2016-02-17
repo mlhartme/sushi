@@ -92,7 +92,26 @@ public class Context {
         for (Source s : extraSources) {
             result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
         }
+        if (parent != null) {
+            parent.addContextCommands(schema, result);
+        }
         return result;
+    }
+
+    private void addContextCommands(Schema schema, CommandParser parser) {
+        for (Source s : sources) {
+            if (mapping.contains(s.getName())) {
+                if (classOrInstance instanceof Class) {
+                    throw new IllegalStateException("context instance expected");
+                }
+                parser.addArgument(new Argument(s, mapping.target(schema, classOrInstance, s.getName())));
+            } else {
+                throw new IllegalStateException("invalid constructor argument for context object");
+            }
+        }
+        if (parent != null) {
+            parent.addContextCommands(schema, parser);
+        }
     }
 
     private Object[] match(Schema schema, Constructor constructor, List<Source> initialSources, List<Argument> result) {

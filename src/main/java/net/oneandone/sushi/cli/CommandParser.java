@@ -15,11 +15,8 @@
  */
 package net.oneandone.sushi.cli;
 
-import net.oneandone.sushi.metadata.Schema;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +33,7 @@ public class CommandParser {
     private final Object commandInstance;
     private final Constructor<?> constructor;
     private final Object[] constructorActuals;
-    private final List<CommandDefinition> commands;
+    private final List<Command> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
@@ -57,11 +54,11 @@ public class CommandParser {
         this.values = new ArrayList<>();
     }
 
-    public void addCommand(CommandDefinition command) {
+    public void addCommand(Command command) {
         commands.add(command);
     }
 
-    public List<CommandDefinition> getCommands() {
+    public List<Command> getCommands() {
         return commands;
     }
 

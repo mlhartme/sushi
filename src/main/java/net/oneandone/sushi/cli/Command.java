@@ -19,8 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class CommandDefinition {
-    public static CommandDefinition create(CommandParser parser, String name, Method method) {
+public class Command {
+    public static Command create(CommandParser parser, String name, Method method) {
         Class<?> returnType;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -34,7 +34,7 @@ public class CommandDefinition {
         }
         returnType = method.getReturnType();
         if (Void.TYPE.equals(returnType) || Integer.TYPE.equals(returnType)) {
-            return new CommandDefinition(parser, name, method);
+            return new Command(parser, name, method);
         } else {
             throw new IllegalArgumentException("unsupported return type: " + returnType);
         }
@@ -46,7 +46,7 @@ public class CommandDefinition {
     private final String name;
     private final Method method;
 
-    public CommandDefinition(CommandParser parser, String name, Method method) {
+    public Command(CommandParser parser, String name, Method method) {
         this.parser = parser;
         this.name = name;
         this.method = method;

@@ -33,8 +33,8 @@ public class Cli {
     protected final Schema schema;
     protected boolean exception;
 
-    private final List<CommandDefinition> commands;
-    private CommandDefinition defaultCommand;
+    private final List<Command> commands;
+    private Command defaultCommand;
     private final List<Context> contexts;
     private ExceptionHandler exceptionHandler;
 
@@ -76,7 +76,7 @@ public class Cli {
         CommandParser parser;
 
         parser = create(syntax, clazzOrInstance);
-        for (CommandDefinition method : parser.getCommands()) {
+        for (Command method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());
             }
@@ -101,7 +101,7 @@ public class Cli {
         }
         context = Context.create(clazzOrInstance, syntax);
         parser = context.createParser(schema, contexts);
-        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
+        parser.addCommand(new Command(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
         return parser;
     }
 
@@ -148,14 +148,14 @@ public class Cli {
             } else {
                 result = parseNormal(args);
             }
-            return ((CommandDefinition) result[0]).invoke(result[1]);
+            return ((Command) result[0]).invoke(result[1]);
         } catch (Throwable e) {
             return exceptionHandler.handleException(e);
         }
     }
 
     public Object[] parseSingle(List<String> args) throws Throwable {
-        CommandDefinition c;
+        Command c;
 
         c = commands.get(0);
         return new Object[] { c, c.getParser().run(args) };
@@ -166,7 +166,7 @@ public class Cli {
     }
 
     public Object[] parseNormal(List<String> args) throws Throwable {
-        CommandDefinition c;
+        Command c;
         String name;
         List<String> lst;
 
@@ -196,8 +196,8 @@ public class Cli {
         return null;
     }
 
-    public CommandDefinition command(String name) {
-        CommandDefinition result;
+    public Command command(String name) {
+        Command result;
 
         result = lookup(name);
         if (result == null) {
@@ -206,8 +206,8 @@ public class Cli {
         return result;
     }
 
-    public CommandDefinition lookup(String name) {
-        for (CommandDefinition method : commands) {
+    public Command lookup(String name) {
+        for (Command method : commands) {
             if (name.equals(method.getName())) {
                 return method;
             }

@@ -17,8 +17,6 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Console;
-import net.oneandone.sushi.cli.Help;
-import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.fs.World;
 
 import java.io.IOException;

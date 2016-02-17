@@ -30,7 +30,7 @@ public class CliSingleSample {
     public static void main(String[] args) throws IOException {
         Cli cli;
 
-        cli = Cli.single(CliSingleSample.class, "default -flag -number first remaining*");
+        cli = Cli.single(CliSingleSample.class, "ignored -flag=true -number first remaining*");
         System.exit(cli.run("first", "-number", "42"));
     }
 

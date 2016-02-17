@@ -60,7 +60,7 @@ public class Command {
         return name;
     }
 
-    public int invoke(Object obj) {
+    public int run(Object obj) {
         Throwable cause;
         Object result;
         

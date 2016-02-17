@@ -148,7 +148,7 @@ public class Cli {
             } else {
                 result = parseNormal(args);
             }
-            return ((Command) result[0]).invoke(result[1]);
+            return ((Command) result[0]).run(result[1]);
         } catch (Throwable e) {
             return exceptionHandler.handleException(e);
         }

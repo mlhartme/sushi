@@ -1,5 +1,10 @@
 package net.oneandone.sushi.cli;
 
+import net.oneandone.sushi.metadata.Schema;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ctx {
@@ -15,6 +20,101 @@ public class Ctx {
         this.object = object;
         this.sources = sources;
         this.mapping = mapping;
+    }
+
+    public CommandParser createParser(Schema schema, List<Ctx> contexts) {
+        Class<?> clazz;
+        List<Source> constructorSources;
+        List<Source> extraSources;
+        Object[] actuals;
+        List<Argument> arguments;
+        Constructor found;
+        Object[] foundActuals;
+        List<Argument> foundArguments;
+        CommandParser result;
+
+        found = null;
+        foundActuals = null;
+        foundArguments = null;
+        arguments = new ArrayList<>();
+        constructorSources = new ArrayList<>(sources.size());
+        extraSources = new ArrayList<>();
+        for (Source s : sources) {
+            if (mapping.contains(s.getName())) {
+                extraSources.add(s);
+            } else {
+                constructorSources.add(s);
+            }
+        }
+        clazz = (Class<?>) object;
+        for (Constructor constructor : clazz.getDeclaredConstructors()) {
+            arguments.clear();
+            actuals = match(schema, constructor, contexts, constructorSources, arguments);
+            if (actuals != null) {
+                if (found != null) {
+                    throw new IllegalStateException("constructor is ambiguous");
+                }
+                found = constructor;
+                foundActuals = actuals;
+                foundArguments = new ArrayList<>(arguments);
+            }
+        }
+        if (found == null) {
+            throw new IllegalStateException(clazz + ": no matching constructor");
+        }
+        result = new CommandParser(found, foundActuals);
+        for (Argument a : foundArguments) {
+            result.addArgument(a);
+        }
+        for (Source s : extraSources) {
+            result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
+        }
+        return result;
+    }
+
+    private static Object[] match(Schema schema, Constructor constructor,
+                                  List<Ctx> initialContexts, List<Source> initialSources, List<Argument> result) {
+        List<Ctx> contexts;
+        List<Source> sources;
+        Parameter[] formals;
+        Object[] actuals;
+        Parameter formal;
+        Object ctx;
+        Source source;
+
+        contexts = new ArrayList<>(initialContexts);
+        sources = new ArrayList<>(initialSources);
+        formals = constructor.getParameters();
+        actuals = new Object[formals.length];
+        for (int i = 0; i < formals.length; i++) {
+            formal = formals[i];
+            ctx = eatContext(contexts, formal.getType());
+            if (ctx != null) {
+                actuals[i] = ctx;
+            } else if (sources.isEmpty()) {
+                return null; // too many constructor arguments
+            } else {
+                source = sources.remove(0);
+                result.add(new Argument(source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
+            }
+        }
+        if (!sources.isEmpty()) {
+            return null; // not all arguments matched
+        }
+        return actuals;
+    }
+
+    private static Object eatContext(List<Ctx> contexts, Class<?> type) {
+        Object obj;
+
+        for (int i = 0, max = contexts.size(); i < max; i++) {
+            obj = contexts.get(i).object;
+            if (type.isAssignableFrom(obj.getClass())) {
+                contexts.remove(i);
+                return obj;
+            }
+        }
+        return null;
     }
 
 }

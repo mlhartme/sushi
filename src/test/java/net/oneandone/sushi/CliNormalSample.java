@@ -17,6 +17,7 @@ package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
 import net.oneandone.sushi.cli.Console;
+import net.oneandone.sushi.cli.Help;
 import net.oneandone.sushi.cli.PackageVersion;
 import net.oneandone.sushi.fs.World;
 
@@ -39,7 +40,7 @@ public class CliNormalSample {
                 .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
                 .command("second", SecondCommand.class)
                 .command("version { invoke }", PackageVersion.class)
-               // TODO .command("help", new Help(console, "demo help"))
+                .command("help", new Help(console, "demo help"))
                 .addDefaultCommand("help")
                 .run("first", "f"));
     }

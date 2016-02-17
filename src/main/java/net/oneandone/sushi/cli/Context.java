@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Context {
-    public static Context create(Object object, String syntax) {
+    public static Context create(Object classOrInstance, String syntax) {
         int idx;
         String mapping;
 
@@ -22,15 +22,15 @@ public class Context {
             mapping = syntax.substring(idx + 1, syntax.length() - 1).trim();
             syntax = syntax.substring(0, idx).trim();
         }
-        return new Context(object, Source.forSyntax(syntax), Mapping.parse(mapping, object.getClass()));
+        return new Context(classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, classOrInstance.getClass()));
     }
 
-    public final Object object;
+    public final Object classOrInstance;
     public final List<Source> sources;
     public final Mapping mapping;
 
-    public Context(Object object, List<Source> sources, Mapping mapping) {
-        this.object = object;
+    public Context(Object classOrInstance, List<Source> sources, Mapping mapping) {
+        this.classOrInstance = classOrInstance;
         this.sources = sources;
         this.mapping = mapping;
     }
@@ -59,7 +59,7 @@ public class Context {
                 constructorSources.add(s);
             }
         }
-        clazz = (Class<?>) object;
+        clazz = (Class<?>) classOrInstance;
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             arguments.clear();
             actuals = match(schema, constructor, parents, constructorSources, arguments);
@@ -121,7 +121,7 @@ public class Context {
         Object obj;
 
         for (int i = 0, max = parents.size(); i < max; i++) {
-            obj = parents.get(i).object;
+            obj = parents.get(i).classOrInstance;
             if (type.isAssignableFrom(obj.getClass())) {
                 parents.remove(i);
                 return obj;

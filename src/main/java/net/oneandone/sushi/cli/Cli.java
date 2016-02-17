@@ -72,10 +72,10 @@ public class Cli {
         return this;
     }
 
-    public Cli command(String syntax, Class<?> clazz) {
+    public Cli command(String syntax, Object clazzOrInstance) {
         CommandParser parser;
 
-        parser = create(syntax, clazz);
+        parser = create(syntax, clazzOrInstance);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());
@@ -85,7 +85,7 @@ public class Cli {
         return this;
     }
 
-    private CommandParser create(String syntax, Class<?> clazz) {
+    private CommandParser create(String syntax, Object clazzOrInstance) {
         Context context;
         int idx;
         String cmd;
@@ -99,20 +99,26 @@ public class Cli {
             cmd = syntax.substring(0, idx);
             syntax = syntax.substring(idx + 1);
         }
-        context = Context.create(clazz, syntax);
+        context = Context.create(clazzOrInstance, syntax);
         parser = context.createParser(schema, contexts);
-        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, context.mapping)));
+        parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
         return parser;
     }
 
     private static final Class<?>[] NO_ARGS = {};
 
-    private static Method commandMethod(Class<?> clazz, Mapping mapping) {
+    private static Method commandMethod(Object classOrInstance, Mapping mapping) {
+        Class<?> clazz;
         String name;
 
         name = mapping.getCommand();
         if (name == null) {
             name = "run";
+        }
+        if (classOrInstance instanceof Class<?>) {
+            clazz = (Class<?>) classOrInstance;
+        } else {
+            clazz = classOrInstance.getClass();
         }
         try {
             return clazz.getDeclaredMethod(name, NO_ARGS);

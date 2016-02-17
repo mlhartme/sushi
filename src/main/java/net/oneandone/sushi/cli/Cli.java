@@ -35,7 +35,7 @@ public class Cli {
 
     private final List<Command> commands;
     private Command defaultCommand;
-    private final List<Context> contexts;
+    private Context lastContext;
     private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
@@ -49,7 +49,7 @@ public class Cli {
     public Cli(World world, Schema schema) {
         this.schema = schema;
         this.commands = new ArrayList<>();
-        this.contexts = new ArrayList<>();
+        this.lastContext = null;
         this.defaultCommand = null;
         context(world);
     }
@@ -68,7 +68,7 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.contexts.add(Context.create(context, syntax));
+        this.lastContext = Context.create(lastContext, context, syntax);
         return this;
     }
 
@@ -99,8 +99,8 @@ public class Cli {
             cmd = syntax.substring(0, idx);
             syntax = syntax.substring(idx + 1);
         }
-        context = Context.create(clazzOrInstance, syntax);
-        parser = context.createParser(schema, contexts);
+        context = Context.create(lastContext, clazzOrInstance, syntax);
+        parser = context.createParser(schema);
         parser.addCommand(new Command(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
         return parser;
     }

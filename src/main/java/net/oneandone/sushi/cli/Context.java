@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Context {
-    public static Context create(Object classOrInstance, String syntax) {
+    public static Context create(Context parent, Object classOrInstance, String syntax) {
         int idx;
         String mapping;
 
@@ -22,20 +22,23 @@ public class Context {
             mapping = syntax.substring(idx + 1, syntax.length() - 1).trim();
             syntax = syntax.substring(0, idx).trim();
         }
-        return new Context(classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, classOrInstance.getClass()));
+        return new Context(parent, classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, classOrInstance.getClass()));
     }
 
+    /** may be null */
+    public final Context parent;
     public final Object classOrInstance;
     public final List<Source> sources;
     public final Mapping mapping;
 
-    public Context(Object classOrInstance, List<Source> sources, Mapping mapping) {
+    public Context(Context parent, Object classOrInstance, List<Source> sources, Mapping mapping) {
+        this.parent = parent;
         this.classOrInstance = classOrInstance;
         this.sources = sources;
         this.mapping = mapping;
     }
 
-    public CommandParser createParser(Schema schema, List<Context> parents) {
+    public CommandParser createParser(Schema schema) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -63,7 +66,7 @@ public class Context {
             clazz = (Class<?>) classOrInstance;
             for (Constructor constructor : clazz.getDeclaredConstructors()) {
                 arguments.clear();
-                actuals = match(schema, constructor, parents, constructorSources, arguments);
+                actuals = match(schema, constructor, constructorSources, arguments);
                 if (actuals != null) {
                     if (found != null) {
                         throw new IllegalStateException("constructor is ambiguous");
@@ -92,8 +95,7 @@ public class Context {
         return result;
     }
 
-    private static Object[] match(Schema schema, Constructor constructor,
-                                  List<Context> initialParents, List<Source> initialSources, List<Argument> result) {
+    private Object[] match(Schema schema, Constructor constructor, List<Source> initialSources, List<Argument> result) {
         List<Context> remainingContext;
         List<Source> remainingSources;
         Parameter[] formals;
@@ -102,7 +104,7 @@ public class Context {
         Object ctx;
         Source source;
 
-        remainingContext = new ArrayList<>(initialParents);
+        remainingContext = parentList();
         remainingSources = new ArrayList<>(initialSources);
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
@@ -137,4 +139,13 @@ public class Context {
         return null;
     }
 
+    public List<Context> parentList() {
+        List<Context> result;
+
+        result = new ArrayList<>();
+        for (Context context = parent; context != null; context = context.parent) {
+            result.add(parent);
+        }
+        return result;
+    }
 }

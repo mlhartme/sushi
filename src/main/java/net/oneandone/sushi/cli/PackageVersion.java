@@ -24,7 +24,7 @@ public class PackageVersion {
         this.console = console;
     }
 
-    public void invoke() {
+    public void run() {
         Package pkg;
 
         pkg = getClass().getPackage();

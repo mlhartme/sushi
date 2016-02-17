@@ -33,21 +33,17 @@ import java.util.List;
 public class CliNormalSample {
     public static void main(String[] args) throws IOException {
         Console console;
+        Cli cli;
 
         console = Console.create(World.create());
-        System.exit(new Cli(console.world)
-                .context(console,
-                        "-v -e                   { setVerbose(v) setStacktraces(e) }")
-                .command(FirstCommand.class,
-                        "first -flag=false -number=7 first remaining*")
-                .command(SecondCommand.class,
-                        "second")
-                .command(PackageVersion.class,
-                        "version { invoke }")
-                .command(new Help(console, "demo help"),
-                        "help")
-                .addDefaultCommand("help")
-                .run("-v", "first", "-number", "12", "1", "2", "3"));
+        cli = new Cli(console.world)
+                .context(console,                           "-v -e                                           { setVerbose(v) setStacktraces(e) }")
+                .command(new Help(console, "demo help"),    "help")
+                .command(FirstCommand.class,                "first -flag=false -number=7 first remaining*")
+                .command(SecondCommand.class,               "second")
+                .command(PackageVersion.class,              "version")
+                .addDefaultCommand("help");
+        System.exit(cli.run("-v", "first", "-number", "12", "1", "2", "3"));
     }
 
     public static class FirstCommand {

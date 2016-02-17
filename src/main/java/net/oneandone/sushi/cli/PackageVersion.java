@@ -24,7 +24,6 @@ public class PackageVersion {
         this.console = console;
     }
 
-    @Command("version")
     public void invoke() {
         Package pkg;
 

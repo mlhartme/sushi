@@ -9,7 +9,6 @@ public class Help {
         this.help = help;
     }
 
-    @Command("help")
     public void invoke() {
         console.info.println(help);
     }

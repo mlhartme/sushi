@@ -93,26 +93,6 @@ public class Cli {
         return this;
     }
 
-    public Cli addCommandInstance(Object ... instance) {
-        return addCommandOrInstance(instance);
-    }
-
-    public Cli addCommand(Class<?> ... command) {
-        return addCommandOrInstance(command);
-    }
-
-    private Cli addCommandOrInstance(Object ... commandOrInstance) {
-        for (Object ci : commandOrInstance) {
-            for (CommandDefinition method : CommandParser.create(schema, contexts, ci).getCommands()) {
-                if (lookup(method.getName()) != null) {
-                    throw new IllegalArgumentException("duplicate command: " + method.getName());
-                }
-                this.commands.add(method);
-            }
-        }
-        return this;
-    }
-
     public int run(String... args) {
         return run(Arrays.asList(args));
     }

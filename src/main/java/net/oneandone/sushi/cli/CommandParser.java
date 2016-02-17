@@ -18,13 +18,11 @@ package net.oneandone.sushi.cli;
 import net.oneandone.sushi.metadata.Schema;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,172 +160,6 @@ public class CommandParser {
             if (type.isAssignableFrom(obj.getClass())) {
                 contexts.remove(i);
                 return obj;
-            }
-        }
-        return null;
-    }
-
-    //--
-
-    public static CommandParser create(Schema metadata, Object commandClassOrInstance) {
-        return create(metadata, Collections.emptyList(), commandClassOrInstance);
-    }
-
-    public static CommandParser create(Schema schema, List<Ctx> contexts, Object commandClassOrInstance) {
-        Class<?> commandClass;
-        CommandParser parser;
-        Source source;
-        Command command;
-
-        if (commandClassOrInstance instanceof Class) {
-            commandClass = (Class<?>) commandClassOrInstance;
-            parser = createParser(schema, commandClass, contexts);
-        } else {
-            commandClass = commandClassOrInstance.getClass();
-            parser = new CommandParser(commandClassOrInstance);
-        }
-        for (Ctx oneContext : contexts) {
-            for (Method m : oneContext.object.getClass().getMethods()) {
-                source = Source.forAnnotation(m);
-                if (source != null) {
-                    parser.addArgument(source, TargetMethod.create(schema, oneContext.object, m));
-                }
-            }
-        }
-
-        for (Method m : commandClass.getMethods()) {
-            command = m.getAnnotation(Command.class);
-            if (command != null) {
-                parser.addCommand(CommandDefinition.create(parser, command.value(), m));
-            }
-            source = Source.forAnnotation(m);
-            if (source != null) {
-                parser.addArgument(source, TargetMethod.create(schema, null, m));
-            }
-        }
-        while (!Object.class.equals(commandClass)) {
-            for (Field f: commandClass.getDeclaredFields()) {
-                source = Source.forAnnotation(f);
-                if (source != null) {
-                    parser.addArgument(source, TargetField.create(schema, f));
-                }
-            }
-            commandClass = commandClass.getSuperclass();
-        }
-        if (parser.commands.size() == 0) {
-            throw new IllegalStateException(commandClass + ": missing command");
-        }
-        return parser;
-    }
-
-    private static CommandParser createParser(Schema schema, Class<?> clazz, List<Ctx> contexts) {
-        Object[] actuals;
-        List<Argument> arguments;
-        Constructor found;
-        Object[] foundActuals;
-        List<Argument> foundArguments;
-        CommandParser result;
-
-        found = null;
-        foundActuals = null;
-        foundArguments = null;
-        arguments = new ArrayList<>();
-        for (Constructor constructor : clazz.getDeclaredConstructors()) {
-            arguments.clear();
-            actuals = match(schema, constructor, contexts, arguments);
-            if (actuals != null) {
-                if (found != null) {
-                    throw new IllegalStateException("constructor is ambiguous");
-                }
-                found = constructor;
-                foundActuals = actuals;
-                foundArguments = new ArrayList<>(arguments);
-            }
-        }
-        if (found == null) {
-            throw new IllegalStateException(clazz + ": no matching constructor");
-        }
-        result = new CommandParser(found, foundActuals);
-        for (Argument a : foundArguments) {
-            result.addArgument(a);
-        }
-        return result;
-    }
-
-    private static Object[] match(Schema schema, Constructor constructor, List<Ctx> contexts, List<Argument> result) {
-        Parameter[] formals;
-        Object[] actuals;
-        Parameter formal;
-        Context ctx;
-        Value value;
-        Option option;
-        Object c;
-        int position;
-        int currentPosition;
-        String name;
-
-        formals = constructor.getParameters();
-        actuals = new Object[formals.length];
-        position = 1;
-        for (int i = 0; i < formals.length; i++) {
-            formal = formals[i];
-            ctx = formal.getAnnotation(Context.class);
-            value = formal.getAnnotation(Value.class);
-            option = formal.getAnnotation(Option.class);
-            switch (count(ctx, value, option)) {
-                case 0:
-                    return null; // not fully annotated
-                case 1:
-                    if (ctx != null) {
-                        c = find(contexts, formal.getType());
-                        if (c == null) {
-                            throw new IllegalStateException("context object not found: " + formal);
-                        }
-                        actuals[i] = c;
-                    } else if (value != null) {
-                        currentPosition = value.position();
-                        if (currentPosition == Source.POSITION_UNDEFINED) {
-                            currentPosition = position;
-                        }
-                        name = value.value();
-                        if (name.equals(Source.NAME_UNDEFINED)) {
-                            name = formal.getName(); // returns arg<n> if not compiled with "-parameters"
-                        }
-                        result.add(new Argument(
-                                new Source(currentPosition, name, value.min(), value.max(), value.dflt()),
-                                new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
-                        position++;
-                    } else if (option != null) {
-                        result.add(new Argument(
-                                new Source(0, option.value(), 0, 1, option.dflt()),
-                                new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
-                    } else {
-                        throw new IllegalStateException();
-                    }
-                    break;
-                default:
-                    throw new IllegalStateException("duplicate annotations");
-            }
-        }
-        return actuals;
-    }
-
-    private static int count(Object ... args) {
-        int count;
-
-        count = 0;
-        for (Object arg : args) {
-            if (arg != null) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    private static Object find(List<Ctx> contexts, Class<?> type) {
-        for (Ctx context : contexts) {
-            if (type.isAssignableFrom(context.object.getClass())) {
-                return context.object;
             }
         }
         return null;

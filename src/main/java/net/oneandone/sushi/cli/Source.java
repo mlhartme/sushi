@@ -17,17 +17,13 @@ package net.oneandone.sushi.cli;
 
 import net.oneandone.sushi.util.Separator;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Defines the part of a command line that comprise one argument.
- * Value, Option and Remaining annotations result in Source objects */
+ */
 public class Source {
-    public static final int POSITION_UNDEFINED = Integer.MIN_VALUE;
-    public static final String NAME_UNDEFINED = "_name_undefined_";
     public static final String DEFAULT_UNDEFINED = "_default_undefined_";
 
     public static List<Source> forSyntax(String syntax) {
@@ -84,41 +80,6 @@ public class Source {
             result.add(new Source(position, name, min, max, dflt));
         }
         return result;
-    }
-
-    public static Source forAnnotation(AnnotatedElement element) {
-        Source result;
-
-        result = null;
-        for (Annotation a : element.getAnnotations()) {
-            if (a instanceof Option) {
-                result = merge(result, toSource((Option) a));
-            } else if (a instanceof Value) {
-                result = merge(result, toSource((Value) a));
-            } else if (a instanceof Remaining) {
-                result = merge(result, toSource((Remaining) a));
-            }
-        }
-        return result;
-    }
-
-    private static Source merge(Source prev, Source next) {
-        if (prev != null) {
-            throw new IllegalArgumentException("ambiguous annotations: " + prev + " vs " + next);
-        }
-        return next;
-    }
-
-    public static Source toSource(Value value) {
-        return new Source(value.position(), value.value(), value.min(), value.max(), value.dflt());
-    }
-
-    public static Source toSource(Option option) {
-        return new Source(0, option.value(), 0, 1, option.dflt());
-    }
-
-    public static Source toSource(Remaining remaining) {
-        return new Source(remaining.position(), remaining.value(), 0, Integer.MAX_VALUE, DEFAULT_UNDEFINED);
     }
 
     //--

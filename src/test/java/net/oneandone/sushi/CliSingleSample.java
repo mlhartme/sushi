@@ -16,10 +16,7 @@
 package net.oneandone.sushi;
 
 import net.oneandone.sushi.cli.Cli;
-import net.oneandone.sushi.cli.Command;
 import net.oneandone.sushi.cli.ExceptionHandler;
-import net.oneandone.sushi.cli.Option;
-import net.oneandone.sushi.cli.Value;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,17 +38,14 @@ public class CliSingleSample {
                         return -1;
                     }
                 })
-                .addCommand(CliSingleSample.class)
+                .command("default -flag -number first remaining", CliSingleSample.class)
                 .run(args));
     }
 
-    @Option("flag")
     private boolean flag = false;
 
-    @Option("number")
     private int number = 7;
 
-    @Value(value = "first", position = 1)
     private String first = null;
 
     private List<String> remaining = new ArrayList<>();
@@ -59,12 +53,10 @@ public class CliSingleSample {
     public CliSingleSample() {
     }
 
-    @Value(value = "remaining", position = 2, min = 0, max = Integer.MAX_VALUE)
     public void addRemaining(String str) {
         remaining.add(str);
     }
 
-    @Command("run")
     public void run() {
         System.out.println("command invoked with ");
         System.out.println("   flag = " + flag);

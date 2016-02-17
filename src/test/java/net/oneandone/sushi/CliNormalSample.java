@@ -36,13 +36,18 @@ public class CliNormalSample {
 
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
-                .context(console, "-v -e { setVerbose(v) setStacktraces(e) }")
-                .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
-                .command("second", SecondCommand.class)
-                .command("version { invoke }", PackageVersion.class)
-                .command("help", new Help(console, "demo help"))
+                .context(console,
+                        "-v -e                   { setVerbose(v) setStacktraces(e) }")
+                .command(FirstCommand.class,
+                        "first -flag=false -number=7 first remaining*")
+                .command(SecondCommand.class,
+                        "second")
+                .command(PackageVersion.class,
+                        "version { invoke }")
+                .command(new Help(console, "demo help"),
+                        "help")
                 .addDefaultCommand("help")
-                .run("-v", "second"));
+                .run("-v", "first", "-number", "12", "1", "2", "3"));
     }
 
     public static class FirstCommand {
@@ -78,6 +83,7 @@ public class CliNormalSample {
         }
 
         public void run() {
+            console.verbose.println("verbose output");
             console.info.println("invoked 'second'");
         }
     }

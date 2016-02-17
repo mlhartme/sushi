@@ -35,7 +35,7 @@ public class CliSingleSample {
                     throwable.printStackTrace();
                     return -1;
                 })
-                .command("default -flag -number first remaining", CliSingleSample.class)
+                .command(CliSingleSample.class, "default -flag -number first remaining")
                 .run(args));
     }
 

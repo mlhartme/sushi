@@ -72,7 +72,7 @@ public class Cli {
         return this;
     }
 
-    public Cli command(String syntax, Object clazzOrInstance) {
+    public Cli command(Object clazzOrInstance, String syntax) {
         CommandParser parser;
 
         parser = create(syntax, clazzOrInstance);

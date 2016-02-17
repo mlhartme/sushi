@@ -74,31 +74,31 @@ public class Ctx {
 
     private static Object[] match(Schema schema, Constructor constructor,
                                   List<Ctx> initialContexts, List<Source> initialSources, List<Argument> result) {
-        List<Ctx> contexts;
-        List<Source> sources;
+        List<Ctx> remainingContext;
+        List<Source> remainingSources;
         Parameter[] formals;
         Object[] actuals;
         Parameter formal;
         Object ctx;
         Source source;
 
-        contexts = new ArrayList<>(initialContexts);
-        sources = new ArrayList<>(initialSources);
+        remainingContext = new ArrayList<>(initialContexts);
+        remainingSources = new ArrayList<>(initialSources);
         formals = constructor.getParameters();
         actuals = new Object[formals.length];
         for (int i = 0; i < formals.length; i++) {
             formal = formals[i];
-            ctx = eatContext(contexts, formal.getType());
+            ctx = eatContext(remainingContext, formal.getType());
             if (ctx != null) {
                 actuals[i] = ctx;
-            } else if (sources.isEmpty()) {
+            } else if (remainingSources.isEmpty()) {
                 return null; // too many constructor arguments
             } else {
-                source = sources.remove(0);
+                source = remainingSources.remove(0);
                 result.add(new Argument(source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
             }
         }
-        if (!sources.isEmpty()) {
+        if (!remainingSources.isEmpty()) {
             return null; // not all arguments matched
         }
         return actuals;

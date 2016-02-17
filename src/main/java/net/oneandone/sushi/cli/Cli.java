@@ -30,6 +30,19 @@ import java.util.List;
  * Running the parser instantiates one of the command classes.
  */
 public class Cli {
+    public static Cli create(World world, String help) {
+        Console console;
+        Cli cli;
+
+        console = Console.create(world);
+        cli = new Cli(console.world)
+                .context(console, "-v -e  { setVerbose(v) setStacktraces(e) }")
+                .command(new Help(console, help), "help")
+                .command(PackageVersion.class, "version")
+                .addDefaultCommand("help");
+        return cli;
+    }
+
     protected final Schema schema;
     protected boolean exception;
 

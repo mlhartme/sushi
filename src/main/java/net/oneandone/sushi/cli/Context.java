@@ -8,7 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Context {
-    public static Context create(Object object, String syntax, String mapping) {
+    public static Context create(Object object, String syntax) {
+        int idx;
+        String mapping;
+
+        idx = syntax.indexOf('{');
+        if (idx == -1) {
+            mapping = "";
+        } else {
+            if (!syntax.endsWith("}")) {
+                throw new IllegalArgumentException(syntax);
+            }
+            mapping = syntax.substring(idx + 1, syntax.length() - 1).trim();
+            syntax = syntax.substring(0, idx).trim();
+        }
         return new Context(object, Source.forSyntax(syntax), Mapping.parse(mapping, object.getClass()));
     }
 

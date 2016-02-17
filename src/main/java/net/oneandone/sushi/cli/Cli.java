@@ -54,10 +54,10 @@ public class Cli {
     }
 
     public Cli context(Object context) {
-        return context(context, "", "");
+        return context(context, "");
     }
 
-    public Cli context(Object context, String syntax, String mapping) {
+    public Cli context(Object context, String syntax) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -67,18 +67,14 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.contexts.add(Context.create(context, syntax, mapping));
+        this.contexts.add(Context.create(context, syntax));
         return this;
     }
 
     public Cli command(String syntax, Class<?> clazz) {
-        return command(syntax, clazz, "");
-    }
-
-    public Cli command(String syntax, Class<?> clazz, String mapping) {
         CommandParser parser;
 
-        parser = CommandParser.create(schema, contexts, syntax, clazz, mapping);
+        parser = CommandParser.create(schema, contexts, syntax, clazz);
         for (CommandDefinition method : parser.getCommands()) {
             if (lookup(method.getName()) != null) {
                 throw new IllegalArgumentException("duplicate command: " + method.getName());

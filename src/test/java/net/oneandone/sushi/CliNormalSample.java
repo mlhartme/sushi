@@ -35,10 +35,10 @@ public class CliNormalSample {
 
         console = Console.create(World.create());
         System.exit(new Cli(console.world)
-                .context(console, "-v -e", "setVerbose(v) setStacktrace(e)")
+                .context(console, "-v -e { setVerbose(v) setStacktrace(e) }")
                 .command("first -flag=true -number=7 f remaining*", FirstCommand.class)
                 .command("second", SecondCommand.class)
-                .command("version", PackageVersion.class, "invoke")
+                .command("version { invoke }", PackageVersion.class)
                // TODO .command("help", new Help(console, "demo help"))
                 .addDefaultCommand("help")
                 .run("first", "f"));

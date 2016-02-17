@@ -31,9 +31,7 @@ public class CommandParser {
         return arg.length() > 1 && arg.startsWith("-");
     }
 
-    //-- from syntax
-
-    public static CommandParser create(Schema schema, List<Context> parents, String syntax, Class<?> clazz, String mappingString) {
+    public static CommandParser create(Schema schema, List<Context> parents, String syntax, Class<?> clazz) {
         Context co;
         int idx;
         String cmd;
@@ -47,7 +45,7 @@ public class CommandParser {
             cmd = syntax.substring(0, idx);
             syntax = syntax.substring(idx + 1);
         }
-        co = Context.create(clazz, syntax, mappingString);
+        co = Context.create(clazz, syntax);
         parser = co.createParser(schema, parents);
         parser.addCommand(new CommandDefinition(parser, cmd, commandMethod(clazz, co.mapping)));
         return parser;

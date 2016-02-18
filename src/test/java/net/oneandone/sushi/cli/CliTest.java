@@ -151,6 +151,20 @@ public class CliTest {
         }
     }
 
+    @Test
+    public void contextClass() {
+        Cli cli;
+
+        lastWithContext = null;
+        cli = Cli.create(WORLD, "no help text");
+        cli.context(Values.class, "first");
+        cli.command(WithContext.class, "cmd l");
+        cli.run("cmd", "42", "2");
+        assertTrue(lastWithContext instanceof WithContext);
+        assertEquals(42, lastWithContext.values.first);
+        assertEquals(2, lastWithContext.l);
+    }
+
     //-- various command classes
 
     public static class Empty {
@@ -195,6 +209,22 @@ public class CliTest {
         }
 
         public void run() {
+        }
+    }
+
+    private static WithContext lastWithContext;
+
+    public static class WithContext {
+        public final Values values;
+        public final long l;
+
+        public WithContext(Values values, long l) {
+            this.values = values;
+            this.l = l;
+        }
+
+        public void run() {
+            lastWithContext = this;
         }
     }
 }

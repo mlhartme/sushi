@@ -92,6 +92,7 @@ public class ContextBuilder {
         Actuals actuals;
         Map<String, Argument> allOptions;
         List<Argument> allValues;
+        Map<Context, Object> context;
 
         actuals = new Actuals();
         define(actuals);
@@ -100,17 +101,17 @@ public class ContextBuilder {
         allValues = new ArrayList<>();
         addValues(allValues);
         actuals.fill(args, allOptions, allValues);
-        return instantiate(actuals);
+        return instantiate(actuals, new HashMap<>());
     }
 
-    private Object instantiate(Actuals actuals) throws Throwable {
+    private Object instantiate(Actuals actuals, Map<Context, Object> instantiatedContexts) throws Throwable {
         Object obj;
 
         if (parent != null) {
-            parent.instantiate(actuals);
+            parent.instantiate(actuals, instantiatedContexts);
         }
         actuals.save(context, null);
-        obj = commandInstance == null ? newInstance() : commandInstance;
+        obj = commandInstance == null ? newInstance(instantiatedContexts) : commandInstance;
         actuals.save(context, obj);
         return obj;
     }
@@ -123,14 +124,27 @@ public class ContextBuilder {
         result.defineAll(values);
     }
 
-    private Object newInstance() throws Throwable {
+    private Object newInstance(Map<Context, Object> instantiatedContexts) throws Throwable {
+        Object instance;
+
+        for (int i = 0, max = constructorActuals.length; i < max; i++) {
+            if (constructorActuals[i] instanceof Context) {
+                instance = instantiatedContexts.get(constructorActuals[i]);
+                if (instance == null) {
+                    throw new IllegalStateException();
+                }
+                constructorActuals[i] = instance;
+            }
+        }
         try {
-            return constructor.newInstance(constructorActuals);
+            instance = constructor.newInstance(constructorActuals);
         } catch (InvocationTargetException e) {
             throw e.getCause();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException("TODO", e);
         }
+        instantiatedContexts.put(context, instance);
+        return instance;
     }
 
     private void addOptions(Map<String, Argument> result) {

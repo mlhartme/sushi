@@ -168,13 +168,17 @@ public class Context {
     }
 
     private static Object eatContext(List<Context> parents, Class<?> type) {
-        Object obj;
+        Context context;
+        Object classOrInstance;
+        boolean isClass;
 
         for (int i = 0, max = parents.size(); i < max; i++) {
-            obj = parents.get(i).classOrInstance;
-            if (type.isAssignableFrom(obj.getClass())) {
+            context = parents.get(i);
+            classOrInstance = context.classOrInstance;
+            isClass = classOrInstance instanceof Class<?>;
+            if (type.isAssignableFrom(isClass ? (Class<?>) classOrInstance : classOrInstance.getClass())) {
                 parents.remove(i);
-                return obj;
+                return isClass ? context : classOrInstance;
             }
         }
         return null;

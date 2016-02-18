@@ -150,50 +150,35 @@ public class Cli {
     }
 
     public int run(List<String> args) {
-        Object[] result;
+        Object obj;
+        Command c;
+        String name;
+        List<String> lst;
 
         if (exceptionHandler == null) {
             throw new IllegalStateException("missing exception handler");
         }
         try {
             if (commands.size() == 1) {
-                result = parseSingle(args);
+                c = commands.get(0);
+                obj = c.getBuilder().run(args);
             } else {
-                result = parseNormal(args);
+                lst = new ArrayList<>(args);
+                name = eatCommand(lst);
+                if (name == null) {
+                    c = defaultCommand;
+                    if (c == null) {
+                        throw new ArgumentException("missing command");
+                    }
+                } else {
+                    c = command(name);
+                }
+                obj = c.getBuilder().run(lst);
             }
-            return ((Command) result[0]).run(result[1]);
+            return c.run(obj);
         } catch (Throwable e) {
             return exceptionHandler.handleException(e);
         }
-    }
-
-    public Object[] parseSingle(List<String> args) throws Throwable {
-        Command c;
-
-        c = commands.get(0);
-        return new Object[] { c, c.getBuilder().run(args) };
-    }
-
-    public Object[] parseNormal(String... args) throws Throwable {
-        return parseNormal(Arrays.asList(args));
-    }
-
-    public Object[] parseNormal(List<String> args) throws Throwable {
-        Command c;
-        String name;
-        List<String> lst;
-
-        lst = new ArrayList<>(args);
-        name = eatCommand(lst);
-        if (name == null) {
-            c = defaultCommand;
-            if (c == null) {
-                throw new ArgumentException("missing command");
-            }
-        } else {
-            c = command(name);
-        }
-        return new Object[] { c, c.getBuilder().run(lst) };
     }
 
     private String eatCommand(List<String> args) {

@@ -35,7 +35,7 @@ public class CliNormalSample {
         cli = Cli.create(World.create(), "demo help")
                 .add(FirstCommand.class,    "first -flag=false -number=7 first remaining*")
                 .add(SecondCommand.class,   "second");
-        System.exit(cli.run("-v", "first", "one", "two", "three"));
+        System.exit(cli.run("first", "one", "two", "-v", "three"));
     }
 
     public static class FirstCommand {
@@ -55,6 +55,7 @@ public class CliNormalSample {
         }
 
         public void run() {
+            console.verbose.println("verbose output");
             console.info.println("invoked 'first' with ");
             console.info.println("   flag = " + flag);
             console.info.println("   number = " + number);

@@ -151,52 +151,6 @@ public class CliTest {
         }
     }
 
-    /*
-    @Test
-    public void constr() throws Throwable {
-        CommandParser parser;
-        Constr constr;
-
-        parser = CommandParser.create(METADATA, Constr.class);
-        constr = (Constr) parser.run("a", "-o", "1");
-        assertEquals("a", constr.v);
-        assertEquals(1, constr.o);
-        assertEquals(7, constr.l);
-
-        constr = (Constr) parser.run("a", "-l", "11");
-        assertEquals(0, constr.o);
-        assertEquals(11, constr.l);
-    }
-
-    @Test
-    public void normal() throws Throwable {
-        Cli cli;
-        Options options;
-
-        cli = new Cli().addCommand(Empty.class, Options.class, Values.class);
-        assertTrue(cli.parseNormal("empty")[1] instanceof Empty);
-        options = (Options) cli.parseNormal("options", "-first", "32")[1];
-        assertEquals(32, options.first);
-        try {
-            cli.parseNormal("notfound");
-            fail();
-        } catch (ArgumentException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("command not found"));
-        }
-    }
-
-    @Test
-    public void single() throws Throwable {
-        Cli cli;
-        Values values;
-
-        cli = new Cli().addCommand(Values.class);
-        values = (Values) cli.parseSingle(Arrays.asList("first", "second", "32"))[1];
-        assertEquals("first", values.first.getName());
-        assertEquals("second", values.second);
-        assertEquals(1, values.remaining.size());
-    }
-*/
     //-- various command classes
 
     public static class Empty {
@@ -243,24 +197,4 @@ public class CliTest {
         public void run() {
         }
     }
-
-    /*
-    public static class Constr {
-        public final String v;
-        public final int o;
-        public final long l;
-
-        public Constr(@Value("v") String v,
-                      @Option("o") int o,
-                      @Option(value = "l", dflt = "7") long l) {
-            this.v = v;
-            this.o = o;
-            this.l = l;
-        }
-
-        @Command("constr")
-        public void run() {
-        }
-    }
-*/
 }

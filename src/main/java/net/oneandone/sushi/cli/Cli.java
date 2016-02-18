@@ -99,7 +99,7 @@ public class Cli {
         Context context;
         int idx;
         String cmd;
-        CommandBuilder builder;
+        ContextBuilder builder;
 
         idx = syntax.indexOf(' ');
         if (idx == -1) {
@@ -201,7 +201,7 @@ public class Cli {
 
         for (int i = 0, max = args.size(); i < max; i++) {
             arg = args.get(i);
-            if (!CommandBuilder.isOption(arg)) {
+            if (!ContextBuilder.isOption(arg)) {
                 args.remove(i);
                 return arg;
             }

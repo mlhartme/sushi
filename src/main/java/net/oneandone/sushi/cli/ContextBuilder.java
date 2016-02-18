@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Factory for propertly initialized the command object */
-public class CommandBuilder {
+/** Factory for properly initialized the context object */
+public class ContextBuilder {
     public static boolean isOption(String arg) {
         return arg.length() > 1 && arg.startsWith("-");
     }
@@ -37,15 +37,15 @@ public class CommandBuilder {
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
-    public CommandBuilder(Object commandInstance) {
+    public ContextBuilder(Object commandInstance) {
         this(commandInstance, null, null);
     }
 
-    public CommandBuilder(Constructor<?> constructor, Object[] constructorActuals) {
+    public ContextBuilder(Constructor<?> constructor, Object[] constructorActuals) {
         this(null, constructor, constructorActuals);
     }
 
-    private CommandBuilder(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+    private ContextBuilder(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
         this.commandInstance = commandInstance;
         this.constructor = constructor;
         this.constructorActuals = constructorActuals;

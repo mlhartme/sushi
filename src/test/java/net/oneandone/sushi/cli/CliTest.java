@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -96,22 +97,21 @@ public class CliTest {
         assertEquals(WORLD.file("forth"), values.remaining.get(0));
         assertEquals(WORLD.file("fifth"), values.remaining.get(1));
     }
-/*
 
     @Test
     public void options() throws Throwable {
         CommandParser parser;
         Options options;
 
-        parser = CommandParser.create(METADATA, Options.class);
+        parser = parser(Options.class, "-first -second=bla -third { first=first node(second) }");
         options = (Options) parser.run();
         assertEquals(0, options.first);
-        assertEquals(null, options.second);
+        assertEquals("bla", options.second);
         assertFalse(options.third);
 
         options = (Options) parser.run("-first", "1");
         assertEquals(1, options.first);
-        assertEquals(null, options.second);
+        assertEquals("bla", options.second);
         assertFalse(options.third);
 
         try {
@@ -128,7 +128,7 @@ public class CliTest {
 
         options = (Options) parser.run("-third");
         assertEquals(0, options.first);
-        assertEquals(null, options.second);
+        assertEquals("bla", options.second);
         assertTrue(options.third);
 
         options = (Options) parser.run("-third", "-first", "-1", "-second", "bar");
@@ -151,6 +151,7 @@ public class CliTest {
         }
     }
 
+    /*
     @Test
     public void constr() throws Throwable {
         CommandParser parser;
@@ -224,25 +225,26 @@ public class CliTest {
         }
     }
 
-/*
     public static class Options {
-        @Option("first")
         private int first;
 
         public String second;
 
-        @Option("second")
+        protected final boolean third;
+
+        public Options(boolean third) {
+            this.third = third;
+        }
+
         public void node(String second) {
             this.second = second;
         }
 
-        @Option("third")
-        protected boolean third;
-
-        @Command("options")
-        public void cmd() {}
+        public void run() {
+        }
     }
 
+    /*
     public static class Constr {
         public final String v;
         public final int o;

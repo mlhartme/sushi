@@ -51,15 +51,62 @@ public class Actuals {
         return value.size() == formal.source.max();
     }
 
-    public void save(Object target) throws SimpleTypeException {
+    public void save(Context context, Object target) throws SimpleTypeException {
         Argument argument;
 
         for (Map.Entry<Argument, List<String>> entry : actuals.entrySet()) {
             argument = entry.getKey();
-            if (argument.target.before() == (target == null)) {
-                entry.getKey().source.checkCardinality(entry.getValue().size());
-                argument.set(target, entry.getValue());
+            if (argument.context == context) {
+                if (argument.target.before() == (target == null)) {
+                    entry.getKey().source.checkCardinality(entry.getValue().size());
+                    argument.set(target, entry.getValue());
+                }
             }
         }
+    }
+
+    public void fill(List<String> args, Map<String, Argument> options, List<Argument> values) {
+        int position;
+        String arg;
+        Argument argument;
+        String value;
+        StringBuilder builder;
+
+        position = 0;
+        for (int i = 0, max = args.size(); i < max; i++) {
+            arg = args.get(i);
+            if (ContextBuilder.isOption(arg)) {
+                argument = options.get(arg.substring(1));
+                if (argument == null) {
+                    throw new ArgumentException("unknown option " + arg);
+                }
+                if (argument.target.isBoolean()) {
+                    value = "true";
+                } else {
+                    if (i + 1 >= max) {
+                        throw new ArgumentException("missing value for option " + arg);
+                    }
+                    i++;
+                    value = args.get(i);
+                }
+                add(argument, value);
+            } else {
+                if (position < values.size()) {
+                    argument = values.get(position);
+                } else {
+                    builder = new StringBuilder("unknown value(s):");
+                    for ( ; i < max; i++) {
+                        builder.append(' ');
+                        builder.append(args.get(i));
+                    }
+                    throw new ArgumentException(builder.toString());
+                }
+                value = arg;
+                if (add(argument, value)) {
+                    position++;
+                }
+            }
+        }
+
     }
 }

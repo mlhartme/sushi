@@ -35,20 +35,20 @@ public class CliNormalSample {
         cli = Cli.create(World.create(), "demo help")
                 .command(FirstCommand.class,    "first -flag=false -number=7 first remaining*")
                 .command(SecondCommand.class,   "second");
-        System.exit(cli.run("-v", "second"));
+        System.exit(cli.run("-v", "first", "one", "two", "three"));
     }
 
     public static class FirstCommand {
         private final Console console;
 
-        private final String first;
+        private final String one;
         private final boolean flag;
         private final int number;
         private final List<String> remaining;
 
-        public FirstCommand(Console console, boolean flag, int number, String first, List<String> remaining) {
+        public FirstCommand(Console console, boolean flag, int number, String one, List<String> remaining) {
             this.console = console;
-            this.first = first;
+            this.one = one;
             this.flag = flag;
             this.number = number;
             this.remaining = remaining;
@@ -58,7 +58,7 @@ public class CliNormalSample {
             console.info.println("invoked 'first' with ");
             console.info.println("   flag = " + flag);
             console.info.println("   number = " + number);
-            console.info.println("   first = " + first);
+            console.info.println("   one = " + one);
             console.info.println("   remaining = " + remaining);
         }
     }

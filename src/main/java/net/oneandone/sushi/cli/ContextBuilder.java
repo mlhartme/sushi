@@ -31,6 +31,7 @@ public class ContextBuilder {
 
     //--
 
+    private final Context context;
     private final ContextBuilder parent;
     private final Object commandInstance;
     private final Constructor<?> constructor;
@@ -38,15 +39,16 @@ public class ContextBuilder {
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
-    public ContextBuilder(ContextBuilder parent, Object commandInstance) {
-        this(parent, commandInstance, null, null);
+    public ContextBuilder(Context context, ContextBuilder parent, Object commandInstance) {
+        this(context, parent, commandInstance, null, null);
     }
 
-    public ContextBuilder(ContextBuilder parent, Constructor<?> constructor, Object[] constructorActuals) {
-        this(parent, null, constructor, constructorActuals);
+    public ContextBuilder(Context context, ContextBuilder parent, Constructor<?> constructor, Object[] constructorActuals) {
+        this(context, parent, null, constructor, constructorActuals);
     }
 
-    private ContextBuilder(ContextBuilder parent, Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+    private ContextBuilder(Context context, ContextBuilder parent, Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+        this.context = context;
         this.parent = parent;
         this.commandInstance = commandInstance;
         this.constructor = constructor;
@@ -78,6 +80,8 @@ public class ContextBuilder {
         }
     }
 
+    //--
+
     /** Convenience for Testing */
     public Object run(String ... args) throws Throwable {
         return run(Arrays.asList(args));
@@ -86,16 +90,37 @@ public class ContextBuilder {
     /** @return Target */
     public Object run(List<String> args) throws Throwable {
         Actuals actuals;
-        Object target;
+        Map<String, Argument> allOptions;
+        List<Argument> allValues;
 
         actuals = new Actuals();
-        actuals.defineAll(options.values());
-        actuals.defineAll(values);
-        fillActuals(args, actuals);
-        actuals.save(null);
-        target = commandInstance == null ? newInstance() : commandInstance;
-        actuals.save(target);
-        return target;
+        define(actuals);
+        allOptions = new HashMap<>();
+        addOptions(allOptions);
+        allValues = new ArrayList<>();
+        addValues(allValues);
+        actuals.fill(args, allOptions, allValues);
+        return instantiate(actuals);
+    }
+
+    private Object instantiate(Actuals actuals) throws Throwable {
+        Object obj;
+
+        if (parent != null) {
+            parent.instantiate(actuals);
+        }
+        actuals.save(context, null);
+        obj = commandInstance == null ? newInstance() : commandInstance;
+        actuals.save(context, obj);
+        return obj;
+    }
+
+    private void define(Actuals result) {
+        if (parent != null) {
+            parent.define(result);
+        }
+        result.defineAll(options.values());
+        result.defineAll(values);
     }
 
     private Object newInstance() throws Throwable {
@@ -108,49 +133,17 @@ public class ContextBuilder {
         }
     }
 
-    //-- actuals
-
-    private void fillActuals(List<String> args, Actuals actuals) {
-        int position;
-        String arg;
-        Argument argument;
-        String value;
-        StringBuilder builder;
-
-        position = 0;
-        for (int i = 0, max = args.size(); i < max; i++) {
-            arg = args.get(i);
-            if (isOption(arg)) {
-                argument = options.get(arg.substring(1));
-                if (argument == null) {
-                    throw new ArgumentException("unknown option " + arg);
-                }
-                if (argument.target.isBoolean()) {
-                    value = "true";
-                } else {
-                    if (i + 1 >= max) {
-                        throw new ArgumentException("missing value for option " + arg);
-                    }
-                    i++;
-                    value = args.get(i);
-                }
-                actuals.add(argument, value);
-            } else {
-                if (position < values.size()) {
-                    argument = values.get(position);
-                } else {
-                    builder = new StringBuilder("unknown value(s):");
-                    for ( ; i < max; i++) {
-                        builder.append(' ');
-                        builder.append(args.get(i));
-                    }
-                    throw new ArgumentException(builder.toString());
-                }
-                value = arg;
-                if (actuals.add(argument, value)) {
-                    position++;
-                }
-            }
+    private void addOptions(Map<String, Argument> result) {
+        if (parent != null) {
+            parent.addOptions(result);
         }
+        result.putAll(options);
+    }
+
+    private void addValues(List<Argument> result) {
+        if (parent != null) {
+            parent.addValues(result);
+        }
+        result.addAll(values);
     }
 }

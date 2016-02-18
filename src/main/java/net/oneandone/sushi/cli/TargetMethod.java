@@ -23,7 +23,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
 public class TargetMethod extends Target {
-    public static Target create(boolean iterated, Schema schema, Object context, Method method) {
+    public static Target create(boolean iterated, Schema schema, Method method) {
         Parameter[] formals;
         java.lang.reflect.Type type;
 
@@ -39,25 +39,23 @@ public class TargetMethod extends Target {
         }
         type = formals[0].getParameterizedType();
         if (iterated) {
-            return new TargetMethodIterated(true, schema.simple((Class) type), context, method);
+            return new TargetMethodIterated(true, schema.simple((Class) type), method);
         } else {
-            return new TargetMethod(schema, type, context, method);
+            return new TargetMethod(schema, type, method);
         }
     }
     
     //--
 
-    private final Object context;
     private final Method method;
     
-    public TargetMethod(Schema schema, java.lang.reflect.Type type, Object context, Method method) {
+    public TargetMethod(Schema schema, java.lang.reflect.Type type, Method method) {
         super(schema, type);
-        this.context = context;
         this.method = method;
     }
 
     public boolean before() {
-        return context != null;
+        return false;
     }
 
     @Override
@@ -65,7 +63,7 @@ public class TargetMethod extends Target {
         Throwable cause;
         
         try {
-            method.invoke(context == null ? dest : context, value);
+            method.invoke(dest, value);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(value + ":" + value.getClass(), e);
         } catch (IllegalAccessException e) {

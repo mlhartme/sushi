@@ -103,7 +103,7 @@ public class Mapping {
         return fields.containsKey(name) || methods.containsKey(name) || iteratedMethods.containsKey(name);
     }
 
-    public Target target(Schema schema, Object context, String argument) {
+    public Target target(Schema schema, String argument) {
         Field field;
         Method method;
 
@@ -113,11 +113,11 @@ public class Mapping {
         }
         method = methods.get(argument);
         if (method != null) {
-            return TargetMethod.create(false, schema, context, method);
+            return TargetMethod.create(false, schema, method);
         }
         method = iteratedMethods.get(argument);
         if (method != null) {
-            return TargetMethod.create(true, schema, context, method);
+            return TargetMethod.create(true, schema, method);
         }
         throw new IllegalStateException();
     }

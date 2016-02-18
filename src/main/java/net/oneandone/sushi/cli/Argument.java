@@ -22,10 +22,12 @@ import java.util.List;
 
 /** Associates a source with a target. */
 public class Argument {
+    public final Context context;
     public final Source source;
     public final Target target; // type of the argument/field where to store
 
-    public Argument(Source source, Target target) {
+    public Argument(Context context, Source source, Target target) {
+        this.context = context;
         this.source = source;
         this.target = target;
     }

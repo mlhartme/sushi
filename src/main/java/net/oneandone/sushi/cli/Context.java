@@ -103,7 +103,7 @@ public class Context {
             if (found == null) {
                 throw new IllegalStateException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
             }
-            result = new ContextBuilder(compiledParent(schema), found, foundActuals);
+            result = new ContextBuilder(this, compiledParent(schema), found, foundActuals);
             for (Argument a : foundArguments) {
                 result.addArgument(a);
             }
@@ -111,13 +111,10 @@ public class Context {
             if (!constructorSources.isEmpty()) {
                 throw new IllegalStateException("cannot apply constructor argument to an instance");
             }
-            result = new ContextBuilder(compiledParent(schema), classOrInstance);
+            result = new ContextBuilder(this, compiledParent(schema), classOrInstance);
         }
         for (Source s : extraSources) {
-            result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
-        }
-        if (parent != null) {
-            parent.addContextArguments(schema, result);
+            result.addArgument(new Argument(this, s, mapping.target(schema, s.getName())));
         }
         return result;
     }
@@ -137,22 +134,6 @@ public class Context {
             result.append(source.getName());
         }
         return result.toString();
-    }
-
-    private void addContextArguments(Schema schema, ContextBuilder builder) {
-        for (Source s : sources) {
-            if (mapping.contains(s.getName())) {
-                if (classOrInstance instanceof Class) {
-                    throw new IllegalStateException("context instance expected");
-                }
-                builder.addArgument(new Argument(s, mapping.target(schema, classOrInstance, s.getName())));
-            } else {
-                throw new IllegalStateException("invalid constructor argument for context object");
-            }
-        }
-        if (parent != null) {
-            parent.addContextArguments(schema, builder);
-        }
     }
 
     private Object[] match(Schema schema, Constructor constructor, List<Source> initialSources, List<Argument> result) {
@@ -177,7 +158,7 @@ public class Context {
                 return null; // too many constructor arguments
             } else {
                 source = remainingSources.remove(0);
-                result.add(new Argument(source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
+                result.add(new Argument(this, source, new TargetParameter(schema, formal.getParameterizedType(), actuals, i)));
             }
         }
         if (!remainingSources.isEmpty()) {

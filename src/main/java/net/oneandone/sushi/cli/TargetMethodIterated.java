@@ -22,17 +22,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class TargetMethodIterated extends Target {
-    private final Object context;
     private final Method method;
 
-    public TargetMethodIterated(boolean list, SimpleType component, Object context, Method method) {
+    public TargetMethodIterated(boolean list, SimpleType component, Method method) {
         super(list, component);
-        this.context = context;
         this.method = method;
     }
 
     public boolean before() {
-        return context != null;
+        return false;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class TargetMethodIterated extends Target {
         lst = (List) value;
         try {
             for (Object item : lst) {
-                method.invoke(context == null ? dest : context, item);
+                method.invoke(dest, item);
             }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(value + ":" + value.getClass(), e);

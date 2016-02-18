@@ -60,23 +60,15 @@ public class ContextBuilder {
     public void addArgument(Argument arg) {
         Source source;
         String name;
-        int idx;
 
         source = arg.source;
-        if (source.position() == 0) {
+        if (source.option) {
             name = source.getName();
             if (options.put(name, arg) != null) {
                 throw new IllegalArgumentException("duplicate option: " + name);
             }
         } else {
-            idx = source.position() - 1;
-            while (idx >= values.size()) {
-                values.add(null);
-            }
-            if (values.get(idx) != null) {
-                throw new IllegalArgumentException("duplicate argument for position " + source.position());
-            }
-            values.set(idx, arg);
+            values.add(arg);
         }
     }
 

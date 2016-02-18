@@ -30,22 +30,18 @@ public class Source {
         int idx;
         String dflt;
         List<Source> result;
-        int lastPosition;
-        int position;
+        boolean option;
         String name;
         int min;
         int max;
         int last;
 
         result = new ArrayList<>();
-        lastPosition = 0;
         for (String field : Separator.SPACE.split(syntax)) {
-            if (field.startsWith("-")) {
-                position = 0;
+            option = field.startsWith("-");
+            if (option) {
                 name = field.substring(1);
             } else {
-                lastPosition++;
-                position = lastPosition;
                 name = field;
             }
             idx = name.indexOf('=');
@@ -73,11 +69,11 @@ public class Source {
                     name = name.substring(0, last);
                     break;
                 default:
-                    min = position == 0 ? 0 : 1;
+                    min = option ? 0 : 1;
                     max = 1;
                     break;
             }
-            result.add(new Source(position, name, min, max, dflt));
+            result.add(new Source(option, name, min, max, dflt));
         }
         return result;
     }
@@ -85,25 +81,21 @@ public class Source {
     //--
 
     /** 0 for "not positional" - i.e. an option */
-    private final int position;
+    public final boolean option;
     private final String name;
     private final int min;
     private final int max;
     private final String dflt;
 
-    public Source(int position, String name, int min, int max, String dflt) {
+    public Source(boolean option, String name, int min, int max, String dflt) {
         if (dflt == null) {
             throw new IllegalArgumentException();
         }
-        this.position = position;
+        this.option = option;
         this.name = name;
         this.min = min;
         this.max = max;
         this.dflt = dflt;
-    }
-
-    public int position() {
-        return position;
     }
 
     public int max() {

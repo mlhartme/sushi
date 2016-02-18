@@ -47,9 +47,8 @@ public class Cli {
         console = Console.create(world);
         cli = new Cli(console.world)
                 .begin(console, "-v -e  { setVerbose(v) setStacktraces(e) }")
-                   .add(new Help(console, help), "help")
-                   .add(PackageVersion.class, "version")
-                   .addDefaultCommand("help");
+                   .addDefault(new Help(console, help), "help")
+                   .add(PackageVersion.class, "version");
         return cli;
     }
 
@@ -103,26 +102,38 @@ public class Cli {
         return this;
     }
 
-    public Cli add(Object clazzOrInstance, String definition) {
+    public Cli add(Object classOrInstance, String definition) {
+        return doAdd(classOrInstance, definition, false);
+    }
+
+    public Cli addDefault(Object classOrInstance, String definition) {
+        return doAdd(classOrInstance, definition, true);
+    }
+    private Cli doAdd(Object clazzOrInstance, String definition, boolean dflt) {
         Context context;
         int idx;
-        String cmd;
+        String name;
+        Command command;
         ContextBuilder builder;
 
         idx = definition.indexOf(' ');
         if (idx == -1) {
-            cmd = definition;
+            name = definition;
             definition = "";
         } else {
-            cmd = definition.substring(0, idx);
+            name = definition.substring(0, idx);
             definition = definition.substring(idx + 1);
         }
         context = Context.create(currentContext, clazzOrInstance, definition);
         builder = context.compile(schema);
-        if (lookup(cmd) != null) {
-            throw new IllegalArgumentException("duplicate command: " + cmd);
+        if (lookup(name) != null) {
+            throw new IllegalArgumentException("duplicate command: " + name);
         }
-        commands.add(new Command(builder, cmd, commandMethod(clazzOrInstance, context.mapping)));
+        command = new Command(builder, name, commandMethod(clazzOrInstance, context.mapping));
+        commands.add(command);
+        if (dflt) {
+            defaultCommand = command;
+        }
         return this;
     }
 
@@ -146,11 +157,6 @@ public class Cli {
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    public Cli addDefaultCommand(String name) {
-        defaultCommand = add(name);
-        return this;
     }
 
     public int run(String... args) {

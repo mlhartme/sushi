@@ -36,7 +36,7 @@ public class Cli {
 
         console = Console.create(World.create());
         cli = new Cli(console.world).begin(console, "-v -e  { setVerbose(v) setStacktraces(e) }");
-        cli.command(command, syntax);
+        cli.add(command, syntax);
         return cli;
     }
 
@@ -47,8 +47,8 @@ public class Cli {
         console = Console.create(world);
         cli = new Cli(console.world)
                 .begin(console, "-v -e  { setVerbose(v) setStacktraces(e) }")
-                   .command(new Help(console, help), "help")
-                   .command(PackageVersion.class, "version")
+                   .add(new Help(console, help), "help")
+                   .add(PackageVersion.class, "version")
                    .addDefaultCommand("help");
         return cli;
     }
@@ -103,7 +103,7 @@ public class Cli {
         return this;
     }
 
-    public Cli command(Object clazzOrInstance, String definition) {
+    public Cli add(Object clazzOrInstance, String definition) {
         Context context;
         int idx;
         String cmd;
@@ -149,7 +149,7 @@ public class Cli {
     }
 
     public Cli addDefaultCommand(String name) {
-        defaultCommand = command(name);
+        defaultCommand = add(name);
         return this;
     }
 
@@ -179,7 +179,7 @@ public class Cli {
                         throw new ArgumentException("missing command");
                     }
                 } else {
-                    c = command(name);
+                    c = add(name);
                 }
                 obj = c.getBuilder().run(lst);
             }
@@ -202,7 +202,7 @@ public class Cli {
         return null;
     }
 
-    public Command command(String name) {
+    public Command add(String name) {
         Command result;
 
         result = lookup(name);

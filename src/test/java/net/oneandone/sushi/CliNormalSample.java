@@ -33,8 +33,8 @@ public class CliNormalSample {
         Cli cli;
 
         cli = Cli.create(World.create(), "demo help")
-                .command(FirstCommand.class,    "first -flag=false -number=7 first remaining*")
-                .command(SecondCommand.class,   "second");
+                .add(FirstCommand.class,    "first -flag=false -number=7 first remaining*")
+                .add(SecondCommand.class,   "second");
         System.exit(cli.run("-v", "first", "one", "two", "three"));
     }
 

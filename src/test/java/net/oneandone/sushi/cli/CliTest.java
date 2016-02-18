@@ -33,8 +33,8 @@ public class CliTest {
     private static ContextBuilder parser(Class<?> clazz, String syntax) {
         Cli cli;
 
-        cli = Cli.create(WORLD, "").command(clazz, "foo " + syntax);
-        return cli.command("foo").getBuilder();
+        cli = Cli.create(WORLD, "").add(clazz, "foo " + syntax);
+        return cli.add("foo").getBuilder();
     }
 
     @Test
@@ -158,7 +158,7 @@ public class CliTest {
         lastWithContext = null;
         cli = Cli.create(WORLD, "no help text");
         cli.begin(Values.class, "first")
-                .command(WithContext.class, "cmd l")
+                .add(WithContext.class, "cmd l")
            .end();
         cli.run("cmd", "42", "2");
         assertTrue(lastWithContext instanceof WithContext);

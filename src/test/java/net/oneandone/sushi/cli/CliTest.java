@@ -34,7 +34,7 @@ public class CliTest {
         Cli cli;
 
         cli = Cli.create(WORLD, "").command(clazz, "foo " + syntax);
-        return cli.command("foo").getParser();
+        return cli.command("foo").getBuilder();
     }
 
     @Test

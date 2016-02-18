@@ -99,7 +99,7 @@ public class Cli {
         Context context;
         int idx;
         String cmd;
-        CommandBuilder parser;
+        CommandBuilder builder;
 
         idx = syntax.indexOf(' ');
         if (idx == -1) {
@@ -110,11 +110,11 @@ public class Cli {
             syntax = syntax.substring(idx + 1);
         }
         context = Context.create(lastContext, clazzOrInstance, syntax);
-        parser = context.createParser(schema);
+        builder = context.createBuilder(schema);
         if (lookup(cmd) != null) {
             throw new IllegalArgumentException("duplicate command: " + cmd);
         }
-        commands.add(new Command(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
+        commands.add(new Command(builder, cmd, commandMethod(clazzOrInstance, context.mapping)));
         return this;
     }
 
@@ -171,7 +171,7 @@ public class Cli {
         Command c;
 
         c = commands.get(0);
-        return new Object[] { c, c.getParser().run(args) };
+        return new Object[] { c, c.getBuilder().run(args) };
     }
 
     public Object[] parseNormal(String... args) throws Throwable {
@@ -193,7 +193,7 @@ public class Cli {
         } else {
             c = command(name);
         }
-        return new Object[] { c, c.getParser().run(lst) };
+        return new Object[] { c, c.getBuilder().run(lst) };
     }
 
     private String eatCommand(List<String> args) {

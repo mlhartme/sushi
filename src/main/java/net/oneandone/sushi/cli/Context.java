@@ -46,7 +46,7 @@ public class Context {
         this.mapping = mapping;
     }
 
-    public CommandBuilder createParser(Schema schema) {
+    public CommandBuilder createBuilder(Schema schema) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -119,19 +119,19 @@ public class Context {
         return result.toString();
     }
 
-    private void addContextCommands(Schema schema, CommandBuilder parser) {
+    private void addContextCommands(Schema schema, CommandBuilder builder) {
         for (Source s : sources) {
             if (mapping.contains(s.getName())) {
                 if (classOrInstance instanceof Class) {
                     throw new IllegalStateException("context instance expected");
                 }
-                parser.addArgument(new Argument(s, mapping.target(schema, classOrInstance, s.getName())));
+                builder.addArgument(new Argument(s, mapping.target(schema, classOrInstance, s.getName())));
             } else {
                 throw new IllegalStateException("invalid constructor argument for context object");
             }
         }
         if (parent != null) {
-            parent.addContextCommands(schema, parser);
+            parent.addContextCommands(schema, builder);
         }
     }
 

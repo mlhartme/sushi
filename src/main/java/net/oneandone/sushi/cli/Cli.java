@@ -96,19 +96,6 @@ public class Cli {
     }
 
     public Cli command(Object clazzOrInstance, String syntax) {
-        CommandBuilder parser;
-
-        parser = create(syntax, clazzOrInstance);
-        for (Command method : parser.getCommands()) {
-            if (lookup(method.getName()) != null) {
-                throw new IllegalArgumentException("duplicate command: " + method.getName());
-            }
-            this.commands.add(method);
-        }
-        return this;
-    }
-
-    private CommandBuilder create(String syntax, Object clazzOrInstance) {
         Context context;
         int idx;
         String cmd;
@@ -124,8 +111,11 @@ public class Cli {
         }
         context = Context.create(lastContext, clazzOrInstance, syntax);
         parser = context.createParser(schema);
-        parser.addCommand(new Command(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
-        return parser;
+        if (lookup(cmd) != null) {
+            throw new IllegalArgumentException("duplicate command: " + cmd);
+        }
+        commands.add(new Command(parser, cmd, commandMethod(clazzOrInstance, context.mapping)));
+        return this;
     }
 
     private static final Class<?>[] NO_ARGS = {};

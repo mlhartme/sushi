@@ -34,7 +34,6 @@ public class CommandBuilder {
     private final Object commandInstance;
     private final Constructor<?> constructor;
     private final Object[] constructorActuals;
-    private final List<Command> commands;
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
@@ -50,17 +49,8 @@ public class CommandBuilder {
         this.commandInstance = commandInstance;
         this.constructor = constructor;
         this.constructorActuals = constructorActuals;
-        this.commands = new ArrayList<>();
         this.options = new HashMap<>();
         this.values = new ArrayList<>();
-    }
-
-    public void addCommand(Command command) {
-        commands.add(command);
-    }
-
-    public List<Command> getCommands() {
-        return commands;
     }
 
     public void addArgument(Argument arg) {

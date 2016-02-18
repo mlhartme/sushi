@@ -20,7 +20,6 @@ import net.oneandone.sushi.fs.file.FileNode;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -83,25 +82,20 @@ public class CliTest {
             assertTrue(e.getMessage(), e.getMessage().contains("missing"));
         }
 
-        values = (Values) parser.run("1", "second", "third", "A", "B");
+        values = (Values) parser.run("1", "second", "third");
         assertEquals(1, values.first);
         assertEquals("second", values.second);
         assertEquals("third", values.third.getName());
-        assertEquals(2, values.remaining.size());
-/*
-        values = (Values) parser.run("first", "second", "third", "forth");
-        assertEquals("first", values.first.getName());
-        assertEquals("second", values.second);
-        assertEquals(2, values.remaining.size());
-        assertEquals(WORLD.file("third"), values.remaining.get(0));
-        assertEquals(WORLD.file("forth"), values.remaining.get(1));
+        assertEquals(0, values.remaining.size());
 
-        values = (Values) parser.run("first", "second", "-");
-        assertEquals("first", values.first.getName());
+        values = (Values) parser.run("2", "second", "third", "forth", "fifth");
+        assertEquals(2, values.first);
         assertEquals("second", values.second);
-        assertEquals(1, values.remaining.size());
-        assertEquals(WORLD.file("-"), values.remaining.get(0));
-*/    }
+        assertEquals("third", values.third.getName());
+        assertEquals(2, values.remaining.size());
+        assertEquals(WORLD.file("forth"), values.remaining.get(0));
+        assertEquals(WORLD.file("fifth"), values.remaining.get(1));
+    }
 /*
 
     @Test

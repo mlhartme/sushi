@@ -46,7 +46,7 @@ public class Context {
         this.mapping = mapping;
     }
 
-    public CommandParser createParser(Schema schema) {
+    public CommandBuilder createParser(Schema schema) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -55,7 +55,7 @@ public class Context {
         Constructor found;
         Object[] foundActuals;
         List<Argument> foundArguments;
-        CommandParser result;
+        CommandBuilder result;
 
         found = null;
         foundActuals = null;
@@ -87,7 +87,7 @@ public class Context {
             if (found == null) {
                 throw new IllegalStateException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
             }
-            result = new CommandParser(found, foundActuals);
+            result = new CommandBuilder(found, foundActuals);
             for (Argument a : foundArguments) {
                 result.addArgument(a);
             }
@@ -95,7 +95,7 @@ public class Context {
             if (!constructorSources.isEmpty()) {
                 throw new IllegalStateException("cannot apply constructor argument to a command instance");
             }
-            result = new CommandParser(classOrInstance);
+            result = new CommandBuilder(classOrInstance);
         }
         for (Source s : extraSources) {
             result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
@@ -119,7 +119,7 @@ public class Context {
         return result.toString();
     }
 
-    private void addContextCommands(Schema schema, CommandParser parser) {
+    private void addContextCommands(Schema schema, CommandBuilder parser) {
         for (Source s : sources) {
             if (mapping.contains(s.getName())) {
                 if (classOrInstance instanceof Class) {

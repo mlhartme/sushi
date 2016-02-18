@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class Command {
-    public static Command create(CommandParser parser, String name, Method method) {
+    public static Command create(CommandBuilder parser, String name, Method method) {
         Class<?> returnType;
 
         if (Modifier.isStatic(method.getModifiers())) {
@@ -42,17 +42,17 @@ public class Command {
 
     //--
 
-    private final CommandParser parser;
+    private final CommandBuilder parser;
     private final String name;
     private final Method method;
 
-    public Command(CommandParser parser, String name, Method method) {
+    public Command(CommandBuilder parser, String name, Method method) {
         this.parser = parser;
         this.name = name;
         this.method = method;
     }
 
-    public CommandParser getParser() {
+    public CommandBuilder getParser() {
         return parser;
     }
 

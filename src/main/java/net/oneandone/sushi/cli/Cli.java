@@ -96,7 +96,7 @@ public class Cli {
     }
 
     public Cli command(Object clazzOrInstance, String syntax) {
-        CommandParser parser;
+        CommandBuilder parser;
 
         parser = create(syntax, clazzOrInstance);
         for (Command method : parser.getCommands()) {
@@ -108,11 +108,11 @@ public class Cli {
         return this;
     }
 
-    private CommandParser create(String syntax, Object clazzOrInstance) {
+    private CommandBuilder create(String syntax, Object clazzOrInstance) {
         Context context;
         int idx;
         String cmd;
-        CommandParser parser;
+        CommandBuilder parser;
 
         idx = syntax.indexOf(' ');
         if (idx == -1) {
@@ -211,7 +211,7 @@ public class Cli {
 
         for (int i = 0, max = args.size(); i < max; i++) {
             arg = args.get(i);
-            if (!CommandParser.isOption(arg)) {
+            if (!CommandBuilder.isOption(arg)) {
                 args.remove(i);
                 return arg;
             }

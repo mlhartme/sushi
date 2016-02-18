@@ -30,7 +30,7 @@ import static org.junit.Assert.fail;
 public class CliTest {
     private static final World WORLD = World.createMinimal();
 
-    private static CommandParser parser(Class<?> clazz, String syntax) {
+    private static CommandBuilder parser(Class<?> clazz, String syntax) {
         Cli cli;
 
         cli = Cli.create(WORLD, "").command(clazz, "foo " + syntax);
@@ -39,7 +39,7 @@ public class CliTest {
 
     @Test
     public void empty() throws Throwable {
-        CommandParser parser;
+        CommandBuilder parser;
 
         parser = parser(Empty.class, "");
         assertTrue(parser.run() instanceof Empty);
@@ -65,7 +65,7 @@ public class CliTest {
 
     @Test
     public void values() throws Throwable {
-        CommandParser parser;
+        CommandBuilder parser;
         Values values;
 
         parser = parser(Values.class, "first second third remaining* { second=second third(third) remaining*(remaining) }");
@@ -100,7 +100,7 @@ public class CliTest {
 
     @Test
     public void options() throws Throwable {
-        CommandParser parser;
+        CommandBuilder parser;
         Options options;
 
         parser = parser(Options.class, "-first -second=bla -third { first=first node(second) }");

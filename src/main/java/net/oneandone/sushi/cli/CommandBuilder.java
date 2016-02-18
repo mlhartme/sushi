@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** running the parser creates and propertly initializess the command object */
-public class CommandParser {
+/** Factory for propertly initialized the command object */
+public class CommandBuilder {
     public static boolean isOption(String arg) {
         return arg.length() > 1 && arg.startsWith("-");
     }
@@ -38,15 +38,15 @@ public class CommandParser {
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
-    public CommandParser(Object commandInstance) {
+    public CommandBuilder(Object commandInstance) {
         this(commandInstance, null, null);
     }
 
-    public CommandParser(Constructor<?> constructor, Object[] constructorActuals) {
+    public CommandBuilder(Constructor<?> constructor, Object[] constructorActuals) {
         this(null, constructor, constructorActuals);
     }
 
-    private CommandParser(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+    private CommandBuilder(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
         this.commandInstance = commandInstance;
         this.constructor = constructor;
         this.constructorActuals = constructorActuals;

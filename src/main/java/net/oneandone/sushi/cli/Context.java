@@ -93,7 +93,7 @@ public class Context {
                 actuals = match(schema, constructor, constructorSources, arguments);
                 if (actuals != null) {
                     if (found != null) {
-                        throw new IllegalStateException("constructor is ambiguous");
+                        throw new InvalidCliException("constructor is ambiguous: " + clazz.getName());
                     }
                     found = constructor;
                     foundActuals = actuals;
@@ -101,7 +101,7 @@ public class Context {
                 }
             }
             if (found == null) {
-                throw new IllegalStateException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
+                throw new InvalidCliException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
             }
             result = new ContextBuilder(this, compiledParent(schema), found, foundActuals);
             for (Argument a : foundArguments) {
@@ -109,7 +109,7 @@ public class Context {
             }
         } else {
             if (!constructorSources.isEmpty()) {
-                throw new IllegalStateException("cannot apply constructor argument to an instance");
+                throw new InvalidCliException("cannot apply constructor argument to an instance");
             }
             result = new ContextBuilder(this, compiledParent(schema), classOrInstance);
         }

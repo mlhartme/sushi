@@ -86,7 +86,7 @@ public class Cli {
         }
         if (context instanceof ExceptionHandler) {
             if (exceptionHandler != null) {
-                throw new IllegalStateException("duplicate exception handler: " + exceptionHandler + " vs "+ context);
+                throw new InvalidCliException("duplicate exception handler: " + exceptionHandler + " vs "+ context);
             }
             exceptionHandler = (ExceptionHandler) context;
         }
@@ -96,7 +96,7 @@ public class Cli {
 
     public Cli end() {
         if (currentContext == null) {
-            throw new IllegalStateException();
+            throw new InvalidCliException("end without context");
         }
         currentContext = currentContext.parent;
         return this;
@@ -155,7 +155,7 @@ public class Cli {
         try {
             return clazz.getDeclaredMethod(name, NO_ARGS);
         } catch (NoSuchMethodException e) {
-            throw new IllegalStateException(e);
+            throw new InvalidCliException("command method not found: " + clazz.getName() + "." + name + "()");
         }
     }
 
@@ -170,7 +170,7 @@ public class Cli {
         List<String> lst;
 
         if (exceptionHandler == null) {
-            throw new IllegalStateException("missing exception handler");
+            throw new InvalidCliException("missing exception handler");
         }
         try {
             if (commands.size() == 1) {

@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.cli;
 
-/** Indicates a problem with the arguments supplied */
+/** Indicates a problem with the arguments supplied. Thrown when using the cli.  */
 public class ArgumentException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

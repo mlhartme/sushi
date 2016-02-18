@@ -38,7 +38,7 @@ public class Actuals {
     }
     public void define(Argument formal) {
         if (actuals.put(formal, new ArrayList<>()) != null) {
-            throw new IllegalStateException("duplicate argument: " + formal);
+            throw new InvalidCliException("duplicate argument: " + formal);
         }
     }
 

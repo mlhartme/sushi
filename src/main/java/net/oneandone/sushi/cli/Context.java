@@ -7,20 +7,26 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines how to create an context object. Context objects are command objects or objects used for command objects.
+ * "compiles" into a ContextBuilder.
+ */
 public class Context {
-    public static Context create(Context parent, Object classOrInstance, String syntax) {
+    public static Context create(Context parent, Object classOrInstance, String definition) {
         int idx;
+        String syntax;
         String mapping;
 
-        idx = syntax.indexOf('{');
+        idx = definition.indexOf('{');
         if (idx == -1) {
+            syntax = definition;
             mapping = "";
         } else {
-            if (!syntax.endsWith("}")) {
-                throw new IllegalArgumentException(syntax);
+            if (!definition.endsWith("}")) {
+                throw new IllegalArgumentException(definition);
             }
-            mapping = syntax.substring(idx + 1, syntax.length() - 1).trim();
-            syntax = syntax.substring(0, idx).trim();
+            mapping = definition.substring(idx + 1, definition.length() - 1).trim();
+            syntax = definition.substring(0, idx).trim();
         }
         return new Context(parent, classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, clazz(classOrInstance)));
     }
@@ -46,7 +52,7 @@ public class Context {
         this.mapping = mapping;
     }
 
-    public ContextBuilder createBuilder(Schema schema) {
+    public ContextBuilder compile(Schema schema) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -93,7 +99,7 @@ public class Context {
             }
         } else {
             if (!constructorSources.isEmpty()) {
-                throw new IllegalStateException("cannot apply constructor argument to a command instance");
+                throw new IllegalStateException("cannot apply constructor argument to an instance");
             }
             result = new ContextBuilder(classOrInstance);
         }
@@ -101,7 +107,7 @@ public class Context {
             result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
         }
         if (parent != null) {
-            parent.addContextCommands(schema, result);
+            parent.addContextArguments(schema, result);
         }
         return result;
     }
@@ -119,7 +125,7 @@ public class Context {
         return result.toString();
     }
 
-    private void addContextCommands(Schema schema, ContextBuilder builder) {
+    private void addContextArguments(Schema schema, ContextBuilder builder) {
         for (Source s : sources) {
             if (mapping.contains(s.getName())) {
                 if (classOrInstance instanceof Class) {
@@ -131,7 +137,7 @@ public class Context {
             }
         }
         if (parent != null) {
-            parent.addContextCommands(schema, builder);
+            parent.addContextArguments(schema, builder);
         }
     }
 

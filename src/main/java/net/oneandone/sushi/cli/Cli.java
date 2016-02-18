@@ -95,22 +95,22 @@ public class Cli {
         return this;
     }
 
-    public Cli command(Object clazzOrInstance, String syntax) {
+    public Cli command(Object clazzOrInstance, String definition) {
         Context context;
         int idx;
         String cmd;
         ContextBuilder builder;
 
-        idx = syntax.indexOf(' ');
+        idx = definition.indexOf(' ');
         if (idx == -1) {
-            cmd = syntax;
-            syntax = "";
+            cmd = definition;
+            definition = "";
         } else {
-            cmd = syntax.substring(0, idx);
-            syntax = syntax.substring(idx + 1);
+            cmd = definition.substring(0, idx);
+            definition = definition.substring(idx + 1);
         }
-        context = Context.create(lastContext, clazzOrInstance, syntax);
-        builder = context.createBuilder(schema);
+        context = Context.create(lastContext, clazzOrInstance, definition);
+        builder = context.compile(schema);
         if (lookup(cmd) != null) {
             throw new IllegalArgumentException("duplicate command: " + cmd);
         }

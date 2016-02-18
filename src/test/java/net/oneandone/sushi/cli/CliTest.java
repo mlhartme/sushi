@@ -15,11 +15,8 @@
  */
 package net.oneandone.sushi.cli;
 
-/* TODO
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
-import net.oneandone.sushi.metadata.Schema;
-import net.oneandone.sushi.metadata.reflect.ReflectSchema;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -27,19 +24,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class CommandParserTest {
+public class CliTest {
     private static final World WORLD = World.createMinimal();
-    private static final Schema METADATA = new ReflectSchema(WORLD);
+
+    private static CommandParser parser(Class<?> clazz, String syntax) {
+        Cli cli;
+
+        cli = Cli.create(WORLD, "").command(clazz, "foo " + syntax);
+        return cli.command("foo").getParser();
+    }
 
     @Test
     public void empty() throws Throwable {
         CommandParser parser;
 
-        parser = CommandParser.create(METADATA, Empty.class);
+        parser = parser(Empty.class, "");
         assertTrue(parser.run() instanceof Empty);
         try {
             parser.run("-a", "10");
@@ -66,7 +68,7 @@ public class CommandParserTest {
         CommandParser parser;
         Values values;
 
-        parser = CommandParser.create(METADATA, Values.class);
+        parser = parser(Values.class, "first second third remaining* { second=second third(third) remaining*(remaining) }");
         try {
             parser.run();
             fail();
@@ -75,17 +77,18 @@ public class CommandParserTest {
         }
 
         try {
-            parser.run("first");
+            parser.run("1");
             fail();
         } catch (ArgumentException e) {
-            assertTrue(e.getMessage().contains("missing"));
+            assertTrue(e.getMessage(), e.getMessage().contains("missing"));
         }
 
-        values = (Values) parser.run("first", "second");
-        assertEquals("first", values.first.getName());
+        values = (Values) parser.run("1", "second", "third", "A", "B");
+        assertEquals(1, values.first);
         assertEquals("second", values.second);
-        assertEquals(0, values.remaining.size());
-
+        assertEquals("third", values.third.getName());
+        assertEquals(2, values.remaining.size());
+/*
         values = (Values) parser.run("first", "second", "third", "forth");
         assertEquals("first", values.first.getName());
         assertEquals("second", values.second);
@@ -98,7 +101,8 @@ public class CommandParserTest {
         assertEquals("second", values.second);
         assertEquals(1, values.remaining.size());
         assertEquals(WORLD.file("-"), values.remaining.get(0));
-    }
+*/    }
+/*
 
     @Test
     public void options() throws Throwable {
@@ -197,14 +201,36 @@ public class CommandParserTest {
         assertEquals("second", values.second);
         assertEquals(1, values.remaining.size());
     }
-
-    //-- various defining classes
+*/
+    //-- various command classes
 
     public static class Empty {
-        @Command("empty")
-        public void cmd() {}
+        public void run() {}
     }
 
+    public static class Values {
+        public int first;
+        public String second;
+        public FileNode third;
+        public List<FileNode> remaining = new ArrayList<>();
+
+        public Values(int first) {
+            this.first = first;
+        }
+
+        public void third(FileNode third) {
+            this.third = third;
+        }
+
+        public void remaining(FileNode str) {
+            remaining.add(str);
+        }
+
+        public void run() {
+        }
+    }
+
+/*
     public static class Options {
         @Option("first")
         private int first;
@@ -221,27 +247,6 @@ public class CommandParserTest {
 
         @Command("options")
         public void cmd() {}
-    }
-
-    public static class Values {
-        public FileNode first;
-        @Value(value = "second", position = 2)
-        public String second;
-        public List<FileNode> remaining = new ArrayList<>();
-
-        @Value(value = "first", position = 1)
-        public void first(FileNode first) {
-            this.first = first;
-        }
-
-        @Value(value = "remaining", position = 3, min = 0, max = Integer.MAX_VALUE)
-        public void remaining(FileNode str) {
-            remaining.add(str);
-        }
-
-        @Command("values")
-        public void run() {
-        }
     }
 
     public static class Constr {
@@ -261,5 +266,5 @@ public class CommandParserTest {
         public void run() {
         }
     }
-}
 */
+}

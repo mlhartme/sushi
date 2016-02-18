@@ -12,7 +12,6 @@ public class Mapping {
     public static Mapping parse(String str, Class<?> clazz) {
         Mapping result;
         int idx;
-        String name;
 
         result = new Mapping();
         for (String item : Separator.SPACE.split(str)) {
@@ -68,7 +67,7 @@ public class Mapping {
         try {
             field = clazz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
-            throw new IllegalStateException("no such field: " + name);
+            throw new IllegalStateException("no such field: " + clazz.getName() + "." + name);
         }
         if (fields.put(argument, field) != null) {
             throw new IllegalStateException("duplicate field mapping for argument " + argument);
@@ -82,7 +81,7 @@ public class Mapping {
         method = null;
         iterable = name.endsWith("*");
         if (iterable) {
-            name = name.substring(name.length() - 1);
+            name = name.substring(0, name.length() - 1);
         }
         for (Method candidate : clazz.getMethods()) {
             if (candidate.getParameterCount() == 1 && candidate.getName().equals(name)) {
@@ -101,7 +100,7 @@ public class Mapping {
     }
 
     public boolean contains(String name) {
-        return fields.containsKey(name) || methods.containsKey(name);
+        return fields.containsKey(name) || methods.containsKey(name) || iteratedMethods.containsKey(name);
     }
 
     public Target target(Schema schema, Object context, String argument) {

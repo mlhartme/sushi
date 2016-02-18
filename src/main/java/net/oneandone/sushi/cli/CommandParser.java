@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** running the parser creates and propertly initializess the command object */
 public class CommandParser {
     public static boolean isOption(String arg) {
         return arg.length() > 1 && arg.startsWith("-");

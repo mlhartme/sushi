@@ -22,7 +22,15 @@ public class Context {
             mapping = syntax.substring(idx + 1, syntax.length() - 1).trim();
             syntax = syntax.substring(0, idx).trim();
         }
-        return new Context(parent, classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, classOrInstance.getClass()));
+        return new Context(parent, classOrInstance, Source.forSyntax(syntax), Mapping.parse(mapping, clazz(classOrInstance)));
+    }
+
+    private static Class<?> clazz(Object classOrInstance) {
+        if (classOrInstance instanceof Class<?>) {
+            return (Class<?>) classOrInstance;
+        } else {
+            return classOrInstance.getClass();
+        }
     }
 
     /** may be null */
@@ -77,7 +85,7 @@ public class Context {
                 }
             }
             if (found == null) {
-                throw new IllegalStateException(clazz + ": no matching constructor");
+                throw new IllegalStateException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
             }
             result = new CommandParser(found, foundActuals);
             for (Argument a : foundArguments) {
@@ -96,6 +104,19 @@ public class Context {
             parent.addContextCommands(schema, result);
         }
         return result;
+    }
+
+    private static String names(List<Source> sources) {
+        StringBuilder result;
+
+        result = new StringBuilder();
+        for (Source source : sources) {
+            if (result.length() > 0) {
+                result.append(", ");
+            }
+            result.append(source.getName());
+        }
+        return result.toString();
     }
 
     private void addContextCommands(Schema schema, CommandParser parser) {

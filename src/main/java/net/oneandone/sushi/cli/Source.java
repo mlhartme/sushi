@@ -35,7 +35,7 @@ public class Source {
         String name;
         int min;
         int max;
-        int length;
+        int last;
 
         result = new ArrayList<>();
         lastPosition = 0;
@@ -55,22 +55,22 @@ public class Source {
                 dflt = name.substring(idx + 1);
                 name = name.substring(0, idx);
             }
-            length = name.length() - 1;
-            switch (name.charAt(length)) {
+            last = name.length() -1;
+            switch (name.charAt(last)) {
                 case '?':
                     min = 0;
                     max = 1;
-                    name = name.substring(0, length - 1);
+                    name = name.substring(0, last);
                     break;
                 case '*':
                     min = 0;
                     max = Integer.MAX_VALUE;
-                    name = name.substring(0, length - 1);
+                    name = name.substring(0, last);
                     break;
                 case '+':
                     min = 1;
                     max = Integer.MAX_VALUE;
-                    name = name.substring(0, length - 1);
+                    name = name.substring(0, last);
                     break;
                 default:
                     min = position == 0 ? 0 : 1;

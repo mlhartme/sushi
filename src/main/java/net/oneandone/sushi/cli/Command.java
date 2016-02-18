@@ -30,7 +30,7 @@ public class Command {
             throw new IllegalArgumentException(method + ": public expected");
         }
         if (method.getParameterTypes().length != 0) {
-            throw new IllegalArgumentException("unexpected arguments");
+            throw new IllegalArgumentException(method + ": unexpected arguments");
         }
         returnType = method.getReturnType();
         if (Void.TYPE.equals(returnType) || Integer.TYPE.equals(returnType)) {

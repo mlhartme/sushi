@@ -31,21 +31,23 @@ public class ContextBuilder {
 
     //--
 
+    private final ContextBuilder parent;
     private final Object commandInstance;
     private final Constructor<?> constructor;
     private final Object[] constructorActuals;
     private final Map<String, Argument> options;
     private final List<Argument> values;
 
-    public ContextBuilder(Object commandInstance) {
-        this(commandInstance, null, null);
+    public ContextBuilder(ContextBuilder parent, Object commandInstance) {
+        this(parent, commandInstance, null, null);
     }
 
-    public ContextBuilder(Constructor<?> constructor, Object[] constructorActuals) {
-        this(null, constructor, constructorActuals);
+    public ContextBuilder(ContextBuilder parent, Constructor<?> constructor, Object[] constructorActuals) {
+        this(parent, null, constructor, constructorActuals);
     }
 
-    private ContextBuilder(Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+    private ContextBuilder(ContextBuilder parent, Object commandInstance, Constructor<?> constructor, Object[] constructorActuals) {
+        this.parent = parent;
         this.commandInstance = commandInstance;
         this.constructor = constructor;
         this.constructorActuals = constructorActuals;

@@ -45,14 +45,24 @@ public class Context {
     public final List<Source> sources;
     public final Mapping mapping;
 
+    private ContextBuilder lazyCompiledContext;
+
     public Context(Context parent, Object classOrInstance, List<Source> sources, Mapping mapping) {
         this.parent = parent;
         this.classOrInstance = classOrInstance;
         this.sources = sources;
         this.mapping = mapping;
+        this.lazyCompiledContext = null;
     }
 
     public ContextBuilder compile(Schema schema) {
+        if (lazyCompiledContext == null) {
+            lazyCompiledContext = doCompile(schema);
+        }
+        return lazyCompiledContext;
+    }
+
+    private ContextBuilder doCompile(Schema schema) {
         Class<?> clazz;
         List<Source> constructorSources;
         List<Source> extraSources;
@@ -93,7 +103,7 @@ public class Context {
             if (found == null) {
                 throw new IllegalStateException("no matching constructor: " + clazz.getName() + "(" + names(constructorSources) + ")");
             }
-            result = new ContextBuilder(found, foundActuals);
+            result = new ContextBuilder(compiledParent(schema), found, foundActuals);
             for (Argument a : foundArguments) {
                 result.addArgument(a);
             }
@@ -101,7 +111,7 @@ public class Context {
             if (!constructorSources.isEmpty()) {
                 throw new IllegalStateException("cannot apply constructor argument to an instance");
             }
-            result = new ContextBuilder(classOrInstance);
+            result = new ContextBuilder(compiledParent(schema), classOrInstance);
         }
         for (Source s : extraSources) {
             result.addArgument(new Argument(s, mapping.target(schema, null /* */, s.getName())));
@@ -110,6 +120,10 @@ public class Context {
             parent.addContextArguments(schema, result);
         }
         return result;
+    }
+
+    private ContextBuilder compiledParent(Schema schema) {
+        return parent == null ? null : parent.compile(schema);
     }
 
     private static String names(List<Source> sources) {

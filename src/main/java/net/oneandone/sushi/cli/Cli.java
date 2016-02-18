@@ -35,7 +35,7 @@ public class Cli {
         Cli cli;
 
         console = Console.create(World.create());
-        cli = new Cli(console.world).context(console, "-v -e  { setVerbose(v) setStacktraces(e) }");
+        cli = new Cli(console.world).begin(console, "-v -e  { setVerbose(v) setStacktraces(e) }");
         cli.command(command, syntax);
         return cli;
     }
@@ -46,10 +46,10 @@ public class Cli {
 
         console = Console.create(world);
         cli = new Cli(console.world)
-                .context(console, "-v -e  { setVerbose(v) setStacktraces(e) }")
-                .command(new Help(console, help), "help")
-                .command(PackageVersion.class, "version")
-                .addDefaultCommand("help");
+                .begin(console, "-v -e  { setVerbose(v) setStacktraces(e) }")
+                   .command(new Help(console, help), "help")
+                   .command(PackageVersion.class, "version")
+                   .addDefaultCommand("help");
         return cli;
     }
 
@@ -58,7 +58,7 @@ public class Cli {
 
     private final List<Command> commands;
     private Command defaultCommand;
-    private Context lastContext;
+    private Context currentContext;
     private ExceptionHandler exceptionHandler;
 
     public Cli() throws IOException {
@@ -72,16 +72,16 @@ public class Cli {
     public Cli(World world, Schema schema) {
         this.schema = schema;
         this.commands = new ArrayList<>();
-        this.lastContext = null;
+        this.currentContext = null;
         this.defaultCommand = null;
-        context(world);
+        begin(world);
     }
 
-    public Cli context(Object context) {
-        return context(context, "");
+    public Cli begin(Object context) {
+        return begin(context, "");
     }
 
-    public Cli context(Object context, String syntax) {
+    public Cli begin(Object context, String syntax) {
         if (context == null) {
             throw new IllegalArgumentException();
         }
@@ -91,7 +91,15 @@ public class Cli {
             }
             exceptionHandler = (ExceptionHandler) context;
         }
-        this.lastContext = Context.create(lastContext, context, syntax);
+        this.currentContext = Context.create(currentContext, context, syntax);
+        return this;
+    }
+
+    public Cli end() {
+        if (currentContext == null) {
+            throw new IllegalStateException();
+        }
+        currentContext = currentContext.parent;
         return this;
     }
 
@@ -109,7 +117,7 @@ public class Cli {
             cmd = definition.substring(0, idx);
             definition = definition.substring(idx + 1);
         }
-        context = Context.create(lastContext, clazzOrInstance, definition);
+        context = Context.create(currentContext, clazzOrInstance, definition);
         builder = context.compile(schema);
         if (lookup(cmd) != null) {
             throw new IllegalArgumentException("duplicate command: " + cmd);

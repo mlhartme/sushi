@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Cli example with a single command.
+ * Cli example with two commands.
   * <tt>
   * mvn org.codehaus.mojo:exec-maven-plugin:1.2.1:java -Dexec.classpathScope=test -Dexec.mainClass=net.oneandone.sushi.CliSample -Dexec.args=&quot;-flag -number 8 first second third&quot;
   * </tt>

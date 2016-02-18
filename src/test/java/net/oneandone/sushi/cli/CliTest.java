@@ -157,8 +157,9 @@ public class CliTest {
 
         lastWithContext = null;
         cli = Cli.create(WORLD, "no help text");
-        cli.context(Values.class, "first");
-        cli.command(WithContext.class, "cmd l");
+        cli.begin(Values.class, "first")
+                .command(WithContext.class, "cmd l")
+           .end();
         cli.run("cmd", "42", "2");
         assertTrue(lastWithContext instanceof WithContext);
         assertEquals(42, lastWithContext.values.first);

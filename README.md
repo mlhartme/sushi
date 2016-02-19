@@ -6,9 +6,10 @@ Sushi is a scripting library for Java. It provides a simple API for
 * ssh-, webdav, and svn filesystems
 * [property files] (https://github.com/mlhartme/sushi/blob/master/src/test/java/net/oneandone/sushi/PropertiesSample.java)
 * process launching
-* [command line parsing](https://github.com/mlhartme/sushi/blob/master/src/test/java/net/oneandone/sushi/CliSample.java)
 * Diff
 * ...
+
+(Command line parsing has been moved into a separate project: https://github.com/mlhartme/inline)
 
 Rationale: I prefer to do my scripting stuff in Java, not with a scripting languages and not with a special-purpose-language like Ant. Sushi enables me to do so: it provides similar functionality like Ant or Apache Commons - but packaged in an API that makes my "scripts" almost as readable and concise as other approaches. 
 

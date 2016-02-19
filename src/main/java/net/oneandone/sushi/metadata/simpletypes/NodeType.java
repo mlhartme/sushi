@@ -15,7 +15,6 @@
  */
 package net.oneandone.sushi.metadata.simpletypes;
 
-import net.oneandone.sushi.cli.ArgumentException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
@@ -48,7 +47,7 @@ public class NodeType extends SimpleType {
         try {
             return world.node(str);
         } catch (NodeInstantiationException | URISyntaxException e) {
-            throw new ArgumentException(str, e);
+            throw new RuntimeException(str, e);
         }
     }
 }

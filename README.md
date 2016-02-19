@@ -3,13 +3,10 @@
 Sushi is a scripting library for Java. It provides a simple API for
 
 * [file system operations](https://github.com/mlhartme/sushi/blob/master/src/test/java/net/oneandone/sushi/FsSample.java)
-* ssh-, webdav, and svn filesystems
-* [property files] (https://github.com/mlhartme/sushi/blob/master/src/test/java/net/oneandone/sushi/PropertiesSample.java)
+* ssh-, http (incl webdav), and svn filesystems
 * process launching
 * Diff
 * ...
-
-(Command line parsing has been moved into a separate project: https://github.com/mlhartme/inline)
 
 Rationale: I prefer to do my scripting stuff in Java, not with a scripting languages and not with a special-purpose-language like Ant. Sushi enables me to do so: it provides similar functionality like Ant or Apache Commons - but packaged in an API that makes my "scripts" almost as readable and concise as other approaches. 
 
@@ -32,7 +29,7 @@ Sushi is available from Maven Central. To use it in a Maven project, add this de
     <dependency>
       <groupId>net.oneandone</groupId>
       <artifactId>sushi</artifactId>
-      <version>2.9.0</version>
+      <version>3.0.0</version>
     </dependency>
 
 ## Optional Dependencies
@@ -73,14 +70,6 @@ Additionally, you can add
 
 to make passphrases stored in ssh agent available to Sushi.
 
-For WebdavNodes:
-
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpcore</artifactId>
-      <version>4.4.4</version>
-    </dependency>
-
 For SvnNodes (e.g. world.node("svn:https//host/my/path")):
 
     <dependency>
@@ -88,6 +77,11 @@ For SvnNodes (e.g. world.node("svn:https//host/my/path")):
       <artifactId>svnkit</artifactId>
       <version>1.8.5</version>
     </dependency>
+
+
+# Migrating from Sushi 2.8.x
+
+* Command line parsing has been moved into a separate project https://github.com/mlhartme/inline
 
 
 # Tests

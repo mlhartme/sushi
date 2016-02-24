@@ -83,6 +83,7 @@ For SvnNodes (e.g. world.node("svn:https//host/my/path")):
 
 * Command line parsing has been moved into a separate project https://github.com/mlhartme/inline, see migration instructions there
 * replace Node.createReader/Writer with Node.newReader/Writer
+* replace new World() with World.create()
 
 # Tests
 

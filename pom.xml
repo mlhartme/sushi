@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>net.oneandone.maven.poms</groupId>
-    <artifactId>foss-parent</artifactId>
-    <version>1.5.9</version>
+    <artifactId>lazy-foss-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -18,17 +18,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <!-- Java 8 -->
-    <oneandone.java.source>1.8</oneandone.java.source>
-    <oneandone.java.target>1.8</oneandone.java.target>
-    <oneandone.java.docversion>8</oneandone.java.docversion>
-
-    <!-- checks -->
-    <enforcer.skip>true</enforcer.skip><!-- because i don't have dependency convergene -->
-    <pmd.skip>true</pmd.skip><!-- because it complains about comment-only code blocks -->
-    <cpd.skip>true</cpd.skip><!-- because it's too picky -->
-    <findbugs.skip>true</findbugs.skip><!-- because it's too picky -->
-    <jacoco.skip>true</jacoco.skip><!-- because it's too picky -->
     <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation><!-- cycolmatic complexity ... -->
   </properties>
 
@@ -172,48 +161,7 @@
     </plugins>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <configuration>
-          <onlyMilestoneIssues>false</onlyMilestoneIssues>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-
   <profiles>
-    <profile>
-      <id>java8</id>
-      <activation>
-        <jdk>1.8</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <additionalparam>-Xdoclint:syntax</additionalparam>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-      <reporting>
-        <plugins>
-          <plugin>
-            <!-- javadoc 8 is way too picky ... -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <additionalparam>-Xdoclint:syntax</additionalparam>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
-    </profile>
     <profile>
       <id>all</id>
       <activation>

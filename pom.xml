@@ -33,6 +33,8 @@
     <!-- TODO: fails with Java 8 -->
     <findbugs.skip>true</findbugs.skip>
 
+    <jacoco.skip>true</jacoco.skip>
+
     <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
     <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
   </properties>

@@ -17,10 +17,6 @@
   <version>3.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <properties>
-    <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation><!-- cycolmatic complexity ... -->
-  </properties>
-
   <developers>
     <developer>
       <name>Michael Hartmeier</name>

@@ -18,25 +18,18 @@
   <packaging>jar</packaging>
 
   <properties>
+    <!-- Java 8 -->
     <oneandone.java.source>1.8</oneandone.java.source>
     <oneandone.java.target>1.8</oneandone.java.target>
     <oneandone.java.docversion>8</oneandone.java.docversion>
 
-    <enforcer.skip>true</enforcer.skip>
-
-    <!-- disabled because it complain about comment-only code blocks -->
-    <pmd.skip>true</pmd.skip>
-
-    <!-- too picky -->
-    <cpd.skip>true</cpd.skip>
-
-    <!-- TODO: fails with Java 8 -->
-    <findbugs.skip>true</findbugs.skip>
-
-    <jacoco.skip>true</jacoco.skip>
-
-    <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
-    <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation>
+    <!-- checks -->
+    <enforcer.skip>true</enforcer.skip><!-- because i don't have dependency convergene -->
+    <pmd.skip>true</pmd.skip><!-- because it complains about comment-only code blocks -->
+    <cpd.skip>true</cpd.skip><!-- because it's too picky -->
+    <findbugs.skip>true</findbugs.skip><!-- because it's too picky -->
+    <jacoco.skip>true</jacoco.skip><!-- because it's too picky -->
+    <maven-checkstyle-plugin.suppressionsLocation>${basedir}/src/conf/checkstyle-suppressions.xml</maven-checkstyle-plugin.suppressionsLocation><!-- cycolmatic complexity ... -->
   </properties>
 
   <developers>

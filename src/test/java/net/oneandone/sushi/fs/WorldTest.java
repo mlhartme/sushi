@@ -33,13 +33,27 @@ import java.net.URL;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /** Note: World.node methods are tested in NodeTest. */
 public class WorldTest {
+    @Test
+    public void close() throws IOException {
+        FileNode tmp;
 
-    //-- filesystems
+        try (World world = World.createMinimal()) {
+            tmp = world.getTemp().createTempFile();
+            assertTrue(tmp.isFile());
+        }
+        assertFalse(tmp.isFile());
+        try (World world = World.createMinimal()) {
+            tmp = world.getTemp().createTempFile();
+            assertTrue(tmp.isFile());
+        }
+        assertFalse(tmp.isFile());
+    }
 
     @Test
     public void getFilesystem() {

@@ -52,6 +52,9 @@ import java.util.Map;
  * <p>Configures and creates nodes. You'll usually create a single world instance in your application, configure it and
  * afterwards use it through-out your application to create nodes via World.node or World.file. </p>
  *
+ * <p>To properly should down the world you should use a try block or explicitly invoke the close method. Otherwise, ssh threads keep
+ * running until you invoke System.exit();</p>
+ *
  * <p>Sushi's FS subsystem forms a tree: An world object is the root, having filesystems as it's children, roots as
  * grand-children and nodes as leaves. This tree is traversable from nodes up to the world object via Node.getRoot(),
  * Root.getFilesystem() and Filesystem.getWorld(), which is used internally e.g. to pick default encoding settings
@@ -64,7 +67,7 @@ import java.util.Map;
  *
  * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */
-public class World {
+public class World implements AutoCloseable {
     /** creates a standard world with netrc initialized */
 
     public static World create() throws IOException {
@@ -125,6 +128,14 @@ public class World {
         this.xml = new Xml();
         this.defaultExcludes = new ArrayList<>(Arrays.asList(defaultExcludes));
         this.netRc = new NetRc();
+    }
+
+    public void close() {
+        if (lazyOnShutdown != null) {
+            Runtime.getRuntime().removeShutdownHook(lazyOnShutdown);
+            lazyOnShutdown.run();
+            lazyOnShutdown = null;
+        }
     }
 
     //--

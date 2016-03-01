@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <body>
-    <release date="2015-08-xx" version="3.0.0">
+    <release date="2016-03-01" version="3.0.0">
       <action date="2016-02-19" dev="mlhartme" type="remove">
         Remove metadata stuff (xml mapping, csv, properties), it's a separate project now: https://github.com/mlhartme/metadata
       </action>

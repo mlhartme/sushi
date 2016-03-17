@@ -19,21 +19,15 @@ import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Body;
-import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 
 /** the output stream is added manually by the user */
 public class Post extends Method<byte[]> {
-    public Post(HttpNode resource, Map<String, String> headers, Body body) {
+    public Post(HttpNode resource, Body body) {
         super("POST", resource, body);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            addRequestHeader(entry.getKey(), entry.getValue());
-        }
     }
 
     @Override

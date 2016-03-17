@@ -36,7 +36,9 @@ import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class HttpRoot implements Root<HttpNode> {
@@ -51,6 +53,7 @@ public class HttpRoot implements Root<HttpNode> {
     private String authorization;
     private final URI proxy;
     private final Boolean dav;
+    private final Map<String, String> extraHeaders;
 
     public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port, URI proxy, Boolean dav) {
         this.filesystem = filesystem;
@@ -60,6 +63,11 @@ public class HttpRoot implements Root<HttpNode> {
         this.authorization = null;
         this.proxy = proxy;
         this.dav = dav;
+        this.extraHeaders = new HashMap<>();
+    }
+
+    public void addExtraHeader(String name, String value) {
+        extraHeaders.put(name, value);
     }
 
     public String getProtocol() {
@@ -215,6 +223,9 @@ public class HttpRoot implements Root<HttpNode> {
         headerList.add("Cache-control", "no-cache");
         headerList.add("Cache-store", "no-store");
         headerList.add("User-Agent", "Sushi Http");
+        for (Map.Entry<String, String> entry : extraHeaders.entrySet()) {
+            headerList.add(entry.getKey(), entry.getValue());
+        }
     }
 
     //--

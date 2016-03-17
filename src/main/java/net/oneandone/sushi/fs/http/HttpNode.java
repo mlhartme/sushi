@@ -39,14 +39,18 @@ import net.oneandone.sushi.fs.http.methods.Head;
 import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.methods.MkCol;
 import net.oneandone.sushi.fs.http.methods.Move;
+import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
+import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,6 +64,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class HttpNode extends Node {
@@ -801,5 +806,12 @@ public class HttpNode extends Node {
             }
         }
         return builder.toString();
+    }
+
+    public byte[] post(Map<String, String> headers, byte[] body) throws IOException {
+        Post method;
+
+        method = new Post(this, headers, new Body(null, null, body.length, new ByteArrayInputStream(body), false));
+        return method.response(method.request());
     }
 }

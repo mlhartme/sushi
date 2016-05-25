@@ -18,6 +18,8 @@ package net.oneandone.sushi.fs.http.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/** Write https://tools.ietf.org/html/rfc2616#section-3.6.1 streams */
+
 public class ChunkedOutputStream extends OutputStream {
     private final AsciiOutputStream dest;
 
@@ -44,7 +46,7 @@ public class ChunkedOutputStream extends OutputStream {
     @Override
     public void write(int b) throws IOException {
         if (closed) {
-            throw new IOException("stream is already closed");
+            throw new IOException("stream already closed");
         }
         buffer[pos] = (byte) b;
         pos++;
@@ -56,7 +58,7 @@ public class ChunkedOutputStream extends OutputStream {
     @Override
     public void write(byte[] src, int ofs, int len) throws IOException {
         if (closed) {
-            throw new IOException("stream is already closed");
+            throw new IOException("stream already closed");
         }
         if (pos + len < buffer.length) {
             System.arraycopy(src, ofs, buffer, pos, len);
@@ -96,6 +98,7 @@ public class ChunkedOutputStream extends OutputStream {
         flushBuffer(EMPTY, 0, 0);
     }
 
+    /** flush buffer and bytes in append */
     private void flushBuffer(byte[] append, int ofs, int len) throws IOException {
         int count;
 

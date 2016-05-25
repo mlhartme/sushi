@@ -23,6 +23,8 @@ import net.oneandone.sushi.io.Buffer;
 import java.io.IOException;
 import java.io.InputStream;
 
+/** Read https://tools.ietf.org/html/rfc2616#section-3.6.1 streams */
+
 public class ChunkedInputStream extends InputStream {
     private static final int UNKNOWN = -1;
 

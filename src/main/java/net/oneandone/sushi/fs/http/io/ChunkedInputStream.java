@@ -55,16 +55,13 @@ public class ChunkedInputStream extends InputStream {
     public int read() throws IOException {
         int b;
 
-        if (closed) {
-            throw new IOException("stream already closed");
+        if (!before()) {
+            return -1;
         }
-        before();
         b = src.read();
         if (b != -1) {
             pos++;
-            if (pos >= length) {
-                afterData();
-            }
+            afterData();
         }
         return b;
     }
@@ -73,19 +70,16 @@ public class ChunkedInputStream extends InputStream {
     public int read(byte[] b, int ofs, int len) throws IOException {
         int bytesRead;
 
-        if (closed) {
-            throw new IOException("Attempted read from closed stream.");
+        if (!before()) {
+            return -1;
         }
-        before();
         bytesRead = src.read(b, ofs, Math.min(len, length - pos));
         if (bytesRead == -1) {
             eof = true;
             throw new ProtocolException("chunk truncated, expected " + length + ", code " + pos + " bytes");
         }
         pos += bytesRead;
-        if (pos >= length) {
-            afterData();
-        }
+        afterData();
         return bytesRead;
     }
 
@@ -111,15 +105,20 @@ public class ChunkedInputStream extends InputStream {
 
     //--
 
-    private void before() throws IOException {
+    private boolean before() throws IOException {
+        if (closed) {
+            throw new IOException("Attempted read from closed stream.");
+        }
         if (length == UNKNOWN) {
             length = readLength();
             pos = 0;
             if (length == 0) {
                 eof = true;
                 HeaderList.parse(src); // result is ignored
+                return false;
             }
         }
+        return true;
     }
 
     private int readLength() throws IOException {
@@ -143,10 +142,17 @@ public class ChunkedInputStream extends InputStream {
     private void afterData() throws IOException {
         String str;
 
-        str = src.readLine();
-        if (str == null || !str.isEmpty()) {
-            throw new ProtocolException("expected empty line, got " + str);
+        if (pos < length) {
+            // nothing to do
+        } else {
+            if (pos > length) {
+                throw new IllegalStateException(pos + " >" + length);
+            }
+            str = src.readLine();
+            if (str == null || !str.isEmpty()) {
+                throw new ProtocolException("expected empty line, got " + str);
+            }
+            length = UNKNOWN;
         }
-        length = UNKNOWN;
     }
 }

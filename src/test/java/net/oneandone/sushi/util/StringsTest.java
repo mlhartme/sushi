@@ -28,6 +28,14 @@ public class StringsTest {
     }
 
     @Test
+    public void add() {
+        assertEquals("start", Strings.addLeftOpt("start", "s"));
+        assertEquals("xstart", Strings.addLeftOpt("start", "x"));
+        assertEquals("start", Strings.addRightOpt("start", "t"));
+        assertEquals("startx", Strings.addRightOpt("start", "x"));
+    }
+
+    @Test
     public void remove() {
         final String STARTX = "startx";
 

@@ -40,7 +40,23 @@ public class Strings {
     }
 
     //--
-    
+
+    public static String addLeftOpt(String str, String left) {
+        if (str.startsWith(left)) {
+            return str;
+        } else {
+            return left + str;
+        }
+    }
+
+    public static String addRightOpt(String str, String right) {
+        if (str.endsWith(right)) {
+            return str;
+        } else {
+            return str + right;
+        }
+    }
+
     public static String removeLeft(String str, String left) {
         String result;
 

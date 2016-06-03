@@ -28,6 +28,7 @@ import net.oneandone.sushi.fs.NewInputStreamException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
+import net.oneandone.sushi.fs.timemachine.TimeMachineNode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +41,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /** Represents an entry in a zip or jar file. Read-only */
-public class ZipNode extends Node {
+public class ZipNode extends Node<ZipNode> {
     private final ZipRoot root;
     private final String path;
 
@@ -53,11 +54,6 @@ public class ZipNode extends Node {
     @Override
     public ZipRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public ZipNode getParent() {
-        return (ZipNode) doGetParent();
     }
 
     @Override
@@ -122,27 +118,27 @@ public class ZipNode extends Node {
     }
 
     @Override
-    public Node deleteFile() throws DeleteException {
+    public ZipNode deleteFile() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node deleteDirectory() throws DeleteException {
+    public ZipNode deleteDirectory() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node deleteTree() throws DeleteException {
+    public ZipNode deleteTree() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node move(Node dest, boolean overwrite) throws MoveException {
+    public ZipNode move(Node dest, boolean overwrite) throws MoveException {
     	throw new MoveException(this, dest, "ZipNode cannot be moved");
     }
 
     @Override
-    public Node mkdir() throws MkdirException {
+    public ZipNode mkdir() throws MkdirException {
         throw new MkdirException(this);
     }
 

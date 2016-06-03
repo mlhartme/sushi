@@ -69,7 +69,7 @@ import java.util.List;
 /**
  * Represents a file, directory, link or something not yet created. Replacement for java.io.File or java.nio.Path. </p>
  */
-public class FileNode extends Node {
+public class FileNode extends Node<FileNode> {
     private final FileRoot root;
 
     /** never null, always absolute, never ends with a slash */
@@ -89,11 +89,6 @@ public class FileNode extends Node {
     @Override
     public FileRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public FileNode getParent() {
-        return (FileNode) doGetParent();
     }
 
     @Override

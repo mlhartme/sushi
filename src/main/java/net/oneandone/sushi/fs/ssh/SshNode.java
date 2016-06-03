@@ -57,7 +57,7 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SshNode extends Node {
+public class SshNode extends Node<SshNode> {
     private final SshRoot root;
     private final String slashPath;
 
@@ -95,11 +95,6 @@ public class SshNode extends Node {
     @Override
     public SshRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public SshNode getParent() {
-        return (SshNode) doGetParent();
     }
 
     @Override
@@ -361,7 +356,7 @@ public class SshNode extends Node {
     }
 
     @Override
-    public Node mkdir() throws MkdirException {
+    public SshNode mkdir() throws MkdirException {
         ChannelSftp sftp;
 
         try {

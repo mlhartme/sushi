@@ -32,7 +32,6 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.io.SkipOutputStream;
@@ -66,7 +65,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class SvnNode extends Node {
+public class SvnNode extends Node<SvnNode> {
     private final SvnRoot root;
     private final String path;
 
@@ -99,11 +98,6 @@ public class SvnNode extends Node {
     @Override
     public SvnRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public SvnNode getParent() {
-        return (SvnNode) doGetParent();
     }
 
     @Override
@@ -341,7 +335,7 @@ public class SvnNode extends Node {
     }
 
     @Override
-    public Node mkdir() throws MkdirException {
+    public SvnNode mkdir() throws MkdirException {
         SVNCommitClient client;
 
         try {

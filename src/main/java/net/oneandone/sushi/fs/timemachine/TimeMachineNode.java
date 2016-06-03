@@ -33,6 +33,7 @@ import net.oneandone.sushi.fs.ReadLinkException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.file.FileNode;
+import net.oneandone.sushi.fs.zip.ZipNode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeMachineNode extends Node {
+public class TimeMachineNode extends Node<TimeMachineNode> {
     private final TimeMachineRoot root;
     private final FileNode node;
     private final String path;
@@ -57,11 +58,6 @@ public class TimeMachineNode extends Node {
     @Override
     public TimeMachineRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public TimeMachineNode getParent() {
-        return (TimeMachineNode) doGetParent();
     }
 
     @Override
@@ -126,22 +122,22 @@ public class TimeMachineNode extends Node {
 
 
     @Override
-    public Node deleteFile() throws DeleteException {
+    public TimeMachineNode deleteFile() throws DeleteException {
         throw unsupported("deleteFile()");
     }
 
     @Override
-    public Node deleteDirectory() throws DeleteException {
+    public TimeMachineNode deleteDirectory() throws DeleteException {
         throw unsupported("deleteDirectory()");
     }
 
     @Override
-    public Node deleteTree() throws DeleteException {
+    public TimeMachineNode deleteTree() throws DeleteException {
         throw unsupported("deleteTree()");
     }
 
     @Override
-    public Node move(Node dest, boolean overwrite) throws MoveException {
+    public ZipNode move(Node dest, boolean overwrite) throws MoveException {
         throw unsupported("move()");
     }
 

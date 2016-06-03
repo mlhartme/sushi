@@ -43,7 +43,7 @@ import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
 /** You'll normally use World.memoryNode() to create instances */
-public class MemoryNode extends Node {
+public class MemoryNode extends Node<MemoryNode> {
     /** never null */
     private final MemoryRoot root;
 
@@ -75,11 +75,6 @@ public class MemoryNode extends Node {
     @Override
     public MemoryRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public MemoryNode getParent() {
-        return (MemoryNode) doGetParent();
     }
 
     @Override
@@ -168,7 +163,7 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public Node mkdir() throws MkdirException {
+    public MemoryNode mkdir() throws MkdirException {
         boolean parentDir;
 
         if (type != Type.NONE) {

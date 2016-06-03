@@ -65,7 +65,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class HttpNode extends Node {
+public class HttpNode extends Node<HttpNode> {
 	private final HttpRoot root;
 
 	/**
@@ -132,11 +132,6 @@ public class HttpNode extends Node {
     @Override
     public HttpRoot getRoot() {
         return root;
-    }
-
-    @Override
-    public HttpNode getParent() {
-        return (HttpNode) doGetParent();
     }
 
     @Override
@@ -357,7 +352,7 @@ public class HttpNode extends Node {
     }
 
     @Override
-    public Node deleteFile() throws DeleteException, FileNotFoundException {
+    public HttpNode deleteFile() throws DeleteException, FileNotFoundException {
         try {
             synchronized (tryLock) {
                 tryDir = false;
@@ -374,7 +369,7 @@ public class HttpNode extends Node {
     }
 
     @Override
-    public Node deleteDirectory() throws DirectoryNotFoundException, DeleteException {
+    public HttpNode deleteDirectory() throws DirectoryNotFoundException, DeleteException {
         List<HttpNode> lst;
 
         try {
@@ -402,7 +397,7 @@ public class HttpNode extends Node {
     }
 
     @Override
-    public Node deleteTree() throws DeleteException, NodeNotFoundException {
+    public HttpNode deleteTree() throws DeleteException, NodeNotFoundException {
         try {
             synchronized (tryLock) {
                 try {

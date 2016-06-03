@@ -47,10 +47,10 @@ public class Diff {
     	return result;
     }
 
-    public void paths(Node dir, Filter filter, List<String> result) throws IOException {
+    public void paths(Node<?> dir, Filter filter, List<String> result) throws IOException {
     	String path;
 
-    	for (Node node : dir.find(filter)) {
+    	for (Node<?> node : dir.find(filter)) {
     		path = node.getRelative(dir);
     		if (!result.contains(path)) {
     			result.add(path);

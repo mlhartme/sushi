@@ -91,16 +91,16 @@ import java.util.zip.GZIPOutputStream;
  * <p>Exception handling: throws NodeNotFoundException, FileNotFoundException, DirectoryNotFoundException to indicate
  * a node, file or directory is expected to exist, but it does not.</p>
  */
-public abstract class Node {
+public abstract class Node<T extends Node> {
     protected UnsupportedOperationException unsupported(String op) {
         return new UnsupportedOperationException(this + ":" + op);
     }
 
     //--
 
-    public abstract Root<?> getRoot();
+    public abstract Root<T> getRoot();
 
-    public Node getRootNode() {
+    public T getRootNode() {
         return getRoot().node("", null);
     }
 
@@ -185,15 +185,15 @@ public abstract class Node {
      * @throws ListException if this does not exist (in this case, cause is set to a FileNotFoundException),
      *    permission is denied, or another IO problem occurs.
      */
-    public abstract List<? extends Node> list() throws ListException, DirectoryNotFoundException;
+    public abstract List<T> list() throws ListException, DirectoryNotFoundException;
 
     /**
      * Fails if the directory already exists. Features define whether is operation is atomic.
      * @return this
      */
-    public abstract Node mkdir() throws MkdirException;
+    public abstract T mkdir() throws MkdirException;
 
-    public Node mkdirOpt() throws MkdirException {
+    public T mkdirOpt() throws MkdirException {
         try {
             if (!isDirectory()) {
                 mkdir(); // fail here if it's a file!
@@ -201,11 +201,11 @@ public abstract class Node {
         } catch (ExistsException e) {
             throw new MkdirException(this, e);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node mkdirsOpt() throws MkdirException {
-        Node parent;
+    public T mkdirsOpt() throws MkdirException {
+        T parent;
 
         try {
             if (!isDirectory()) {
@@ -218,10 +218,10 @@ public abstract class Node {
         } catch (ExistsException e) {
             throw new MkdirException(this, e);
         }
-        return this;
+        return (T)this;
     }
 
-    public Node mkdirs() throws MkdirException {
+    public T mkdirs() throws MkdirException {
         try {
             if (exists()) {
                 throw new MkdirException(this);
@@ -239,7 +239,7 @@ public abstract class Node {
      *
      * @return this
      */
-    public abstract Node deleteTree() throws NodeNotFoundException, DeleteException;
+    public abstract T deleteTree() throws NodeNotFoundException, DeleteException;
 
     /**
      * Deletes this file or link to a file; throws an exception otherwise.
@@ -247,34 +247,34 @@ public abstract class Node {
      *
      * @throws DeleteException if this is not file
      */
-    public abstract Node deleteFile() throws FileNotFoundException, DeleteException;
+    public abstract T deleteFile() throws FileNotFoundException, DeleteException;
 
     /**
      * Deletes this directory or link to a directory; throws an exception otherwise.
      *
      * @throws DeleteException if this is not a directory or the directory is not empty
      */
-    public abstract Node deleteDirectory() throws DirectoryNotFoundException, DeleteException;
+    public abstract T deleteDirectory() throws DirectoryNotFoundException, DeleteException;
 
-    public Node deleteFileOpt() throws IOException {
+    public T deleteFileOpt() throws IOException {
         if (exists()) {
             deleteFile();
         }
-        return this;
+        return (T) this;
     }
 
-    public Node deleteDirectoryOpt() throws IOException {
+    public T deleteDirectoryOpt() throws IOException {
         if (exists()) {
             deleteDirectory();
         }
-        return this;
+        return (T) this;
     }
 
-    public Node deleteTreeOpt() throws IOException {
+    public T deleteTreeOpt() throws IOException {
         if (exists()) {
             deleteTree();
         }
-        return this;
+        return (T) this;
     }
 
     //-- status methods
@@ -309,23 +309,23 @@ public abstract class Node {
     /** @return true for links to files or directories or dangling links */
     public abstract boolean isLink() throws ExistsException;
 
-    public Node checkExists() throws ExistsException, NodeNotFoundException {
+    public T checkExists() throws ExistsException, NodeNotFoundException {
         if (!exists()) {
             throw new NodeNotFoundException(this);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node checkNotExists() throws ExistsException, NodeAlreadyExistsException {
+    public T checkNotExists() throws ExistsException, NodeAlreadyExistsException {
         if (exists()) {
             throw new NodeAlreadyExistsException(this);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node checkDirectory() throws ExistsException, DirectoryNotFoundException {
+    public T checkDirectory() throws ExistsException, DirectoryNotFoundException {
         if (isDirectory()) {
-            return this;
+            return (T) this;
         }
         if (exists()) {
             throw new DirectoryNotFoundException(this, "directory not found - this is a file");
@@ -335,9 +335,9 @@ public abstract class Node {
     }
 
     /** @return false for dangling links */
-    public Node checkFile() throws ExistsException, FileNotFoundException {
+    public T checkFile() throws ExistsException, FileNotFoundException {
         if (isFile()) {
-            return this;
+            return (T) this;
         }
         if (exists()) {
             throw new FileNotFoundException(this, "file not found - this is a directory");
@@ -390,8 +390,7 @@ public abstract class Node {
     }
 
 
-    public abstract Node getParent();
-    protected Node doGetParent() {
+    public T getParent() {
         String path;
         int idx;
 
@@ -408,7 +407,7 @@ public abstract class Node {
     }
 
     public boolean hasDifferentAnchestor(Node anchestor) {
-        Node parent;
+        T parent;
 
         parent = getParent();
         if (parent == null) {
@@ -419,14 +418,14 @@ public abstract class Node {
     }
 
     public boolean hasAnchestor(Node anchestor) {
-        Node current;
+        T current;
 
-        current = this;
+        current = (T) this;
         while (true) {
             if (current.equals(anchestor)) {
                 return true;
             }
-            current = current.getParent();
+            current = (T) current.getParent();
             if (current == null) {
                 return false;
             }

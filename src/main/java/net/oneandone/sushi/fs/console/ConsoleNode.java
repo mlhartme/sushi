@@ -30,7 +30,7 @@ import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
-public class ConsoleNode extends Node {
+public class ConsoleNode extends Node<ConsoleNode> {
     private final ConsoleFilesystem root;
 
     public ConsoleNode(ConsoleFilesystem root) {
@@ -42,11 +42,6 @@ public class ConsoleNode extends Node {
     @Override
     public ConsoleFilesystem getRoot() {
         return root;
-    }
-
-    @Override
-    public ConsoleNode getParent() {
-        return (ConsoleNode) doGetParent();
     }
 
     @Override
@@ -84,22 +79,22 @@ public class ConsoleNode extends Node {
     }
 
     @Override
-    public Node deleteFile() throws DeleteException {
+    public ConsoleNode deleteFile() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node deleteDirectory() throws DeleteException {
+    public ConsoleNode deleteDirectory() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node deleteTree() throws DeleteException {
+    public ConsoleNode deleteTree() throws DeleteException {
         throw new DeleteException(this);
     }
 
     @Override
-    public Node move(Node dest, boolean overwrite) throws MoveException {
+    public ConsoleNode move(Node dest, boolean overwrite) throws MoveException {
     	throw new MoveException(this, dest, "ConsoleNode cannot be moved");
     }
 
@@ -174,7 +169,7 @@ public class ConsoleNode extends Node {
     }
 
     @Override
-    public Node mkdir() throws MkdirException {
+    public ConsoleNode mkdir() throws MkdirException {
         throw new MkdirException(this);
     }
 

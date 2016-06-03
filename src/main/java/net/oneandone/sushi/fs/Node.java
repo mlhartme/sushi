@@ -461,20 +461,16 @@ public abstract class Node<T extends Node> {
         return result.toString();
     }
 
-    public abstract Node join(List<String> paths);
-
-    protected Node doJoin(List<String> paths) {
-        Root<?> root;
-        Node result;
+    public T join(List<String> paths) {
+        Root<T> root;
+        T result;
 
         root = getRoot();
         result = root.node(root.getFilesystem().join(getPath(), paths), null);
         return result;
     }
 
-    public abstract Node join(String... names);
-
-    public Node doJoin(String... names) {
+    public T join(String... names) {
         return join(Arrays.asList(names));
     }
 
@@ -563,108 +559,107 @@ public abstract class Node<T extends Node> {
      * This default implementation is not atomic.
      * @return this
      */
-    public Node mkfile() throws MkfileException {
+    public T mkfile() throws MkfileException {
         try {
             if (exists()) {
                 throw new MkfileException(this);
             }
-            writeBytes();
+            return writeBytes();
         } catch (IOException e) {
             throw new MkfileException(this, e);
         }
-        return this;
     }
 
-    public Node writeBytes(byte ... bytes) throws IOException {
+    public T writeBytes(byte ... bytes) throws IOException {
         return writeBytes(bytes, 0, bytes.length, false);
     }
 
-    public Node appendBytes(byte ... bytes) throws IOException {
+    public T appendBytes(byte ... bytes) throws IOException {
         return writeBytes(bytes, 0, bytes.length, true);
     }
 
-    public Node writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
+    public T writeBytes(byte[] bytes, int ofs, int len, boolean append) throws IOException {
         try (OutputStream out = newOutputStream(append)) {
             out.write(bytes, ofs, len);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node writeChars(char ... chars) throws IOException {
+    public T writeChars(char ... chars) throws IOException {
         return writeChars(chars, 0, chars.length, false);
     }
 
-    public Node appendChars(char ... chars) throws IOException {
+    public T appendChars(char ... chars) throws IOException {
         return writeChars(chars, 0, chars.length, true);
     }
 
-    public Node writeChars(char[] chars, int ofs, int len, boolean append) throws IOException {
+    public T writeChars(char[] chars, int ofs, int len, boolean append) throws IOException {
         try (Writer out = newWriter(append)) {
             out.write(chars, ofs, len);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node writeString(String txt) throws IOException {
+    public T writeString(String txt) throws IOException {
         try (Writer w = newWriter()) {
             w.write(txt);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node appendString(String txt) throws IOException {
+    public T appendString(String txt) throws IOException {
         try (Writer w = newAppender()) {
             w.write(txt);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node writeStrings(String ... str) throws IOException {
+    public T writeStrings(String ... str) throws IOException {
         return writeStrings(Arrays.asList(str));
     }
 
-    public Node writeStrings(List<String> strings) throws IOException {
+    public T writeStrings(List<String> strings) throws IOException {
         return strings(newWriter(), strings);
     }
 
-    public Node appendStrings(String ... str) throws IOException {
+    public T appendStrings(String ... str) throws IOException {
         return appendStrings(Arrays.asList(str));
     }
 
-    public Node appendStrings(List<String> strings) throws IOException {
+    public T appendStrings(List<String> strings) throws IOException {
         return strings(newAppender(), strings);
     }
 
-    private Node strings(Writer dest, List<String> strings) throws IOException {
+    private T strings(Writer dest, List<String> strings) throws IOException {
         for (String str : strings) {
             dest.write(str);
         }
         dest.close();
-        return this;
+        return (T) this;
     }
 
     /** @param line without tailing line separator */
-    public Node writeLines(String ... line) throws IOException {
+    public T writeLines(String ... line) throws IOException {
         return writeLines(Arrays.asList(line));
     }
 
     /** @param lines without tailing line separator */
-    public Node writeLines(List<String> lines) throws IOException {
+    public T writeLines(List<String> lines) throws IOException {
         return lines(newWriter(), lines);
     }
 
     /** @param line without tailing line separator */
-    public Node appendLines(String ... line) throws IOException {
+    public T appendLines(String ... line) throws IOException {
         return appendLines(Arrays.asList(line));
     }
 
     /** @param lines without tailing line separator */
-    public Node appendLines(List<String> lines) throws IOException {
+    public T appendLines(List<String> lines) throws IOException {
         return lines(newAppender(), lines);
     }
 
     /** @param lines without tailing line separator */
-    private Node lines(Writer dest, List<String> lines) throws IOException {
+    private T lines(Writer dest, List<String> lines) throws IOException {
         String separator;
 
         separator = getWorld().getSettings().lineSeparator.getSeparator();
@@ -673,30 +668,30 @@ public abstract class Node<T extends Node> {
             dest.write(separator);
         }
         dest.close();
-        return this;
+        return (T) this;
     }
 
-    public Node writeProperties(Properties p) throws IOException {
+    public T writeProperties(Properties p) throws IOException {
         return writeProperties(p, null);
     }
 
-    public Node writeProperties(Properties p, String comment) throws IOException {
+    public T writeProperties(Properties p, String comment) throws IOException {
         try (Writer dest = newWriter()) {
             p.store(dest, comment);
         }
-        return this;
+        return (T) this;
     }
 
-    public Node writeObject(Serializable obj) throws IOException {
+    public T writeObject(Serializable obj) throws IOException {
         try (ObjectOutputStream out = newObjectOutputStream()) {
             out.writeObject(obj);
         }
-        return this;
+        return (T) this;
     }
 
     /** Convenience method for writeXml(node, true); */
-    public Node writeXml(org.w3c.dom.Node node) throws IOException {
-        return writeXml(node, true);
+    public T writeXml(org.w3c.dom.Node node) throws IOException {
+        return (T) writeXml(node, true);
     }
 
     /**
@@ -706,9 +701,9 @@ public abstract class Node<T extends Node> {
      *
      * @return this node
      */
-    public Node writeXml(org.w3c.dom.Node node, boolean format) throws IOException {
+    public T writeXml(org.w3c.dom.Node node, boolean format) throws IOException {
         getWorld().getXml().getSerializer().serialize(node, this, format);
-        return this;
+        return (T) this;
     }
 
     //-- copy
@@ -971,12 +966,12 @@ public abstract class Node<T extends Node> {
     //-- search for child nodes
 
     /** uses default excludes */
-    public List<Node> find(String... includes) throws IOException {
+    public List<T> find(String... includes) throws IOException {
         return find(getWorld().filter().include(includes));
     }
 
-    public Node findOne(String include) throws IOException {
-        Node found;
+    public T findOne(String include) throws IOException {
+        T found;
 
         found = findOpt(include);
         if (found == null) {
@@ -985,8 +980,8 @@ public abstract class Node<T extends Node> {
         return found;
     }
 
-    public Node findOpt(String include) throws IOException {
-        List<Node> found;
+    public T findOpt(String include) throws IOException {
+        List<T> found;
 
         found = find(include);
         switch (found.size()) {
@@ -999,8 +994,8 @@ public abstract class Node<T extends Node> {
         }
     }
 
-    public List<Node> find(Filter filter) throws IOException {
-        return filter.collect(this);
+    public List<T> find(Filter filter) throws IOException {
+        return (List) filter.collect(this);
     }
 
     //-- other

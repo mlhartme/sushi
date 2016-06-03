@@ -61,16 +61,6 @@ public class TimeMachineNode extends Node<TimeMachineNode> {
     }
 
     @Override
-    public TimeMachineNode join(String ... paths) {
-        return (TimeMachineNode) doJoin(paths);
-    }
-
-    @Override
-    public TimeMachineNode join(List<String> paths) {
-        return (TimeMachineNode) doJoin(paths);
-    }
-
-    @Override
     public long size() throws SizeException {
         return node.size();
     }

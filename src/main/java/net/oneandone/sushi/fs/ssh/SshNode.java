@@ -97,16 +97,6 @@ public class SshNode extends Node<SshNode> {
         return root;
     }
 
-    @Override
-    public SshNode join(String ... paths) {
-        return (SshNode) doJoin(paths);
-    }
-
-    @Override
-    public SshNode join(List<String> paths) {
-        return (SshNode) doJoin(paths);
-    }
-
     private static String escape(String str) {
         StringBuilder builder;
         int len;

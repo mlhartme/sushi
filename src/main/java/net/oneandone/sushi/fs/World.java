@@ -164,7 +164,7 @@ public class World implements AutoCloseable {
 
     //-- configuration
 
-    public Node getHome() {
+    public FileNode getHome() {
         return home;
     }
 
@@ -312,7 +312,7 @@ public class World implements AutoCloseable {
         }
     }
 
-    public Node validNode(String uri) throws NodeInstantiationException {
+    public Node<?> validNode(String uri) throws NodeInstantiationException {
         try {
             return node(uri);
         } catch (URISyntaxException e) {
@@ -324,14 +324,14 @@ public class World implements AutoCloseable {
      * Make sure the uri is properly encoded, in particular when passing relative uris, the contained path needs to
      * be encoded.
      */
-    public Node node(String uri) throws URISyntaxException, NodeInstantiationException {
+    public Node<?> node(String uri) throws URISyntaxException, NodeInstantiationException {
         return node(new URI(uri));
     }
-    public Node node(URI uri) throws NodeInstantiationException {
+    public Node<?> node(URI uri) throws NodeInstantiationException {
         return node(uri, null);
     }
 
-    public Node node(URI uri, Object extra) throws NodeInstantiationException {
+    public Node<?> node(URI uri, Object extra) throws NodeInstantiationException {
         String scheme;
         Filesystem fs;
         Node result;
@@ -358,7 +358,7 @@ public class World implements AutoCloseable {
 
     public MemoryNode memoryNode(String content) {
         try {
-            return (MemoryNode) memoryNode().writeString(content);
+            return memoryNode().writeString(content);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -366,15 +366,15 @@ public class World implements AutoCloseable {
 
     public MemoryNode memoryNode(byte ... bytes) {
         try {
-            return (MemoryNode) memoryNode().writeBytes(bytes);
+            return memoryNode().writeBytes(bytes);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
     /** @param name must not start with a slash */
-    public Node resource(String name) throws IOException {
-        List<Node> result;
+    public Node<?> resource(String name) throws IOException {
+        List<Node<?>> result;
 
         result = resources(name);
         switch (result.size()) {
@@ -391,20 +391,20 @@ public class World implements AutoCloseable {
      * Throws an IllegalStateException is the classpath contains duplicate items
      * @param name must not start with a slash
      */
-    public List<Node> resources(String name) throws IOException {
+    public List<Node<?>> resources(String name) throws IOException {
         return resources(name, true);
     }
 
     /** @param name must not start with a slash */
-    public List<Node> resourcesUnchecked(String name) throws IOException {
+    public List<Node<?>> resourcesUnchecked(String name) throws IOException {
         return resources(name, false);
     }
 
     /** @param name must not start with a slash */
-    private List<Node> resources(String name, boolean rejectDuplicates) throws IOException {
+    private List<Node<?>> resources(String name, boolean rejectDuplicates) throws IOException {
         Enumeration<URL> e;
-        List<Node> result;
-        Node add;
+        List<Node<?>> result;
+        Node<?> add;
 
         if (name.startsWith("/")) {
             throw new IllegalArgumentException();
@@ -464,8 +464,8 @@ public class World implements AutoCloseable {
         return result;
     }
 
-    public List<Node> uripath(String path) throws URISyntaxException, NodeInstantiationException {
-        List<Node> result;
+    public List<Node<?>> uripath(String path) throws URISyntaxException, NodeInstantiationException {
+        List<Node<?>> result;
 
         result = new ArrayList<>();
         for (String str: os.listSeparator.split(path)) {

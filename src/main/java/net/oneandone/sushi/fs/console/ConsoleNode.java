@@ -45,16 +45,6 @@ public class ConsoleNode extends Node<ConsoleNode> {
     }
 
     @Override
-    public ConsoleNode join(String ... paths) {
-        return (ConsoleNode) doJoin(paths);
-    }
-
-    @Override
-    public ConsoleNode join(List<String> paths) {
-        return (ConsoleNode) doJoin(paths);
-    }
-
-    @Override
     public List<ConsoleNode> list() {
         return null;
     }

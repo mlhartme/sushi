@@ -57,16 +57,6 @@ public class ZipNode extends Node<ZipNode> {
     }
 
     @Override
-    public ZipNode join(String ... paths) {
-        return (ZipNode) doJoin(paths);
-    }
-
-    @Override
-    public ZipNode join(List<String> paths) {
-        return (ZipNode) doJoin(paths);
-    }
-
-    @Override
     public long size() throws SizeException {
         ZipEntry entry;
 

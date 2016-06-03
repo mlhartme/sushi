@@ -92,16 +92,6 @@ public class FileNode extends Node<FileNode> {
     }
 
     @Override
-    public FileNode join(String ... paths) {
-        return (FileNode) doJoin(paths);
-    }
-
-    @Override
-    public FileNode join(List<String> paths) {
-        return (FileNode) doJoin(paths);
-    }
-
-    @Override
     public URI getUri() {
         return path.toFile().toURI();
     }

@@ -135,16 +135,6 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     @Override
-    public HttpNode join(String ... paths) {
-        return (HttpNode) doJoin(paths);
-    }
-
-    @Override
-    public HttpNode join(List<String> paths) {
-        return (HttpNode) doJoin(paths);
-    }
-
-    @Override
     public long size() throws SizeException {
         String result;
 

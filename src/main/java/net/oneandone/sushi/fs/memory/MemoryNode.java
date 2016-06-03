@@ -77,16 +77,6 @@ public class MemoryNode extends Node<MemoryNode> {
         return root;
     }
 
-    @Override
-    public MemoryNode join(String ... paths) {
-        return (MemoryNode) doJoin(paths);
-    }
-
-    @Override
-    public MemoryNode join(List<String> paths) {
-        return (MemoryNode) doJoin(paths);
-    }
-
     public Type getType() {
         return type;
     }

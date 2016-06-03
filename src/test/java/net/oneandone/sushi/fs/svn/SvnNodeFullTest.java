@@ -60,7 +60,7 @@ public class SvnNodeFullTest extends NodeTest<SvnNode> {
 
     @Test
     public void rootLocator() {
-        assertEquals("svn:" + URL.toString() + "/work", work.getURI().toString());
+        assertEquals("svn:" + URL.toString() + "/work", work.getUri().toString());
     }
 
 

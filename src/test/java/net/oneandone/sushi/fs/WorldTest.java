@@ -96,7 +96,7 @@ public class WorldTest {
         node = world.node(uri);
         assertTrue(node instanceof HttpNode);
         assertEquals("foo", node.getPath());
-        assertEquals(uri, node.getURI());
+        assertEquals(uri, node.getUri());
 
         uri = new URI("file:/home/mhm/bar.txt");
         node = world.node(uri);

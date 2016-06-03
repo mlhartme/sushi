@@ -32,6 +32,7 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
+import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.CheckedByteArrayOutputStream;
 import net.oneandone.sushi.io.SkipOutputStream;
@@ -57,6 +58,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
@@ -69,14 +71,29 @@ public class SvnNode extends Node {
     private final String path;
 
     public SvnNode(SvnRoot root, String path) {
-        super();
         this.root = root;
         this.path = path;
     }
 
     @Override
-    public URI getURI() {
-        return URI.create(root.getFilesystem().getScheme() + ":" + getSvnurl().toString());
+    public URI getUri() {
+        SVNURL svnurl;
+
+        svnurl = getSvnurl();
+        try {
+            svnurl = SVNURL.create(svnurl.getProtocol(), null, svnurl.getHost(), svnurl.getPort(), svnurl.getPath(), true);
+        } catch (SVNException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+        return URI.create(root.getFilesystem().getScheme() + ":" + svnurl.toString());
+    }
+
+    @Override
+    public URI getUriWithUserInfo() {
+        SVNURL svnurl;
+
+        svnurl = getSvnurl();
+        return URI.create(root.getFilesystem().getScheme() + ":" + svnurl.toString());
     }
 
     @Override

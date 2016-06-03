@@ -93,7 +93,7 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
 
         node = WORLD.node("http://www.heise.de");
         assertTrue(node instanceof HttpNode);
-        assertEquals("http://www.heise.de:80/", node.getURI().toString());
+        assertEquals("http://www.heise.de:80/", node.getUri().toString());
         assertNotNull(node.readBytes());
     }
 
@@ -105,7 +105,7 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
 
         uri = URI.create("http://dict.tu-chemnitz.de:80/dings.cgi?lang=en&noframes=1&service=&query=foobarbaz&optword=1&optcase=1&opterrors=0&optpro=0&style=&dlink=self");
         node = (HttpNode) WORLD.node(uri);
-        assertEquals(uri, node.getURI());
+        assertEquals(uri, node.getUri());
         assertTrue(node.isFile());
         str = node.readString();
         assertTrue(str.contains("foobarbaz"));
@@ -119,7 +119,7 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
         uri = new URI("http://englishediting.de:80/index.html");
         node = (HttpNode) WORLD.node(uri);
         assertEquals("index.html", node.getPath());
-        assertEquals(uri, node.getURI());
+        assertEquals(uri, node.getUri());
     }
 
     @Override

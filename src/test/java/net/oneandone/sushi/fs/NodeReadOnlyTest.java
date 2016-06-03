@@ -56,11 +56,11 @@ public abstract class NodeReadOnlyTest<T extends Node> {
         Filesystem fs;
 
         fs = work.getRoot().getFilesystem();
-        uri = work.getURI();
+        uri = work.getUri();
         assertEquals(uri, work.getWorld().node(fs.getScheme() + ":"
-                + work.getRoot().getId() + Node.encodePath(work.getPath())).getURI());
+                + work.getRoot().getId() + Node.encodePath(work.getPath())).getUri());
         again = WORLD.node(uri);
         assertEquals(work, again);
-        assertEquals(uri, again.getURI());
+        assertEquals(uri, again.getUri());
     }
 }

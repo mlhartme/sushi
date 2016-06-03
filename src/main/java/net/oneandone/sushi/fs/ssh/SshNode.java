@@ -73,7 +73,17 @@ public class SshNode extends Node {
     }
 
     @Override
-    public URI getURI() {
+    public URI getUri() {
+        try {
+            int port = root.getPort() == SshRoot.DEFAULT_PORT ? -1 : root.getPort();
+            return new URI(root.getFilesystem().getScheme(), null, root.getHost(), port, slashPath, null, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException();
+        }
+    }
+
+    @Override
+    public URI getUriWithUserInfo() {
         try {
             int port = root.getPort() == SshRoot.DEFAULT_PORT ? -1 : root.getPort();
             return new URI(root.getFilesystem().getScheme(), root.getUser(), root.getHost(), port, slashPath, null, null);

@@ -93,7 +93,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public abstract class Node {
     protected UnsupportedOperationException unsupported(String op) {
-        return new UnsupportedOperationException(getURI() + ":" + op);
+        return new UnsupportedOperationException(this + ":" + op);
     }
 
     //--
@@ -354,9 +354,16 @@ public abstract class Node {
      */
     public abstract String getPath();
 
-    /** @return a normalized URI, not necessarily the URI this node was created from */
-    public URI getURI() {
+    /**
+     * @return a normalized URI, not necessarily the URI this node was created from. Does not contain userInfo to avoid accidentialls
+     * printing it. Use getUriWithUserInfo instead if you know what you're doing. */
+    public URI getUri() {
         return URI.create(getRoot().getFilesystem().getScheme() + ":" + getRoot().getId() + encodePath(getPath()));
+    }
+
+    /** Override this if your root might contain userInfo. */
+    public URI getUriWithUserInfo() {
+        return getUri();
     }
 
 
@@ -1090,7 +1097,7 @@ public abstract class Node {
 
         working = getWorld().getWorking();
         if (working == null || !getRoot().equals(working.getRoot())) {
-            return getURI().toString();
+            return getUri().toString();
         } else {
             if (hasAnchestor(working)) {
                 return getRelative(working);

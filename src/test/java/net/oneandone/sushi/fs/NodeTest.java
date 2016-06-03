@@ -71,16 +71,16 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         Node root;
 
         root = work.getRootNode();
-        assertEquals(root, work.getWorld().node(root.getURI()));
+        assertEquals(root, work.getWorld().node(root.getUri()));
     }
 
     @Test
     public void createAbsolute() throws Exception {
         Node node;
 
-        assertEquals(work, WORLD.node(work.getURI()));
+        assertEquals(work, WORLD.node(work.getUri()));
         node = work.join("foo/bar");
-        assertEquals(node, WORLD.node(node.getURI()));
+        assertEquals(node, WORLD.node(node.getUri()));
     }
 
     //--
@@ -577,7 +577,7 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
         file.writeString(content);
         assertEquals(content, file.readString());
         assertEquals(Collections.singletonList(file), file.getParent().list());
-        alias = WORLD.node(file.getURI());
+        alias = WORLD.node(file.getUri());
         assertEquals(file, alias);
         assertEquals(content, alias.readString());
         alias = file.getRoot().node(file.getPath(), null);

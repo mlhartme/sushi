@@ -64,7 +64,7 @@ public class MemoryNode extends Node {
     }
 
     @Override
-    public URI getURI() {
+    public URI getUri() {
         try {
             return new URI(root.getFilesystem().getScheme(), null, Integer.toString(root.id), -1, "/" + path, null, null);
         } catch (URISyntaxException e) {

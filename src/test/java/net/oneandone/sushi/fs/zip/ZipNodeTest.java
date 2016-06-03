@@ -53,10 +53,10 @@ public class ZipNodeTest {
         List<? extends Node> tree;
 
         jar = world.locateClasspathItem(Assert.class);
-        rootPath = jar.getURI().toString() + "!/org/junit/Assert.class";
+        rootPath = jar.getUri().toString() + "!/org/junit/Assert.class";
         locator = "jar:" + rootPath;
         assrt = (ZipNode) world.node(locator);
-        assertEquals(locator, assrt.getURI().toString());
+        assertEquals(locator, assrt.getUri().toString());
         assertEquals("org/junit/Assert.class", assrt.getPath());
         assertTrue(assrt.exists());
         assertTrue(assrt.isFile());
@@ -114,12 +114,12 @@ public class ZipNodeTest {
 
         zip = world.guessProjectHome(getClass()).join("src/test/test.jar").openZip();
         for (Node node : zip.find("**/*")) {
-            uri = node.getURI();
+            uri = node.getUri();
             if (node.isFile()) {
                 bytes = node.readBytes();
                 assertTrue(Arrays.equals(bytes, world.node(uri).readBytes()));
             }
-            assertNotNull(node.getURI());
+            assertNotNull(node.getUri());
         }
     }
 
@@ -146,8 +146,8 @@ public class ZipNodeTest {
         jar.copyFile(copy);
         zip = ((FileNode) copy).openZip();
         assertEquals(1, zip.find(clazz).size());
-        assertNotNull(world.validNode("zip:" + copy.getURI() + "!/" + clazz).readBytes());
-        assertNotNull(world.validNode("jar:" + copy.getURI() + "!/" + clazz).readBytes());
+        assertNotNull(world.validNode("zip:" + copy.getUri() + "!/" + clazz).readBytes());
+        assertNotNull(world.validNode("jar:" + copy.getUri() + "!/" + clazz).readBytes());
         temp.deleteTree();
     }
 

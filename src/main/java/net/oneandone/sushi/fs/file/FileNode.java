@@ -107,9 +107,10 @@ public class FileNode extends Node {
     }
 
     @Override
-    public URI getURI() {
+    public URI getUri() {
         return path.toFile().toURI();
     }
+
 
     /**
      * Avoid calling this method in your code. Should only be used to interact with code that does not know Sushi (File) Nodes.

@@ -50,6 +50,8 @@ public class HttpRoot implements Root<HttpNode> {
     // configuration
     private int soTimeout = 0;
     private int connectionTimeout = 0;
+    private String username = null;
+    private String password = null;
     private String authorization;
     private final URI proxy;
     private final Boolean dav;
@@ -92,6 +94,15 @@ public class HttpRoot implements Root<HttpNode> {
             setCredentials(userinfo.substring(0, idx), userinfo.substring(idx + 1));
         }
     }
+    public String getUserInfo() {
+        if (username == null) {
+            return null;
+        }
+        if (password == null) {
+            return username;
+        }
+        return username + ":" + password;
+    }
 
     public URI getProxy() {
         return proxy;
@@ -100,6 +111,8 @@ public class HttpRoot implements Root<HttpNode> {
     //-- configuration
 
     public void setCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
     	authorization = "Basic " + Base64.getEncoder().encodeToString(filesystem.getWorld().getSettings().bytes(username + ":" + password));
     }
 

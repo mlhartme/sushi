@@ -102,10 +102,19 @@ public class HttpNode extends Node {
         this.isDav = isDav;
     }
 
-
-    public URI getURI() {
+    @Override
+    public URI getUri() {
         try {
             return new URI(root.getFilesystem().getScheme(), null, root.getHostname(), root.getPort(), "/" + path, getQuery(), null);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public URI getUriWithUserInfo() {
+        try {
+            return new URI(root.getFilesystem().getScheme(), root.getUserInfo(), root.getHostname(), root.getPort(), "/" + path, getQuery(), null);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }

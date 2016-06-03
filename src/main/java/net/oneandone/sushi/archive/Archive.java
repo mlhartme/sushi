@@ -65,18 +65,18 @@ public class Archive {
     
     //--
     
-    public final Node data;
+    public final Node<?> data;
 
     /** null for zip files, not null for jars */
     public final Manifest manifest;
 
     public final String pathRoot;
 
-    public Archive(Node data, Manifest manifest) {
+    public Archive(Node<?> data, Manifest manifest) {
         this(data, manifest, "");
     }
 
-    public Archive(Node data, Manifest manifest, String pathRoot) {
+    public Archive(Node<?> data, Manifest manifest, String pathRoot) {
         this.data = data;
         this.manifest = manifest;
         this.pathRoot = pathRoot;
@@ -142,8 +142,8 @@ public class Archive {
     }
 
     public Archive save(OutputStream dest) throws IOException {
-        List<Node> content;
-        List<Node> files;
+        List<Node<?>> content;
+        List<Node<?>> files;
         
         try (ZipOutputStream out = new ZipOutputStream(dest)) {
             if (manifest != null) {
@@ -151,7 +151,7 @@ public class Archive {
                 manifest.write(out);
                 out.closeEntry();
             }
-            content = data.find("**/*");
+            content = (List) data.find("**/*");
             files = new ArrayList<>();
             // directories first - jar does not extract files into non-existing directories
             for (Node node : content) {

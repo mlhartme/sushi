@@ -321,7 +321,7 @@ public class Filter {
     }
 
     // avoids node.list() call if there is exactly 1 include with a literal head
-    private List<? extends Node> list(Node node, List<Object[]> includes) throws IOException {
+    private List<? extends Node> list(Node<?> node, List<Object[]> includes) throws IOException {
     	Node child;
 
     	if (includes.size() == 1 && includes.get(0)[0] instanceof String) {

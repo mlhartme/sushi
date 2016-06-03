@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class FilterTest {
-    private Node root;
+    private Node<?> root;
 
     @Before
     public void setup() throws IOException {
@@ -69,7 +69,7 @@ public class FilterTest {
 
     @Test
     public void grandChildren() throws IOException {
-        List<Node> nodes;
+        List<?> nodes;
 
         create("a", "b/c", "b/d");
         nodes = root.find("*/*");
@@ -108,7 +108,7 @@ public class FilterTest {
         List<Node> nodes;
 
         create("a", "b/c", "b/d");
-        nodes = root.find(root.getWorld().filter().include("**/*").predicate(Predicate.DIRECTORY));
+        nodes = (List) root.find(root.getWorld().filter().include("**/*").predicate(Predicate.DIRECTORY));
         assertEquals(1, nodes.size());
         assertEquals(root.join("b"), nodes.get(0));
     }
@@ -251,7 +251,7 @@ public class FilterTest {
     	checkSet(root.find(filter), paths);
     }
 
-    private void checkSet(List<Node> nodes, String ... names) {
+    private void checkSet(List<?> nodes, String ... names) {
         assertEquals(names.length, nodes.size());
         for (String name : names) {
             assertTrue(nodes.contains(root.join(name)));

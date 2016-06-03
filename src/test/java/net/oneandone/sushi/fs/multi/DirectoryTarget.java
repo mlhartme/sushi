@@ -36,7 +36,7 @@ public class DirectoryTarget {
 
     //--
 
-    private final Node dir;
+    private final Node<?> dir;
     private final List<?> children;
 
     public DirectoryTarget(Node dir) throws IOException {

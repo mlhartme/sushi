@@ -3,6 +3,9 @@
   <body>
     <release date="2016-05-25" version="3.1.0">
       <action date="2016-06-03" dev="mlhartme" type="update">
+        Update jsch agentproxy 0.0.7 to 0.0.9.
+      </action>
+      <action date="2016-06-03" dev="mlhartme" type="update">
         Update svnkit 1.8.11 to 1.8.12.
       </action>
       <action date="2016-06-03" dev="mlhartme" type="update">

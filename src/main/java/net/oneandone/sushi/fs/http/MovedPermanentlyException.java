@@ -17,6 +17,6 @@ package net.oneandone.sushi.fs.http;
 
 import java.io.IOException;
 
-public class MovedException extends IOException {
+public class MovedPermanentlyException extends IOException {
 
 }

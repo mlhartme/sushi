@@ -18,7 +18,7 @@ package net.oneandone.sushi.fs.http.methods;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.fs.http.MovedException;
+import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.StatusException;
@@ -44,7 +44,7 @@ public class PropFind extends Method<List<MultiStatus>> {
             return multistatus(response);
         case STATUSCODE_BAD_REQUEST: // TODO
         case STATUSCODE_MOVED_PERMANENTLY:
-        	throw new MovedException();
+        	throw new MovedPermanentlyException();
         case STATUSCODE_NOT_FOUND:
         	throw new FileNotFoundException(resource);
         default:

@@ -18,6 +18,7 @@ package net.oneandone.sushi.fs.http.methods;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.MovedTemporarilyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
@@ -49,6 +50,8 @@ public class Get extends Method<InputStream> {
                     super.close();
         		}
         	};
+        case STATUSCODE_MOVED_TEMPORARILY:
+            throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
         case STATUSCODE_NOT_FOUND:
         case STATUSCODE_GONE:
         case STATUSCODE_MOVED_PERMANENTLY:

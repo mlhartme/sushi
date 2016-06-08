@@ -18,7 +18,7 @@ package net.oneandone.sushi.fs.http.methods;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.fs.http.MovedException;
+import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 
@@ -35,7 +35,7 @@ public class Delete extends Method<Void> {
         case STATUSCODE_NO_CONTENT:
         	return null;
         case STATUSCODE_MOVED_PERMANENTLY:
-        	throw new MovedException();
+        	throw new MovedPermanentlyException();
         case STATUSCODE_NOT_FOUND:
         	throw new FileNotFoundException(resource);
        	default:

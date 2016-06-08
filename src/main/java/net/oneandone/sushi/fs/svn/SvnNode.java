@@ -79,7 +79,8 @@ public class SvnNode extends Node<SvnNode> {
 
         svnurl = getSvnurl();
         try {
-            svnurl = SVNURL.create(svnurl.getProtocol(), null, svnurl.getHost(), svnurl.getPort(), svnurl.getPath(), false);
+            svnurl = SVNURL.create(svnurl.getProtocol(), null, svnurl.getHost(), svnurl.hasPort() ? svnurl.getPort() : -1,
+                    svnurl.getPath(), false);
         } catch (SVNException e) {
             throw new IllegalStateException(e.getMessage(), e);
         }

@@ -46,6 +46,7 @@ public abstract class Method<T> {
     public static final int STATUSCODE_MULTI_STATUS = 207;
 
     public static final int STATUSCODE_MOVED_PERMANENTLY = 301;
+    public static final int STATUSCODE_MOVED_TEMPORARILY = 302;
     public static final int STATUSCODE_NOT_MODIFIED = 304;
 
     public static final int STATUSCODE_BAD_REQUEST = 400;

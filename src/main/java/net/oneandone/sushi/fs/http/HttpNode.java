@@ -260,7 +260,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             try {
                 return (String) getProperty(Name.GETLASTMODIFIED).getValue();
-            } catch (MovedException e) {
+            } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
                 return (String) getProperty(Name.GETLASTMODIFIED).getValue();
             }
@@ -271,7 +271,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             try {
                 return doHeadGetLastModified();
-            } catch (MovedException e) {
+            } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
                 return doHeadGetLastModified();
             }
@@ -350,7 +350,7 @@ public class HttpNode extends Node<HttpNode> {
             }
         } catch (FileNotFoundException e) {
             throw e;
-        } catch (MovedException e) {
+        } catch (MovedPermanentlyException e) {
             throw new FileNotFoundException(this, e);
         } catch (IOException e) {
             throw new DeleteException(this, e);
@@ -373,7 +373,7 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
                 try {
                     new Delete(this).invoke();
-                } catch (MovedException e) {
+                } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     new Delete(this).invoke();
                 }
@@ -392,7 +392,7 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
                 try {
                     new Delete(this).invoke();
-                } catch (MovedException e) {
+                } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     new Delete(this).invoke();
                 }
@@ -420,7 +420,7 @@ public class HttpNode extends Node<HttpNode> {
                 try {
                     dest.tryDir = tryDir;
                     new Move(this, dest, overwrite).invoke();
-                } catch (MovedException e) {
+                } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     dest.tryDir = tryDir;
                     new Move(this, dest, overwrite).invoke();
@@ -595,7 +595,7 @@ public class HttpNode extends Node<HttpNode> {
                     return null; // this is a file
                 }
                 throw new ListException(this, e);
-            } catch (MovedException e) {
+            } catch (MovedPermanentlyException e) {
                 tryDir = false;
                 return null; // this is a file
             } catch (FileNotFoundException e) {
@@ -651,7 +651,7 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
             	try {
         		    result = getPropertyOpt(n);
-        	    } catch (MovedException e) {
+        	    } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
             		result = getPropertyOpt(n);
             	}
@@ -677,7 +677,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             try {
                 new PropPatch(this, prop).invoke();
-            } catch (MovedException e) {
+            } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
                 new PropPatch(this, prop).invoke();
             }
@@ -731,7 +731,7 @@ public class HttpNode extends Node<HttpNode> {
                 } else {
                     result = headIsNode();
                 }
-            } catch (MovedException | FileNotFoundException e) {
+            } catch (MovedPermanentlyException | FileNotFoundException e) {
                 tryDir = reset;
                 return false;
             } catch (IOException e) {

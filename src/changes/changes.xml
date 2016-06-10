@@ -9,14 +9,14 @@
         Update svnkit 1.8.11 to 1.8.12.
       </action>
       <action date="2016-06-03" dev="mlhartme" type="update">
-        World.getHome() return a file node now.
+        World.getHome() return a FileNode now.
       </action>
       <action date="2016-06-03" dev="mlhartme" type="update">
         Node is a generic type now: Node<T extends Node>.
       </action>
       <action date="2016-06-03" dev="mlhartme" type="update">
-        Renamed Node.getURI to Node.getUri and changed the behaviour: it no longer includes the userInfo. SshNode and SvnNode used to
-        include this; HttpNode did not.) Added Node.getUriWithUserInfo if you need the full information.
+        Renamed Node.getURI to Node.getUri and changed the behaviour: it no longer includes the userInfo. (SshNode and SvnNode used to
+        include the userInfo; HttpNode did not.) Added Node.getUriWithUserInfo for cases if you need the full information.
       </action>
       <action date="2016-05-25" dev="mlhartme" type="add">
         Added Strings.addRightOpt and addLeftOpt.

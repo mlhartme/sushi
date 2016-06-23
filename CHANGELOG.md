@@ -18,7 +18,7 @@
 * Fixed EOF handling in ChunkedInputStream.
 
 
-# Sushi 3.0.1 (2016-03-01)
+# Sushi 3.0.1 (2016-04-11)
 
 * Added HttpRoot.addExtraHeader().
 * Added HttpNode.post().
@@ -76,12 +76,12 @@
 * Make World fileFilesystem and memoryFilesystem configurable for improved testability.
 * Add support for ssh port in authority string in SshFilesystem.
 
-# Sushi 2.8.18 (2014-08-06)
+# Sushi 2.8.18 (2015-01-30)
 
 * SvnNode did not remove temp file when the create is closed.
 
 
-# Sushi 2.8.17 (2014-08-06)
+# Sushi 2.8.17 (2014-08-14)
 
 * SshFilesystem: do not accumulate identifies when ssh-agent is used. This was cause by using the RemoteIdentityRepository - and 
   added identities were propagated to the clients. The fix sticks with LocalIdentityRepository, and adds all remote identities to
@@ -122,7 +122,7 @@
 * Added Filter.matches(path).
 
 
-# Sushi 2.8.10 (2013-08-12)
+# Sushi 2.8.10 (2013-08-11)
 
 * Node.copy() copies all files now, default excludes are no longer used.
 * Fixed FileNode.move() across file systems.
@@ -215,3 +215,5 @@
 * Various IOExceptions thrown by FileNode changed their type.
 * FileNode.launcher added.
 
+
+(See https://github.com/mlhartme/sushi/blob/sushi-2.8.0/src/changes/changes.xml for older changes)

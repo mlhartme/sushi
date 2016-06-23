@@ -12,6 +12,7 @@ Rationale: I prefer to do my scripting stuff in Java, not with a scripting langu
 
 Note that Sushi releases are not necessarily backward compatible. In particular, if i find a better - but incompatible - api for a given task, I'll change the api. I can't keep old apis just for compatibility (not enough time) and I don't want to have multiple alternative api's if I have a clear preference. But I'll mark incompatible changes by bumping the minor or major version number. (Version number format is major.minor.micro)
 
+* [Changlog](https://github.com/mlhartme/sushi/blob/master/CHANGELOG.md)
 * [Maven Site](http://mlhartme.github.com/sushi/)
 * [Tests](https://github.com/mlhartme/sushi/wiki/Tests)
 

@@ -1,4 +1,6 @@
-## Sushi 3.1.1
+# Sushi Changelog 
+
+## 3.1.1
 
 * Added Strings.toMap.
 * HttpNode: tolerate headers with \n line delimiter

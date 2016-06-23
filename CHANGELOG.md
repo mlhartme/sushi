@@ -1,11 +1,11 @@
 # Sushi Changelog 
 
-## 3.1.1
+### 3.1.1
 
 * Added Strings.toMap.
 * HttpNode: tolerate headers with \n line delimiter
 
-## Sushi 3.1.0 (2016-06-10)
+### 3.1.0 (2016-06-10)
 
 * Node is a generic type now: Node<T extends Node>.
 * Update jsch agentproxy 0.0.7 to 0.0.9.

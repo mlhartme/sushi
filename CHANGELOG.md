@@ -1,8 +1,9 @@
-# Sushi 3.1.1
+## Sushi 3.1.1
 
+* Added Strings.toMap.
 * HttpNode: tolerate headers with \n line delimiter
 
-# Sushi 3.1.0 (2016-06-10)
+## Sushi 3.1.0 (2016-06-10)
 
 * Node is a generic type now: Node<T extends Node>.
 * Update jsch agentproxy 0.0.7 to 0.0.9.
@@ -13,17 +14,18 @@
 * Added Strings.addRightOpt and addLeftOpt.
 
 
-# Sushi 3.0.2 (2016-05-25)
+## Sushi 3.0.2 (2016-05-25)
 
 * Fixed EOF handling in ChunkedInputStream.
 
 
-# Sushi 3.0.1 (2016-04-11)
+## Sushi 3.0.1 (2016-04-11)
 
 * Added HttpRoot.addExtraHeader().
 * Added HttpNode.post().
 
-# Sushi 3.0.0 (2016-03-01)
+
+## Sushi 3.0.0 (2016-03-01)
 
 * Remove metadata stuff (xml mapping, csv, properties), it's a separate project now: https://github.com/mlhartme/metadata
 * Remove cli stuff, it's a separate project now: https://github.com/mlhartme/inline
@@ -71,58 +73,64 @@
 * Update jsch 0.1.51 to 0.1.53. No code changes, just the dependency update.
 * Compile for Java 8.
 
-# Sushi 2.8.19 (2016-02-11)
+
+## Sushi 2.8.19 (2016-02-11)
 
 * Make World fileFilesystem and memoryFilesystem configurable for improved testability.
 * Add support for ssh port in authority string in SshFilesystem.
 
-# Sushi 2.8.18 (2015-01-30)
+
+## Sushi 2.8.18 (2015-01-30)
 
 * SvnNode did not remove temp file when the create is closed.
 
 
-# Sushi 2.8.17 (2014-08-14)
+## Sushi 2.8.17 (2014-08-14)
 
 * SshFilesystem: do not accumulate identifies when ssh-agent is used. This was cause by using the RemoteIdentityRepository - and 
   added identities were propagated to the clients. The fix sticks with LocalIdentityRepository, and adds all remote identities to
   it when starting.
 
 
-# Sushi 2.8.16 (2014-08-06)
+## Sushi 2.8.16 (2014-08-06)
 
 * Fixed memory leak in SvnNode and added SvnRoot.dispose to work-around another leak.
 * Updated jsch 0.1.50 to 0.1.51.
 * Updated svnkit 1.8.3-1 to 1.8.5.
 
-# Sushi 2.8.15 (2014-07-23)
+
+## Sushi 2.8.15 (2014-07-23)
 
 * Fixed webdav nodes to work with httpcore 4.3.2 (simply by fixing the deprecation warning issued by httpcore 4.2.5).
 * Added FileNode.zip method.
 * Fixed Strings.removeLeft and removeRight when removing empty Strings.
 
-# Sushi 2.8.14 (2014-05-05)
+
+## Sushi 2.8.14 (2014-05-05)
 
 * Fix stack overflow when moving files between filesystems.
 * Added ~/.netrc support for Ssh and Webdav nodes.
 * Added support for username/password authentication in SshNodes.
   
-# Sushi 2.8.13 (2014-01-31)
+  
+## Sushi 2.8.13 (2014-01-31)
 
 * Autoflush was missing for verbose console output.
 * Support binary files Copy class.
 * ZipNode.isFile properly propagates IOExceptions now.
 
-# Sushi 2.8.12 (2013-10-21)
+
+## Sushi 2.8.12 (2013-10-21)
 
 * Added overwrite switch to Node.move().
 
 
-# Sushi 2.8.11 (2013-10-08)
+## Sushi 2.8.11 (2013-10-08)
 
 * Added Filter.matches(path).
 
 
-# Sushi 2.8.10 (2013-08-11)
+## Sushi 2.8.10 (2013-08-11)
 
 * Node.copy() copies all files now, default excludes are no longer used.
 * Fixed FileNode.move() across file systems.
@@ -131,24 +139,24 @@
 * SshNode.readFrom throws an ReadFrom exception now.
 
 
-# Sushi 2.8.9 (2013-04-19)
+## Sushi 2.8.9 (2013-04-19)
 
 * Improved PrefixWriter: it's a PrintWriter now, arbirtary newline strings, and the prefix is modifyable now.
 
 
-# Sushi 2.8.8 (2013-04-08)
+## Sushi 2.8.8 (2013-04-08)
 
 * Properties Saver now works with HashMap instead of Properties; it can preserve property ordering by
   using a LinkedHashMap now.
 
 
-# Sushi 2.8.7 (2013-02-12)
+## Sushi 2.8.7 (2013-02-12)
 
 * Fix missing flush in Console.readline.
 * Do not try to connect to ssh agent unless SSH_AUTH_SOCKET is defined.
 
 
-# Sushi 2.8.6 82013-02-06)
+## Sushi 2.8.6 82013-02-06)
 
 * Graph package was removed from Sushi - it's in a separate project now: https://github.com/mlhartme/graph
 * Console: type of info and error fields changed from PrintStream to PrintWriter
@@ -158,7 +166,8 @@
 * Launcher streams to Writers and from Readers.
 * TeeWriter and PrefixWriter.
 
-# Sushi 2.8.5 (2013-01-15)
+
+## Sushi 2.8.5 (2013-01-15)
 
 * Cli: print stacktrace only for RuntimeExceptions, not Exceptions.
 * Cli: added -e default option to print a stacktrace for all error.
@@ -176,31 +185,32 @@
 * SshNode.exec with OutputStream.
 
 
-# Sushi 2.8.4 (2012-12-17)
+## Sushi 2.8.4 (2012-12-17)
 
 * Launcher: fix input inheritance.
 
 
-# Sushi 2.8.3 (2012-11-12)
+## Sushi 2.8.3 (2012-11-12)
 
 * Launcher: unless otherwise specified, input is inherited now (which will support e.g. entering your sudo password)
 * Added OnShutdown.dontDeleteAtExit.
 * Fix typo in FileNotFoundException message.
 
 
-# Sushi 2.8.2 (2012-11-08)
+## Sushi 2.8.2 (2012-11-08)
 
 * Fix missing DirectoryStream.close in FileNode.list and deleteTree.
 
 
-# Sushi 2.8.1 (2012-10-18)
+## Sushi 2.8.1 (2012-10-18)
 
 * Http createInputStream without HEAD requests.
 * Ssh Credentials reworked: Credentials are configured for SshFilesystem now, not root.
   Dumped ssh.Credentials, use jsch.Identity instead.
   And propertly detect and report invalid or missing passphrase when creating SshRoots.
 
-# Sushi 2.8.0 (2012-10-06)
+
+## Sushi 2.8.0 (2012-10-06)
 
 * Changed License from LGPL to Apache 2.0.
 * Renamed net.sf.beezle.sushi to net.oneandone.sushi.

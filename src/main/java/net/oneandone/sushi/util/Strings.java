@@ -18,6 +18,8 @@ package net.oneandone.sushi.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Strings {
     //
@@ -283,6 +285,16 @@ public class Strings {
         ar = new String[coll.size()];
         coll.toArray(ar);
         return ar;
+    }
+
+    public static Map<String, String> toMap(String ... args) {
+        Map<String, String> result;
+
+        result = new HashMap<>();
+        for (int i = 0; i < args.length; i += 2) {
+            result.put(args[i], args[i + 1]);
+        }
+        return result;
     }
 
     public static ArrayList<String> toList(String ... elements) {

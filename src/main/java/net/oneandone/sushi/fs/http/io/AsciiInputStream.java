@@ -57,10 +57,12 @@ public class AsciiInputStream extends BufferedInputStream {
             c = buf[i];
             switch (c) {
                 case '\n':
-                    if (!prevCr) {
-                        throw new IOException("missing \\r");
+                    if (prevCr) {
+                        length = (i - 1) - pos;
+                    } else {
+                        // in theory, this is an error, but the spec mandates to tolerate a single \n as line termination
+                        length = i - pos;
                     }
-                    length = (i - 1) - pos;
                     result = length == 0 ? EMPTY : new String(charBuffer, pos, length);
                     pos = i + 1;
                     return result;

@@ -119,7 +119,11 @@ public class HttpFilesystem extends Filesystem {
         return result;
     }
 
-    public URI proxy(URI uri) {
+    /**
+     * return proxy url if configured by java standard properties:
+     * https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
+     */
+    public static URI proxy(URI uri) {
         String scheme;
         String proxyHost;
         String proxyPort;

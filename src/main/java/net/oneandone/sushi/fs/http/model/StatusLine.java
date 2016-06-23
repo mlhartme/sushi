@@ -50,4 +50,8 @@ public class StatusLine {
         this.protocol = protocol;
         this.statusCode = statusCode;
     }
+
+    public String toString() {
+        return protocol + " " + statusCode;
+    }
 }

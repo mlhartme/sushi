@@ -96,8 +96,6 @@ public class AsciiInputStream extends BufferedInputStream {
                 case '\n':
                     if (withCr) {
                         builder.setLength(builder.length() - 1);
-                    } else {
-                        throw new IOException("missing \\r");
                     }
                     return true;
                 case '\r':

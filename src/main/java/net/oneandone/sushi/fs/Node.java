@@ -886,7 +886,7 @@ public abstract class Node<T extends Node> {
      * @param dest link to be created
      * @return dest;
      */
-    public Node link(Node dest) throws LinkException {
+    public T link(T dest) throws LinkException {
         if (!getClass().equals(dest.getClass())) {
             throw new IllegalArgumentException(this.getClass() + " vs " + dest.getClass());
         }
@@ -914,14 +914,14 @@ public abstract class Node<T extends Node> {
     /**
      * Throws an exception if this is not a link.
      */
-    public Node resolveLink() throws ReadLinkException {
+    public T resolveLink() throws ReadLinkException {
         String path;
 
         path = readLink();
         if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
             return getRoot().node(path.substring(1), null);
         } else {
-            return getParent().join(path);
+            return (T) getParent().join(path);
         }
     }
 

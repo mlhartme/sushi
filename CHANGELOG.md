@@ -2,6 +2,7 @@
 
 ### 3.1.1 (pending)
 
+* Node.link and Node.resolveLink are parametrized now
 * Added Strings.toMap.
 * HttpNode: tolerate headers with \n line delimiter
 

@@ -22,9 +22,14 @@ import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.util.NetRc;
 import net.oneandone.sushi.util.Separator;
 
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -69,6 +74,7 @@ public class HttpFilesystem extends Filesystem {
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
     private Boolean defaultDav;
+    private BiFunction<String, String, SocketFactory> socketFactorySelector;
 
     public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
@@ -76,6 +82,19 @@ public class HttpFilesystem extends Filesystem {
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
         this.defaultDav = null;
+        this.socketFactorySelector = HttpFilesystem::defaultSocketFactorySelector;
+    }
+
+    public BiFunction<String, String, SocketFactory> getSocketFactorySelector() {
+        return socketFactorySelector;
+    }
+
+    public void setSocketFactorySelector(BiFunction<String, String, SocketFactory> socketFactorySelector) {
+        this.socketFactorySelector = socketFactorySelector;
+    }
+
+    public static SocketFactory defaultSocketFactorySelector(String protocol, String hostname) {
+        return "https".equals(protocol) ? SSLSocketFactory.getDefault() : null;
     }
 
     @Override

@@ -28,6 +28,7 @@ import net.oneandone.sushi.io.LineLogger;
 import net.oneandone.sushi.io.LoggingAsciiInputStream;
 import net.oneandone.sushi.io.LoggingAsciiOutputStream;
 
+import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
@@ -187,6 +188,7 @@ public class HttpRoot implements Root<HttpNode> {
         AsciiOutputStream aOut;
         AsciiInputStream aIn;
         Response response;
+        SocketFactory factory;
 
         if (proxy != null) {
             connectProtocol = proxy.getScheme();
@@ -197,11 +199,13 @@ public class HttpRoot implements Root<HttpNode> {
             connectHostname = hostname;
             connectPort = port;
         }
-        if ("https".equals(connectProtocol)) {
-            socket = SSLSocketFactory.getDefault().createSocket(connectHostname, connectPort);
+        factory = filesystem.getSocketFactorySelector().apply(connectProtocol, connectHostname);
+        if (factory != null) {
+            socket = factory.createSocket(connectHostname, connectPort);
         } else {
             socket = new Socket(connectHostname, connectPort);
         }
+
         socket.setTcpNoDelay(true);
         socket.setSoTimeout(soTimeout);
         buffersize = Math.max(socket.getReceiveBufferSize(), 1024);

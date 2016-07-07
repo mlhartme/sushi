@@ -3,7 +3,7 @@
 ### 3.1.1 (pending)
 
 * fs.http
-  * Added HttpFilesystem.setProxy to configure propy intependently from Java System properties.
+  * Added HttpFilesystem.getProxy and setProxy to configure proxies intependently from Java System properties.
   * Added HttpFilesystem.setSocketFactorySelector
   * HttpNode: tolerate headers with \n line delimiter
 * Node.link and Node.resolveLink are parametrized now

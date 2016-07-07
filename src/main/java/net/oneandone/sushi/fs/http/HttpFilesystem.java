@@ -74,7 +74,7 @@ public class HttpFilesystem extends Filesystem {
     private int defaultSoTimeout;
     private Boolean defaultDav;
     private BiFunction<String, String, SocketFactory> socketFactorySelector;
-    private final Map<String, Proxy> proxyConf;
+    private final Map<String, Proxy> proxies;
 
     public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
@@ -83,13 +83,26 @@ public class HttpFilesystem extends Filesystem {
         this.defaultSoTimeout = 0;
         this.defaultDav = null;
         this.socketFactorySelector = HttpFilesystem::defaultSocketFactorySelector;
-        this.proxyConf = new HashMap<>();
-        Proxy.addSystemOpt("http", proxyConf);
-        Proxy.addSystemOpt("https", proxyConf);
+        this.proxies = new HashMap<>();
+        addProxy("http", proxies);
+        addProxy("https", proxies);
+    }
+
+    private static void addProxy(String scheme, Map<String, Proxy> result) {
+        Proxy pp;
+
+        pp = Proxy.forPropertiesOpt(scheme);
+        if (pp != null) {
+            result.put(scheme, pp);
+        }
     }
 
     public void setProxy(String scheme, Proxy pp) {
-        proxyConf.put(scheme, pp);
+        proxies.put(scheme, pp);
+    }
+
+    public Proxy getProxy(String scheme) {
+        return proxies.get(scheme);
     }
 
     public BiFunction<String, String, SocketFactory> getSocketFactorySelector() {

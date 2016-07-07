@@ -6,25 +6,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Proxy {
-    public static void addSystemOpt(String scheme, Map<String, Proxy> result) {
-        Proxy pp;
-
-        pp = forSystemOpt(scheme);
-        if (pp != null) {
-            result.put(scheme, pp);
-        }
-    }
-
     private static final Separator NON_PROXY_SEP = Separator.on('|').trim().skipEmpty();
 
     /**
      * load properties configured by standard system properties
      * https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
      */
-    public static Proxy forSystemOpt(String scheme) {
+    public static Proxy forPropertiesOpt(String scheme) {
         String host;
         String port;
         Proxy result;

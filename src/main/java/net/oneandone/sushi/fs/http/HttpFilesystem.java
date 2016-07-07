@@ -97,14 +97,6 @@ public class HttpFilesystem extends Filesystem {
         }
     }
 
-    public void setProxy(String scheme, Proxy pp) {
-        proxies.put(scheme, pp);
-    }
-
-    public Proxy getProxy(String scheme) {
-        return proxies.get(scheme);
-    }
-
     public BiFunction<String, String, SocketFactory> getSocketFactorySelector() {
         return socketFactorySelector;
     }
@@ -158,6 +150,14 @@ public class HttpFilesystem extends Filesystem {
         return result;
     }
 
+    public void setProxy(String scheme, Proxy pp) {
+        proxies.put(scheme, pp);
+    }
+
+    public Proxy getProxy(String scheme) {
+        return proxies.get(scheme);
+    }
+
     /**
      * return proxy url if configured for this filesystem:
      */
@@ -166,7 +166,7 @@ public class HttpFilesystem extends Filesystem {
         String scheme;
 
         scheme = uri.getScheme();
-        conf = proxyConf.get(scheme);
+        conf = proxies.get(scheme);
         if (conf == null || conf.excludes(uri)) {
             return null;
         }

@@ -2,10 +2,12 @@
 
 ### 3.1.1 (pending)
 
-* Added HttpFilesystem.setSocketFactorySelector
+* fs.http
+  * Added HttpFilesystem.setProxyProperties to configure propy intependently from System properties.
+  * Added HttpFilesystem.setSocketFactorySelector
+  * HttpNode: tolerate headers with \n line delimiter
 * Node.link and Node.resolveLink are parametrized now
 * Added Strings.toMap.
-* HttpNode: tolerate headers with \n line delimiter
 
 ### 3.1.0 (2016-06-10)
 

@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.logging.FileHandler;
@@ -75,6 +77,7 @@ public class HttpFilesystem extends Filesystem {
     private int defaultSoTimeout;
     private Boolean defaultDav;
     private BiFunction<String, String, SocketFactory> socketFactorySelector;
+    private final Map<String, ProxyProperties> proxyConf;
 
     public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
@@ -83,6 +86,13 @@ public class HttpFilesystem extends Filesystem {
         this.defaultSoTimeout = 0;
         this.defaultDav = null;
         this.socketFactorySelector = HttpFilesystem::defaultSocketFactorySelector;
+        this.proxyConf = new HashMap<>();
+        ProxyProperties.addSystemOpt("http", proxyConf);
+        ProxyProperties.addSystemOpt("https", proxyConf);
+    }
+
+    public void setProxyProperties(String scheme, ProxyProperties pp) {
+        proxyConf.put(scheme, pp);
     }
 
     public BiFunction<String, String, SocketFactory> getSocketFactorySelector() {
@@ -139,53 +149,22 @@ public class HttpFilesystem extends Filesystem {
     }
 
     /**
-     * return proxy url if configured by java standard properties:
-     * https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
+     * return proxy url if configured for this filesystem:
      */
-    public static URI proxy(URI uri) {
+    public URI proxy(URI uri) {
+        ProxyProperties conf;
         String scheme;
-        String proxyHost;
-        String proxyPort;
 
         scheme = uri.getScheme();
-        proxyHost = System.getProperty(scheme + ".proxyHost");
-        if (proxyHost == null) {
-            return null;
-        }
-        proxyPort = System.getProperty(scheme + ".proxyPort");
-        if (proxyPort == null) {
-            throw new IllegalStateException("missing proxy port for host " + proxyHost);
-        }
-        if (excludeProxy(uri, System.getProperty(scheme + ".nonProxyHosts"))) {
+        conf = proxyConf.get(scheme);
+        if (conf == null || conf.excludes(uri)) {
             return null;
         }
         try {
-            return new URI(scheme, null, proxyHost, Integer.parseInt(proxyPort), null, null, null);
+            return new URI(scheme, null, conf.host, conf.port, null, null, null);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    private static final Separator NON_PROXY_SEP = Separator.on('|').trim().skipEmpty();
-
-    public static boolean excludeProxy(URI uri, String nonProxyHosts) {
-        String host;
-
-        if (nonProxyHosts != null) {
-            host = uri.getHost();
-            for (String exclude : NON_PROXY_SEP.split(nonProxyHosts)) {
-                if (exclude.startsWith("*")) {
-                    if (host.endsWith(exclude.substring(1))) {
-                        return true;
-                    }
-                } else {
-                    if (host.equals(exclude)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public Boolean getDefaultDav() {

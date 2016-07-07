@@ -20,18 +20,15 @@ import net.oneandone.sushi.fs.Filesystem;
 import net.oneandone.sushi.fs.NodeInstantiationException;
 import net.oneandone.sushi.fs.World;
 import net.oneandone.sushi.util.NetRc;
-import net.oneandone.sushi.util.Separator;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -77,7 +74,7 @@ public class HttpFilesystem extends Filesystem {
     private int defaultSoTimeout;
     private Boolean defaultDav;
     private BiFunction<String, String, SocketFactory> socketFactorySelector;
-    private final Map<String, ProxyProperties> proxyConf;
+    private final Map<String, Proxy> proxyConf;
 
     public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
@@ -87,11 +84,11 @@ public class HttpFilesystem extends Filesystem {
         this.defaultDav = null;
         this.socketFactorySelector = HttpFilesystem::defaultSocketFactorySelector;
         this.proxyConf = new HashMap<>();
-        ProxyProperties.addSystemOpt("http", proxyConf);
-        ProxyProperties.addSystemOpt("https", proxyConf);
+        Proxy.addSystemOpt("http", proxyConf);
+        Proxy.addSystemOpt("https", proxyConf);
     }
 
-    public void setProxyProperties(String scheme, ProxyProperties pp) {
+    public void setProxy(String scheme, Proxy pp) {
         proxyConf.put(scheme, pp);
     }
 
@@ -152,7 +149,7 @@ public class HttpFilesystem extends Filesystem {
      * return proxy url if configured for this filesystem:
      */
     public URI proxy(URI uri) {
-        ProxyProperties conf;
+        Proxy conf;
         String scheme;
 
         scheme = uri.getScheme();

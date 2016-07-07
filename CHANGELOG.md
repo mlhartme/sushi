@@ -3,11 +3,12 @@
 ### 3.1.1 (pending)
 
 * fs.http
-  * Added HttpFilesystem.setProxyProperties to configure propy intependently from System properties.
+  * Added HttpFilesystem.setProxy to configure propy intependently from Java System properties.
   * Added HttpFilesystem.setSocketFactorySelector
   * HttpNode: tolerate headers with \n line delimiter
 * Node.link and Node.resolveLink are parametrized now
 * Added Strings.toMap.
+* Added Pid.pid()
 
 ### 3.1.0 (2016-06-10)
 

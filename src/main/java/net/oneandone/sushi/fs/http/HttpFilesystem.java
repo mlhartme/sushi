@@ -79,21 +79,16 @@ public class HttpFilesystem extends Filesystem {
     public HttpFilesystem(World io, String scheme) {
         super(io, new Features(true, true, false, false, false, false, false), scheme);
 
+        Proxy pp;
+
         this.defaultConnectionTimeout = 0;
         this.defaultSoTimeout = 0;
         this.defaultDav = null;
         this.socketFactorySelector = HttpFilesystem::defaultSocketFactorySelector;
         this.proxies = new HashMap<>();
-        addProxy("http", proxies);
-        addProxy("https", proxies);
-    }
-
-    private static void addProxy(String scheme, Map<String, Proxy> result) {
-        Proxy pp;
-
         pp = Proxy.forPropertiesOpt(scheme);
         if (pp != null) {
-            result.put(scheme, pp);
+            proxies.put(scheme, pp);
         }
     }
 

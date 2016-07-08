@@ -5,7 +5,7 @@
 * fs.http
   * Added HttpFilesystem.getProxy and setProxy to configure proxies independently from Java System properties.
   * Added HttpFilesystem.setSocketFactorySelector
-  * HttpNode: tolerate headers with \n line delimiter
+  * HttpNode: tolerate headers with \n line delimiter instead of \r\n
 * Node.link and Node.resolveLink are parametrized now
 * Added Strings.toMap.
 * Added Pid.pid()

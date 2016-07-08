@@ -1,14 +1,15 @@
 ## Changelog 
 
-### 3.1.1 (pending)
+### 3.1.1 (2016-07-08)
 
 * fs.http
-  * Added HttpFilesystem.getProxy and setProxy to configure proxies intependently from Java System properties.
+  * Added HttpFilesystem.getProxy and setProxy to configure proxies independently from Java System properties.
   * Added HttpFilesystem.setSocketFactorySelector
   * HttpNode: tolerate headers with \n line delimiter
 * Node.link and Node.resolveLink are parametrized now
 * Added Strings.toMap.
 * Added Pid.pid()
+
 
 ### 3.1.0 (2016-06-10)
 

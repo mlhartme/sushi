@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.1.2 (pending)
+
+* HttpNode fix for proxies: added missing port in CONNECT method
+
+
 ### 3.1.1 (2016-07-08)
 
 * fs.http

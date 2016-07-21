@@ -60,6 +60,9 @@ public class Pumper extends Thread {
         setDaemon(true);
     }
 
+    public Writer getDest() {
+        return dest;
+    }
 
     @Override
     public void run() {

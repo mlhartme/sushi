@@ -148,9 +148,20 @@ public class LauncherTest {
 
         out = new StringWriter();
         in = new StringReader(str);
-        launcher = new Launcher((FileNode) WORLD.getHome(), "cat");
+        launcher = new Launcher(WORLD.getHome(), "cat");
         launcher.exec(out, null, false, in, false);
         assertEquals(str, out.toString());
+    }
+
+    @Test
+    public void await() throws Failure {
+        Launcher launcher;
+        Launcher.Handle handle;
+
+        launcher = new Launcher(WORLD.getHome());
+        launcher.arg("echo", "-n", "hi");
+        handle = launcher.launch();
+        assertEquals("hi", handle.awaitString());
     }
 
     @Test

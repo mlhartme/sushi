@@ -2,6 +2,7 @@
 
 ### 3.1.2 (pending)
 
+* Launcher.launch methods added
 * HttpNode fix for proxies: added missing port in CONNECT method
 
 

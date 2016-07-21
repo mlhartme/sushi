@@ -125,12 +125,18 @@ public class Launcher {
      * @param stdout never null
      * @param stderr may be null (which will redirect the error stream to stdout.
      * @param flushDest true to flush stdout/stderr after every chunk read from the process
-     * @param stdin Has to be null when stdinInherit is true. Otherwise: may be null, which starts a process without input
+     * @param stdin has to be null when stdinInherit is true. Otherwise: may be null, which starts a process without input
      */
     public void exec(Writer stdout, Writer stderr, boolean flushDest, Reader stdin, boolean stdinInherit) throws Failure {
+        launch(stdout, stderr, flushDest, stdin, stdinInherit).await();
+    }
+
+    public Handle launch() throws Failure {
+        return launch(new StringWriter(), null, true, null, true);
+    }
+
+    public Handle launch(Writer stdout, Writer stderr, boolean flushDest, Reader stdin, boolean stdinInherit) throws Failure {
         Process process;
-        int exit;
-        String output;
         Pumper psout;
         Pumper pserr;
         Pumper psin;
@@ -167,25 +173,57 @@ public class Launcher {
         } else {
             psin = null;
         }
-        psout.finish(this);
-        if (pserr != null) {
-            pserr.finish(this);
+        return new Handle(process, psout, pserr, psin);
+    }
+
+    public class Handle {
+        public final Process process;
+        public final Pumper psout;
+        public final Pumper pserr;
+        public final Pumper psin;
+
+        public Handle(Process process, Pumper psout, Pumper pserr, Pumper psin) {
+            this.process = process;
+            this.psout = psout;
+            this.pserr = pserr;
+            this.psin = psin;
         }
-        try {
-            exit = process.waitFor();
-        } catch (InterruptedException e) {
-            throw new Interrupted(e);
-        }
-        if (psin != null) {
-            psin.finish(this);
-        }
-        if (exit != 0) {
-            if (stderr == null && stdout instanceof StringWriter) {
-                output = ((StringWriter) stdout).getBuffer().toString();
-            } else {
-                output = "";
+
+        public void await() throws Failure {
+            int exit;
+            String output;
+
+            psout.finish(Launcher.this);
+            if (pserr != null) {
+                pserr.finish(Launcher.this);
             }
-            throw new ExitCode(this, exit, output);
+            try {
+                exit = process.waitFor();
+            } catch (InterruptedException e) {
+                throw new Interrupted(e);
+            }
+            if (psin != null) {
+                psin.finish(Launcher.this);
+            }
+            if (exit != 0) {
+                if (pserr == null && psout.getDest() instanceof StringWriter) {
+                    output = ((StringWriter) psout.getDest()).getBuffer().toString();
+                } else {
+                    output = "";
+                }
+                throw new ExitCode(Launcher.this, exit, output);
+            }
+        }
+
+        public String awaitString() throws Failure {
+            if (!(psout.getDest() instanceof StringWriter)) {
+                throw new IllegalStateException();
+            }
+            if (pserr != null) {
+                throw new IllegalStateException();
+            }
+            await();
+            return ((StringWriter) psout.getDest()).getBuffer().toString();
         }
     }
 

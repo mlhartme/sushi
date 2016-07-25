@@ -132,7 +132,11 @@ public class Launcher {
     }
 
     public Handle launch() throws Failure {
-        return launch(new StringWriter(), null, true, null, true);
+        return launch(new StringWriter());
+    }
+
+    public Handle launch(Writer stdout) throws Failure {
+        return launch(stdout, null, true, null, true);
     }
 
     public Handle launch(Writer stdout, Writer stderr, boolean flushDest, Reader stdin, boolean stdinInherit) throws Failure {

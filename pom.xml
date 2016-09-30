@@ -156,7 +156,17 @@
       </plugin>
     </plugins>
   </build>
-
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <configuration>
+          <onlyMilestoneIssues>false</onlyMilestoneIssues>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <profiles>
     <profile>
       <id>all</id>

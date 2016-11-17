@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.1.3 (pending)
+
+* added HttpNode.put method
+
+
 ### 3.1.2 (2016-07-26)
 
 * Launcher.launch methods added

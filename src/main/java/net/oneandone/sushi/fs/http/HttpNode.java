@@ -519,8 +519,6 @@ public class HttpNode extends Node<HttpNode> {
     @Override
     public OutputStream newOutputStream(boolean append) throws NewOutputStreamException {
         byte[] add;
-        final Put method;
-        final HttpConnection connection;
         OutputStream result;
 
         try {
@@ -542,20 +540,7 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 tryDir = false;
-                method = new Put(this);
-                connection = method.request();
-                result = new ChunkedOutputStream(connection.getOutputStream()) {
-                    private boolean closed = false;
-                    @Override
-                    public void close() throws IOException {
-                        if (closed) {
-                            return;
-                        }
-                        closed = true;
-                        super.close();
-                        method.response(connection);
-                    }
-                };
+                result = doPut();
                 if (add != null) {
                     result.write(add);
                 }
@@ -798,6 +783,32 @@ public class HttpNode extends Node<HttpNode> {
             }
         }
         return builder.toString();
+    }
+
+    public void put(byte ... bytes) throws IOException {
+        try (OutputStream dest = doPut()) {
+            dest.write(bytes);
+        }
+    }
+
+    public OutputStream doPut() throws IOException {
+        Put method;
+        HttpConnection connection;
+
+        method = new Put(this);
+        connection = method.request();
+        return new ChunkedOutputStream(connection.getOutputStream()) {
+            private boolean closed = false;
+            @Override
+            public void close() throws IOException {
+                if (closed) {
+                    return;
+                }
+                closed = true;
+                super.close();
+                method.response(connection);
+            }
+        };
     }
 
     public byte[] post(byte[] body) throws IOException {

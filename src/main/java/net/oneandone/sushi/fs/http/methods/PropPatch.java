@@ -35,6 +35,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class PropPatch extends Method<Void> {
+    public static void run(HttpNode resource, Property property) throws IOException {
+        new PropPatch(resource, property).invoke();
+    }
+
     private final Name dest;
 
     public PropPatch(HttpNode resource, Property property) {

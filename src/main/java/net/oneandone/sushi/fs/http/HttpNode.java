@@ -662,10 +662,10 @@ public class HttpNode extends Node<HttpNode> {
         prop = new Property(name, value);
         synchronized (tryLock) {
             try {
-                new PropPatch(this, prop).invoke();
+                PropPatch.run(this, prop);
             } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
-                new PropPatch(this, prop).invoke();
+                PropPatch.run(this, prop);
             }
         }
     }

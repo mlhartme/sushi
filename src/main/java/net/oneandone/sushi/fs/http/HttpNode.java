@@ -500,7 +500,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             tryDir = false;
             try {
-                return new Get(this).invoke();
+                return Get.run(this);
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {

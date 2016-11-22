@@ -28,7 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Get extends Method<InputStream> {
-    public Get(HttpNode resource) {
+    public static InputStream run(HttpNode resource) throws IOException {
+        return new Get(resource).invoke();
+    }
+
+    private Get(HttpNode resource) {
         super("GET", resource);
     }
 

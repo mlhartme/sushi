@@ -33,7 +33,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class PropFind extends Method<List<MultiStatus>> {
-    public PropFind(HttpNode resource, Name name, int depth) {
+    public static List<MultiStatus> run(HttpNode resource, Name name, int depth) throws IOException {
+        return new PropFind(resource, name, depth).invoke();
+    }
+
+    private PropFind(HttpNode resource, Name name, int depth) {
     	super("PROPFIND", resource, propfindBody(resource.getWorld().getXml(), name));
         addRequestHeader("Depth", String.valueOf(depth));
     }

@@ -26,7 +26,11 @@ import net.oneandone.sushi.fs.http.model.StatusCode;
 import java.io.IOException;
 
 public class Delete extends Method<Void> {
-    public Delete(HttpNode resource) {
+    public static void run(HttpNode resource) throws IOException {
+        new Delete(resource).invoke();
+    }
+
+    private Delete(HttpNode resource) {
         super("DELETE", resource);
     }
 

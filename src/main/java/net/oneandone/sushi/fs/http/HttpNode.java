@@ -347,7 +347,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = false;
-                new Delete(this).invoke();
+                Delete.run(this);
             }
         } catch (FileNotFoundException e) {
             throw e;
@@ -373,10 +373,10 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 try {
-                    new Delete(this).invoke();
+                    Delete.run(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    new Delete(this).invoke();
+                    Delete.run(this);
                 }
             }
         } catch (DirectoryNotFoundException | DeleteException e) {
@@ -392,10 +392,10 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 try {
-                    new Delete(this).invoke();
+                    Delete.run(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    new Delete(this).invoke();
+                    Delete.run(this);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -554,16 +554,15 @@ public class HttpNode extends Node<HttpNode> {
 
     @Override
     public List<HttpNode> list() throws ListException, DirectoryNotFoundException {
-        PropFind method;
+        PropFind methd;
         List<HttpNode> result;
         URI href;
 
         synchronized (tryLock) {
             try {
                 tryDir = true;
-                method = new PropFind(this, Name.DISPLAYNAME, 1);
                 result = new ArrayList<>();
-                for (MultiStatus response : method.invoke()) {
+                for (MultiStatus response : PropFind.run(this, Name.DISPLAYNAME, 1)) {
                     try {
                         href = new URI(response.href);
                     } catch (URISyntaxException e) {
@@ -684,7 +683,7 @@ public class HttpNode extends Node<HttpNode> {
     private Property getPropertyOpt(Name name) throws IOException {
         List<MultiStatus> response;
 
-        response = new PropFind(this, name, 0).invoke();
+        response = PropFind.run(this, name, 0);
         return MultiStatus.lookupOne(response, name).property;
     }
 

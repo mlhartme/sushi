@@ -41,7 +41,7 @@ public class PropPatch extends Method<Void> {
 
     private final Name dest;
 
-    public PropPatch(HttpNode resource, Property property) {
+    private PropPatch(HttpNode resource, Property property) {
         super("PROPPATCH", resource, proppatchBody(resource.getWorld().getXml(), property));
         this.dest = property.getName();
     }

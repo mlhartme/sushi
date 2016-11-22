@@ -22,10 +22,9 @@ import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.Property;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.fs.http.model.StatusCode;
+import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
@@ -36,7 +35,17 @@ import java.util.List;
 
 public class PropPatch extends Method<Void> {
     public static void run(HttpNode resource, Property property) throws IOException {
-        new PropPatch(resource, property).invoke(proppatchBody(resource.getWorld().getXml(), property));
+        Xml xml;
+        Document document;
+        Element set;
+        Element prop;
+
+        xml = resource.getWorld().getXml();
+        document = xml.getBuilder().createDocument("propertyupdate", DAV);
+        set = Builder.element(document.getDocumentElement(), "set" , DAV);
+        prop = Builder.element(set, XML_PROP, DAV);
+        property.addXml(prop);
+        new PropPatch(resource, property).invoke(Method.body(xml.getSerializer(), document));
     }
 
     private final Name dest;
@@ -66,17 +75,5 @@ public class PropPatch extends Method<Void> {
         default:
         	throw new StatusException(response.getStatusLine());
         }
-    }
-
-    private static Body proppatchBody(Xml xml, Property property) {
-        Document document;
-        Element set;
-        Element prop;
-
-        document = xml.getBuilder().createDocument("propertyupdate", DAV);
-        set = Builder.element(document.getDocumentElement(), "set" , DAV);
-        prop = Builder.element(set, XML_PROP, DAV);
-        property.addXml(prop);
-        return Method.body(xml.getSerializer(), document);
     }
 }

@@ -818,8 +818,11 @@ public class HttpNode extends Node<HttpNode> {
         };
     }
 
-    public byte[] post(String str) throws IOException {
-        return post(getWorld().getSettings().bytes(str));
+    public String post(String str) throws IOException {
+        byte[] result;
+
+        result = post(getWorld().getSettings().bytes(str));
+        return getWorld().getSettings().string(result);
     }
 
     public byte[] post(byte[] body) throws IOException {

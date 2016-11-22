@@ -835,9 +835,6 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public byte[] post(Body body) throws IOException {
-        Post method;
-
-        method = new Post(this, body);
-        return method.response(method.request());
+        return new Post(this, body).invoke();
     }
 }

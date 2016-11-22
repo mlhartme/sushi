@@ -16,38 +16,37 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
+import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 
-public class Move extends Method<Void> {
+public class Move extends GenericMethod {
     public static void run(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
-        new Move(source, destination, overwrite).invoke(null);
+        Move move;
+        StatusLine result;
+
+        move = new Move(source, destination, overwrite);
+        result = move.response(move.request(false, null));
+        switch (result.code) {
+            case StatusCode.NO_CONTENT:
+            case StatusCode.CREATED:
+                return;
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.NOT_FOUND:
+                throw new FileNotFoundException(source);
+            default:
+                throw new StatusException(result);
+        }
     }
 
     private Move(HttpNode source, HttpNode destination, boolean overwrite) {
         super("MOVE", source);
         addRequestHeader("Destination", destination.getUri().toString());
         addRequestHeader("Overwrite", overwrite ? "T" : "F");
-    }
-
-    @Override
-    public Void process(HttpConnection conection, Response response) throws IOException {
-    	switch (response.getStatusLine().code) {
-    	case StatusCode.NO_CONTENT:
-    	case StatusCode.CREATED:
-    		return null;
-    	case StatusCode.MOVED_PERMANENTLY:
-    		throw new MovedPermanentlyException();
-        case StatusCode.NOT_FOUND:
-            throw new FileNotFoundException(resource);
-    	default:
-        	throw new StatusException(response.getStatusLine());
-        }
     }
 }

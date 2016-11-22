@@ -29,7 +29,7 @@ import java.io.InputStream;
 
 public class Get extends Method<InputStream> {
     public static InputStream run(HttpNode resource) throws IOException {
-        return new Get(resource).invoke();
+        return new Get(resource).invoke(null);
     }
 
     private Get(HttpNode resource) {

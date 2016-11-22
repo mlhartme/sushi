@@ -36,13 +36,13 @@ import java.util.List;
 
 public class PropPatch extends Method<Void> {
     public static void run(HttpNode resource, Property property) throws IOException {
-        new PropPatch(resource, property).invoke();
+        new PropPatch(resource, property).invoke(proppatchBody(resource.getWorld().getXml(), property));
     }
 
     private final Name dest;
 
     private PropPatch(HttpNode resource, Property property) {
-        super("PROPPATCH", resource, proppatchBody(resource.getWorld().getXml(), property));
+        super("PROPPATCH", resource);
         this.dest = property.getName();
     }
 

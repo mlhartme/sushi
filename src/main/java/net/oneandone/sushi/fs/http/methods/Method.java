@@ -46,31 +46,13 @@ public abstract class Method<T> {
     public final String method;
     public final String uri;
     public final HeaderList headerList;
-    public final Body body;
-
 
     public Method(String method, HttpNode resource) {
-        this(method, resource, null);
-    }
-
-    public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
         this.headerList = new HeaderList();
         this.method = method;
         this.uri = resource.getRequestPath();
-        this.body = body;
-
-        // prepare header
         resource.getRoot().addDefaultHeader(headerList);
-        contentLength();
-        if (body != null) {
-            if (body.type != null) {
-                headerList.add(body.type);
-            }
-            if (body.encoding != null) {
-                headerList.add(body.encoding);
-            }
-        }
     }
 
     public void addRequestHeader(String name, String value) {
@@ -87,13 +69,22 @@ public abstract class Method<T> {
 
     //-- main api
 
-    public T invoke() throws IOException {
-    	return response(request());
+    public T invoke(Body body) throws IOException {
+    	return response(request(body));
     }
 
-    public HttpConnection request() throws IOException {
+    public HttpConnection request(Body body) throws IOException {
         HttpConnection connection;
 
+        contentLength(body);
+        if (body != null) {
+            if (body.type != null) {
+                headerList.add(body.type);
+            }
+            if (body.encoding != null) {
+                headerList.add(body.encoding);
+            }
+        }
         connection = resource.getRoot().allocate();
         try {
             connection.sendRequest(method, uri, headerList, body);
@@ -133,7 +124,7 @@ public abstract class Method<T> {
     //--
 
     /** CAUTION when overriding this method: it's called during super class construction, i.e. you class is not initialized yet! */
-    protected void contentLength() {
+    protected void contentLength(Body body) {
         if (body == null) {
             headerList.add(Header.CONTENT_LENGTH, "0");
             return;

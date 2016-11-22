@@ -28,11 +28,11 @@ import java.io.IOException;
 /** the output stream is added manually by the user */
 public class Post extends Method<byte[]> {
     public static byte[] run(HttpNode resource, Body body) throws IOException {
-        return new Post(resource, body).invoke();
+        return new Post(resource).invoke(body);
     }
 
-    private Post(HttpNode resource, Body body) {
-        super("POST", resource, body);
+    private Post(HttpNode resource) {
+        super("POST", resource);
     }
 
     @Override

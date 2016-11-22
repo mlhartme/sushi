@@ -25,13 +25,13 @@ import java.io.IOException;
 
 public class Head extends Method<String> {
     public static String run(HttpNode resource, String header) throws IOException {
-        return new Head(resource, header).invoke();
+        return new Head(resource, header).invoke(null);
     }
 
     private final String header;
 
     private Head(HttpNode resource, String header) {
-        super("HEAD", resource, null);
+        super("HEAD", resource);
         this.header = header;
     }
 

@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class Delete extends Method<Void> {
     public static void run(HttpNode resource) throws IOException {
-        new Delete(resource).invoke();
+        new Delete(resource).invoke(null);
     }
 
     private Delete(HttpNode resource) {

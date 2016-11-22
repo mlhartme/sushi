@@ -26,7 +26,7 @@ import java.io.IOException;
 
 public class MkCol extends Method<Void> {
     public static void run(HttpNode resource) throws IOException {
-        new MkCol(resource).invoke();
+        new MkCol(resource).invoke(null);
     }
 
     private MkCol(HttpNode resource) {

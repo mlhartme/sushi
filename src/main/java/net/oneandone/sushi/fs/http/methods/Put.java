@@ -19,6 +19,7 @@ import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
+import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
@@ -36,7 +37,7 @@ public class Put extends Method<Void> {
         HttpConnection connection;
 
         method = new Put(resource);
-        connection = method.request();
+        connection = method.request(null);
         return new ChunkedOutputStream(connection.getOutputStream()) {
             private boolean closed = false;
             @Override
@@ -56,7 +57,7 @@ public class Put extends Method<Void> {
     }
 
     @Override
-    protected void contentLength() {
+    protected void contentLength(Body body) {
         addRequestHeader(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
     }
 

@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class Move extends Method<Void> {
     public static void run(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
-        new Move(source, destination, overwrite).invoke();
+        new Move(source, destination, overwrite).invoke(null);
     }
 
     private Move(HttpNode source, HttpNode destination, boolean overwrite) {

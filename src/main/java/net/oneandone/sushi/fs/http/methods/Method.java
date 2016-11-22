@@ -173,7 +173,7 @@ public abstract class Method<T> {
                 && status != StatusCode.RESET_CONTENT;
     }
 
-    private Response receive(HttpConnection connection) throws IOException {
+    public Response receive(HttpConnection connection) throws IOException {
         Response response;
 
         do {

@@ -23,7 +23,7 @@ public class StatusLine {
         String protocol;
         int between;
         int space;
-        int statusCode;
+        int code;
 
         scanner = new Scanner();
         protocol = scanner.parseProtocol(str);
@@ -33,11 +33,11 @@ public class StatusLine {
             space = str.length();
         }
         try {
-            statusCode = Integer.parseInt(Scanner.substringTrimmed(str, between, space));
+            code = Integer.parseInt(Scanner.substringTrimmed(str, between, space));
         } catch (NumberFormatException e) {
             throw new ProtocolException("status line contains invalid status code: " + str);
         }
-        return new StatusLine(protocol, statusCode);
+        return new StatusLine(protocol, code);
     }
 
     //--

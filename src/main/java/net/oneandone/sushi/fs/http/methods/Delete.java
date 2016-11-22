@@ -22,12 +22,28 @@ import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
+import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 
-public class Delete extends Method<Void> {
+public class Delete extends Method<StatusLine> {
     public static void run(HttpNode resource) throws IOException {
-        new Delete(resource).invoke(null);
+        Delete delete;
+        StatusLine result;
+
+        delete = new Delete(resource);
+        result = delete.response(delete.request(false, null));
+        switch (result.code) {
+            case StatusCode.NO_CONTENT:
+                // success
+                return;
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.NOT_FOUND:
+                throw new FileNotFoundException(resource);
+            default:
+                throw new StatusException(result);
+        }
     }
 
     private Delete(HttpNode resource) {
@@ -35,16 +51,7 @@ public class Delete extends Method<Void> {
     }
 
     @Override
-    public Void process(HttpConnection connection, Response response) throws IOException {
-        switch (response.getStatusLine().code) {
-        case StatusCode.NO_CONTENT:
-        	return null;
-        case StatusCode.MOVED_PERMANENTLY:
-        	throw new MovedPermanentlyException();
-        case StatusCode.NOT_FOUND:
-        	throw new FileNotFoundException(resource);
-       	default:
-        	throw new StatusException(response.getStatusLine());
-        }
+    public StatusLine process(HttpConnection connection, Response response) throws IOException {
+        return response.getStatusLine();
     }
 }

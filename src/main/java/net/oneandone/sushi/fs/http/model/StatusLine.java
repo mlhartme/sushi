@@ -45,14 +45,14 @@ public class StatusLine {
 
     public final String protocol;
 
-    public final int statuscode;
+    public final int code;
 
-    public StatusLine(String protocol, int statuscode) {
+    public StatusLine(String protocol, int code) {
         this.protocol = protocol;
-        this.statuscode = statuscode;
+        this.code = code;
     }
 
     public String toString() {
-        return protocol + " " + statuscode;
+        return protocol + " " + code;
     }
 }

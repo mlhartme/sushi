@@ -36,7 +36,7 @@ public class Get extends Method<InputStream> {
     public InputStream process(HttpConnection connection, Response response) throws IOException {
     	int status;
 
-        status = response.getStatusLine().statuscode;
+        status = response.getStatusLine().code;
         switch (status) {
         case StatusCode.OK:
         	return new FilterInputStream(response.getBody().content) {

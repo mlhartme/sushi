@@ -42,7 +42,7 @@ public class Put extends Method<Void> {
     public Void process(HttpConnection connection, Response response) throws IOException {
     	int status;
 
-    	status = response.getStatusLine().statuscode;
+    	status = response.getStatusLine().code;
         if (status != StatusCode.OK && status != StatusCode.NO_CONTENT && status != StatusCode.CREATED) {
         	throw new StatusException(response.getStatusLine());
         }

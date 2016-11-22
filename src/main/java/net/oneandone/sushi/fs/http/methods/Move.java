@@ -34,7 +34,7 @@ public class Move extends Method<Void> {
 
     @Override
     public Void process(HttpConnection conection, Response response) throws IOException {
-    	switch (response.getStatusLine().statuscode) {
+    	switch (response.getStatusLine().code) {
     	case StatusCode.NO_CONTENT:
     	case StatusCode.CREATED:
     		return null;

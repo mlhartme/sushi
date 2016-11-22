@@ -174,7 +174,7 @@ public abstract class Method<T> {
     protected boolean hasBody(Response response) {
         int status;
 
-        status = response.getStatusLine().statuscode;
+        status = response.getStatusLine().code;
         return status >= StatusCode.OK
                 && status != StatusCode.NO_CONTENT
                 && status != StatusCode.NOT_MODIFIED
@@ -209,7 +209,7 @@ public abstract class Method<T> {
                 throw e;
             }
 
-        } while (response.getStatusLine().statuscode < StatusCode.OK);
+        } while (response.getStatusLine().code < StatusCode.OK);
         return response;
     }
 }

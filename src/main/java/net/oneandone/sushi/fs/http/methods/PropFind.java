@@ -40,7 +40,7 @@ public class PropFind extends Method<List<MultiStatus>> {
 
     @Override
     public List<MultiStatus> process(HttpConnection connection, Response response) throws IOException {
-        switch (response.getStatusLine().statuscode) {
+        switch (response.getStatusLine().code) {
         case StatusCode.MULTI_STATUS:
             return multistatus(response);
         case StatusCode.BAD_REQUEST: // TODO

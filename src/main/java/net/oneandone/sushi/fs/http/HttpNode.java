@@ -145,7 +145,7 @@ public class HttpNode extends Node<HttpNode> {
                     result = davSize();
                     isDav = true;
                 } catch (StatusException e) {
-                    if (e.getStatusLine().statuscode == StatusCode.METHOD_NOT_ALLOWED) {
+                    if (e.getStatusLine().code == StatusCode.METHOD_NOT_ALLOWED) {
                         isDav = false;
                         result = headSize();
                     } else {
@@ -230,7 +230,7 @@ public class HttpNode extends Node<HttpNode> {
                     result = davGetLastModified();
                     isDav = true;
                 } catch (StatusException e) {
-                    if (e.getStatusLine().statuscode == StatusCode.METHOD_NOT_ALLOWED) {
+                    if (e.getStatusLine().code == StatusCode.METHOD_NOT_ALLOWED) {
                         isDav = false;
                         result = headGetLastModified();
                     } else {
@@ -465,7 +465,7 @@ public class HttpNode extends Node<HttpNode> {
                 new Head(this, null).invoke();
                 return true;
             } catch (StatusException e) {
-                switch (e.getStatusLine().statuscode) {
+                switch (e.getStatusLine().code) {
                     case StatusCode.MOVED_PERMANENTLY:
                         tryDir = !tryDir;
                         return true;
@@ -577,7 +577,7 @@ public class HttpNode extends Node<HttpNode> {
                 }
                 return result;
             } catch (StatusException e) {
-                if (e.getStatusLine().statuscode == StatusCode.BAD_REQUEST) {
+                if (e.getStatusLine().code == StatusCode.BAD_REQUEST) {
                     return null; // this is a file
                 }
                 throw new ListException(this, e);
@@ -701,8 +701,8 @@ public class HttpNode extends Node<HttpNode> {
                         result = davIsNode();
                         isDav = true;
                     } catch (StatusException e) {
-                        if (e.getStatusLine().statuscode == StatusCode.METHOD_NOT_ALLOWED
-                                || e.getStatusLine().statuscode == StatusCode.OK) {
+                        if (e.getStatusLine().code == StatusCode.METHOD_NOT_ALLOWED
+                                || e.getStatusLine().code == StatusCode.OK) {
                             isDav = false;
                             result = headIsNode();
                         } else {
@@ -748,7 +748,7 @@ public class HttpNode extends Node<HttpNode> {
             new Head(this, null).invoke();
             return true;
         } catch (StatusException e) {
-            switch (e.getStatusLine().statuscode) {
+            switch (e.getStatusLine().code) {
                 case StatusCode.MOVED_PERMANENTLY:
                     return false;
                 case StatusCode.NOT_FOUND:

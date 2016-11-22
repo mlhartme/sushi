@@ -31,7 +31,7 @@ public class MkCol extends Method<Void> {
 
     @Override
     public Void process(HttpConnection conection, Response response) throws IOException {
-        if (response.getStatusLine().statuscode != StatusCode.CREATED) {
+        if (response.getStatusLine().code != StatusCode.CREATED) {
         	throw new StatusException(response.getStatusLine());
         }
         return null;

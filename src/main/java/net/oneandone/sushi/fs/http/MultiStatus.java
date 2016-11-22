@@ -83,7 +83,7 @@ public class MultiStatus {
             propstat = iter.next();
             propstatStatus = Dom.getString(Dom.getFirstChildElement(propstat, XML_STATUS, Method.DAV));
             prop = Dom.getFirstChildElement(propstat, Method.XML_PROP, Method.DAV);
-            status = StatusLine.parse(propstatStatus).statuscode;
+            status = StatusLine.parse(propstatStatus).code;
             propIter = new ChildElements(prop);
             while (propIter.hasNext()) {
                 result.add(new MultiStatus(str, Property.fromXml(propIter.next()), status));

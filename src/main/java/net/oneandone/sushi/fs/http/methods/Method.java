@@ -43,9 +43,9 @@ public abstract class Method<T> {
 
     protected final HttpNode resource;
 
-    public final String method;
-    public final String uri;
-    public final HeaderList headerList;
+    private final String method;
+    private final String uri;
+    private final HeaderList headerList;
 
     public Method(String method, HttpNode resource) {
         this.resource = resource;
@@ -70,14 +70,23 @@ public abstract class Method<T> {
     //-- main api
 
     public T invoke(Body body) throws IOException {
-    	return response(request(body));
+    	return response(request(false, body));
     }
 
-    public HttpConnection request(Body body) throws IOException {
+    public HttpConnection request(boolean putChunked, Body body) throws IOException {
         HttpConnection connection;
 
-        contentLength(body);
-        if (body != null) {
+        if (body == null) {
+            if (putChunked) {
+                headerList.add(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
+            } else {
+                headerList.add(Header.CONTENT_LENGTH, "0");
+            }
+        } else {
+            if (body.chunked || body.length < 0) {
+                throw new IllegalStateException();
+            }
+            headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
             if (body.type != null) {
                 headerList.add(body.type);
             }
@@ -122,18 +131,6 @@ public abstract class Method<T> {
     public abstract T process(HttpConnection connection, Response response) throws IOException;
 
     //--
-
-    /** CAUTION when overriding this method: it's called during super class construction, i.e. you class is not initialized yet! */
-    protected void contentLength(Body body) {
-        if (body == null) {
-            headerList.add(Header.CONTENT_LENGTH, "0");
-            return;
-        }
-        if (body.chunked || body.length < 0) {
-        	throw new IllegalStateException();
-        }
-        headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
-    }
 
     protected void freeOnSuccess(Response response, HttpConnection connection) throws IOException {
         free(response, connection);

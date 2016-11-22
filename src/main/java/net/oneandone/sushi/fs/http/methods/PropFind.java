@@ -24,6 +24,7 @@ import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
@@ -40,12 +41,12 @@ public class PropFind extends Method<List<MultiStatus>> {
     @Override
     public List<MultiStatus> process(HttpConnection connection, Response response) throws IOException {
         switch (response.getStatusLine().statuscode) {
-        case Statuscode.MULTI_STATUS:
+        case StatusCode.MULTI_STATUS:
             return multistatus(response);
-        case Statuscode.BAD_REQUEST: // TODO
-        case Statuscode.MOVED_PERMANENTLY:
+        case StatusCode.BAD_REQUEST: // TODO
+        case StatusCode.MOVED_PERMANENTLY:
         	throw new MovedPermanentlyException();
-        case Statuscode.NOT_FOUND:
+        case StatusCode.NOT_FOUND:
         	throw new FileNotFoundException(resource);
         default:
         	throw new StatusException(response.getStatusLine());

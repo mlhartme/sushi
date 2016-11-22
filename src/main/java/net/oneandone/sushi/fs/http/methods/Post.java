@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Post extends Method<byte[]> {
         ByteArrayOutputStream tmp;
 
     	status = response.getStatusLine().statuscode;
-        if (status != Statuscode.OK) {
+        if (status != StatusCode.OK) {
         	throw new StatusException(response.getStatusLine());
         }
         tmp = new ByteArrayOutputStream();

@@ -22,6 +22,7 @@ import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.xml.Namespace;
 import net.oneandone.sushi.xml.Serializer;
 import org.w3c.dom.Document;
@@ -174,10 +175,10 @@ public abstract class Method<T> {
         int status;
 
         status = response.getStatusLine().statuscode;
-        return status >= Statuscode.OK
-                && status != Statuscode.NO_CONTENT
-                && status != Statuscode.NOT_MODIFIED
-                && status != Statuscode.RESET_CONTENT;
+        return status >= StatusCode.OK
+                && status != StatusCode.NO_CONTENT
+                && status != StatusCode.NOT_MODIFIED
+                && status != StatusCode.RESET_CONTENT;
     }
 
     private Response receive(HttpConnection connection) throws IOException {
@@ -208,7 +209,7 @@ public abstract class Method<T> {
                 throw e;
             }
 
-        } while (response.getStatusLine().statuscode < Statuscode.OK);
+        } while (response.getStatusLine().statuscode < StatusCode.OK);
         return response;
     }
 }

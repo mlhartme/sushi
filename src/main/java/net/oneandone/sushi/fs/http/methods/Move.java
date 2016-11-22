@@ -21,6 +21,7 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 
 import java.io.IOException;
 
@@ -34,12 +35,12 @@ public class Move extends Method<Void> {
     @Override
     public Void process(HttpConnection conection, Response response) throws IOException {
     	switch (response.getStatusLine().statuscode) {
-    	case Statuscode.NO_CONTENT:
-    	case Statuscode.CREATED:
+    	case StatusCode.NO_CONTENT:
+    	case StatusCode.CREATED:
     		return null;
-    	case Statuscode.MOVED_PERMANENTLY:
+    	case StatusCode.MOVED_PERMANENTLY:
     		throw new MovedPermanentlyException();
-        case Statuscode.NOT_FOUND:
+        case StatusCode.NOT_FOUND:
             throw new FileNotFoundException(resource);
     	default:
         	throw new StatusException(response.getStatusLine());

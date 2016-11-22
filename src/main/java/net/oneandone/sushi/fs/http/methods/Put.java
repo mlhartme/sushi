@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class Put extends Method<Void> {
     	int status;
 
     	status = response.getStatusLine().statuscode;
-        if (status != Statuscode.OK && status != Statuscode.NO_CONTENT && status != Statuscode.CREATED) {
+        if (status != StatusCode.OK && status != StatusCode.NO_CONTENT && status != StatusCode.CREATED) {
         	throw new StatusException(response.getStatusLine());
         }
         return null;

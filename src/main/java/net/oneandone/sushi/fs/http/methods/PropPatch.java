@@ -25,6 +25,7 @@ import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
@@ -47,14 +48,14 @@ public class PropPatch extends Method<Void> {
         MultiStatus ms;
 
     	switch (response.getStatusLine().statuscode) {
-    	case Statuscode.OK:
+    	case StatusCode.OK:
     		return null;
-        case Statuscode.MOVED_PERMANENTLY:
+        case StatusCode.MOVED_PERMANENTLY:
         	throw new MovedPermanentlyException();
-    	case Statuscode.MULTI_STATUS:
+    	case StatusCode.MULTI_STATUS:
     		lst = multistatus(response);
     		ms = MultiStatus.lookupOne(lst, dest);
-    		if (ms.status != Statuscode.OK) {
+    		if (ms.status != StatusCode.OK) {
     			throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));
     		}
     		return null;

@@ -21,6 +21,7 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedTemporarilyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class Get extends Method<InputStream> {
 
         status = response.getStatusLine().statuscode;
         switch (status) {
-        case Statuscode.OK:
+        case StatusCode.OK:
         	return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
 
@@ -50,11 +51,11 @@ public class Get extends Method<InputStream> {
                     super.close();
         		}
         	};
-        case Statuscode.MOVED_TEMPORARILY:
+        case StatusCode.MOVED_TEMPORARILY:
             throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
-        case Statuscode.NOT_FOUND:
-        case Statuscode.GONE:
-        case Statuscode.MOVED_PERMANENTLY:
+        case StatusCode.NOT_FOUND:
+        case StatusCode.GONE:
+        case StatusCode.MOVED_PERMANENTLY:
             throw new FileNotFoundException(resource);
         default:
         	throw new StatusException(response.getStatusLine());

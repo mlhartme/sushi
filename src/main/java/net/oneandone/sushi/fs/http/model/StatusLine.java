@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
+/** https://tools.ietf.org/html/rfc2616#section-6.1 */
 public class StatusLine {
     public static final String HTTP_1_1 = "HTTP/1.1";
 

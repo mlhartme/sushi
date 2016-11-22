@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.fs.http.methods;
+package net.oneandone.sushi.fs.http.model;
 
 /**
  * RFC 1945 and 2518 status codes
  * Note that this is not an enum because there are to many code to create them in advance
  */
-public class Statuscode {
+public class StatusCode {
     public static final int OK = 200;
     public static final int CREATED = 201;
     public static final int NO_CONTENT = 204;

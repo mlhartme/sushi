@@ -33,6 +33,7 @@ import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.methods.Delete;
+import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
 import net.oneandone.sushi.fs.http.methods.Method;
@@ -41,7 +42,6 @@ import net.oneandone.sushi.fs.http.methods.Move;
 import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
-import net.oneandone.sushi.fs.http.methods.Put;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -540,7 +540,7 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 tryDir = false;
-                result = Put.run(this);
+                result = GenericMethod.put(this);
                 if (add != null) {
                     result.write(add);
                 }
@@ -792,7 +792,7 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public void put(byte ... bytes) throws IOException {
-        try (OutputStream dest = Put.run(this)) {
+        try (OutputStream dest = GenericMethod.put(this)) {
             dest.write(bytes);
         }
     }

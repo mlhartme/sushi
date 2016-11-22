@@ -17,12 +17,46 @@ package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.StatusException;
+import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.model.Response;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class GenericMethod extends Method<StatusLine> {
+    /** See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT */
+    public static OutputStream put(HttpNode resource) throws IOException {
+        GenericMethod method;
+        HttpConnection connection;
+
+        method = new GenericMethod("PUT", resource);
+        connection = method.request(true, null);
+        return new ChunkedOutputStream(connection.getOutputStream()) {
+            private boolean closed = false;
+            @Override
+            public void close() throws IOException {
+                StatusLine statusLine;
+                int code;
+
+                if (closed) {
+                    return;
+                }
+                closed = true;
+                super.close();
+                statusLine = method.response(connection);
+                code = statusLine.code;
+                if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
+                    throw new StatusException(statusLine);
+                }
+            }
+        };
+    }
+
+    //--
+
     public GenericMethod(String method, HttpNode resource) {
         super(method, resource);
     }

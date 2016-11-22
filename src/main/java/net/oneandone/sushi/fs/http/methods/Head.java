@@ -50,9 +50,6 @@ public class Head extends Method<String> {
 
     @Override
     protected boolean hasBody(Response response) {
-        int status;
-
-        status = response.getStatusLine().code;
-        return status != StatusCode.OK && super.hasBody(response);
+        return false;
     }
 }

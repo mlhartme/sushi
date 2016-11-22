@@ -20,7 +20,8 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
-import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.HeaderList;
+import net.oneandone.sushi.fs.http.model.RequestLine;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.xml.Namespace;
@@ -43,7 +44,10 @@ public abstract class Method<T> {
 
     protected final HttpNode resource;
 
-    private final Request request;
+    public final RequestLine requestline;
+    public final HeaderList headerList;
+    public final Body body;
+
 
     public Method(String method, HttpNode resource) {
         this(method, resource, null);
@@ -51,27 +55,29 @@ public abstract class Method<T> {
 
     public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
-        this.request = new Request(method, resource.getRequestPath(), body);
+        this.headerList = new HeaderList();
+        this.requestline = new RequestLine(method, resource.getRequestPath());
+        this.body = body;
 
         // prepare header
-        resource.getRoot().addDefaultHeader(request.headerList);
+        resource.getRoot().addDefaultHeader(headerList);
         contentLength();
         if (body != null) {
             if (body.type != null) {
-                request.headerList.add(body.type);
+                headerList.add(body.type);
             }
             if (body.encoding != null) {
-                request.headerList.add(body.encoding);
+                headerList.add(body.encoding);
             }
         }
     }
 
     public void addRequestHeader(String name, String value) {
-    	request.headerList.add(name, value);
+    	headerList.add(name, value);
     }
 
     public String getUri() {
-    	return request.requestline.uri;
+    	return requestline.uri;
     }
 
     public List<MultiStatus> multistatus(Response response) throws IOException {
@@ -89,7 +95,7 @@ public abstract class Method<T> {
 
         connection = resource.getRoot().allocate();
         try {
-            connection.sendRequest(request);
+            connection.sendRequest(requestline, headerList, body);
         } catch (IOException e) {
             try {
                 connection.close();
@@ -127,17 +133,14 @@ public abstract class Method<T> {
 
     /** CAUTION when overriding this method: it's called during super class construction, i.e. you class is not initialized yet! */
     protected void contentLength() {
-        Body body;
-
-        body = request.body;
         if (body == null) {
-            request.headerList.add(Header.CONTENT_LENGTH, "0");
+            headerList.add(Header.CONTENT_LENGTH, "0");
             return;
         }
         if (body.chunked || body.length < 0) {
         	throw new IllegalStateException();
         }
-        request.headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
+        headerList.add(Header.CONTENT_LENGTH, Long.toString(body.length));
     }
 
     protected void freeOnSuccess(Response response, HttpConnection connection) throws IOException {

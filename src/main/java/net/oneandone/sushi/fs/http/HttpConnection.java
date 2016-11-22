@@ -23,7 +23,7 @@ import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
-import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.RequestLine;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.io.OpenInputStream;
@@ -55,10 +55,23 @@ public class HttpConnection implements Closeable {
 
     //--
 
-    public void sendRequest(Request request) throws IOException {
-        request.write(output);
-        if (request.body != null) {
-            serialize(output, request.headerList, request.body);
+    public void sendRequest(RequestLine requestline, HeaderList headerList, Body body) throws IOException {
+        String value;
+
+        requestline.write(output);
+        for (Header header : headerList) {
+            output.writeAscii(header.name);
+            output.writeAscii(": ");
+            value = header.value;
+            if (value != null) {
+                output.writeAscii(value);
+            }
+            output.writeAsciiLn();
+        }
+        output.writeAsciiLn();
+
+        if (body != null) {
+            serialize(output, headerList, body);
         }
         output.flush();
     }

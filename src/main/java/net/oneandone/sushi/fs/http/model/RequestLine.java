@@ -24,6 +24,10 @@ public class RequestLine {
     public final String method;
     public final String uri;
 
+    public RequestLine(String method, String uri) {
+        this(method, uri, StatusLine.HTTP_1_1);
+    }
+
     public RequestLine(String method, String uri, String protocol) {
         this.method = method;
         this.uri = uri;

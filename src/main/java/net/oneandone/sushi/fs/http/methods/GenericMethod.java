@@ -15,27 +15,20 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
+import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.model.StatusCode;
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 
-
-public class MkCol extends GenericMethod {
-    public static void run(HttpNode resource) throws IOException {
-        MkCol mkcol;
-        StatusLine line;
-
-        mkcol = new MkCol(resource);
-        line = mkcol.response(mkcol.request(false, null));
-        if (line.code != StatusCode.CREATED) {
-            throw new StatusException(line);
-        }
+public class GenericMethod extends Method<StatusLine> {
+    public GenericMethod(String method, HttpNode resource) {
+        super(method, resource);
     }
 
-    private MkCol(HttpNode resource) {
-        super("MKCOL", resource);
+    @Override
+    public StatusLine process(HttpConnection connection, Response response) throws IOException {
+        return response.getStatusLine();
     }
 }

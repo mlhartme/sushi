@@ -16,17 +16,15 @@
 package net.oneandone.sushi.fs.http.methods;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
-import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 
-public class Delete extends Method<StatusLine> {
+public class Delete extends GenericMethod {
     public static void run(HttpNode resource) throws IOException {
         Delete delete;
         StatusLine result;
@@ -48,10 +46,5 @@ public class Delete extends Method<StatusLine> {
 
     private Delete(HttpNode resource) {
         super("DELETE", resource);
-    }
-
-    @Override
-    public StatusLine process(HttpConnection connection, Response response) throws IOException {
-        return response.getStatusLine();
     }
 }

@@ -785,6 +785,13 @@ public class HttpNode extends Node<HttpNode> {
         return builder.toString();
     }
 
+
+    //-- REST methods
+
+    public void put(String str) throws IOException {
+        put(getWorld().getSettings().bytes(str));
+    }
+
     public void put(byte ... bytes) throws IOException {
         try (OutputStream dest = doPut()) {
             dest.write(bytes);
@@ -811,10 +818,22 @@ public class HttpNode extends Node<HttpNode> {
         };
     }
 
+    public byte[] post(String str) throws IOException {
+        return post(getWorld().getSettings().bytes(str));
+    }
+
     public byte[] post(byte[] body) throws IOException {
+        return post(new Body(null, null, body.length, new ByteArrayInputStream(body), false));
+    }
+
+    public byte[] post(InputStream body) throws IOException {
+        return post(new Body(null, null, -1, body, false));
+    }
+
+    public byte[] post(Body body) throws IOException {
         Post method;
 
-        method = new Post(this, new Body(null, null, body.length, new ByteArrayInputStream(body), false));
+        method = new Post(this, body);
         return method.response(method.request());
     }
 }

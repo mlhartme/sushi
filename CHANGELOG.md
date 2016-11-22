@@ -2,8 +2,9 @@
 
 ### 3.1.3 (pending)
 
-* improved REST support
-  * added HttpNode.put method (and changed the existing code to also consider status code 200 as a success response)
+* improved REST support in HttpNode
+  * added `put` method (and changed the existing code to also consider status code 200 as a success response)
+  * convenience methods to put and post Strings.
 
 
 ### 3.1.2 (2016-07-26)

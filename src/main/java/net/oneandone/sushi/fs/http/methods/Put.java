@@ -19,8 +19,8 @@ import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
+import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +29,7 @@ import java.io.OutputStream;
  * The output stream is added manually by the user.
  * See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT
  */
-public class Put extends Method<Void> {
+public class Put extends GenericMethod {
     public static OutputStream run(HttpNode resource) throws IOException {
         Put method;
         HttpConnection connection;
@@ -40,28 +40,24 @@ public class Put extends Method<Void> {
             private boolean closed = false;
             @Override
             public void close() throws IOException {
+                StatusLine statusLine;
+                int code;
+
                 if (closed) {
                     return;
                 }
                 closed = true;
                 super.close();
-                method.response(connection);
+                statusLine = method.response(connection);
+                code = statusLine.code;
+                if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
+                    throw new StatusException(statusLine);
+                }
             }
         };
     }
 
     private Put(HttpNode resource) {
         super("PUT", resource);
-    }
-
-    @Override
-    public Void process(HttpConnection connection, Response response) throws IOException {
-    	int status;
-
-    	status = response.getStatusLine().code;
-        if (status != StatusCode.OK && status != StatusCode.NO_CONTENT && status != StatusCode.CREATED) {
-        	throw new StatusException(response.getStatusLine());
-        }
-        return null;
     }
 }

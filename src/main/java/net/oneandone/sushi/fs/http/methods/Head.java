@@ -24,9 +24,13 @@ import net.oneandone.sushi.fs.http.model.StatusCode;
 import java.io.IOException;
 
 public class Head extends Method<String> {
+    public static String run(HttpNode resource, String header) throws IOException {
+        return new Head(resource, header).invoke();
+    }
+
     private final String header;
 
-    public Head(HttpNode resource, String header) {
+    private Head(HttpNode resource, String header) {
         super("HEAD", resource, null);
         this.header = header;
     }

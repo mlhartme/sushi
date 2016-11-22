@@ -195,7 +195,7 @@ public class HttpNode extends Node<HttpNode> {
             oldTryDir = tryDir;
             try {
                 tryDir = false;
-                result = new Head(this, Header.CONTENT_LENGTH).invoke();
+                result = Head.run(this, Header.CONTENT_LENGTH);
             } catch (IOException e) {
                 tryDir = oldTryDir;
                 throw e;
@@ -281,7 +281,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private String doHeadGetLastModified() throws IOException {
         String result;
-        result = new Head(this, "Last-Modified").invoke();
+        result = Head.run(this, "Last-Modified");
         if (result == null) {
             throw new ProtocolException("head request did not return last-modified header");
         }
@@ -440,7 +440,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = true;
-                new MkCol(this).invoke();
+                MkCol.run(this);
             }
         } catch (IOException e) {
             throw new MkdirException(this, e);
@@ -462,7 +462,7 @@ public class HttpNode extends Node<HttpNode> {
     public boolean exists() throws ExistsException {
         synchronized (tryLock) {
             try {
-                new Head(this, null).invoke();
+                Head.run(this, null);
                 return true;
             } catch (StatusException e) {
                 switch (e.getStatusLine().code) {
@@ -744,7 +744,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private boolean headIsNode() throws IOException {
         try {
-            new Head(this, null).invoke();
+            Head.run(this, null);
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().code) {

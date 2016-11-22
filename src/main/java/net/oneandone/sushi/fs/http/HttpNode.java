@@ -32,7 +32,6 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.http.methods.Delete;
 import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
@@ -346,7 +345,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = false;
-                Delete.run(this);
+                GenericMethod.delete(this);
             }
         } catch (FileNotFoundException e) {
             throw e;
@@ -372,10 +371,10 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 try {
-                    Delete.run(this);
+                    GenericMethod.delete(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    Delete.run(this);
+                    GenericMethod.delete(this);
                 }
             }
         } catch (DirectoryNotFoundException | DeleteException e) {
@@ -391,10 +390,10 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 try {
-                    Delete.run(this);
+                    GenericMethod.delete(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    Delete.run(this);
+                    GenericMethod.delete(this);
                 }
             }
         } catch (FileNotFoundException e) {

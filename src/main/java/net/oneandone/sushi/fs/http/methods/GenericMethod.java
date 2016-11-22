@@ -15,8 +15,10 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
+import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.model.Response;
@@ -27,6 +29,25 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GenericMethod extends Method<StatusLine> {
+    public static void delete(HttpNode resource) throws IOException {
+        GenericMethod delete;
+        StatusLine result;
+
+        delete = new GenericMethod("DELETE", resource);
+        result = delete.response(delete.request(false, null));
+        switch (result.code) {
+            case StatusCode.NO_CONTENT:
+                // success
+                return;
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.NOT_FOUND:
+                throw new FileNotFoundException(resource);
+            default:
+                throw new StatusException(result);
+        }
+    }
+
     /** See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT */
     public static OutputStream put(HttpNode resource) throws IOException {
         GenericMethod method;

@@ -218,7 +218,7 @@ public class HttpRoot implements Root<HttpNode> {
         aOut = new AsciiOutputStream(output, buffersize);
         if (proxy != null) {
             // https://www.ietf.org/rfc/rfc2817.txt
-            requestLine = new RequestLine("CONNECT", hostname + ":" + port, null);
+            requestLine = new RequestLine("CONNECT", hostname + ":" + port);
             requestLine.write(aOut);
             aOut.writeAsciiLn();
             aOut.flush();

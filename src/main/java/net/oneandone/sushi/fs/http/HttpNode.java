@@ -36,7 +36,6 @@ import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
 import net.oneandone.sushi.fs.http.methods.Method;
-import net.oneandone.sushi.fs.http.methods.Move;
 import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
@@ -417,11 +416,11 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
                 try {
                     dest.tryDir = tryDir;
-                    Move.run(this, dest, overwrite);
+                    GenericMethod.move(this, dest, overwrite);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     dest.tryDir = tryDir;
-                    Move.run(this, dest, overwrite);
+                    GenericMethod.move(this, dest, overwrite);
                 }
             }
         } catch (FileNotFoundException e) {

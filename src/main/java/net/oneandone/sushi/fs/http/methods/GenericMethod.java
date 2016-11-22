@@ -29,6 +29,27 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GenericMethod extends Method<StatusLine> {
+    public static void move(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
+        GenericMethod move;
+        StatusLine result;
+
+        move = new GenericMethod("MOVE", source);
+        move.addRequestHeader("Destination", destination.getUri().toString());
+        move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
+        result = move.response(move.request(false, null));
+        switch (result.code) {
+            case StatusCode.NO_CONTENT:
+            case StatusCode.CREATED:
+                return;
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.NOT_FOUND:
+                throw new FileNotFoundException(source);
+            default:
+                throw new StatusException(result);
+        }
+    }
+
     public static void mkcol(HttpNode resource) throws IOException {
         GenericMethod mkcol;
         StatusLine line;

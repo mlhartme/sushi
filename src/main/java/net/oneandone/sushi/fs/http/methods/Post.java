@@ -36,7 +36,7 @@ public class Post extends Method<byte[]> {
         ByteArrayOutputStream tmp;
 
     	status = response.getStatusLine().statusCode;
-        if (status != 200) {
+        if (status != STATUSCODE_OK) {
         	throw new StatusException(response.getStatusLine());
         }
         tmp = new ByteArrayOutputStream();

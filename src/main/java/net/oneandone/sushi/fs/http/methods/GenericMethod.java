@@ -29,6 +29,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GenericMethod extends Method<StatusLine> {
+    public static void mkcol(HttpNode resource) throws IOException {
+        GenericMethod mkcol;
+        StatusLine line;
+
+        mkcol = new GenericMethod("MKCOL", resource);
+        line = mkcol.response(mkcol.request(false, null));
+        if (line.code != StatusCode.CREATED) {
+            throw new StatusException(line);
+        }
+    }
+
     public static void delete(HttpNode resource) throws IOException {
         GenericMethod delete;
         StatusLine result;

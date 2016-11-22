@@ -36,7 +36,6 @@ import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
 import net.oneandone.sushi.fs.http.methods.Method;
-import net.oneandone.sushi.fs.http.methods.MkCol;
 import net.oneandone.sushi.fs.http.methods.Move;
 import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
@@ -438,7 +437,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = true;
-                MkCol.run(this);
+                GenericMethod.mkcol(this);
             }
         } catch (IOException e) {
             throw new MkdirException(this, e);

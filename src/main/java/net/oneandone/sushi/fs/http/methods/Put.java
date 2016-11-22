@@ -23,7 +23,10 @@ import net.oneandone.sushi.fs.http.model.Response;
 
 import java.io.IOException;
 
-/** the output stream is added manually by the user */
+/**
+ * The output stream is added manually by the user.
+ * See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT
+ */
 public class Put extends Method<Void> {
     public Put(HttpNode resource) {
         super("PUT", resource);
@@ -39,7 +42,7 @@ public class Put extends Method<Void> {
     	int status;
 
     	status = response.getStatusLine().statusCode;
-        if (status != STATUSCODE_NO_CONTENT && status != STATUSCODE_CREATED) {
+        if (status != STATUSCODE_OK && status != STATUSCODE_NO_CONTENT && status != STATUSCODE_CREATED) {
         	throw new StatusException(response.getStatusLine());
         }
         return null;

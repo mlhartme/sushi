@@ -420,11 +420,11 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
                 try {
                     dest.tryDir = tryDir;
-                    new Move(this, dest, overwrite).invoke();
+                    Move.run(this, dest, overwrite);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     dest.tryDir = tryDir;
-                    new Move(this, dest, overwrite).invoke();
+                    Move.run(this, dest, overwrite);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -834,6 +834,6 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public byte[] post(Body body) throws IOException {
-        return new Post(this, body).invoke();
+        return Post.run(this, body);
     }
 }

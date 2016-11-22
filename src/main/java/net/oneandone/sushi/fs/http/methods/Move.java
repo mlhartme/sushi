@@ -26,7 +26,11 @@ import net.oneandone.sushi.fs.http.model.StatusCode;
 import java.io.IOException;
 
 public class Move extends Method<Void> {
-    public Move(HttpNode source, HttpNode destination, boolean overwrite) {
+    public static void run(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
+        new Move(source, destination, overwrite).invoke();
+    }
+
+    private Move(HttpNode source, HttpNode destination, boolean overwrite) {
         super("MOVE", source);
         addRequestHeader("Destination", destination.getUri().toString());
         addRequestHeader("Overwrite", overwrite ? "T" : "F");

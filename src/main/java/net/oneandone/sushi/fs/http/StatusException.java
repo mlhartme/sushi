@@ -23,7 +23,7 @@ public class StatusException extends IOException {
     private final StatusLine statusline;
 
     public StatusException(StatusLine statusline) {
-        super(Integer.toString(statusline.statusCode));
+        super(Integer.toString(statusline.statuscode));
         this.statusline = statusline;
     }
 

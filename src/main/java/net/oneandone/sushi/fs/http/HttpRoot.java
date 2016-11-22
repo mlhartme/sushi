@@ -222,7 +222,7 @@ public class HttpRoot implements Root<HttpNode> {
             request.write(aOut);
             aOut.flush();
             response = Response.parse(aIn);
-            if (response.getStatusLine().statusCode != Statuscode.OK) {
+            if (response.getStatusLine().statuscode != Statuscode.OK) {
                 throw new ProtocolException("connect failed: " + response.getStatusLine());
             }
 

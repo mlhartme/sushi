@@ -34,7 +34,7 @@ public class Head extends Method<String> {
     public String process(HttpConnection connection, Response response) throws IOException {
     	int status;
 
-        status = response.getStatusLine().statusCode;
+        status = response.getStatusLine().statuscode;
         switch (status) {
         case Statuscode.OK:
             return header == null ? null : response.getHeaderList().getFirstValue(header);
@@ -47,7 +47,7 @@ public class Head extends Method<String> {
     protected boolean hasBody(Response response) {
         int status;
 
-        status = response.getStatusLine().statusCode;
+        status = response.getStatusLine().statuscode;
         return status != Statuscode.OK && super.hasBody(response);
     }
 }

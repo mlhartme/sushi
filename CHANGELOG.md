@@ -5,6 +5,7 @@
 * improved REST support in HttpNode
   * added `put` method (and changed the existing code to also consider status code 200 as a success response)
   * convenience methods to put and post Strings.
+  * moved statuscodes into separate class
 
 
 ### 3.1.2 (2016-07-26)

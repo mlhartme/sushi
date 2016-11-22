@@ -31,7 +31,7 @@ public class Delete extends Method<Void> {
 
     @Override
     public Void process(HttpConnection connection, Response response) throws IOException {
-        switch (response.getStatusLine().statusCode) {
+        switch (response.getStatusLine().statuscode) {
         case Statuscode.NO_CONTENT:
         	return null;
         case Statuscode.MOVED_PERMANENTLY:

@@ -46,7 +46,7 @@ public class PropPatch extends Method<Void> {
         List<MultiStatus> lst;
         MultiStatus ms;
 
-    	switch (response.getStatusLine().statusCode) {
+    	switch (response.getStatusLine().statuscode) {
     	case Statuscode.OK:
     		return null;
         case Statuscode.MOVED_PERMANENTLY:

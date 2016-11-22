@@ -21,7 +21,6 @@ import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
-import net.oneandone.sushi.fs.http.model.RequestLine;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.io.LineLogger;
@@ -183,7 +182,6 @@ public class HttpRoot implements Root<HttpNode> {
         int buffersize;
         InputStream input;
         OutputStream output;
-        RequestLine requestLine;
         AsciiOutputStream aOut;
         AsciiInputStream aIn;
         Response response;
@@ -218,8 +216,7 @@ public class HttpRoot implements Root<HttpNode> {
         aOut = new AsciiOutputStream(output, buffersize);
         if (proxy != null) {
             // https://www.ietf.org/rfc/rfc2817.txt
-            requestLine = new RequestLine("CONNECT", hostname + ":" + port);
-            requestLine.write(aOut);
+            aOut.writeRequestLine("CONNECT", hostname + ":" + port);
             aOut.writeAsciiLn();
             aOut.flush();
             response = Response.parse(aIn);

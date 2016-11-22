@@ -21,7 +21,6 @@ import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
-import net.oneandone.sushi.fs.http.model.RequestLine;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.xml.Namespace;
@@ -44,7 +43,8 @@ public abstract class Method<T> {
 
     protected final HttpNode resource;
 
-    public final RequestLine requestline;
+    public final String method;
+    public final String uri;
     public final HeaderList headerList;
     public final Body body;
 
@@ -56,7 +56,8 @@ public abstract class Method<T> {
     public Method(String method, HttpNode resource, Body body) {
         this.resource = resource;
         this.headerList = new HeaderList();
-        this.requestline = new RequestLine(method, resource.getRequestPath());
+        this.method = method;
+        this.uri = resource.getRequestPath();
         this.body = body;
 
         // prepare header
@@ -77,7 +78,7 @@ public abstract class Method<T> {
     }
 
     public String getUri() {
-    	return requestline.uri;
+    	return uri;
     }
 
     public List<MultiStatus> multistatus(Response response) throws IOException {
@@ -95,7 +96,7 @@ public abstract class Method<T> {
 
         connection = resource.getRoot().allocate();
         try {
-            connection.sendRequest(requestline, headerList, body);
+            connection.sendRequest(method, uri, headerList, body);
         } catch (IOException e) {
             try {
                 connection.close();

@@ -15,6 +15,8 @@
  */
 package net.oneandone.sushi.fs.http.io;
 
+import net.oneandone.sushi.fs.http.model.StatusLine;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,4 +47,14 @@ public class AsciiOutputStream extends BufferedOutputStream {
     public void writeAsciiLn() throws IOException {
         write(CRLF);
     }
+
+    public void writeRequestLine(String method, String uri) throws IOException {
+        writeAscii(method);
+        writeAscii(' ');
+        writeAscii(uri);
+        writeAscii(' ');
+        writeAscii(StatusLine.HTTP_1_1);
+        writeAsciiLn();
+    }
+
 }

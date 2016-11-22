@@ -32,7 +32,6 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.methods.Delete;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Head;
@@ -43,10 +42,10 @@ import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
-import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
+import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
 
@@ -541,7 +540,7 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 tryDir = false;
-                result = doPut();
+                result = Put.run(this);
                 if (add != null) {
                     result.write(add);
                 }
@@ -793,29 +792,9 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public void put(byte ... bytes) throws IOException {
-        try (OutputStream dest = doPut()) {
+        try (OutputStream dest = Put.run(this)) {
             dest.write(bytes);
         }
-    }
-
-    public OutputStream doPut() throws IOException {
-        Put method;
-        HttpConnection connection;
-
-        method = new Put(this);
-        connection = method.request();
-        return new ChunkedOutputStream(connection.getOutputStream()) {
-            private boolean closed = false;
-            @Override
-            public void close() throws IOException {
-                if (closed) {
-                    return;
-                }
-                closed = true;
-                super.close();
-                method.response(connection);
-            }
-        };
     }
 
     public String post(String str) throws IOException {

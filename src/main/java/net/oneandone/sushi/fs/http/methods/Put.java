@@ -18,18 +18,40 @@ package net.oneandone.sushi.fs.http.methods;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.StatusException;
+import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * The output stream is added manually by the user.
  * See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT
  */
 public class Put extends Method<Void> {
-    public Put(HttpNode resource) {
+    public static OutputStream run(HttpNode resource) throws IOException {
+        Put method;
+        HttpConnection connection;
+
+        method = new Put(resource);
+        connection = method.request();
+        return new ChunkedOutputStream(connection.getOutputStream()) {
+            private boolean closed = false;
+            @Override
+            public void close() throws IOException {
+                if (closed) {
+                    return;
+                }
+                closed = true;
+                super.close();
+                method.response(connection);
+            }
+        };
+    }
+
+    private Put(HttpNode resource) {
         super("PUT", resource);
     }
 

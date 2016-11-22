@@ -18,7 +18,7 @@ package net.oneandone.sushi.fs.http;
 import net.oneandone.sushi.fs.Root;
 import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 import net.oneandone.sushi.fs.http.io.AsciiOutputStream;
-import net.oneandone.sushi.fs.http.methods.Method;
+import net.oneandone.sushi.fs.http.methods.Statuscode;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -29,7 +29,6 @@ import net.oneandone.sushi.io.LoggingAsciiInputStream;
 import net.oneandone.sushi.io.LoggingAsciiOutputStream;
 
 import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -223,7 +222,7 @@ public class HttpRoot implements Root<HttpNode> {
             request.write(aOut);
             aOut.flush();
             response = Response.parse(aIn);
-            if (response.getStatusLine().statusCode != Method.STATUSCODE_OK) {
+            if (response.getStatusLine().statusCode != Statuscode.OK) {
                 throw new ProtocolException("connect failed: " + response.getStatusLine());
             }
 

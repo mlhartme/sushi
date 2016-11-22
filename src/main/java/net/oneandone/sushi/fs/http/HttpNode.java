@@ -43,6 +43,7 @@ import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
 import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.methods.Put;
+import net.oneandone.sushi.fs.http.methods.Statuscode;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -144,7 +145,7 @@ public class HttpNode extends Node<HttpNode> {
                     result = davSize();
                     isDav = true;
                 } catch (StatusException e) {
-                    if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                    if (e.getStatusLine().statusCode == Statuscode.METHOD_NOT_ALLOWED) {
                         isDav = false;
                         result = headSize();
                     } else {
@@ -229,7 +230,7 @@ public class HttpNode extends Node<HttpNode> {
                     result = davGetLastModified();
                     isDav = true;
                 } catch (StatusException e) {
-                    if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED) {
+                    if (e.getStatusLine().statusCode == Statuscode.METHOD_NOT_ALLOWED) {
                         isDav = false;
                         result = headGetLastModified();
                     } else {
@@ -465,10 +466,10 @@ public class HttpNode extends Node<HttpNode> {
                 return true;
             } catch (StatusException e) {
                 switch (e.getStatusLine().statusCode) {
-                    case Method.STATUSCODE_MOVED_PERMANENTLY:
+                    case Statuscode.MOVED_PERMANENTLY:
                         tryDir = !tryDir;
                         return true;
-                    case Method.STATUSCODE_NOT_FOUND:
+                    case Statuscode.NOT_FOUND:
                         return false;
                     default:
                         throw new ExistsException(this, e);
@@ -576,7 +577,7 @@ public class HttpNode extends Node<HttpNode> {
                 }
                 return result;
             } catch (StatusException e) {
-                if (e.getStatusLine().statusCode == Method.STATUSCODE_BAD_REQUEST) {
+                if (e.getStatusLine().statusCode == Statuscode.BAD_REQUEST) {
                     return null; // this is a file
                 }
                 throw new ListException(this, e);
@@ -700,8 +701,8 @@ public class HttpNode extends Node<HttpNode> {
                         result = davIsNode();
                         isDav = true;
                     } catch (StatusException e) {
-                        if (e.getStatusLine().statusCode == Method.STATUSCODE_METHOD_NOT_ALLOWED
-                                || e.getStatusLine().statusCode == Method.STATUSCODE_OK) {
+                        if (e.getStatusLine().statusCode == Statuscode.METHOD_NOT_ALLOWED
+                                || e.getStatusLine().statusCode == Statuscode.OK) {
                             isDav = false;
                             result = headIsNode();
                         } else {
@@ -748,9 +749,9 @@ public class HttpNode extends Node<HttpNode> {
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().statusCode) {
-                case Method.STATUSCODE_MOVED_PERMANENTLY:
+                case Statuscode.MOVED_PERMANENTLY:
                     return false;
-                case Method.STATUSCODE_NOT_FOUND:
+                case Statuscode.NOT_FOUND:
                     return false;
                 default:
                     throw e;

@@ -37,7 +37,7 @@ public class Get extends Method<InputStream> {
 
         status = response.getStatusLine().statusCode;
         switch (status) {
-        case STATUSCODE_OK:
+        case Statuscode.OK:
         	return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
 
@@ -50,11 +50,11 @@ public class Get extends Method<InputStream> {
                     super.close();
         		}
         	};
-        case STATUSCODE_MOVED_TEMPORARILY:
+        case Statuscode.MOVED_TEMPORARILY:
             throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
-        case STATUSCODE_NOT_FOUND:
-        case STATUSCODE_GONE:
-        case STATUSCODE_MOVED_PERMANENTLY:
+        case Statuscode.NOT_FOUND:
+        case Statuscode.GONE:
+        case Statuscode.MOVED_PERMANENTLY:
             throw new FileNotFoundException(resource);
         default:
         	throw new StatusException(response.getStatusLine());

@@ -42,7 +42,7 @@ public class Put extends Method<Void> {
     	int status;
 
     	status = response.getStatusLine().statusCode;
-        if (status != STATUSCODE_OK && status != STATUSCODE_NO_CONTENT && status != STATUSCODE_CREATED) {
+        if (status != Statuscode.OK && status != Statuscode.NO_CONTENT && status != Statuscode.CREATED) {
         	throw new StatusException(response.getStatusLine());
         }
         return null;

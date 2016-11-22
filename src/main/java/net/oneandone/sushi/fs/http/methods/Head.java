@@ -36,7 +36,7 @@ public class Head extends Method<String> {
 
         status = response.getStatusLine().statusCode;
         switch (status) {
-        case STATUSCODE_OK:
+        case Statuscode.OK:
             return header == null ? null : response.getHeaderList().getFirstValue(header);
         default:
         	throw new StatusException(response.getStatusLine());
@@ -48,6 +48,6 @@ public class Head extends Method<String> {
         int status;
 
         status = response.getStatusLine().statusCode;
-        return status != Method.STATUSCODE_OK && super.hasBody(response);
+        return status != Statuscode.OK && super.hasBody(response);
     }
 }

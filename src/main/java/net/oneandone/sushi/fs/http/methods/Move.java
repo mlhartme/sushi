@@ -34,12 +34,12 @@ public class Move extends Method<Void> {
     @Override
     public Void process(HttpConnection conection, Response response) throws IOException {
     	switch (response.getStatusLine().statusCode) {
-    	case STATUSCODE_NO_CONTENT:
-    	case STATUSCODE_CREATED:
+    	case Statuscode.NO_CONTENT:
+    	case Statuscode.CREATED:
     		return null;
-    	case STATUSCODE_MOVED_PERMANENTLY:
+    	case Statuscode.MOVED_PERMANENTLY:
     		throw new MovedPermanentlyException();
-        case STATUSCODE_NOT_FOUND:
+        case Statuscode.NOT_FOUND:
             throw new FileNotFoundException(resource);
     	default:
         	throw new StatusException(response.getStatusLine());

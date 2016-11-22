@@ -38,22 +38,6 @@ public abstract class Method<T> {
     public static final String XML_PROP = "prop";
     public static final String XML_RESPONSE = "response";
 
-    //-- RFC 1945 and 2518 status codes
-    public static final int STATUSCODE_OK = 200;
-    public static final int STATUSCODE_CREATED = 201;
-    public static final int STATUSCODE_NO_CONTENT = 204;
-    public static final int STATUSCODE_RESET_CONTENT = 205;
-    public static final int STATUSCODE_MULTI_STATUS = 207;
-
-    public static final int STATUSCODE_MOVED_PERMANENTLY = 301;
-    public static final int STATUSCODE_MOVED_TEMPORARILY = 302;
-    public static final int STATUSCODE_NOT_MODIFIED = 304;
-
-    public static final int STATUSCODE_BAD_REQUEST = 400;
-    public static final int STATUSCODE_NOT_FOUND = 404;
-    public static final int STATUSCODE_METHOD_NOT_ALLOWED = 405;
-    public static final int STATUSCODE_GONE = 410;
-
     //--
 
     protected final HttpNode resource;
@@ -190,10 +174,10 @@ public abstract class Method<T> {
         int status;
 
         status = response.getStatusLine().statusCode;
-        return status >= Method.STATUSCODE_OK
-                && status != Method.STATUSCODE_NO_CONTENT
-                && status != Method.STATUSCODE_NOT_MODIFIED
-                && status != Method.STATUSCODE_RESET_CONTENT;
+        return status >= Statuscode.OK
+                && status != Statuscode.NO_CONTENT
+                && status != Statuscode.NOT_MODIFIED
+                && status != Statuscode.RESET_CONTENT;
     }
 
     private Response receive(HttpConnection connection) throws IOException {
@@ -224,7 +208,7 @@ public abstract class Method<T> {
                 throw e;
             }
 
-        } while (response.getStatusLine().statusCode < Method.STATUSCODE_OK);
+        } while (response.getStatusLine().statusCode < Statuscode.OK);
         return response;
     }
 }

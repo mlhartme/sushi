@@ -33,7 +33,6 @@ import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.methods.GenericMethod;
-import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -621,7 +620,7 @@ public class HttpNode extends Node<HttpNode> {
     	Property result;
     	Name n;
 
-    	n = new Name(name, Method.DAV);
+    	n = new Name(name, GenericMethod.DAV);
         try {
             synchronized (tryLock) {
             	try {
@@ -639,7 +638,7 @@ public class HttpNode extends Node<HttpNode> {
 
     public void setAttribute(String name, String value) throws HttpException {
         try {
-        	setProperty(new Name(name, Method.DAV), value);
+        	setProperty(new Name(name, GenericMethod.DAV), value);
 		} catch (IOException e) {
 			throw new HttpException(this, e);
 		}

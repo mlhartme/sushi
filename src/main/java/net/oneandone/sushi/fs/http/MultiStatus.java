@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.http;
 
-import net.oneandone.sushi.fs.http.methods.Method;
+import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;
@@ -48,9 +48,9 @@ public class MultiStatus {
         } catch (SAXException e) {
             throw new IOException(e.getMessage(), e);
         }
-   		Dom.require(root, "multistatus", Method.DAV);
+   		Dom.require(root, "multistatus", GenericMethod.DAV);
 		result = new ArrayList<>();
-		iter = Method.DAV.childElements(root, Method.XML_RESPONSE);
+		iter = GenericMethod.DAV.childElements(root, GenericMethod.XML_RESPONSE);
 		while (iter.hasNext()) {
 			fromXml(iter.next(), result);
 		}
@@ -67,17 +67,17 @@ public class MultiStatus {
         int status;
         ChildElements propIter;
 
-        Dom.require(response, Method.XML_RESPONSE, Method.DAV);
-		href = Dom.getFirstChildElement(response, "href", Method.DAV);
+        Dom.require(response, GenericMethod.XML_RESPONSE, GenericMethod.DAV);
+		href = Dom.getFirstChildElement(response, "href", GenericMethod.DAV);
         if (href == null) {
             throw new ProtocolException("missing href");
         }
         str = Dom.getString(href).trim();
-        iter = Method.DAV.childElements(response, XML_PROPSTAT);
+        iter = GenericMethod.DAV.childElements(response, XML_PROPSTAT);
         while (iter.hasNext()) {
             propstat = iter.next();
-            propstatStatus = Dom.getString(Dom.getFirstChildElement(propstat, XML_STATUS, Method.DAV));
-            prop = Dom.getFirstChildElement(propstat, Method.XML_PROP, Method.DAV);
+            propstatStatus = Dom.getString(Dom.getFirstChildElement(propstat, XML_STATUS, GenericMethod.DAV));
+            prop = Dom.getFirstChildElement(propstat, GenericMethod.XML_PROP, GenericMethod.DAV);
             status = StatusLine.parse(propstatStatus).code;
             propIter = new ChildElements(prop);
             while (propIter.hasNext()) {

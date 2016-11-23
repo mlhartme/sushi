@@ -47,9 +47,4 @@ public class Head extends Method<String> {
         	throw new StatusException(response.getStatusLine());
         }
     }
-
-    @Override
-    protected boolean hasBody(Response response) {
-        return false;
-    }
 }

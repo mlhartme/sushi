@@ -163,14 +163,16 @@ public abstract class Method<T> {
 
     //--
 
-    protected boolean hasBody(Response response) {
+    /** https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.3 */
+    private boolean hasBody(Response response) {
         int status;
 
         status = response.getStatusLine().code;
-        return status >= StatusCode.OK
-                && status != StatusCode.NO_CONTENT
-                && status != StatusCode.NOT_MODIFIED
-                && status != StatusCode.RESET_CONTENT;
+        if ("HEAD".equals(method)) {
+            return false;
+        } else {
+            return status >= StatusCode.OK && status != StatusCode.NO_CONTENT && status != StatusCode.NOT_MODIFIED && status != StatusCode.RESET_CONTENT;
+        }
     }
 
     public Response receive(HttpConnection connection) throws IOException {

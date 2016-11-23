@@ -215,11 +215,12 @@ public class HttpRoot implements Root<HttpNode> {
         aIn = new AsciiInputStream(input, buffersize);
         aOut = new AsciiOutputStream(output, buffersize);
         if (proxy != null) {
+            // TODO: real method
             // https://www.ietf.org/rfc/rfc2817.txt
             aOut.writeRequestLine("CONNECT", hostname + ":" + port);
             aOut.writeAsciiLn();
             aOut.flush();
-            response = Response.parse(aIn);
+            response = Response.parse(null, aIn);
             if (response.getStatusLine().code != StatusCode.OK) {
                 throw new ProtocolException("connect failed: " + response.getStatusLine());
             }

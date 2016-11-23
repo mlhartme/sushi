@@ -76,7 +76,7 @@ public class HttpConnection implements Closeable {
     }
 
     public Response receiveResponseHeader() throws IOException {
-        return Response.parse(input);
+        return Response.parse(this, input);
     }
 
     public void receiveResponseBody(Response response) throws IOException {

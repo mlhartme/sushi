@@ -58,13 +58,13 @@ public class GenericMethod {
                 public void close() throws IOException {
                     if (!freed) {
                         freed = true;
-                        get.free(response.response, response.connection);
+                        get.free(response.response);
                     }
                     super.close();
                 }
             };
         } else {
-            get.free(response.response, response.connection);
+            get.free(response.response);
             switch (response.statusLine.code) {
                 case StatusCode.MOVED_TEMPORARILY:
                     throw new MovedTemporarilyException(response.headerList.getFirstValue("Location"));
@@ -292,10 +292,6 @@ public class GenericMethod {
 
     //-- main api
 
-    public GenericResponse invoke(Body body) throws IOException {
-        return response(request(false, body));
-    }
-
     public HttpConnection request(boolean putChunked, Body body) throws IOException {
         HttpConnection connection;
 
@@ -353,19 +349,19 @@ public class GenericMethod {
                     }
                 }
             } finally {
-                free(response, connection);
+                free(response);
             }
         }
-        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response, connection);
+        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response);
     }
 
     //--
 
-    protected void free(Response response, HttpConnection connection) throws IOException {
+    protected void free(Response response) throws IOException {
         if (response.close()) {
-            connection.close();
+            response.connection.close();
         }
-        resource.getRoot().free(connection);
+        resource.getRoot().free(response.connection);
     }
 
     //--
@@ -421,7 +417,7 @@ public class GenericMethod {
                 }
             } catch (IOException e) {
                 try {
-                    free(response, connection);
+                    free(response);
                 } catch (IOException e2) {
                     e.addSuppressed(e2);
                 }

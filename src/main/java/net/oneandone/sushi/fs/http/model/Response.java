@@ -15,12 +15,13 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
+import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.io.AsciiInputStream;
 
 import java.io.IOException;
 
 public class Response {
-    public static Response parse(AsciiInputStream sessionBuffer) throws IOException {
+    public static Response parse(HttpConnection connection, AsciiInputStream sessionBuffer) throws IOException {
         String str;
         StatusLine statusline;
 
@@ -29,14 +30,16 @@ public class Response {
             throw new ProtocolException("response header expected, got eof");
         }
         statusline = StatusLine.parse(str);
-        return new Response(statusline, HeaderList.parse(sessionBuffer));
+        return new Response(connection, statusline, HeaderList.parse(sessionBuffer));
     }
 
+    public final HttpConnection connection;
     private final StatusLine statusline;
     private final HeaderList headerList;
     private Body body;
 
-    public Response(StatusLine statusline, HeaderList headerList) {
+    public Response(HttpConnection connection, StatusLine statusline, HeaderList headerList) {
+        this.connection = connection;
         this.statusline = statusline;
         this.headerList = headerList;
     }

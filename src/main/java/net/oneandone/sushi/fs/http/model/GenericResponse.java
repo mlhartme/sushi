@@ -15,20 +15,16 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
-import net.oneandone.sushi.fs.http.HttpConnection;
-
 public class GenericResponse {
     public final StatusLine statusLine;
     public final HeaderList headerList;
     public final byte[] body;
     public final Response response;
-    public final HttpConnection connection;
 
-    public GenericResponse(StatusLine statusLine, HeaderList headerList, byte[] body, Response response, HttpConnection connection) {
+    public GenericResponse(StatusLine statusLine, HeaderList headerList, byte[] body, Response response) {
         this.statusLine = statusLine;
         this.headerList = headerList;
         this.body = body;
         this.response = response;
-        this.connection = connection;
     }
 }

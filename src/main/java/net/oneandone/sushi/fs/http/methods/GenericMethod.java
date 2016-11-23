@@ -19,6 +19,7 @@ import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
+import net.oneandone.sushi.fs.http.MovedTemporarilyException;
 import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.Property;
@@ -34,11 +35,47 @@ import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.FilterInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
 public class GenericMethod extends Method<GenericResponse> {
+    public static InputStream get(HttpNode resource) throws IOException {
+        GenericMethod get;
+        GenericResponse response;
+
+        get = new GenericMethod("GET", resource, true);
+        response = get.response(get.request(false, null));
+        if (response.statusLine.code == StatusCode.OK) {
+            return new FilterInputStream(response.response.getBody().content) {
+                private boolean freed = false;
+
+                @Override
+                public void close() throws IOException {
+                    if (!freed) {
+                        freed = true;
+                        get.free(response.response, response.connection);
+                    }
+                    super.close();
+                }
+            };
+        } else {
+            get.free(response.response, response.connection);
+            switch (response.statusLine.code) {
+                case StatusCode.MOVED_TEMPORARILY:
+                    throw new MovedTemporarilyException(response.headerList.getFirstValue("Location"));
+                case StatusCode.NOT_FOUND:
+                case StatusCode.GONE:
+                case StatusCode.MOVED_PERMANENTLY:
+                    throw new FileNotFoundException(resource);
+                default:
+                    throw new StatusException(response.statusLine);
+            }
+        }
+    }
+
     public static String head(HttpNode resource, String header) throws IOException {
         GenericMethod head;
         GenericResponse response;
@@ -214,24 +251,32 @@ public class GenericMethod extends Method<GenericResponse> {
     //--
 
     public GenericMethod(String method, HttpNode resource) {
-        super(method, resource);
+        this(method, resource, false);
+    }
+
+    public GenericMethod(String method, HttpNode resource, boolean bodyStream) {
+        super(method, resource, bodyStream);
     }
 
     @Override
     public GenericResponse process(HttpConnection connection, Response response) throws IOException {
         Body body;
-        byte[] array;
         Buffer buffer;
+        byte[] bytes;
 
         body = response.getBody();
         if (body == null) {
-            array = null;
+            bytes = null;
         } else {
-            buffer = resource.getWorld().getBuffer();
-            synchronized (buffer) {
-                array = buffer.readBytes(body.content);
+            if (bodyStream) {
+                bytes = null;
+            } else {
+                buffer = resource.getWorld().getBuffer();
+                synchronized (buffer) {
+                    bytes = buffer.readBytes(body.content);
+                }
             }
         }
-        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), array);
+        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response, connection);
     }
 }

@@ -47,11 +47,14 @@ public abstract class Method<T> {
     private final String uri;
     private final HeaderList headerList;
 
-    public Method(String method, HttpNode resource) {
+    protected final boolean bodyStream;
+
+    public Method(String method, HttpNode resource, boolean bodyStream) {
         this.resource = resource;
         this.headerList = new HeaderList();
         this.method = method;
         this.uri = resource.getRequestPath();
+        this.bodyStream = bodyStream;
         resource.getRoot().addDefaultHeader(headerList);
     }
 
@@ -124,17 +127,15 @@ public abstract class Method<T> {
             }
             throw e;
         }
-        freeOnSuccess(response, connection);
+        if (!bodyStream) {
+            free(response, connection);
+        }
         return result;
     }
 
     public abstract T process(HttpConnection connection, Response response) throws IOException;
 
     //--
-
-    protected void freeOnSuccess(Response response, HttpConnection connection) throws IOException {
-        free(response, connection);
-    }
 
     protected void free(Response response, HttpConnection connection) throws IOException {
         if (response.close()) {

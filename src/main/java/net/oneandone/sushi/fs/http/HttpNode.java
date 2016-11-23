@@ -33,7 +33,6 @@ import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.methods.GenericMethod;
-import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
@@ -492,7 +491,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             tryDir = false;
             try {
-                return Get.run(this);
+                return GenericMethod.get(this);
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {

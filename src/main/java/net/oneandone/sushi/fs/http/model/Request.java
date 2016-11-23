@@ -28,18 +28,11 @@ public class Request {
     private final String uri;
     private final HeaderList headerList;
 
-    private final boolean bodyStream;
-
     public Request(String method, HttpNode resource) {
-        this(method, resource, false);
-    }
-
-    public Request(String method, HttpNode resource, boolean bodyStream) {
         this.resource = resource;
         this.headerList = new HeaderList();
         this.method = method;
         this.uri = resource.getRequestPath();
-        this.bodyStream = bodyStream;
         resource.getRoot().addDefaultHeader(headerList);
     }
 
@@ -61,21 +54,17 @@ public class Request {
         Body body;
         Buffer buffer;
 
-        response = reponse(connection);
-        if (bodyStream) {
-            // don't free
-        } else {
-            try {
-                body = response.getBody();
-                if (body != null) {
-                    buffer = resource.getWorld().getBuffer();
-                    synchronized (buffer) {
-                        response.setBodyBytes(buffer.readBytes(body.content));
-                    }
+        response = response(connection);
+        try {
+            body = response.getBody();
+            if (body != null) {
+                buffer = resource.getWorld().getBuffer();
+                synchronized (buffer) {
+                    response.setBodyBytes(buffer.readBytes(body.content));
                 }
-            } finally {
-                free(response);
             }
+        } finally {
+            free(response);
         }
         return response;
     }
@@ -115,7 +104,7 @@ public class Request {
         return connection;
     }
 
-    private Response reponse(HttpConnection connection) throws IOException {
+    public Response response(HttpConnection connection) throws IOException {
         Response response;
 
         do {

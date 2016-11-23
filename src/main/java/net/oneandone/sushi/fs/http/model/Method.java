@@ -43,8 +43,9 @@ public class Method {
         Request get;
         Response response;
 
-        get = new Request("GET", resource, true);
-        response = get.request((Body) null);
+        get = new Request("GET", resource);
+        get.bodyHeader(null);
+        response = get.response(get.open(null));
         if (response.getStatusLine().code == StatusCode.OK) {
             return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;

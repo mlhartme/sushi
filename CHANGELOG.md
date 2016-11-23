@@ -5,6 +5,7 @@
 * improved REST support in HttpNode
   * added `put` method (and changed the existing code to also consider status code 200 as a success response)
   * convenience methods to put and post Strings.
+  * replaced individual method implementations by one generic implementation
   * moved statuscodes into separate class
 
 

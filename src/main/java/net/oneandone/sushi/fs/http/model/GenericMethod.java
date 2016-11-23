@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.fs.http.methods;
+package net.oneandone.sushi.fs.http.model;
 
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
@@ -25,12 +25,6 @@ import net.oneandone.sushi.fs.http.Name;
 import net.oneandone.sushi.fs.http.Property;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
-import net.oneandone.sushi.fs.http.model.Body;
-import net.oneandone.sushi.fs.http.model.Header;
-import net.oneandone.sushi.fs.http.model.HeaderList;
-import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.fs.http.model.StatusCode;
-import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.io.Buffer;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Namespace;

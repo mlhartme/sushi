@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.fs.http.methods;
+package net.oneandone.sushi.fs.http.model;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
-import net.oneandone.sushi.fs.http.model.HeaderList;
-import net.oneandone.sushi.fs.http.model.Response;
-import net.oneandone.sushi.fs.http.model.StatusLine;
 
 public class GenericResponse {
     public final StatusLine statusLine;

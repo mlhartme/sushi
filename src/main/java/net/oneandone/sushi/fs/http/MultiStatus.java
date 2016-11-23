@@ -15,7 +15,7 @@
  */
 package net.oneandone.sushi.fs.http;
 
-import net.oneandone.sushi.fs.http.methods.GenericMethod;
+import net.oneandone.sushi.fs.http.model.GenericMethod;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;

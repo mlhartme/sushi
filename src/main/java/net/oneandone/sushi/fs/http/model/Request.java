@@ -17,19 +17,20 @@ package net.oneandone.sushi.fs.http.model;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
+import net.oneandone.sushi.fs.http.HttpRoot;
 import net.oneandone.sushi.io.Buffer;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Request {
-    private final HttpNode resource;
+    private final HttpRoot root;
     private final String method;
     private final String uri;
     private final HeaderList headerList;
 
     public Request(String method, HttpNode resource) {
-        this.resource = resource;
+        this.root = resource.getRoot();
         this.headerList = new HeaderList();
         this.method = method;
         this.uri = resource.getRequestPath();
@@ -64,13 +65,13 @@ public class Request {
     public HttpConnection open(Body body) throws IOException {
         HttpConnection connection;
 
-        connection = resource.getRoot().allocate();
+        connection = root.allocate();
         try {
             connection.sendRequest(method, uri, headerList, body);
         } catch (IOException e) {
             try {
                 connection.close();
-                resource.getRoot().free(connection);
+                root.free(connection);
             } catch (IOException e2) {
                 e.addSuppressed(e2);
             }
@@ -88,7 +89,7 @@ public class Request {
             } catch (IOException e) {
                 try {
                     connection.close();
-                    resource.getRoot().free(connection);
+                    root.free(connection);
                 } catch (IOException e2) {
                     e.addSuppressed(e2);
                 }
@@ -120,7 +121,7 @@ public class Request {
         try {
             body = response.getBody();
             if (body != null) {
-                buffer = resource.getWorld().getBuffer();
+                buffer = root.getFilesystem().getWorld().getBuffer();
                 synchronized (buffer) {
                     response.setBodyBytes(buffer.readBytes(body.content));
                 }
@@ -143,14 +144,14 @@ public class Request {
     //--
 
     public List<MultiStatus> multistatus(byte[] responseBody) throws IOException {
-        return MultiStatus.fromResponse(resource.getWorld().getXml(), responseBody);
+        return MultiStatus.fromResponse(root.getFilesystem().getWorld().getXml(), responseBody);
     }
 
     protected void free(Response response) throws IOException {
         if (response.close()) {
             response.connection.close();
         }
-        resource.getRoot().free(response.connection);
+        root.free(response.connection);
     }
 
     /** https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.3 */

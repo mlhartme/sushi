@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs.http;
 
 import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.ChildElements;
@@ -35,14 +34,12 @@ public class MultiStatus {
     private static final String XML_STATUS = "status";
     private static final String XML_PROPSTAT = "propstat";
 
-	public static List<MultiStatus> fromResponse(Xml xml, Response response) throws IOException {
+	public static List<MultiStatus> fromResponse(Xml xml, InputStream in) throws IOException {
         Builder builder;
-        InputStream in;
 		Element root;
 		List<MultiStatus> result;
 		ChildElements iter;
 
-        in = response.getBody().content;
         try {
             builder = xml.getBuilder();
             synchronized (builder) {

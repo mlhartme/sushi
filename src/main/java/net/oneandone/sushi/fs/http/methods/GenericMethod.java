@@ -21,14 +21,16 @@ import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
+import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.fs.http.model.StatusLine;
+import net.oneandone.sushi.io.Buffer;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class GenericMethod extends Method<StatusLine> {
+public class GenericMethod extends Method<GenericResponse> {
     public static void move(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
         GenericMethod move;
         StatusLine result;
@@ -36,7 +38,7 @@ public class GenericMethod extends Method<StatusLine> {
         move = new GenericMethod("MOVE", source);
         move.addRequestHeader("Destination", destination.getUri().toString());
         move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
-        result = move.response(move.request(false, null));
+        result = move.response(move.request(false, null)).statusLine;
         switch (result.code) {
             case StatusCode.NO_CONTENT:
             case StatusCode.CREATED:
@@ -55,7 +57,7 @@ public class GenericMethod extends Method<StatusLine> {
         StatusLine line;
 
         mkcol = new GenericMethod("MKCOL", resource);
-        line = mkcol.response(mkcol.request(false, null));
+        line = mkcol.response(mkcol.request(false, null)).statusLine;
         if (line.code != StatusCode.CREATED) {
             throw new StatusException(line);
         }
@@ -66,7 +68,7 @@ public class GenericMethod extends Method<StatusLine> {
         StatusLine result;
 
         delete = new GenericMethod("DELETE", resource);
-        result = delete.response(delete.request(false, null));
+        result = delete.response(delete.request(false, null)).statusLine;
         switch (result.code) {
             case StatusCode.NO_CONTENT:
                 // success
@@ -99,7 +101,7 @@ public class GenericMethod extends Method<StatusLine> {
                 }
                 closed = true;
                 super.close();
-                statusLine = method.response(connection);
+                statusLine = method.response(connection).statusLine;
                 code = statusLine.code;
                 if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
                     throw new StatusException(statusLine);
@@ -115,7 +117,20 @@ public class GenericMethod extends Method<StatusLine> {
     }
 
     @Override
-    public StatusLine process(HttpConnection connection, Response response) throws IOException {
-        return response.getStatusLine();
+    public GenericResponse process(HttpConnection connection, Response response) throws IOException {
+        Body body;
+        byte[] array;
+        Buffer buffer;
+
+        body = response.getBody();
+        if (body == null) {
+            array = null;
+        } else {
+            buffer = resource.getWorld().getBuffer();
+            synchronized (buffer) {
+                array = buffer.readBytes(body.content);
+            }
+        }
+        return new GenericResponse(response.getStatusLine(), array);
     }
 }

@@ -38,12 +38,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class GenericMethod {
+public class Request {
     public static InputStream get(HttpNode resource) throws IOException {
-        GenericMethod get;
+        Request get;
         Response response;
 
-        get = new GenericMethod("GET", resource, true);
+        get = new Request("GET", resource, true);
         response = get.request((Body) null);
         if (response.getStatusLine().code == StatusCode.OK) {
             return new FilterInputStream(response.getBody().content) {
@@ -74,11 +74,11 @@ public class GenericMethod {
     }
 
     public static String head(HttpNode resource, String header) throws IOException {
-        GenericMethod head;
+        Request head;
         Response response;
         int status;
 
-        head = new GenericMethod("HEAD", resource);
+        head = new Request("HEAD", resource);
         response = head.request((Body) null);
         status = response.getStatusLine().code;
         switch (status) {
@@ -94,7 +94,7 @@ public class GenericMethod {
         Document document;
         Element set;
         Element prop;
-        GenericMethod proppatch;
+        Request proppatch;
         Response response;
         List<MultiStatus> lst;
         MultiStatus ms;
@@ -104,7 +104,7 @@ public class GenericMethod {
         set = Builder.element(document.getDocumentElement(), "set" , DAV);
         prop = Builder.element(set, XML_PROP, DAV);
         property.addXml(prop);
-        proppatch = new GenericMethod("PROPPATCH", resource);
+        proppatch = new Request("PROPPATCH", resource);
         response = proppatch.request(Body.forDom(xml.getSerializer(), document));
 
         switch (response.getStatusLine().code) {
@@ -128,7 +128,7 @@ public class GenericMethod {
         Xml xml;
         Document document;
         Builder builder;
-        GenericMethod propfind;
+        Request propfind;
         Response response;
 
         xml = resource.getWorld().getXml();
@@ -137,7 +137,7 @@ public class GenericMethod {
             document = builder.createDocument("propfind", DAV);
         }
         name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
-        propfind = new GenericMethod("PROPFIND", resource);
+        propfind = new Request("PROPFIND", resource);
         propfind.addRequestHeader("Depth", String.valueOf(depth));
         response = propfind.request(Body.forDom(xml.getSerializer(), document));
 
@@ -155,10 +155,10 @@ public class GenericMethod {
     }
 
     public static void move(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
-        GenericMethod move;
+        Request move;
         StatusLine result;
 
-        move = new GenericMethod("MOVE", source);
+        move = new Request("MOVE", source);
         move.addRequestHeader("Destination", destination.getUri().toString());
         move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
         result = move.request((Body) null).getStatusLine();
@@ -176,10 +176,10 @@ public class GenericMethod {
     }
 
     public static void mkcol(HttpNode resource) throws IOException {
-        GenericMethod mkcol;
+        Request mkcol;
         StatusLine line;
 
-        mkcol = new GenericMethod("MKCOL", resource);
+        mkcol = new Request("MKCOL", resource);
         line = mkcol.request((Body) null).getStatusLine();
         if (line.code != StatusCode.CREATED) {
             throw new StatusException(line);
@@ -187,10 +187,10 @@ public class GenericMethod {
     }
 
     public static void delete(HttpNode resource) throws IOException {
-        GenericMethod delete;
+        Request delete;
         StatusLine result;
 
-        delete = new GenericMethod("DELETE", resource);
+        delete = new Request("DELETE", resource);
         result = delete.request((Body) null).getStatusLine();
         switch (result.code) {
             case StatusCode.NO_CONTENT:
@@ -207,10 +207,10 @@ public class GenericMethod {
 
     /** See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT */
     public static OutputStream put(HttpNode resource) throws IOException {
-        GenericMethod method;
+        Request method;
         HttpConnection connection;
 
-        method = new GenericMethod("PUT", resource);
+        method = new Request("PUT", resource);
         connection = method.request(true, null);
         return new ChunkedOutputStream(connection.getOutputStream()) {
             private boolean closed = false;
@@ -234,10 +234,10 @@ public class GenericMethod {
     }
 
     public static byte[] post(HttpNode resource, Body body) throws IOException {
-        GenericMethod post;
+        Request post;
         Response response;
 
-        post = new GenericMethod("POST", resource);
+        post = new Request("POST", resource);
         response = post.request((Body) null);
         if (response.getStatusLine().code != StatusCode.OK) {
             throw new StatusException(response.getStatusLine());
@@ -260,11 +260,11 @@ public class GenericMethod {
 
     private final boolean bodyStream;
 
-    public GenericMethod(String method, HttpNode resource) {
+    public Request(String method, HttpNode resource) {
         this(method, resource, false);
     }
 
-    public GenericMethod(String method, HttpNode resource, boolean bodyStream) {
+    public Request(String method, HttpNode resource, boolean bodyStream) {
         this.resource = resource;
         this.headerList = new HeaderList();
         this.method = method;

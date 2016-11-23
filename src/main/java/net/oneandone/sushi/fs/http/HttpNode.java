@@ -34,7 +34,6 @@ import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
-import net.oneandone.sushi.fs.http.methods.Head;
 import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.methods.PropFind;
@@ -191,7 +190,7 @@ public class HttpNode extends Node<HttpNode> {
             oldTryDir = tryDir;
             try {
                 tryDir = false;
-                result = Head.run(this, Header.CONTENT_LENGTH);
+                result = GenericMethod.head(this, Header.CONTENT_LENGTH);
             } catch (IOException e) {
                 tryDir = oldTryDir;
                 throw e;
@@ -277,7 +276,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private String doHeadGetLastModified() throws IOException {
         String result;
-        result = Head.run(this, "Last-Modified");
+        result = GenericMethod.head(this, "Last-Modified");
         if (result == null) {
             throw new ProtocolException("head request did not return last-modified header");
         }
@@ -458,7 +457,7 @@ public class HttpNode extends Node<HttpNode> {
     public boolean exists() throws ExistsException {
         synchronized (tryLock) {
             try {
-                Head.run(this, null);
+                GenericMethod.head(this, null);
                 return true;
             } catch (StatusException e) {
                 switch (e.getStatusLine().code) {
@@ -740,7 +739,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private boolean headIsNode() throws IOException {
         try {
-            Head.run(this, null);
+            GenericMethod.head(this, null);
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().code) {

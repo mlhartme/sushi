@@ -31,6 +31,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GenericMethod extends Method<GenericResponse> {
+    public static String head(HttpNode resource, String header) throws IOException {
+        GenericMethod head;
+        GenericResponse response;
+        int status;
+
+        head = new GenericMethod("HEAD", resource);
+        response = head.response(head.request(false, null));
+        status = response.statusLine.code;
+        switch (status) {
+            case StatusCode.OK:
+                return header == null ? null : response.headerList.getFirstValue(header);
+            default:
+                throw new StatusException(response.statusLine);
+        }
+    }
+
     public static void move(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
         GenericMethod move;
         StatusLine result;
@@ -131,6 +147,6 @@ public class GenericMethod extends Method<GenericResponse> {
                 array = buffer.readBytes(body.content);
             }
         }
-        return new GenericResponse(response.getStatusLine(), array);
+        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), array);
     }
 }

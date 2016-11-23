@@ -15,14 +15,17 @@
  */
 package net.oneandone.sushi.fs.http.methods;
 
+import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
 public class GenericResponse {
     public final StatusLine statusLine;
+    public final HeaderList headerList;
     public final byte[] body;
 
-    public GenericResponse(StatusLine statusLine, byte[] body) {
+    public GenericResponse(StatusLine statusLine, HeaderList headerList, byte[] body) {
         this.statusLine = statusLine;
+        this.headerList = headerList;
         this.body = body;
     }
 }

@@ -21,7 +21,6 @@ import net.oneandone.sushi.fs.http.HttpRoot;
 import net.oneandone.sushi.io.Buffer;
 
 import java.io.IOException;
-import java.util.List;
 
 public class Request {
     private final HttpRoot root;
@@ -142,10 +141,6 @@ public class Request {
     }
 
     //--
-
-    public List<MultiStatus> multistatus(byte[] responseBody) throws IOException {
-        return MultiStatus.fromResponse(root.getFilesystem().getWorld().getXml(), responseBody);
-    }
 
     protected void free(Response response) throws IOException {
         if (response.close()) {

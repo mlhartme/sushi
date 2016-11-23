@@ -114,7 +114,7 @@ public class Method {
             case StatusCode.MOVED_PERMANENTLY:
                 throw new MovedPermanentlyException();
             case StatusCode.MULTI_STATUS:
-                lst = proppatch.multistatus(response.getBodyBytes());
+                lst = MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBodyBytes());
                 ms = MultiStatus.lookupOne(lst, property.getName());
                 if (ms.status != StatusCode.OK) {
                     throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));
@@ -144,7 +144,7 @@ public class Method {
 
         switch (response.getStatusLine().code) {
             case StatusCode.MULTI_STATUS:
-                return propfind.multistatus(response.getBodyBytes());
+                return MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBodyBytes());
             case StatusCode.BAD_REQUEST: // TODO
             case StatusCode.MOVED_PERMANENTLY:
                 throw new MovedPermanentlyException();

@@ -199,6 +199,18 @@ public class GenericMethod extends Method<GenericResponse> {
         };
     }
 
+    public static byte[] post(HttpNode resource, Body body) throws IOException {
+        GenericMethod post;
+        GenericResponse response;
+
+        post = new GenericMethod("POST", resource);
+        response = post.response(post.request(false, body));
+        if (response.statusLine.code != StatusCode.OK) {
+            throw new StatusException(response.statusLine);
+        }
+        return response.body;
+    }
+
     //--
 
     public GenericMethod(String method, HttpNode resource) {

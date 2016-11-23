@@ -35,7 +35,6 @@ import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Method;
-import net.oneandone.sushi.fs.http.methods.Post;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -806,6 +805,6 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public byte[] post(Body body) throws IOException {
-        return Post.run(this, body);
+        return GenericMethod.post(this, body);
     }
 }

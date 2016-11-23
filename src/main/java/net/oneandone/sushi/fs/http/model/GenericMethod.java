@@ -339,22 +339,21 @@ public class GenericMethod {
         byte[] bytes;
 
         response = receive(connection);
-        body = response.getBody();
-        if (body == null) {
+        if (bodyStream) {
             bytes = null;
-            free(response, connection);
         } else {
-            if (bodyStream) {
-                bytes = null;
-            } else {
-                buffer = resource.getWorld().getBuffer();
-                synchronized (buffer) {
-                    try {
+            try {
+                body = response.getBody();
+                if (body == null) {
+                    bytes = null;
+                } else {
+                    buffer = resource.getWorld().getBuffer();
+                    synchronized (buffer) {
                         bytes = buffer.readBytes(body.content);
-                    } finally {
-                        free(response, connection);
                     }
                 }
+            } finally {
+                free(response, connection);
             }
         }
         return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response, connection);

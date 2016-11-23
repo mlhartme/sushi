@@ -278,26 +278,6 @@ public class GenericMethod {
         resource.getRoot().addDefaultHeader(headerList);
     }
 
-    public GenericResponse process(HttpConnection connection, Response response) throws IOException {
-        Body body;
-        Buffer buffer;
-        byte[] bytes;
-
-        body = response.getBody();
-        if (body == null) {
-            bytes = null;
-        } else {
-            if (bodyStream) {
-                bytes = null;
-            } else {
-                buffer = resource.getWorld().getBuffer();
-                synchronized (buffer) {
-                    bytes = buffer.readBytes(body.content);
-                }
-            }
-        }
-        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response, connection);
-    }
     public void addRequestHeader(String name, String value) {
         headerList.add(name, value);
     }
@@ -354,23 +334,30 @@ public class GenericMethod {
 
     public GenericResponse response(HttpConnection connection) throws IOException {
         Response response;
-        GenericResponse result;
+        Body body;
+        Buffer buffer;
+        byte[] bytes;
 
         response = receive(connection);
-        try {
-            result = process(connection, response);
-        } catch (IOException e) {
-            try {
-                free(response, connection);
-            } catch (Exception e2) {
-                e.addSuppressed(e2);
-            }
-            throw e;
-        }
-        if (!bodyStream) {
+        body = response.getBody();
+        if (body == null) {
+            bytes = null;
             free(response, connection);
+        } else {
+            if (bodyStream) {
+                bytes = null;
+            } else {
+                buffer = resource.getWorld().getBuffer();
+                synchronized (buffer) {
+                    try {
+                        bytes = buffer.readBytes(body.content);
+                    } finally {
+                        free(response, connection);
+                    }
+                }
+            }
         }
-        return result;
+        return new GenericResponse(response.getStatusLine(), response.getHeaderList(), bytes, response, connection);
     }
 
     //--

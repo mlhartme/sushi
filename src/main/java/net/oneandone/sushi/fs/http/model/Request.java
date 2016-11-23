@@ -114,16 +114,12 @@ public class Request {
     public Response finish(HttpConnection connection) throws IOException {
         Response response;
         Body body;
-        Buffer buffer;
 
         response = responseHeader(connection);
         try {
             body = response.getBody();
             if (body != null) {
-                buffer = root.getFilesystem().getWorld().getBuffer();
-                synchronized (buffer) {
-                    response.setBodyBytes(buffer.readBytes(body.content));
-                }
+                response.setBodyBytes(connection.getBuffer().readBytes(body.content));
             }
         } finally {
             free(response);

@@ -94,6 +94,11 @@ public class HttpConnection implements Closeable {
         return open;
     }
 
+
+    public Buffer getBuffer() {
+        return buffer;
+    }
+
     //--
 
     public AsciiOutputStream getOutputStream() {

@@ -52,7 +52,8 @@ public class Request {
     }
 
     public Response request(Body body) throws IOException {
-        return request(request(false, body));
+        bodyHeader(false, body);
+        return request(open(body));
     }
 
     public Response request(HttpConnection connection) throws IOException {
@@ -79,9 +80,7 @@ public class Request {
         return response;
     }
 
-    public HttpConnection request(boolean putChunked, Body body) throws IOException {
-        HttpConnection connection;
-
+    public void bodyHeader(boolean putChunked, Body body) throws IOException {
         if (body == null) {
             if (putChunked) {
                 headerList.add(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
@@ -100,6 +99,11 @@ public class Request {
                 headerList.add(body.encoding);
             }
         }
+    }
+
+    public HttpConnection open(Body body) throws IOException {
+        HttpConnection connection;
+
         connection = resource.getRoot().allocate();
         try {
             connection.sendRequest(method, uri, headerList, body);

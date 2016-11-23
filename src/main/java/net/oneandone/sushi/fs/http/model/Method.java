@@ -211,7 +211,8 @@ public class Method {
         HttpConnection connection;
 
         method = new Request("PUT", resource);
-        connection = method.request(true, null);
+        method.bodyHeader(true, null);
+        connection = method.open(null);
         return new ChunkedOutputStream(connection.getOutputStream()) {
             private boolean closed = false;
             @Override

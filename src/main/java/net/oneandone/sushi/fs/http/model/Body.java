@@ -15,9 +15,33 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
+import net.oneandone.sushi.xml.Serializer;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Body {
+    public static Body forDom(Serializer serializer, Document body) {
+        ByteArrayOutputStream serialized;
+        byte[] bytes;
+
+        serialized = new ByteArrayOutputStream();
+        synchronized (serializer) {
+            try {
+                serializer.serialize(new DOMSource(body), new StreamResult(serialized), true);
+            } catch (IOException e) {
+                throw new IllegalStateException(e); // because we serialize into memory
+            }
+        }
+        bytes = serialized.toByteArray();
+        return new Body(null, null, bytes.length, new ByteArrayInputStream(bytes), false);
+    }
+
     public final Header type;
     public final Header encoding;
     public final long length;

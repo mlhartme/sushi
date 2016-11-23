@@ -37,6 +37,7 @@ public class Response {
     private final StatusLine statusline;
     private final HeaderList headerList;
     private Body body;
+    private byte[] bodyBytes;
 
     public Response(HttpConnection connection, StatusLine statusline, HeaderList headerList) {
         this.connection = connection;
@@ -59,6 +60,14 @@ public class Response {
 
     public void setBody(Body body) {
         this.body = body;
+    }
+
+    public byte[] getBodyBytes() {
+        return bodyBytes;
+    }
+
+    public void setBodyBytes(byte[] bytes) {
+        this.bodyBytes = bytes;
     }
 
     /** @return true if the response want's the connection losed */

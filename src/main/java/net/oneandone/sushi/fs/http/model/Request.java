@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs.http.model;
 
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
-import net.oneandone.sushi.fs.http.MultiStatus;
 import net.oneandone.sushi.io.Buffer;
 
 import java.io.IOException;

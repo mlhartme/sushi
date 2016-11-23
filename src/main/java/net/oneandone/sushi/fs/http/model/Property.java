@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.oneandone.sushi.fs.http;
+package net.oneandone.sushi.fs.http.model;
 
 import net.oneandone.sushi.xml.Dom;
 import org.w3c.dom.Document;

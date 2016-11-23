@@ -36,8 +36,6 @@ import net.oneandone.sushi.fs.http.methods.GenericMethod;
 import net.oneandone.sushi.fs.http.methods.Get;
 import net.oneandone.sushi.fs.http.methods.Method;
 import net.oneandone.sushi.fs.http.methods.Post;
-import net.oneandone.sushi.fs.http.methods.PropFind;
-import net.oneandone.sushi.fs.http.methods.PropPatch;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
@@ -549,7 +547,6 @@ public class HttpNode extends Node<HttpNode> {
 
     @Override
     public List<HttpNode> list() throws ListException, DirectoryNotFoundException {
-        PropFind methd;
         List<HttpNode> result;
         URI href;
 
@@ -557,7 +554,7 @@ public class HttpNode extends Node<HttpNode> {
             try {
                 tryDir = true;
                 result = new ArrayList<>();
-                for (MultiStatus response : PropFind.run(this, Name.DISPLAYNAME, 1)) {
+                for (MultiStatus response : GenericMethod.propfind(this, Name.DISPLAYNAME, 1)) {
                     try {
                         href = new URI(response.href);
                     } catch (URISyntaxException e) {
@@ -656,10 +653,10 @@ public class HttpNode extends Node<HttpNode> {
         prop = new Property(name, value);
         synchronized (tryLock) {
             try {
-                PropPatch.run(this, prop);
+                GenericMethod.proppatch(this, prop);
             } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
-                PropPatch.run(this, prop);
+                GenericMethod.proppatch(this, prop);
             }
         }
     }
@@ -678,7 +675,7 @@ public class HttpNode extends Node<HttpNode> {
     private Property getPropertyOpt(Name name) throws IOException {
         List<MultiStatus> response;
 
-        response = PropFind.run(this, name, 0);
+        response = GenericMethod.propfind(this, name, 0);
         return MultiStatus.lookupOne(response, name).property;
     }
 

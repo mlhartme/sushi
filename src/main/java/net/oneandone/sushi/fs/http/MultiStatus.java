@@ -25,8 +25,8 @@ import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class MultiStatus {
     private static final String XML_STATUS = "status";
     private static final String XML_PROPSTAT = "propstat";
 
-	public static List<MultiStatus> fromResponse(Xml xml, InputStream in) throws IOException {
+	public static List<MultiStatus> fromResponse(Xml xml, byte[] responseBody) throws IOException {
         Builder builder;
 		Element root;
 		List<MultiStatus> result;
@@ -43,12 +43,10 @@ public class MultiStatus {
         try {
             builder = xml.getBuilder();
             synchronized (builder) {
-                root = builder.parse(in).getDocumentElement();
+                root = builder.parse(new ByteArrayInputStream(responseBody)).getDocumentElement();
             }
         } catch (SAXException e) {
             throw new IOException(e.getMessage(), e);
-        } finally {
-            in.close();
         }
    		Dom.require(root, "multistatus", Method.DAV);
 		result = new ArrayList<>();

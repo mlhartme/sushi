@@ -19,6 +19,9 @@ import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
+import net.oneandone.sushi.fs.http.MultiStatus;
+import net.oneandone.sushi.fs.http.Name;
+import net.oneandone.sushi.fs.http.Property;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.fs.http.model.Body;
@@ -26,9 +29,14 @@ import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 import net.oneandone.sushi.io.Buffer;
+import net.oneandone.sushi.xml.Builder;
+import net.oneandone.sushi.xml.Xml;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 public class GenericMethod extends Method<GenericResponse> {
     public static String head(HttpNode resource, String header) throws IOException {
@@ -42,6 +50,71 @@ public class GenericMethod extends Method<GenericResponse> {
         switch (status) {
             case StatusCode.OK:
                 return header == null ? null : response.headerList.getFirstValue(header);
+            default:
+                throw new StatusException(response.statusLine);
+        }
+    }
+
+    public static void proppatch(HttpNode resource, Property property) throws IOException {
+        Xml xml;
+        Document document;
+        Element set;
+        Element prop;
+        GenericMethod proppatch;
+        GenericResponse response;
+        List<MultiStatus> lst;
+        MultiStatus ms;
+
+        xml = resource.getWorld().getXml();
+        document = xml.getBuilder().createDocument("propertyupdate", DAV);
+        set = Builder.element(document.getDocumentElement(), "set" , DAV);
+        prop = Builder.element(set, XML_PROP, DAV);
+        property.addXml(prop);
+        proppatch = new GenericMethod("PROPPATCH", resource);
+        response = proppatch.response(proppatch.request(false, Method.body(xml.getSerializer(), document)));
+
+        switch (response.statusLine.code) {
+            case StatusCode.OK:
+                return;
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.MULTI_STATUS:
+                lst = proppatch.multistatus(response.body);
+                ms = MultiStatus.lookupOne(lst, property.getName());
+                if (ms.status != StatusCode.OK) {
+                    throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));
+                }
+                return;
+            default:
+                throw new StatusException(response.statusLine);
+        }
+    }
+
+    public static List<MultiStatus> propfind(HttpNode resource, Name name, int depth) throws IOException {
+        Xml xml;
+        Document document;
+        Builder builder;
+        GenericMethod propfind;
+        GenericResponse response;
+
+        xml = resource.getWorld().getXml();
+        builder = xml.getBuilder();
+        synchronized (builder) {
+            document = builder.createDocument("propfind", DAV);
+        }
+        name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
+        propfind = new GenericMethod("PROPFIND", resource);
+        propfind.addRequestHeader("Depth", String.valueOf(depth));
+        response = propfind.response(propfind.request(false, Method.body(xml.getSerializer(), document)));
+
+        switch (response.statusLine.code) {
+            case StatusCode.MULTI_STATUS:
+                return propfind.multistatus(response.body);
+            case StatusCode.BAD_REQUEST: // TODO
+            case StatusCode.MOVED_PERMANENTLY:
+                throw new MovedPermanentlyException();
+            case StatusCode.NOT_FOUND:
+                throw new FileNotFoundException(resource);
             default:
                 throw new StatusException(response.statusLine);
         }

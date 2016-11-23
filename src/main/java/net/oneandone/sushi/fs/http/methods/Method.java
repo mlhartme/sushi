@@ -63,8 +63,8 @@ public abstract class Method<T> {
     	return uri;
     }
 
-    public List<MultiStatus> multistatus(Response response) throws IOException {
-        return MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBody().content);
+    public List<MultiStatus> multistatus(byte[] responseBody) throws IOException {
+        return MultiStatus.fromResponse(resource.getWorld().getXml(), responseBody);
     }
 
     //-- main api

@@ -80,7 +80,7 @@ public class Method {
         int status;
 
         head = new Request("HEAD", resource);
-        response = head.request((Body) null);
+        response = head.request();
         status = response.getStatusLine().code;
         switch (status) {
             case StatusCode.OK:
@@ -162,7 +162,7 @@ public class Method {
         move = new Request("MOVE", source);
         move.addRequestHeader("Destination", destination.getUri().toString());
         move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
-        result = move.request((Body) null).getStatusLine();
+        result = move.request().getStatusLine();
         switch (result.code) {
             case StatusCode.NO_CONTENT:
             case StatusCode.CREATED:
@@ -181,7 +181,7 @@ public class Method {
         StatusLine line;
 
         mkcol = new Request("MKCOL", resource);
-        line = mkcol.request((Body) null).getStatusLine();
+        line = mkcol.request().getStatusLine();
         if (line.code != StatusCode.CREATED) {
             throw new StatusException(line);
         }
@@ -192,7 +192,7 @@ public class Method {
         StatusLine result;
 
         delete = new Request("DELETE", resource);
-        result = delete.request((Body) null).getStatusLine();
+        result = delete.request().getStatusLine();
         switch (result.code) {
             case StatusCode.NO_CONTENT:
                 // success

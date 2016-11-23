@@ -131,6 +131,10 @@ public class Request {
         return response;
     }
 
+    public Response request() throws IOException {
+        return request(null);
+    }
+
     public Response request(Body body) throws IOException {
         bodyHeader(body);
         return finish(open(body));

@@ -70,7 +70,7 @@ public class Response {
         this.bodyBytes = bytes;
     }
 
-    /** @return true if the response want's the connection losed */
+    /** @return true if the response wants the connection closed */
     public boolean close() throws IOException {
         Header header;
 

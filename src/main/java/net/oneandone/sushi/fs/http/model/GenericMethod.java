@@ -44,7 +44,7 @@ public class GenericMethod {
         Response response;
 
         get = new GenericMethod("GET", resource, true);
-        response = get.request(get.request(false, null));
+        response = get.request((Body) null);
         if (response.getStatusLine().code == StatusCode.OK) {
             return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
@@ -79,7 +79,7 @@ public class GenericMethod {
         int status;
 
         head = new GenericMethod("HEAD", resource);
-        response = head.request(head.request(false, null));
+        response = head.request((Body) null);
         status = response.getStatusLine().code;
         switch (status) {
             case StatusCode.OK:
@@ -105,7 +105,7 @@ public class GenericMethod {
         prop = Builder.element(set, XML_PROP, DAV);
         property.addXml(prop);
         proppatch = new GenericMethod("PROPPATCH", resource);
-        response = proppatch.request(proppatch.request(false, Body.forDom(xml.getSerializer(), document)));
+        response = proppatch.request(Body.forDom(xml.getSerializer(), document));
 
         switch (response.getStatusLine().code) {
             case StatusCode.OK:
@@ -139,7 +139,7 @@ public class GenericMethod {
         name.addXml(Builder.element(document.getDocumentElement(), XML_PROP, DAV));
         propfind = new GenericMethod("PROPFIND", resource);
         propfind.addRequestHeader("Depth", String.valueOf(depth));
-        response = propfind.request(propfind.request(false, Body.forDom(xml.getSerializer(), document)));
+        response = propfind.request(Body.forDom(xml.getSerializer(), document));
 
         switch (response.getStatusLine().code) {
             case StatusCode.MULTI_STATUS:
@@ -161,7 +161,7 @@ public class GenericMethod {
         move = new GenericMethod("MOVE", source);
         move.addRequestHeader("Destination", destination.getUri().toString());
         move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
-        result = move.request(move.request(false, null)).getStatusLine();
+        result = move.request((Body) null).getStatusLine();
         switch (result.code) {
             case StatusCode.NO_CONTENT:
             case StatusCode.CREATED:
@@ -180,7 +180,7 @@ public class GenericMethod {
         StatusLine line;
 
         mkcol = new GenericMethod("MKCOL", resource);
-        line = mkcol.request(mkcol.request(false, null)).getStatusLine();
+        line = mkcol.request((Body) null).getStatusLine();
         if (line.code != StatusCode.CREATED) {
             throw new StatusException(line);
         }
@@ -191,7 +191,7 @@ public class GenericMethod {
         StatusLine result;
 
         delete = new GenericMethod("DELETE", resource);
-        result = delete.request(delete.request(false, null)).getStatusLine();
+        result = delete.request((Body) null).getStatusLine();
         switch (result.code) {
             case StatusCode.NO_CONTENT:
                 // success
@@ -238,7 +238,7 @@ public class GenericMethod {
         Response response;
 
         post = new GenericMethod("POST", resource);
-        response = post.request(post.request(false, body));
+        response = post.request((Body) null);
         if (response.getStatusLine().code != StatusCode.OK) {
             throw new StatusException(response.getStatusLine());
         }
@@ -281,6 +281,34 @@ public class GenericMethod {
         headerList.add(name, value);
     }
 
+    public Response request(Body body) throws IOException {
+        return request(request(false, body));
+    }
+
+    public Response request(HttpConnection connection) throws IOException {
+        Response response;
+        Body body;
+        Buffer buffer;
+
+        response = reponse(connection);
+        if (bodyStream) {
+            // don't free
+        } else {
+            try {
+                body = response.getBody();
+                if (body != null) {
+                    buffer = resource.getWorld().getBuffer();
+                    synchronized (buffer) {
+                        response.setBodyBytes(buffer.readBytes(body.content));
+                    }
+                }
+            } finally {
+                free(response);
+            }
+        }
+        return response;
+    }
+
     public HttpConnection request(boolean putChunked, Body body) throws IOException {
         HttpConnection connection;
 
@@ -317,31 +345,7 @@ public class GenericMethod {
         return connection;
     }
 
-    public Response request(HttpConnection connection) throws IOException {
-        Response response;
-        Body body;
-        Buffer buffer;
-
-        response = doRequest(connection);
-        if (bodyStream) {
-            // don't free
-        } else {
-            try {
-                body = response.getBody();
-                if (body != null) {
-                    buffer = resource.getWorld().getBuffer();
-                    synchronized (buffer) {
-                        response.setBodyBytes(buffer.readBytes(body.content));
-                    }
-                }
-            } finally {
-                free(response);
-            }
-        }
-        return response;
-    }
-
-    private Response doRequest(HttpConnection connection) throws IOException {
+    private Response reponse(HttpConnection connection) throws IOException {
         Response response;
 
         do {

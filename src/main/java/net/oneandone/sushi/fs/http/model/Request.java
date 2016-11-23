@@ -52,7 +52,7 @@ public class Request {
     }
 
     public Response request(Body body) throws IOException {
-        bodyHeader(false, body);
+        bodyHeader(body);
         return request(open(body));
     }
 
@@ -80,13 +80,9 @@ public class Request {
         return response;
     }
 
-    public void bodyHeader(boolean putChunked, Body body) throws IOException {
+    public void bodyHeader(Body body) throws IOException {
         if (body == null) {
-            if (putChunked) {
-                headerList.add(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
-            } else {
-                headerList.add(Header.CONTENT_LENGTH, "0");
-            }
+            headerList.add(Header.CONTENT_LENGTH, "0");
         } else {
             if (body.chunked || body.length < 0) {
                 throw new IllegalStateException();

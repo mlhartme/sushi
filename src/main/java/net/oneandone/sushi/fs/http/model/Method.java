@@ -207,12 +207,12 @@ public class Method {
 
     /** See https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#PUT */
     public static OutputStream put(HttpNode resource) throws IOException {
-        Request method;
+        Request put;
         HttpConnection connection;
 
-        method = new Request("PUT", resource);
-        method.bodyHeader(true, null);
-        connection = method.open(null);
+        put = new Request("PUT", resource);
+        put.addRequestHeader(Header.TRANSFER_ENCODING, HttpConnection.CHUNK_CODING);
+        connection = put.open(null);
         return new ChunkedOutputStream(connection.getOutputStream()) {
             private boolean closed = false;
             @Override
@@ -225,7 +225,7 @@ public class Method {
                 }
                 closed = true;
                 super.close();
-                statusLine = method.request(connection).getStatusLine();
+                statusLine = put.request(connection).getStatusLine();
                 code = statusLine.code;
                 if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
                     throw new StatusException(statusLine);

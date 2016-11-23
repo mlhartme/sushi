@@ -44,31 +44,6 @@ public class Request {
         headerList.add(name, value);
     }
 
-    public Response request(Body body) throws IOException {
-        bodyHeader(body);
-        return request(open(body));
-    }
-
-    public Response request(HttpConnection connection) throws IOException {
-        Response response;
-        Body body;
-        Buffer buffer;
-
-        response = response(connection);
-        try {
-            body = response.getBody();
-            if (body != null) {
-                buffer = resource.getWorld().getBuffer();
-                synchronized (buffer) {
-                    response.setBodyBytes(buffer.readBytes(body.content));
-                }
-            }
-        } finally {
-            free(response);
-        }
-        return response;
-    }
-
     public void bodyHeader(Body body) throws IOException {
         if (body == null) {
             headerList.add(Header.CONTENT_LENGTH, "0");
@@ -104,7 +79,7 @@ public class Request {
         return connection;
     }
 
-    public Response response(HttpConnection connection) throws IOException {
+    public Response responseHeader(HttpConnection connection) throws IOException {
         Response response;
 
         do {
@@ -134,6 +109,31 @@ public class Request {
 
         } while (response.getStatusLine().code < StatusCode.OK);
         return response;
+    }
+
+    public Response finish(HttpConnection connection) throws IOException {
+        Response response;
+        Body body;
+        Buffer buffer;
+
+        response = responseHeader(connection);
+        try {
+            body = response.getBody();
+            if (body != null) {
+                buffer = resource.getWorld().getBuffer();
+                synchronized (buffer) {
+                    response.setBodyBytes(buffer.readBytes(body.content));
+                }
+            }
+        } finally {
+            free(response);
+        }
+        return response;
+    }
+
+    public Response request(Body body) throws IOException {
+        bodyHeader(body);
+        return finish(open(body));
     }
 
     //--

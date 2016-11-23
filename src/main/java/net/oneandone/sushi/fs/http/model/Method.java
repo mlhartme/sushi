@@ -45,7 +45,7 @@ public class Method {
 
         get = new Request("GET", resource);
         get.bodyHeader(null);
-        response = get.response(get.open(null));
+        response = get.responseHeader(get.open(null));
         if (response.getStatusLine().code == StatusCode.OK) {
             return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
@@ -226,7 +226,7 @@ public class Method {
                 }
                 closed = true;
                 super.close();
-                statusLine = put.request(connection).getStatusLine();
+                statusLine = put.finish(connection).getStatusLine();
                 code = statusLine.code;
                 if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
                     throw new StatusException(statusLine);

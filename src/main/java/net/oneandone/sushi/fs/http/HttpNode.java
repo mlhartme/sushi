@@ -32,9 +32,9 @@ import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.NodeNotFoundException;
 import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
-import net.oneandone.sushi.fs.http.model.Request;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.fs.http.model.Method;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.util.Strings;
@@ -185,7 +185,7 @@ public class HttpNode extends Node<HttpNode> {
             oldTryDir = tryDir;
             try {
                 tryDir = false;
-                result = Request.head(this, Header.CONTENT_LENGTH);
+                result = Method.head(this, Header.CONTENT_LENGTH);
             } catch (IOException e) {
                 tryDir = oldTryDir;
                 throw e;
@@ -271,7 +271,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private String doHeadGetLastModified() throws IOException {
         String result;
-        result = Request.head(this, "Last-Modified");
+        result = Method.head(this, "Last-Modified");
         if (result == null) {
             throw new ProtocolException("head request did not return last-modified header");
         }
@@ -337,7 +337,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = false;
-                Request.delete(this);
+                Method.delete(this);
             }
         } catch (FileNotFoundException e) {
             throw e;
@@ -363,10 +363,10 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 try {
-                    Request.delete(this);
+                    Method.delete(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    Request.delete(this);
+                    Method.delete(this);
                 }
             }
         } catch (DirectoryNotFoundException | DeleteException e) {
@@ -382,10 +382,10 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 try {
-                    Request.delete(this);
+                    Method.delete(this);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-                    Request.delete(this);
+                    Method.delete(this);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -410,11 +410,11 @@ public class HttpNode extends Node<HttpNode> {
             synchronized (tryLock) {
                 try {
                     dest.tryDir = tryDir;
-                    Request.move(this, dest, overwrite);
+                    Method.move(this, dest, overwrite);
                 } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
                     dest.tryDir = tryDir;
-                    Request.move(this, dest, overwrite);
+                    Method.move(this, dest, overwrite);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -430,7 +430,7 @@ public class HttpNode extends Node<HttpNode> {
         try {
             synchronized (tryLock) {
                 tryDir = true;
-                Request.mkcol(this);
+                Method.mkcol(this);
             }
         } catch (IOException e) {
             throw new MkdirException(this, e);
@@ -452,7 +452,7 @@ public class HttpNode extends Node<HttpNode> {
     public boolean exists() throws ExistsException {
         synchronized (tryLock) {
             try {
-                Request.head(this, null);
+                Method.head(this, null);
                 return true;
             } catch (StatusException e) {
                 switch (e.getStatusLine().code) {
@@ -490,7 +490,7 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             tryDir = false;
             try {
-                return Request.get(this);
+                return Method.get(this);
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {
@@ -531,7 +531,7 @@ public class HttpNode extends Node<HttpNode> {
             }
             synchronized (tryLock) {
                 tryDir = false;
-                result = Request.put(this);
+                result = Method.put(this);
                 if (add != null) {
                     result.write(add);
                 }
@@ -551,7 +551,7 @@ public class HttpNode extends Node<HttpNode> {
             try {
                 tryDir = true;
                 result = new ArrayList<>();
-                for (MultiStatus response : Request.propfind(this, Name.DISPLAYNAME, 1)) {
+                for (MultiStatus response : Method.propfind(this, Name.DISPLAYNAME, 1)) {
                     try {
                         href = new URI(response.href);
                     } catch (URISyntaxException e) {
@@ -620,7 +620,7 @@ public class HttpNode extends Node<HttpNode> {
     	Property result;
     	Name n;
 
-    	n = new Name(name, Request.DAV);
+    	n = new Name(name, Method.DAV);
         try {
             synchronized (tryLock) {
             	try {
@@ -638,7 +638,7 @@ public class HttpNode extends Node<HttpNode> {
 
     public void setAttribute(String name, String value) throws HttpException {
         try {
-        	setProperty(new Name(name, Request.DAV), value);
+        	setProperty(new Name(name, Method.DAV), value);
 		} catch (IOException e) {
 			throw new HttpException(this, e);
 		}
@@ -650,10 +650,10 @@ public class HttpNode extends Node<HttpNode> {
         prop = new Property(name, value);
         synchronized (tryLock) {
             try {
-                Request.proppatch(this, prop);
+                Method.proppatch(this, prop);
             } catch (MovedPermanentlyException e) {
                 tryDir = !tryDir;
-                Request.proppatch(this, prop);
+                Method.proppatch(this, prop);
             }
         }
     }
@@ -672,7 +672,7 @@ public class HttpNode extends Node<HttpNode> {
     private Property getPropertyOpt(Name name) throws IOException {
         List<MultiStatus> response;
 
-        response = Request.propfind(this, name, 0);
+        response = Method.propfind(this, name, 0);
         return MultiStatus.lookupOne(response, name).property;
     }
 
@@ -733,7 +733,7 @@ public class HttpNode extends Node<HttpNode> {
 
     private boolean headIsNode() throws IOException {
         try {
-            Request.head(this, null);
+            Method.head(this, null);
             return true;
         } catch (StatusException e) {
             switch (e.getStatusLine().code) {
@@ -782,7 +782,7 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public void put(byte ... bytes) throws IOException {
-        try (OutputStream dest = Request.put(this)) {
+        try (OutputStream dest = Method.put(this)) {
             dest.write(bytes);
         }
     }
@@ -803,6 +803,6 @@ public class HttpNode extends Node<HttpNode> {
     }
 
     public byte[] post(Body body) throws IOException {
-        return Request.post(this, body);
+        return Method.post(this, body);
     }
 }

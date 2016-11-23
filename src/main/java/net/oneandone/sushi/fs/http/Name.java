@@ -15,16 +15,16 @@
  */
 package net.oneandone.sushi.fs.http;
 
-import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Method;
 import net.oneandone.sushi.xml.Builder;
 import net.oneandone.sushi.xml.Namespace;
 import org.w3c.dom.Element;
 
 public class Name {
-    public static final Name DISPLAYNAME = new Name("displayname", Request.DAV);
-    public static final Name GETCONTENTLENGTH = new Name("getcontentlength", Request.DAV);
-    public static final Name GETLASTMODIFIED = new Name("getlastmodified", Request.DAV);
-    public static final Name RESOURCETYPE = new Name("resourcetype", Request.DAV);
+    public static final Name DISPLAYNAME = new Name("displayname", Method.DAV);
+    public static final Name GETCONTENTLENGTH = new Name("getcontentlength", Method.DAV);
+    public static final Name GETLASTMODIFIED = new Name("getlastmodified", Method.DAV);
+    public static final Name RESOURCETYPE = new Name("resourcetype", Method.DAV);
 
     public static Name fromXml(Element nameElement) {
         String ns;

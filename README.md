@@ -1,3 +1,7 @@
+[![Travis CI](https://maven-badges.herokuapp.com/maven-central/net.oneandone.stool/main/badge.svg)](https://travis-ci.org/mlhartme/sushi.svg?branch=master)
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.oneandone.stool/main/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.oneandone.stool/main)
+
 # Sushi
 
 Sushi is a scripting library for Java. It provides a simple API for

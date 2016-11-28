@@ -17,7 +17,6 @@ package net.oneandone.sushi.fs.filter;
 
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.World;
-import net.oneandone.sushi.io.OS;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -126,10 +125,16 @@ public class FilterTest {
 
     @Test(expected=IOException.class)
     public void permissionDenied() throws Exception {
-    	if (OS.CURRENT != OS.LINUX) {
-    		throw new IOException();
-    	}
-        assertEquals(0, root.getWorld().file("/").find("lost+found/*").size());
+        Node<?> dir;
+
+        dir = root.join("cannotread").mkdir();
+        dir.join("file").writeString("foo");
+        dir.setPermissions("---------");
+        try {
+            assertEquals(0, root.find("**/*").size());
+        } finally {
+            dir.setPermissions("rwx------");
+        }
     }
 
     @Test

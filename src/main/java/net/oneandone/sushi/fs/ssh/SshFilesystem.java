@@ -55,10 +55,17 @@ public class SshFilesystem extends Filesystem {
 
         jsch = new JSch();
         if (trySshAgent) {
-            try {
-                SshAgent.configure(jsch);
-            } catch (NoClassDefFoundError e) {
-                // ok -- we have no ssh-agent dependencies
+            if (SshAgentSocket.isConfigured()) {
+                try {
+                    SshAgent.configure(jsch);
+                } catch (NoClassDefFoundError e) {
+                    // ok -- we have no ssh-agent dependencies
+                } catch (Throwable e) {
+                    System.out.println("TODO: " + trySshAgent);
+                    e.printStackTrace();
+                }
+            } else {
+                // don't try to connect to agent - it throws an exception if the environment variable is not defined
             }
         }
         jsch.setHostKeyRepository(new AcceptAllHostKeyRepository());

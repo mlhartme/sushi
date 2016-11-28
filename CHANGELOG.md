@@ -2,6 +2,8 @@
 
 ### 3.1.3 (pending)
 
+* fix: don't try to initialize ssh agent if the environment variable is not present
+
 * improved REST support in HttpNode
   * added `put` method (and changed the existing code to also consider status code 200 as a success response)
   * convenience methods to put and post Strings.

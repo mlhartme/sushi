@@ -91,9 +91,9 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     public void uriWithEmptyPath() throws Exception {
         Node node;
 
-        node = WORLD.node("http://www.heise.de");
+        node = WORLD.node("https://www.heise.de");
         assertTrue(node instanceof HttpNode);
-        assertEquals("http://www.heise.de:80/", node.getUri().toString());
+        assertEquals("https://www.heise.de:443/", node.getUri().toString());
         assertNotNull(node.readBytes());
     }
 

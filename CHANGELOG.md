@@ -10,6 +10,8 @@
   * replaced individual method implementations by one generic implementation
   * moved statuscodes into separate class
 
+* update jsch 0.1.53 to 0.1.54
+
 
 ### 3.1.2 (2016-07-26)
 

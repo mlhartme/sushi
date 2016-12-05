@@ -26,24 +26,25 @@ public class Proxy {
     private static final Separator NON_PROXY_SEP = Separator.on('|').trim().skipEmpty();
 
     /**
-     * load properties configured by standard system properties
+     * configures a proxy from properties; if prefix is http or https you get standard system properties
      * https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
+     * @param prefix is usually the protocol - http or https
      */
-    public static Proxy forPropertiesOpt(String scheme) {
+    public static Proxy forPropertiesOpt(String prefix) {
         String host;
         String port;
         Proxy result;
 
-        host = System.getProperty(scheme + ".proxyHost");
+        host = System.getProperty(prefix + ".proxyHost");
         if (host == null) {
             return null;
         }
-        port = System.getProperty(scheme + ".proxyPort");
+        port = System.getProperty(prefix + ".proxyPort");
         if (port == null) {
             throw new IllegalStateException("missing proxy port for host " + host);
         }
         result = new Proxy(host, Integer.parseInt(port));
-        result.excludes.addAll(NON_PROXY_SEP.split(System.getProperty(scheme + ".nonProxyHosts", "")));
+        result.excludes.addAll(NON_PROXY_SEP.split(System.getProperty(prefix + ".nonProxyHosts", "")));
         return result;
     }
 

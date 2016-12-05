@@ -55,6 +55,7 @@ public class HttpRoot implements Root<HttpNode> {
     private final URI proxy;
     private final Boolean dav;
     private final Map<String, String> extraHeaders;
+    private Oauth oauth;
 
     public HttpRoot(HttpFilesystem filesystem, String protocol, String hostname, int port, URI proxy, Boolean dav) {
         this.filesystem = filesystem;
@@ -65,6 +66,15 @@ public class HttpRoot implements Root<HttpNode> {
         this.proxy = proxy;
         this.dav = dav;
         this.extraHeaders = new HashMap<>();
+        this.oauth = null;
+    }
+
+    public void setOauth(Oauth oauth) {
+        this.oauth = oauth;
+    }
+
+    public Oauth getOauth() {
+        return oauth;
     }
 
     public void addExtraHeader(String name, String value) {

@@ -15,11 +15,14 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
+import net.oneandone.sushi.fs.http.Oauth;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.HttpRoot;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.UUID;
 
 public class Request {
     private final HttpRoot root;
@@ -44,6 +47,8 @@ public class Request {
     }
 
     public void bodyHeader(Body body) throws IOException {
+        Oauth oauth;
+
         if (body == null) {
             headerList.add(Header.CONTENT_LENGTH, "0");
         } else {
@@ -57,6 +62,10 @@ public class Request {
             if (body.encoding != null) {
                 headerList.add(body.encoding);
             }
+        }
+        oauth = root.getOauth();
+        if (oauth != null) {
+            addOauth(oauth);
         }
     }
 
@@ -137,7 +146,7 @@ public class Request {
 
     //--
 
-    protected void free(Response response) throws IOException {
+    public void free(Response response) throws IOException {
         if (response.close()) {
             response.connection.close();
         }
@@ -156,4 +165,36 @@ public class Request {
         }
     }
 
+
+    //--
+
+    public void addOauth(Oauth oauth) throws MalformedURLException {
+        StringBuilder builder;
+
+        builder = new StringBuilder();
+        arg(builder, "OAuth oauth_nonce", UUID.randomUUID().toString());
+        arg(builder, "oauth_token", oauth.tokenId);
+        arg(builder, "oauth_consumer_key", oauth.consumerKey);
+        arg(builder, "oauth_signature_method", "PLAINTEXT");
+        arg(builder, "oauth_version", "1.0");
+        arg(builder, "oauth_timestamp", new Long(System.currentTimeMillis() / 1000).toString());
+        arg(builder, "oauth_signature", signature(oauth));
+
+        headerList.add("Authorization", builder.toString());
+    }
+
+    private static String signature(Oauth oauth) {
+        return oauth.consumerSecret + "%26" + oauth.tokenSecret;
+    }
+
+    private static void arg(StringBuilder builder, String key, String value) {
+        if (builder.length() > 0) {
+            builder.append(", ");
+        }
+        builder.append(key);
+        builder.append('=');
+        builder.append('"');
+        builder.append(value);
+        builder.append('"');
+    }
 }

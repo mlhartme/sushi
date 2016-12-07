@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/mlhartme/sushi.png)](https://travis-ci.org/mlhartme/sushi) [![Current Release](https://maven-badges.herokuapp.com/maven-central/net.oneandone.stool/main/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.oneandone.stool/main)
+[![Build Status](https://secure.travis-ci.org/mlhartme/sushi.png)](https://travis-ci.org/mlhartme/sushi) [![Current Release](https://maven-badges.herokuapp.com/maven-central/net.oneandone/sushi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.oneandone/sushi)
 
 # Sushi
 

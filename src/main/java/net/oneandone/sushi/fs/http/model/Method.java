@@ -241,7 +241,7 @@ public class Method {
 
         post = new Request("POST", resource);
         response = post.request(body);
-        if (response.getStatusLine().code != StatusCode.OK) {
+        if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
             throw new StatusException(response.getStatusLine());
         }
         return response.getBodyBytes();

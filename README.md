@@ -9,7 +9,7 @@ Sushi is a scripting library for Java. It provides a simple API for
 * process launching
 * Diff
 * ...
-
+x
 Rationale: I prefer to do my scripting stuff in Java, not with a scripting languages and not with a special-purpose-language like Ant. Sushi enables me to do so: it provides similar functionality like Ant or Apache Commons - but packaged in an API that makes my "scripts" almost as readable and concise as other approaches. 
 
 Note that Sushi releases are not necessarily backward compatible. In particular, if i find a better - but incompatible - api for a given task, I'll change the api. I can't keep old apis just for compatibility (not enough time) and I don't want to have multiple alternative api's if I have a clear preference. But I'll mark incompatible changes by bumping the minor or major version number. (Version number format is major.minor.micro)

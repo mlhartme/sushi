@@ -5,6 +5,7 @@
 * fix: don't try to initialize ssh agent if the environment variable is not present
 
 * improved REST support in HttpNode
+  * delete status code 200 is also considered ok (as 204 only)
   * added `put` method (and changed the existing code to also consider status code 200 as a success response)
   * convenience methods to put and post Strings.
   * replaced individual method implementations by one generic implementation

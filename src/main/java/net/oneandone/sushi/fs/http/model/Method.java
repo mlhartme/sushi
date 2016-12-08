@@ -194,6 +194,7 @@ public class Method {
         delete = new Request("DELETE", resource);
         result = delete.request().getStatusLine();
         switch (result.code) {
+            case StatusCode.OK:
             case StatusCode.NO_CONTENT:
                 // success
                 return;

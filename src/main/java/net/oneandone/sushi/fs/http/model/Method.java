@@ -248,4 +248,15 @@ public class Method {
         return response.getBodyBytes();
     }
 
+    public static byte[] patch(HttpNode resource, Body body) throws IOException {
+        Request post;
+        Response response;
+
+        post = new Request("PATCH", resource);
+        response = post.request(body);
+        if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
+            throw new StatusException(response.getStatusLine());
+        }
+        return response.getBodyBytes();
+    }
 }

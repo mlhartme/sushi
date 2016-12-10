@@ -796,16 +796,31 @@ public class HttpNode extends Node<HttpNode> {
         result = post(getWorld().getSettings().bytes(str));
         return getWorld().getSettings().string(result);
     }
-
     public byte[] post(byte[] body) throws IOException {
         return post(new Body(null, null, body.length, new ByteArrayInputStream(body), false));
     }
-
     public byte[] post(InputStream body) throws IOException {
         return post(new Body(null, null, -1, body, false));
     }
-
     public byte[] post(Body body) throws IOException {
         return Method.post(this, body);
     }
+
+    public String patch(String str) throws IOException {
+        byte[] result;
+
+        result = patch(getWorld().getSettings().bytes(str));
+        return getWorld().getSettings().string(result);
+
+    }
+    public byte[] patch(byte[] body) throws IOException {
+        return patch(new Body(null, null, body.length, new ByteArrayInputStream(body), false));
+    }
+    public byte[] patch(InputStream body) throws IOException {
+        return patch(new Body(null, null, -1, body, false));
+    }
+    public byte[] patch(Body body) throws IOException {
+        return Method.patch(this, body);
+    }
+
 }

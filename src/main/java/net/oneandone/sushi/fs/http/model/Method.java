@@ -249,11 +249,11 @@ public class Method {
     }
 
     public static byte[] patch(HttpNode resource, Body body) throws IOException {
-        Request post;
+        Request patch;
         Response response;
 
-        post = new Request("PATCH", resource);
-        response = post.request(body);
+        patch = new Request("PATCH", resource);
+        response = patch.request(body);
         if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
             throw new StatusException(response.getStatusLine());
         }

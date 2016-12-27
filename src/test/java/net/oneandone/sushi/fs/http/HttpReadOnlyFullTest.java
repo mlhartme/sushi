@@ -71,7 +71,6 @@ public class HttpReadOnlyFullTest extends NodeReadOnlyTest<HttpNode> {
     public void github() throws Exception {
         assertFalse(WORLD.node(GITHUB + "nosuchfile").exists());
         assertTrue(WORLD.node(GITHUB).exists());
-        assertTrue(WORLD.node(GITHUB).isFile());
         try {
             assertTrue(WORLD.node(GITHUB).getLastModified() != 0);
             fail();

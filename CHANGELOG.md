@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.1.4 (pending)
+
+* added timed Launcher.Handle.await methods
+
+
 ### 3.1.3 (2016-12-27)
 
 * fix: don't try to initialize ssh agent if the environment variable is not present

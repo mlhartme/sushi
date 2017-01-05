@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Configures and executes an operating system process. This class wraps a ProcessBuilder to simplify process execution.
@@ -191,6 +192,26 @@ public class Launcher {
             this.psout = psout;
             this.pserr = pserr;
             this.psin = psin;
+        }
+
+        public void await(long millis) throws Failure {
+            doWait(millis);
+            await();
+        }
+
+        public String awaitString(long millis) throws Failure {
+            doWait(millis);
+            return awaitString();
+        }
+
+        private void doWait(long millis) throws Failure {
+            try {
+                if (!process.waitFor(millis, TimeUnit.MILLISECONDS)) {
+                    throw new Failure(Launcher.this, new IOException("timed out"));
+                }
+            } catch (InterruptedException e) {
+                throw new Interrupted(e);
+            }
         }
 
         public void await() throws Failure {

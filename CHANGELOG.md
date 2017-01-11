@@ -1,6 +1,6 @@
 ## Changelog 
 
-### 3.1.4 (pending)
+### 3.1.4 (2017-01-11)
 
 * added timed Launcher.Handle.await methods
 

@@ -1,5 +1,12 @@
 ## Changelog 
 
+### 3.1.5 (pending)
+
+* added LineReader.collect(Collection<String>)
+* added Node.writeLines(Iterator<String>)
+* added Node.appendLines(Iterator<String>)
+
+
 ### 3.1.4 (2017-01-11)
 
 * added timed Launcher.Handle.await methods

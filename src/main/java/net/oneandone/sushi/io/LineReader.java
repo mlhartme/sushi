@@ -18,6 +18,7 @@ package net.oneandone.sushi.io;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -130,6 +131,11 @@ public class LineReader implements AutoCloseable {
 
     /** Also closes the LineReader. */
     public List<String> collect(List<String> result) throws IOException {
+        return (List<String>) collect((Collection<String>) result);
+    }
+
+    /** Also closes the LineReader. */
+    public Collection<String> collect(Collection<String> result) throws IOException {
         String line;
 
         while (true) {

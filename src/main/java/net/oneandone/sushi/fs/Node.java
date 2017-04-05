@@ -49,6 +49,7 @@ import java.nio.file.attribute.UserPrincipal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
@@ -645,6 +646,11 @@ public abstract class Node<T extends Node> {
 
     /** @param lines without tailing line separator */
     public T writeLines(List<String> lines) throws IOException {
+        return writeLines(lines.iterator());
+    }
+
+    /** @param lines without tailing line separator */
+    public T writeLines(Iterator<String> lines) throws IOException {
         return lines(newWriter(), lines);
     }
 
@@ -655,15 +661,22 @@ public abstract class Node<T extends Node> {
 
     /** @param lines without tailing line separator */
     public T appendLines(List<String> lines) throws IOException {
+        return appendLines(lines.iterator());
+    }
+
+    /** @param lines without tailing line separator */
+    public T appendLines(Iterator<String> lines) throws IOException {
         return lines(newAppender(), lines);
     }
 
     /** @param lines without tailing line separator */
-    private T lines(Writer dest, List<String> lines) throws IOException {
+    private T lines(Writer dest, Iterator<String> lines) throws IOException {
+        String line;
         String separator;
 
         separator = getWorld().getSettings().lineSeparator.getSeparator();
-        for (String line : lines) {
+        while (lines.hasNext()) {
+            line = lines.next();
             dest.write(line);
             dest.write(separator);
         }

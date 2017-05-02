@@ -114,6 +114,10 @@ public class OnShutdown extends Thread {
         }
     }
 
+    public synchronized boolean isDeleteAtExit(FileNode node) {
+        return delete == null ? false : delete.contains(node);
+    }
+
     /**
      * @param node  file or directory
      */

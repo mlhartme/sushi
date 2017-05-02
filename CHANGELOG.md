@@ -5,6 +5,7 @@
 * added LineReader.collect(Collection<String>)
 * added Node.writeLines(Iterator<String>)
 * added Node.appendLines(Iterator<String>)
+* added OnShutdown.isDeleteAtExit
 
 
 ### 3.1.4 (2017-01-11)

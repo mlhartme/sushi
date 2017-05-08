@@ -15,19 +15,30 @@
  */
 package net.oneandone.sushi.fs.http;
 
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
 import java.io.IOException;
 
 public class StatusException extends IOException {
-    private final StatusLine statusline;
+    public static StatusException forResponse(Response response) {
+        return new StatusException(response.getStatusLine(), response.getBodyBytes());
+    }
 
-    public StatusException(StatusLine statusline) {
+    private final StatusLine statusline;
+    private final byte[] responseBytes;
+
+    public StatusException(StatusLine statusline, byte[] responseBytes) {
         super(Integer.toString(statusline.code));
         this.statusline = statusline;
+        this.responseBytes = responseBytes;
     }
 
     public StatusLine getStatusLine() {
         return statusline;
+    }
+
+    public byte[] getResponseBytes() {
+        return responseBytes;
     }
 }

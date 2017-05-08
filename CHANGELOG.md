@@ -6,6 +6,7 @@
 * added Node.writeLines(Iterator<String>)
 * added Node.appendLines(Iterator<String>)
 * added OnShutdown.isDeleteAtExit
+* StatusException with body bytes
 
 
 ### 3.1.4 (2017-01-11)

@@ -69,7 +69,7 @@ public class Method {
                 case StatusCode.MOVED_PERMANENTLY:
                     throw new FileNotFoundException(resource);
                 default:
-                    throw new StatusException(response.getStatusLine());
+                    throw StatusException.forResponse(response);
             }
         }
     }
@@ -86,7 +86,7 @@ public class Method {
             case StatusCode.OK:
                 return header == null ? null : response.getHeaderList().getFirstValue(header);
             default:
-                throw new StatusException(response.getStatusLine());
+                throw StatusException.forResponse(response);
         }
     }
 
@@ -117,11 +117,11 @@ public class Method {
                 lst = MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBodyBytes());
                 ms = MultiStatus.lookupOne(lst, property.getName());
                 if (ms.status != StatusCode.OK) {
-                    throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status));
+                    throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status), null);
                 }
                 return;
             default:
-                throw new StatusException(response.getStatusLine());
+                throw StatusException.forResponse(response);
         }
     }
 
@@ -151,19 +151,19 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(resource);
             default:
-                throw new StatusException(response.getStatusLine());
+                throw StatusException.forResponse(response);
         }
     }
 
     public static void move(HttpNode source, HttpNode destination, boolean overwrite) throws IOException {
         Request move;
-        StatusLine result;
+        Response response;
 
         move = new Request("MOVE", source);
         move.addRequestHeader("Destination", destination.getUri().toString());
         move.addRequestHeader("Overwrite", overwrite ? "T" : "F");
-        result = move.request().getStatusLine();
-        switch (result.code) {
+        response = move.request();
+        switch (response.getStatusLine().code) {
             case StatusCode.NO_CONTENT:
             case StatusCode.CREATED:
                 return;
@@ -172,28 +172,28 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(source);
             default:
-                throw new StatusException(result);
+                throw StatusException.forResponse(response);
         }
     }
 
     public static void mkcol(HttpNode resource) throws IOException {
         Request mkcol;
-        StatusLine line;
+        Response response;
 
         mkcol = new Request("MKCOL", resource);
-        line = mkcol.request().getStatusLine();
-        if (line.code != StatusCode.CREATED) {
-            throw new StatusException(line);
+        response = mkcol.request();
+        if (response.getStatusLine().code != StatusCode.CREATED) {
+            throw StatusException.forResponse(response);
         }
     }
 
     public static void delete(HttpNode resource) throws IOException {
         Request delete;
-        StatusLine result;
+        Response response;
 
         delete = new Request("DELETE", resource);
-        result = delete.request().getStatusLine();
-        switch (result.code) {
+        response = delete.request();
+        switch (response.getStatusLine().code) {
             case StatusCode.OK:
             case StatusCode.NO_CONTENT:
                 // success
@@ -203,7 +203,7 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(resource);
             default:
-                throw new StatusException(result);
+                throw StatusException.forResponse(response);
         }
     }
 
@@ -219,7 +219,7 @@ public class Method {
             private boolean closed = false;
             @Override
             public void close() throws IOException {
-                StatusLine statusLine;
+                Response reponse;
                 int code;
 
                 if (closed) {
@@ -227,10 +227,10 @@ public class Method {
                 }
                 closed = true;
                 super.close();
-                statusLine = put.finish(connection).getStatusLine();
-                code = statusLine.code;
+                reponse = put.finish(connection);
+                code = reponse.getStatusLine().code;
                 if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
-                    throw new StatusException(statusLine);
+                    throw StatusException.forResponse(reponse);
                 }
             }
         };
@@ -243,7 +243,7 @@ public class Method {
         post = new Request("POST", resource);
         response = post.request(body);
         if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw new StatusException(response.getStatusLine());
+            throw StatusException.forResponse(response);
         }
         return response.getBodyBytes();
     }
@@ -255,7 +255,7 @@ public class Method {
         patch = new Request("PATCH", resource);
         response = patch.request(body);
         if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw new StatusException(response.getStatusLine());
+            throw StatusException.forResponse(response);
         }
         return response.getBodyBytes();
     }

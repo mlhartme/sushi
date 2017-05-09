@@ -5,7 +5,7 @@
 * added LineReader.collect(Collection<String>)
 * added Node.writeLines(Iterator<String>)
 * added Node.appendLines(Iterator<String>)
-* added OnShutdown.isDeleteAtExit
+* added OnShutdown.isDeleteAtExit and resetDeleteAtExit.
 * StatusException with body bytes
 
 

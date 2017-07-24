@@ -1,6 +1,6 @@
 ## Changelog 
 
-### 3.1.5 (pending)
+### 3.1.5 (2017-07-24)
 
 * added LineReader.collect(Collection<String>)
 * added Node.writeLines(Iterator<String>)

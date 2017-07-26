@@ -300,7 +300,7 @@ public class FileNode extends Node<FileNode> {
         try {
             Files.createDirectory(path);
         } catch (IOException e) {
-            throw new MkdirException(this);
+            throw new MkdirException(this, e);
         }
         return this;
     }

@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.1.6 (pending)
+
+* FileNode.mkdir exceptions now propagates the nested exception
+
+
 ### 3.1.5 (2017-07-24)
 
 * added LineReader.collect(Collection<String>)

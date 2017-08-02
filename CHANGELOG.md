@@ -2,6 +2,8 @@
 
 ### 3.1.6 (pending)
 
+* fix Sushi for https://bugs.openjdk.java.net/browse/JDK-6233323
+
 * FileNode.mkdir exceptions now propagates the nested exception
 
 

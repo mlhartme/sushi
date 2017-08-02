@@ -155,6 +155,10 @@ public class ZipNode extends Node<ZipNode> {
         if (entry == null) {
             return false;
         }
+        if (entry.isDirectory()) {
+            return false;
+        }
+
         if (entry.getSize() > 0) {
             return true;
         }
@@ -191,7 +195,7 @@ public class ZipNode extends Node<ZipNode> {
         if (zip.getEntry(path + "/") != null) {
             return true;
         }
-        // also contains implicit directories
+        // also contains implicit directories, that have no corresponding entry
         return root.list(path).size() > 0;
     }
 

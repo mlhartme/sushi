@@ -159,6 +159,10 @@ public class ZipNode extends Node<ZipNode> {
             return false;
         }
 
+        // note: the rest of this method is a work-around for https://bugs.openjdk.java.net/browse/JDK-6233323
+        // (isDirectory does not properly report a directory if the initial path is without tailing /):
+        // try to read this as a file
+
         if (entry.getSize() > 0) {
             return true;
         }

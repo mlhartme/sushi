@@ -150,13 +150,34 @@ public class WorldTest {
     }
 
     @Test
-    public void zipResource() throws Exception {
+    public void zipFileResource() throws Exception {
         Node node;
 
         node = World.create().resource("org/junit/Assert.class");
         assertTrue(node instanceof ZipNode);
         assertTrue(node.isFile());
         assertEquals(node.size(), node.readBytes().length);
+    }
+
+    @Test
+    public void zipDirectoryResource() throws Exception {
+        Node node;
+
+        node = World.create(false).resource("org/junit");
+        assertTrue(node instanceof ZipNode);
+        assertTrue(node.isDirectory());
+        assertTrue(node.list().size() > 0);
+    }
+
+
+    @Test
+    public void resourcesDirectory() throws IOException {
+        World world;
+        List<Node<?>> lst;
+
+        world = World.create();
+        lst = world.resources("org");
+        System.out.println("" + lst);
     }
 
     @Test(expected=FileNotFoundException.class)
@@ -168,7 +189,6 @@ public class WorldTest {
     public void absolutePath() throws Exception {
         World.createMinimal().resource("/absolute");
     }
-
 
     //-- locating
 

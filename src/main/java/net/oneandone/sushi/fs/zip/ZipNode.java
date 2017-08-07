@@ -143,7 +143,7 @@ public class ZipNode extends Node<ZipNode> {
 
     @Override
     public boolean exists() {
-        return root.getZip().getEntry(path)  != null || isDirectory();
+        return root.getZip().getEntry(path) != null || isDirectory();
     }
 
     @Override
@@ -153,6 +153,7 @@ public class ZipNode extends Node<ZipNode> {
 
         entry = root.getZip().getEntry(path);
         if (entry == null) {
+            // not found or implicit directory
             return false;
         }
         if (entry.isDirectory()) {
@@ -193,13 +194,14 @@ public class ZipNode extends Node<ZipNode> {
         ZipFile zip;
 
         if (path.isEmpty()) {
+            // root directory
             return true;
         }
         zip = root.getZip();
         if (zip.getEntry(path + "/") != null) {
             return true;
         }
-        // also contains implicit directories, that have no corresponding entry
+        // this might be an implicit directory - try to list it
         return root.list(path).size() > 0;
     }
 

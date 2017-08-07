@@ -405,6 +405,8 @@ public class World implements AutoCloseable {
         Enumeration<URL> e;
         List<Node<?>> result;
         Node<?> add;
+        URI uri;
+        String str;
 
         if (name.startsWith("/")) {
             throw new IllegalArgumentException();
@@ -413,10 +415,16 @@ public class World implements AutoCloseable {
         result = new ArrayList<>();
         while (e.hasMoreElements()) {
             try {
-                add = node(e.nextElement().toURI());
+                uri = e.nextElement().toURI();
             } catch (URISyntaxException ex) {
                 throw new IllegalStateException(ex);
             }
+            str = uri.toString();
+            if (str.endsWith(Filesystem.SEPARATOR_STRING)) {
+                str = str.substring(0, str.length() - Filesystem.SEPARATOR_STRING.length());
+                uri = URI.create(str);
+            }
+            add = node(uri);
             if (result.contains(add)) {
                 if (rejectDuplicates) {
                     throw new IllegalStateException("duplicate classpath item: " + add);

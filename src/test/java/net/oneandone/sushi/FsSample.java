@@ -22,13 +22,13 @@ import net.oneandone.sushi.fs.file.FileNode;
 public class FsSample {
     /** print all Java files in your src/main/java directory */
     public static void main(String[] args) throws Exception {
-        World world;
         FileNode dir;
 
-        world = World.create();
-        dir = world.file("src/main/java");
-        for (Node node : dir.find("**/*.java")) {
-            System.out.println(node.readString());
+        try (World world = World.create()) {
+            dir = world.file("src/main/java");
+            for (Node node : dir.find("**/*.java")) {
+                System.out.println(node.readString());
+            }
         }
     }
 }

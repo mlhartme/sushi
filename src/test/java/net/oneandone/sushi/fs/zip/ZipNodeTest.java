@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.zip;
 
+import net.oneandone.sushi.fs.ExistsException;
 import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.Node;
 import net.oneandone.sushi.fs.SizeException;
@@ -24,13 +25,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /** Accesses external hosts and might need proxy configuration =&gt; Full test */
@@ -151,7 +155,7 @@ public class ZipNodeTest {
         temp.deleteTree();
     }
 
-    @Test(expected=FileNotFoundException.class)
+    @Test(expected = FileNotFoundException.class)
     public void newInputStreamNoneExisting() throws IOException {
         FileNode jar;
         Node node;
@@ -162,7 +166,7 @@ public class ZipNodeTest {
         node.newInputStream();
     }
 
-    @Test(expected=FileNotFoundException.class)
+    @Test(expected = FileNotFoundException.class)
     public void readBytesNoneExisting() throws IOException {
         FileNode jar;
         Node node;
@@ -173,7 +177,7 @@ public class ZipNodeTest {
         node.readBytes();
     }
 
-    @Test(expected=SizeException.class)
+    @Test(expected = SizeException.class)
     public void lengthNoneExisting() throws IOException {
         FileNode jar;
         Node node;
@@ -191,5 +195,56 @@ public class ZipNodeTest {
         jar = world.locateClasspathItem(Object.class);
         assertNotNull(jar.openZip().getRoot().readManifest());
     }
-}
 
+    //-- test jdk behaviour
+
+    @Test
+    public void jdk144() throws IOException {
+        ZipRoot root;
+        ZipEntry entry;
+
+        if (beforeJdk144()) {
+            return;
+        }
+        root = world.locateClasspathItem(Assert.class).openZip().getRoot();
+        entry = root.getZip().getEntry("org/junit");
+        assertEquals("org/junit/", entry.getName());
+        assertEquals(0, entry.getSize());
+        assertTrue(entry.isDirectory());
+
+        // empty file
+        assertEquals(-1, root.getZip().getInputStream(entry).read());
+
+    }
+
+    @Test
+    public void jdk141() throws IOException {
+        ZipRoot root;
+        ZipEntry entry;
+
+        if (!beforeJdk144()) {
+            return;
+        }
+        root = world.locateClasspathItem(Assert.class).openZip().getRoot();
+        entry = root.getZip().getEntry("org/junit");
+        assertEquals("org/junit", entry.getName());
+        assertEquals(0, entry.getSize());
+        assertFalse(entry.isDirectory());
+
+        // empty file
+        assertNull(root.getZip().getInputStream(entry));
+    }
+
+    private static boolean beforeJdk144() {
+        String version;
+        int n;
+
+        version = System.getProperty("java.version");
+        System.out.println("version: " + version);
+        if (!version.startsWith("1.8.0_")) {
+            return true;
+        }
+        n = Integer.parseInt(version.substring(6));
+        return n < 144;
+    }
+}

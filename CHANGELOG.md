@@ -3,7 +3,7 @@
 ### 3.1.6 (pending)
 
 * fixed Sushi for https://bugs.openjdk.java.net/browse/JDK-6233323:
-  * ZipNode.isDirectory uses ZipEntry.isDirectory
+  * ZipNode.isDirectory now first tries ZipEntry.isDirectory
   * World.resource removes tailing slashes returned by ClassLoader.getResources(resournce)
 
 * FileNode.mkdir exceptions now propagates the nested exception

@@ -160,7 +160,7 @@ public class ZipNode extends Node<ZipNode> {
             return false;
         }
 
-        // note: the rest of this method is a work-around for https://bugs.openjdk.java.net/browse/JDK-6233323
+        // Note: the rest of this method is a work-around for https://bugs.openjdk.java.net/browse/JDK-6233323
         // (isDirectory does not properly report a directory if the initial path is without tailing /):
         // try to read this as a file
 
@@ -168,6 +168,9 @@ public class ZipNode extends Node<ZipNode> {
             return true;
         }
         try {
+            // differs for directories on different jdks:
+            // pre-1.8.0_144: returns null
+            // 1.8.0_144 and later: returns empty file
             in = root.getZip().getInputStream(entry);
         } catch (IOException e) {
             throw new ExistsException(this, e);

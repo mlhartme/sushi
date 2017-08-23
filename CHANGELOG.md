@@ -1,6 +1,6 @@
 ## Changelog 
 
-### 3.1.6 (pending)
+### 3.1.6 (2017-08-23)
 
 * fixed Sushi for https://bugs.openjdk.java.net/browse/JDK-6233323:
   * ZipNode.isDirectory now first tries ZipEntry.isDirectory

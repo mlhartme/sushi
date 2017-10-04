@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.1.7 (pending)
+
+* fixed SvnRoot not beeing closed on shutdown
+
+
 ### 3.1.6 (2017-08-23)
 
 * fixed Sushi for https://bugs.openjdk.java.net/browse/JDK-6233323:

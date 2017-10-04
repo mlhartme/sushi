@@ -24,7 +24,7 @@ import org.tmatesoft.svn.core.wc.SVNInfo;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class SvnRoot implements Root<SvnNode> {
+public class SvnRoot implements Root<SvnNode>, Runnable {
     private final SvnFilesystem filesystem;
     private final SVNRepository repository;
     private final SVNClientManager clientManager;
@@ -35,6 +35,7 @@ public class SvnRoot implements Root<SvnNode> {
         this.repository = repository;
         this.clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), repository.getAuthenticationManager());
         this.comment = "sushi commit";
+        filesystem.getWorld().onShutdown().onShutdown(this);
     }
 
     public void setComment(String comment) {
@@ -87,8 +88,9 @@ public class SvnRoot implements Root<SvnNode> {
     public int hashCode() {
         return repository.getLocation().hashCode();
     }
-     
-    public void dispose() {
+
+    // executes on shutdown
+    public void run() {
         clientManager.dispose();
         repository.closeSession();
     }

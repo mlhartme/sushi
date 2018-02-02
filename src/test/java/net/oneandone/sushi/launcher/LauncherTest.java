@@ -20,6 +20,7 @@ import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 

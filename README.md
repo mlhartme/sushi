@@ -126,7 +126,7 @@ Note: I used https://github.com/adamfisk/LittleProxy for proxy tests.
 
 ### Mac OS
 
-(tested with El Capitan)
+(tested with High Sierra)
 
 * sudo apachectl start
 * /etc/apache2/httpd.conf: make sure the following lines are present
@@ -135,7 +135,7 @@ Note: I used https://github.com/adamfisk/LittleProxy for proxy tests.
     * LoadModule dav_lock_module
     * Include /private/etc/apache2/extra/httpd-dav.conf
 
-* In /private/etc/apache2/extra/httpd-dav.conf add
+* In /private/etc/apache2/extra/httpd-dav.conf replace uploads config with
 >     Alias /webdav "/Library/WebServer/WebDAV"
 >     <Directory "/Library/WebServer/WebDAV">
 >        Dav On

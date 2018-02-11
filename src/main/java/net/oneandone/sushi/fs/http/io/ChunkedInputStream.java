@@ -115,15 +115,20 @@ public class ChunkedInputStream extends InputStream {
         if (closed) {
             throw new IOException("Attempted read from closed stream.");
         }
-        if (length == UNKNOWN) {
-            length = readLength();
-            pos = 0;
-            if (length == EOF) {
-                HeaderList.parse(src); // result is ignored
+        switch (length) {
+            case EOF:
                 return false;
-            }
+            case UNKNOWN:
+                length = readLength();
+                pos = 0;
+                if (length == EOF) {
+                    HeaderList.parse(src); // result is ignored
+                    return false;
+                }
+                return true;
+            default:
+                return true;
         }
-        return true;
     }
 
     private int readLength() throws IOException {

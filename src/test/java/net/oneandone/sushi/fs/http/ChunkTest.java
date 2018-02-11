@@ -54,4 +54,31 @@ public class ChunkTest {
         assertEquals(-1, src.read());
         assertEquals("hello, world\nsecond line", new String(data.toByteArray()));
     }
+
+    // make sure that underlying stream is not read beyond the EOF marker chunk
+    @Test
+    public void eof() throws IOException {
+        ByteArrayOutputStream data;
+        ChunkedOutputStream dest;
+        AsciiInputStream srcBytes;
+        ChunkedInputStream src;
+        byte[] moreBytes;
+
+        data = new ByteArrayOutputStream();
+        dest = new ChunkedOutputStream(5, new AsciiOutputStream(data, 9));
+        dest.write(new byte[0]);
+        dest.close();
+        moreBytes = new byte[data.size() + 2];
+        moreBytes[moreBytes.length - 2] = 9;
+        moreBytes[moreBytes.length - 1] = 10;
+        System.arraycopy(data.toByteArray(), 0, moreBytes, 0, data.size());
+        srcBytes = new AsciiInputStream(new ByteArrayInputStream(moreBytes), 10);
+        src = new ChunkedInputStream(srcBytes, new Buffer());
+        assertEquals(-1, src.read());
+        assertEquals(-1, src.read());
+        assertEquals(2, srcBytes.available());
+        assertEquals(9, srcBytes.read());
+        assertEquals(10, srcBytes.read());
+        assertEquals(-1, srcBytes.read());
+    }
 }

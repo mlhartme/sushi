@@ -32,12 +32,16 @@ public class ChunkTest {
     @Test
     public void normal() throws IOException {
         int c;
-        ByteArrayOutputStream data = new ByteArrayOutputStream();
-        ChunkedOutputStream dest = new ChunkedOutputStream(5, new AsciiOutputStream(data, 9));
+        ByteArrayOutputStream data;
+        ChunkedOutputStream dest;
+        ChunkedInputStream src;
+
+        data = new ByteArrayOutputStream();
+        dest = new ChunkedOutputStream(5, new AsciiOutputStream(data, 9));
         dest.write("hello, world\n".getBytes());
         dest.write("second line".getBytes());
         dest.close();
-        ChunkedInputStream src = new ChunkedInputStream(new AsciiInputStream(new ByteArrayInputStream(data.toByteArray()), 10), new Buffer());
+        src = new ChunkedInputStream(new AsciiInputStream(new ByteArrayInputStream(data.toByteArray()), 10), new Buffer());
         data = new ByteArrayOutputStream();
         while (true) {
             c = src.read();
@@ -46,6 +50,8 @@ public class ChunkTest {
             }
             data.write(c);
         }
+        assertEquals(-1, src.read());
+        assertEquals(-1, src.read());
         assertEquals("hello, world\nsecond line", new String(data.toByteArray()));
     }
 }

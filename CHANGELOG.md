@@ -3,6 +3,7 @@
 ### 3.1.7 (pending)
 
 * fixed SvnRoot not beeing closed on shutdown
+* fixed ChunkedInputStream: don't read underlying stream once we've seen EOF from it
 
 
 ### 3.1.6 (2017-08-23)

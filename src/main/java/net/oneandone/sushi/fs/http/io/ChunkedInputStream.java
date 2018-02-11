@@ -23,25 +23,26 @@ import net.oneandone.sushi.io.Buffer;
 import java.io.IOException;
 import java.io.InputStream;
 
-/** Read https://tools.ietf.org/html/rfc2616#section-3.6.1 streams */
-
+/**
+ * Read https://tools.ietf.org/html/rfc2616#section-3.6.1 streams
+ * Does not read into the underlying stream once the EOF marker was seen.
+ */
 public class ChunkedInputStream extends InputStream {
     private static final int UNKNOWN = -1;
+    private static final int EOF = 0;
 
     private final AsciiInputStream src;
     private final Buffer skipBuffer;
 
-    /** length of current chunk, UNKNOWN if it's not yet read */
+    /** length of current chunk, UNKNOWN if it's not yet read, EOF if we've seen then end marker */
     private int length;
     private int pos;
-    private boolean eof;
     private boolean closed;
 
     public ChunkedInputStream(AsciiInputStream src, Buffer skipBuffer) {
         this.src = src;
         this.length = UNKNOWN;
         this.pos = 0;
-        this.eof = false;
         this.closed = false;
         this.skipBuffer = skipBuffer;
     }
@@ -75,7 +76,7 @@ public class ChunkedInputStream extends InputStream {
         }
         bytesRead = src.read(b, ofs, Math.min(len, length - pos));
         if (bytesRead == -1) {
-            eof = true;
+            length = EOF;
             throw new ProtocolException("chunk truncated, expected " + length + ", code " + pos + " bytes");
         }
         pos += bytesRead;
@@ -94,17 +95,22 @@ public class ChunkedInputStream extends InputStream {
             return;
         }
         try {
-            if (!eof) {
+            if (length != EOF) {
+                length = EOF;
                 skipBuffer.skip(this, Long.MAX_VALUE);
             }
         } finally {
-            eof = true;
             closed = true;
         }
     }
 
     //--
 
+    /**
+     * Standard processing before reading data.
+     *
+     * @return false for eof
+     */
     private boolean before() throws IOException {
         if (closed) {
             throw new IOException("Attempted read from closed stream.");
@@ -112,8 +118,7 @@ public class ChunkedInputStream extends InputStream {
         if (length == UNKNOWN) {
             length = readLength();
             pos = 0;
-            if (length == 0) {
-                eof = true;
+            if (length == EOF) {
                 HeaderList.parse(src); // result is ignored
                 return false;
             }

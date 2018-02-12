@@ -46,7 +46,7 @@ public class AsciiInputStream extends BufferedInputStream {
 
     private static final String EMPTY = "";
 
-    private String readBufferedLine() throws IOException {
+    private String readBufferedLine() {
         int c;
         boolean prevCr;
         String result;

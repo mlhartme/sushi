@@ -20,14 +20,29 @@ import net.oneandone.sushi.io.LineReader;
 import net.oneandone.sushi.io.OS;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class LineReaderTest {
     private final World world = World.createMinimal();
+
+    @Test
+    public void inputStreamReader() throws IOException {
+        final byte[] bytes;
+        LineReader lr;
+
+        bytes = "test\nfoo".getBytes();
+        lr = new LineReader(new InputStreamReader(new ByteArrayInputStream(bytes)), LineFormat.RAW_FORMAT);
+        assertEquals("test\n", lr.next());
+        assertEquals("foo", lr.next());
+        assertNull(lr.next());
+    }
 
     @Test
     public void zero() {

@@ -2,8 +2,9 @@
 
 ### 3.1.7 (pending)
 
-* added World.file(FileNode useWorking, File file) and World.file(FileNode useWorking, String file) to 
-  explicitly specify the directory to resolve relative paths to
+* added World.file(FileNode useWorking, File file), World.file(FileNode useWorking, String filePath),
+  FileNode.file(File file) and FileNode.file(String filePath) to explicitly specify the directory to resolve 
+  relative paths to
 * fixed SvnRoot not beeing closed on shutdown
 * fixed ChunkedInputStream: don't read underlying stream once we've seen EOF from it
 

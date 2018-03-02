@@ -144,6 +144,16 @@ public class FileNode extends Node<FileNode> {
 
     //--
 
+    public FileNode file(File file) {
+        return getWorld().file(this, file);
+    }
+
+    public FileNode file(String filePath) {
+        return getWorld().file(this, filePath);
+    }
+
+    //--
+
     public ZipNode openZip() throws IOException {
         return ((ZipFilesystem) getWorld().getFilesystem("zip")).node(this, "");
     }

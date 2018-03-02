@@ -288,10 +288,18 @@ public class World implements AutoCloseable {
     //-- Node creation
 
     public FileNode file(File file) {
-        return file(file.getPath());
+        return file(working, file);
+    }
+
+    public FileNode file(FileNode useWorking, File file) {
+        return file(useWorking, file.getPath());
     }
 
     public FileNode file(String filePath) {
+        return file(working, filePath);
+    }
+
+    public FileNode file(FileNode useWorking, String filePath) {
         FileRoot root;
         String path;
 
@@ -300,12 +308,12 @@ public class World implements AutoCloseable {
             filePath = filePath.substring(root.getAbsolute().length());
         }
         filePath = Strings.removeRightOpt(filePath, File.separator);
-   		path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
+        path = filePath.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
         if (root == null) {
-            if (working == null) {
+            if (useWorking == null) {
                 throw new IllegalStateException("working directory is missing");
             } else {
-                return working.join(path);
+                return useWorking.join(path);
             }
         } else {
             return root.node(path, null);

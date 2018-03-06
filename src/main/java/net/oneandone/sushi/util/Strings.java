@@ -373,7 +373,7 @@ public class Strings {
                     break;
                 default:
                     if (c < 32) {
-                        result.append("\\u").append(Strings.padLeft(Integer.toHexString(c), '0'));
+                        result.append("\\u").append(Strings.padLeft(Integer.toHexString(c), 4, '0'));
                     } else {
                         result.append(c);
                     }

@@ -6,6 +6,7 @@
   FileNode.file(File file) and FileNode.file(String filePath) to explicitly specify the directory to resolve 
   relative paths to
 * fixed SvnRoot not beeing closed on shutdown
+* fixed String.escape for characters 0 .. 31
 * fixed ChunkedInputStream: don't read underlying stream once we've seen EOF from it
 
 

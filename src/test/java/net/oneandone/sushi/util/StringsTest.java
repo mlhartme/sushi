@@ -78,11 +78,12 @@ public class StringsTest {
     }
 
     @Test
-    public void excape() {
+    public void escape() {
         assertEquals("", Strings.escape(""));
         assertEquals("Hello, world", Strings.escape("Hello, world"));
         assertEquals("a\\nb", Strings.escape("a\nb"));
         assertEquals("\\\\\\n\\r\\t", Strings.escape("\\\n\r\t"));
+        assertEquals("\\u0000", Strings.escape("\u0000"));
     }
 
     //---

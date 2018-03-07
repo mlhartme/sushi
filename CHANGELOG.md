@@ -5,6 +5,7 @@
 * added World.file(FileNode useWorking, File file), World.file(FileNode useWorking, String filePath),
   FileNode.file(File file) and FileNode.file(String filePath) to explicitly specify the directory to resolve 
   relative paths to
+* improved wirelog: consume less space; faster
 * fixed SvnRoot not beeing closed on shutdown
 * fixed String.escape for characters 0 .. 31
 * fixed ChunkedInputStream: don't read underlying stream once we've seen EOF from it

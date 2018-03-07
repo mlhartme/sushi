@@ -38,4 +38,15 @@ public class LoggingAsciiOutputStream extends FilterOutputStream {
         super.write(b, off, len);
         logger.log(b, off, len);
     }
+
+    @Override
+    public void flush() {
+        logger.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        logger.flush();
+        super.close();
+    }
 }

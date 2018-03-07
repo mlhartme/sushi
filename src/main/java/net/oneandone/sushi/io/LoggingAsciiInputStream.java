@@ -48,4 +48,10 @@ public class LoggingAsciiInputStream extends FilterInputStream {
         }
         return result;
     }
+
+    @Override
+    public void close() throws IOException {
+        logger.flush();
+        super.close();
+    }
 }

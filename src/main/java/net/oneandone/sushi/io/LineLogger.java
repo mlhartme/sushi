@@ -23,25 +23,56 @@ import java.util.logging.Logger;
 public class LineLogger {
     private final Logger logger;
     private final String prefix;
+    private final int maxLineLength;
     private final StringBuilder line;
 
     public LineLogger(Logger logger, String prefix) {
+        this(logger, prefix, prefix.length() + 1024);
+    }
+
+    public LineLogger(Logger logger, String prefix, int maxLineLength) {
         this.logger = logger;
         this.prefix = prefix;
+        this.maxLineLength = maxLineLength;
         this.line = new StringBuilder(prefix);
     }
 
     public void log(byte b) {
-        line.append((char) b);
-        if (b == '\n') {
-            logger.log(Level.FINE, Strings.escape(line.toString()));
-            line.setLength(prefix.length());
+        if (line.length() > maxLineLength) {
+            flush();
+        }
+        switch (b) {
+            case '\\':
+                line.append("\\\\");
+                break;
+            case '\t':
+                line.append("\\t");
+                break;
+            case '\r':
+                line.append("\\r");
+                break;
+            case '\n':
+                line.append("\\n");
+                flush();
+                break;
+            default:
+                if (b >= 32 && b < 128) {
+                    line.append((char) b);
+                } else {
+                    line.append('\\').append(Strings.padLeft(Integer.toHexString(b), 2, '0'));
+                }
+                break;
         }
     }
 
     public void log(byte[] bytes, int ofs, int length) {
-        for (int i = ofs; i < length; i++) {
+        for (int i = ofs; i < ofs + length; i++) {
             log(bytes[i]);
         }
+    }
+
+    public void flush() {
+        logger.log(Level.FINE, line.toString());
+        line.setLength(prefix.length());
     }
 }

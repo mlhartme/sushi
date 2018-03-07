@@ -15,15 +15,15 @@
  */
 package net.oneandone.sushi.io;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LoggingAsciiInputStream extends FilterInputStream {
+public class LoggingAsciiInputStream extends InputStream {
+    private final InputStream src;
     private final LineLogger logger;
 
     public LoggingAsciiInputStream(InputStream src, LineLogger logger) {
-        super(src);
+        this.src = src;
         this.logger = logger;
     }
 
@@ -31,7 +31,7 @@ public class LoggingAsciiInputStream extends FilterInputStream {
     public int read() throws IOException {
         int result;
 
-        result = super.read();
+        result = src.read();
         if (result != -1) {
             logger.log((byte) result);
         }
@@ -42,7 +42,7 @@ public class LoggingAsciiInputStream extends FilterInputStream {
     public int read(byte[] bytes, int ofs, int len) throws IOException {
         int result;
 
-        result = super.read(bytes,  ofs,  len);
+        result = src.read(bytes,  ofs,  len);
         if (result != -1) {
             logger.log(bytes, ofs, result);
         }
@@ -52,6 +52,6 @@ public class LoggingAsciiInputStream extends FilterInputStream {
     @Override
     public void close() throws IOException {
         logger.flush();
-        super.close();
+        src.close();
     }
 }

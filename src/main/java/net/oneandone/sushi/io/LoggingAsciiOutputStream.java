@@ -15,38 +15,39 @@
  */
 package net.oneandone.sushi.io;
 
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class LoggingAsciiOutputStream extends FilterOutputStream {
+public class LoggingAsciiOutputStream extends OutputStream {
+    private final OutputStream dest;
     private final LineLogger logger;
 
     public LoggingAsciiOutputStream(OutputStream dest, LineLogger logger) {
-    	super(dest);
+        this.dest = dest;
         this.logger = logger;
     }
 
     @Override
     public void write(int b) throws IOException {
-        super.write(b);
         logger.log((byte) b);
+        dest.write(b);
     }
 
     @Override
     public void write(byte b[], int off, int len) throws IOException {
-        super.write(b, off, len);
         logger.log(b, off, len);
+        dest.write(b, off, len);
     }
 
     @Override
-    public void flush() {
+    public void flush() throws IOException {
         logger.flush();
+        dest.flush();
     }
 
     @Override
     public void close() throws IOException {
         logger.flush();
-        super.close();
+        dest.close();
     }
 }

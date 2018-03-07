@@ -168,7 +168,7 @@ public class Request {
 
     //--
 
-    public void addOauth(Oauth oauth) throws MalformedURLException {
+    public void addOauth(Oauth oauth) {
         StringBuilder builder;
 
         builder = new StringBuilder();

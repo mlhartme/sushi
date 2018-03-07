@@ -32,29 +32,16 @@ public class LineLogger {
     }
 
     public void log(byte b) {
-    	log(Character.toString((char) b));
+        line.append((char) b);
+        if (b == '\n') {
+            logger.log(Level.FINE, Strings.escape(line.toString()));
+            line.setLength(prefix.length());
+        }
     }
 
     public void log(byte[] bytes, int ofs, int length) {
-    	log(new String(bytes, ofs, length));
-    }
-
-    public void log(String str) {
-        int prev;
-        int idx;
-
-        prev = 0;
-        while (true) {
-            idx = str.indexOf('\n', prev);
-            if (idx == -1) {
-                line.append(str.substring(prev, str.length()));
-                return;
-            }
-            idx++;
-            line.append(str.substring(prev, idx));
-            logger.log(Level.FINE, Strings.escape(line.toString()));
-            line.setLength(prefix.length());
-            prev = idx;
+        for (int i = ofs; i < length; i++) {
+            log(bytes[i]);
         }
     }
 }

@@ -33,7 +33,7 @@ public class LoggingAsciiInputStream extends FilterInputStream {
 
         result = super.read();
         if (result != -1) {
-            logger.log(Character.toString((char) result));
+            logger.log((byte) result);
         }
         return result;
     }

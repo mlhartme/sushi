@@ -31,8 +31,8 @@ public class LineLogger {
         this.line = new StringBuilder(prefix);
     }
 
-    public void log(byte ... bytes) {
-    	log(bytes, 0, bytes.length);
+    public void log(byte b) {
+    	log(Character.toString((char) b));
     }
 
     public void log(byte[] bytes, int ofs, int length) {

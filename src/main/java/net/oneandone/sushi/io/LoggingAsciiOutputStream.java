@@ -30,6 +30,12 @@ public class LoggingAsciiOutputStream extends FilterOutputStream {
     @Override
     public void write(int b) throws IOException {
         super.write(b);
-        logger.log(Character.toString((char) b));
+        logger.log((byte) b);
+    }
+
+    @Override
+    public void write(byte b[], int off, int len) throws IOException {
+        super.write(b, off, len);
+        logger.log(b, off, len);
     }
 }

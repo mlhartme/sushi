@@ -59,7 +59,7 @@ public class LineLogger {
                 if (b >= 32 && b < 128) {
                     line.append((char) b);
                 } else {
-                    line.append('\\').append(Strings.padLeft(Integer.toHexString(b), 2, '0'));
+                    line.append('\\').append(Strings.padLeft(Integer.toHexString(b & 0xff), 2, '0'));
                 }
                 break;
         }

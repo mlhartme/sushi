@@ -39,11 +39,14 @@ import net.oneandone.sushi.fs.http.model.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Name;
 import net.oneandone.sushi.fs.http.model.Property;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
+import net.oneandone.sushi.fs.http.model.Request;
+import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
 
 import java.io.ByteArrayInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -805,6 +808,42 @@ public class HttpNode extends Node<HttpNode> {
     public byte[] post(Body body) throws IOException {
         return Method.post(this, body);
     }
+    public InputStream postStream(Body body) throws IOException {
+        Request post;
+        Response response;
+
+        post = new Request("POST", this);
+        post.bodyHeader(body);
+        response = post.responseHeader(post.open(body));
+        if (response.getStatusLine().code == StatusCode.OK) {
+            return new FilterInputStream(response.getBody().content) {
+                private boolean freed = false;
+
+                @Override
+                public void close() throws IOException {
+                    if (!freed) {
+                        freed = true;
+                        post.free(response);
+                    }
+                    super.close();
+                }
+            };
+        } else {
+            post.free(response);
+            switch (response.getStatusLine().code) {
+                case StatusCode.MOVED_TEMPORARILY:
+                    throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
+                case StatusCode.NOT_FOUND:
+                case StatusCode.GONE:
+                case StatusCode.MOVED_PERMANENTLY:
+                    throw new FileNotFoundException(this);
+                default:
+                    throw StatusException.forResponse(response);
+            }
+        }
+    }
+
+
 
     public String patch(String str) throws IOException {
         byte[] result;

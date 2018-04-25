@@ -15,10 +15,7 @@
  */
 package net.oneandone.sushi.fs.console;
 
-import net.oneandone.sushi.fs.CopyFileFromException;
-import net.oneandone.sushi.fs.CopyFileToException;
 import net.oneandone.sushi.fs.DeleteException;
-import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.MkdirException;
 import net.oneandone.sushi.fs.MoveException;
 import net.oneandone.sushi.fs.Node;
@@ -54,11 +51,11 @@ public class ConsoleNode extends Node<ConsoleNode> {
         return System.in;
     }
 
-    public long copyFileTo(OutputStream dest, long skip) throws CopyFileToException, FileNotFoundException {
+    public long copyFileTo(OutputStream dest, long skip) {
         throw new UnsupportedOperationException();
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
+    public void copyFileFrom(InputStream dest) {
         throw new UnsupportedOperationException();
     }
 

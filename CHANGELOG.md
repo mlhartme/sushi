@@ -1,13 +1,13 @@
 ## Changelog 
 
-### 3.1.7 (pending)
+### 3.1.7 (2018-04-25)
 
 * added World.file(FileNode useWorking, File file), World.file(FileNode useWorking, String filePath),
   FileNode.file(File file) and FileNode.file(String filePath) to explicitly specify the directory to resolve 
   relative paths to
 * improved wirelog: consume less space, fixed \u encoding; faster
+* fixed String.escape() for characters 0 .. 31
 * fixed SvnRoot not beeing closed on shutdown
-* fixed String.escape for characters 0 .. 31
 * fixed ChunkedInputStream: don't read underlying stream once we've seen EOF from it
 * added HttpNode.postStream
 

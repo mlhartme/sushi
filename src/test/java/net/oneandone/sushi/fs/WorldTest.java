@@ -197,8 +197,9 @@ public class WorldTest {
         World world;
 
         world = World.createMinimal();
-        world.locateClasspathItem(World.class).checkDirectory();
+        world.locateClasspathItem(World.class).checkDirectory(); // target/classes
         world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
+        world.locateClasspathItem(Test.class).checkFile(); // locate a dependency
         assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
     }

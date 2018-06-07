@@ -591,7 +591,7 @@ public class World implements AutoCloseable {
 				throw new IllegalStateException(filename, e);
 			}
         } else {
-            throw new RuntimeException("protocol not supported: " + protocol);
+            throw new RuntimeException("protocol not supported: " + protocol + " " + url);
         }
         return file;
     }

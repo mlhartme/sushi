@@ -199,9 +199,6 @@ public class WorldTest {
         world = World.createMinimal();
         world.locateClasspathItem(World.class).checkDirectory();
         world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
-        world.locateClasspathItem(Object.class).checkFile();
-        world.locateClasspathItem("/java/lang/Object.class").checkFile();
-        world.locateClasspathItem("/java/lang/Object.class").checkFile();
         assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
     }
@@ -215,11 +212,12 @@ public class WorldTest {
     }
 
     @Test
-    public void locateRuntime() throws IOException {
+    public void locateClasspathRuntime() throws IOException {
         World world;
 
         world = World.createMinimal();
-        world.locateClasspathItem("/java/lang/Object.class").checkExists();
+        world.locateClasspathItem(Object.class).checkFile();
+        world.locateClasspathItem("/java/lang/Object.class").checkFile();
     }
 
     @Test

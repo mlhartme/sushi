@@ -192,8 +192,8 @@ public class WorldTest {
 
     //-- locating
 
-    @Test(expected=RuntimeException.class)
-    public void locate() throws IOException {
+    @Test
+    public void locateClasspath() throws IOException {
         World world;
 
         world = World.createMinimal();
@@ -204,6 +204,13 @@ public class WorldTest {
         world.locateClasspathItem("/java/lang/Object.class").checkFile();
         assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+    }
+
+    @Test(expected=RuntimeException.class)
+    public void locateClasspathNotFound() {
+        World world;
+
+        world = World.createMinimal();
         world.locateClasspathItem("/nosuchresource");
     }
 

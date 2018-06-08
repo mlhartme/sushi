@@ -115,8 +115,12 @@ public class Serializer {
 
     //-- to strings
 
-    /**  does not genereate encoding headers */
     public String serialize(Node node) {
+        return serialize(node, true);
+    }
+
+    /**  does not genereate encoding headers */
+    public String serialize(Node node, boolean format) {
         Result result;
         StringWriter dest;
 
@@ -126,7 +130,7 @@ public class Serializer {
         dest = new StringWriter();
         result = new StreamResult(dest);
         try {
-            serialize(node, result, true);
+            serialize(node, result, format);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -144,7 +148,9 @@ public class Serializer {
         String root;
 
         root = element.getTagName();
-        str = serialize(element).trim();
+        str = serialize(element, false).trim();
+        // strip xml declaration
+        str = str.substring(str.indexOf('<', 1));
         prefix = "<" + root + ">";
         suffix = "</" + root + ">";
         if (!str.startsWith(prefix) || !str.endsWith(suffix)) {

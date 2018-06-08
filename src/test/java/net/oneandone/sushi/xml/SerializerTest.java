@@ -122,7 +122,7 @@ public class SerializerTest {
     public void serializeChildren() throws Exception {
         checkSerializeChildren("", "<root/>", "/root");
         checkSerializeChildren("<a/>", "<root><a/></root>", "/root");
-        checkSerializeChildren("<p>1</p>" + LF +"  <p>2</p>", "<root><a><p>1</p><p>2</p></a></root>", "/root/a");
+        checkSerializeChildren("<p>1</p><p>2</p>", "<root><a><p>1</p><p>2</p></a></root>", "/root/a");
         checkSerializeChildren("<p>1<inner/>2</p>", "<root><p>1<inner/>2</p></root>", "/root");
         checkSerializeChildren("<p>1<inner>I</inner>2</p>", "<root><p>1<inner>I</inner>2</p></root>", "/root");
     }

@@ -111,7 +111,7 @@
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
-      <version>1.8.14</version>
+      <version>1.9.3</version>
       <optional>true</optional>
     </dependency>
 

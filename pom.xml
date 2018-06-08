@@ -107,19 +107,11 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- just for dependency convergence: make sure we get 4.1 for svnkit, and not 3.4 for agent proxy -->
-    <dependency>
-      <groupId>net.java.dev.jna</groupId>
-      <artifactId>jna</artifactId>
-      <version>4.1.0</version>
-      <optional>true</optional>
-    </dependency>
-
     <!-- if you want SvnFilesystem: -->
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
       <artifactId>svnkit</artifactId>
-      <version>1.8.12</version>
+      <version>1.8.14</version>
       <optional>true</optional>
     </dependency>
 

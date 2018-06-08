@@ -144,10 +144,10 @@ public class SerializerTest {
 
     private void checkSerializeChildren(String expected, String doc, String path) throws Exception {
         Element element = SELECTOR.element(BUILDER.parseString(doc), path);
-        assertEquals(expected, SERIALIZER.serializeChildren(element));
+        assertEquals(expected, SERIALIZER.serializeChildren(element, false));
     }
 
     private void checkSerializeDocChildren(String expected, String doc) throws Exception {
-        assertEquals(expected, SERIALIZER.serializeChildren(BUILDER.parseString(doc)));
+        assertEquals(expected, SERIALIZER.serializeChildren(BUILDER.parseString(doc), false));
     }
 }

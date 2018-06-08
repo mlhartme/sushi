@@ -3,9 +3,11 @@
 ### 3.2.0 (pending)
 
 * support Java 9 and 10 
-  * renamed World.locateClasspathItem() to locateClasspathEntry() to make Java 9 upgrade problems explicit: 
+  * renamed World.locateClasspathItem() to locateClasspathEntry() to make possible Java 9 upgrade problems explicit: 
     localteClasspathEntry does not locate modules
-  * fixed Serializer.serializeChildren to *never* format the output; the previous version added some formatting
+
+* changed Serializer.serializeChildren(node/doc) to Serializer.serializeChildren(node/doc, format); the previous
+  version added *some* formatting, the new version adds formatting if the second argument is true
 
 * added Serializer.serialize(node, format) 
 

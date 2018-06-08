@@ -238,7 +238,6 @@ public class ZipNodeTest {
         int n;
 
         version = System.getProperty("java.version");
-        System.out.println("version: " + version);
         if (version.startsWith("1.")) {
             if (version.startsWith("1.8.0_")) {
                 n = Integer.parseInt(version.substring(6));

@@ -137,20 +137,22 @@ public class Serializer {
         return dest.getBuffer().toString();
     }
 
-    public String serializeChildren(Document doc) {
-        return serializeChildren(doc.getDocumentElement());
+    public String serializeChildren(Document doc, boolean format) {
+        return serializeChildren(doc.getDocumentElement(), format);
     }
 
-    public String serializeChildren(Element element) {
+    public String serializeChildren(Element element, boolean format) {
         String str;
         String prefix;
         String suffix;
         String root;
 
         root = element.getTagName();
-        str = serialize(element, false).trim();
-        // strip xml declaration
-        str = str.substring(str.indexOf('<', 1));
+        str = serialize(element, format).trim();
+        if (!format) {
+            // strip xml declaration
+            str = str.substring(str.indexOf('<', 1));
+        }
         prefix = "<" + root + ">";
         suffix = "</" + root + ">";
         if (!str.startsWith(prefix) || !str.endsWith(suffix)) {

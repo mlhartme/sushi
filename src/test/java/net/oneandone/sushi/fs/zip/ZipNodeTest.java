@@ -158,7 +158,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathEntry(Object.class);
+        jar = world.locateClasspathEntry(Test.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.newInputStream();
@@ -169,7 +169,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathEntry(Object.class);
+        jar = world.locateClasspathEntry(Test.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.readBytes();
@@ -180,7 +180,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathEntry(Object.class);
+        jar = world.locateClasspathEntry(Test.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.size();
@@ -190,7 +190,7 @@ public class ZipNodeTest {
     public void manifest() throws IOException {
         FileNode jar;
 
-        jar = world.locateClasspathEntry(Object.class);
+        jar = world.locateClasspathEntry(Test.class);
         assertNotNull(jar.openZip().getRoot().readManifest());
     }
 
@@ -239,10 +239,17 @@ public class ZipNodeTest {
 
         version = System.getProperty("java.version");
         System.out.println("version: " + version);
-        if (!version.startsWith("1.8.0_")) {
-            return true;
+        if (version.startsWith("1.")) {
+            if (version.startsWith("1.8.0_")) {
+                n = Integer.parseInt(version.substring(6));
+                return n < 144;
+            } else {
+                // 1.6, 1.7, ...
+                return true;
+            }
+        } else {
+            // Java 9 or 10
+            return false;
         }
-        n = Integer.parseInt(version.substring(6));
-        return n < 144;
     }
 }

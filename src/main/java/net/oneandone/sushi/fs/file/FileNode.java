@@ -518,7 +518,7 @@ public class FileNode extends Node<FileNode> {
         Node working;
 
         working = getWorld().getWorking();
-        if (working != null && hasAnchestor(working)) {
+        if (working != null && hasAncestor(working)) {
             return getRelative(working).replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
         } else {
             return path.toString();

@@ -5,13 +5,12 @@
 * support Java 9 and 10 
   * renamed World.locateClasspathItem() to locateClasspathEntry() to make possible Java 9 upgrade problems explicit: 
     localteClasspathEntry does not locate modules
-
 * update svnkit dependency 1.8.12 to 1.9.3
-
 * changed Serializer.serializeChildren(node/doc) to Serializer.serializeChildren(node/doc, format); the previous
   version added *some* formatting, the new version adds formatting if the second argument is true
+* renamed all methods fooAnchestor to fooAncestor
+* added `Serializer.serialize(node, format)`
 
-* added Serializer.serialize(node, format) 
 
 ### 3.1.7 (2018-04-25)
 

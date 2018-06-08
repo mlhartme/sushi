@@ -407,23 +407,23 @@ public abstract class Node<T extends Node> {
         }
     }
 
-    public boolean hasDifferentAnchestor(Node anchestor) {
+    public boolean hasDifferentAncestor(Node ancestor) {
         T parent;
 
         parent = getParent();
         if (parent == null) {
             return false;
         } else {
-            return parent.hasAnchestor(anchestor);
+            return parent.hasAncestor(ancestor);
         }
     }
 
-    public boolean hasAnchestor(Node anchestor) {
+    public boolean hasAncestor(Node ancestor) {
         T current;
 
         current = (T) this;
         while (true) {
-            if (current.equals(anchestor)) {
+            if (current.equals(ancestor)) {
                 return true;
             }
             current = (T) current.getParent();
@@ -1106,7 +1106,7 @@ public abstract class Node<T extends Node> {
         if (working == null || !getRoot().equals(working.getRoot())) {
             return getUri().toString();
         } else {
-            if (hasAnchestor(working)) {
+            if (hasAncestor(working)) {
                 return getRelative(working);
             } else {
                 return Filesystem.SEPARATOR_STRING + getPath();

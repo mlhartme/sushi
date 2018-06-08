@@ -199,14 +199,14 @@ public abstract class NodeTest<T extends Node> extends NodeReadOnlyTest<T> {
     }
 
     @Test
-    public void anchestor() {
+    public void ancestor() {
         Node file;
 
         file = work.join("foo/bar");
-        assertFalse(file.hasDifferentAnchestor(file));
-        assertTrue(file.hasAnchestor(file));
-        assertTrue(file.hasAnchestor(file.getParent()));
-        assertTrue(file.hasAnchestor(work));
+        assertFalse(file.hasDifferentAncestor(file));
+        assertTrue(file.hasAncestor(file));
+        assertTrue(file.hasAncestor(file.getParent()));
+        assertTrue(file.hasAncestor(work));
     }
 
     @Test

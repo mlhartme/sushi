@@ -490,13 +490,13 @@ public class World implements AutoCloseable {
         return result;
     }
 
-    //-- classpath
+    //-- classpath; does not locate module node!
 
     /**
      * Returns the file or directory containing the specified resource.
      */
-    public FileNode locateClasspathItem(String resourcename) {
-        return locateClasspathItem(getClass(), resourcename);
+    public FileNode locateClasspathEntry(String resourcename) {
+        return locateClasspathEntry(getClass(), resourcename);
     }
 
     /**
@@ -506,12 +506,12 @@ public class World implements AutoCloseable {
      *
      * @return the physical file defining the class
      */
-    public FileNode locateClasspathItem(Class<?> c) {
-        return locateClasspathItem(c, Reflect.resourceName(c));
+    public FileNode locateClasspathEntry(Class<?> c) {
+        return locateClasspathEntry(c, Reflect.resourceName(c));
     }
 
     /** Throws a RuntimeException if the resource is not found */
-    public FileNode locateClasspathItem(Class<?> base, String resourcename) {
+    public FileNode locateClasspathEntry(Class<?> base, String resourcename) {
         URL url;
         FileNode file;
 
@@ -519,11 +519,11 @@ public class World implements AutoCloseable {
         if (url == null) {
             throw new RuntimeException("no such resource: " + resourcename);
         }
-        file = locateClasspathItem(url, resourcename);
+        file = locateClasspathEntry(url, resourcename);
         if (!file.exists()) {
             throw new RuntimeException(url + ": no such file or directory: " + file);
         }
-        file = locateClasspathItem(url, resourcename);
+        file = locateClasspathEntry(url, resourcename);
         if (!file.exists()) {
             throw new RuntimeException(url + ": no such file or directory: " + file);
         }
@@ -533,7 +533,7 @@ public class World implements AutoCloseable {
     public FileNode guessProjectHome(Class<?> c) {
         FileNode node;
 
-        node = locateClasspathItem(c);
+        node = locateClasspathEntry(c);
         if (node.isDirectory()) {
             if (node.getName().endsWith("classes")) {
                 node = node.getParent();
@@ -557,7 +557,7 @@ public class World implements AutoCloseable {
      *
      * @return the physical file referring to the class
      */
-    public FileNode locateClasspathItem(URL url, String resourcename) {
+    public FileNode locateClasspathEntry(URL url, String resourcename) {
         String filename;
         FileNode file;
         String protocol;

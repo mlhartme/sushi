@@ -1,5 +1,12 @@
 ## Changelog 
 
+### 3.2.0 (pending)
+
+* support Java 9 and 10 
+  * renamed World.locateClasspathItem() to locateClasspathEntry() to make Java 9 upgrade problems explicit: 
+    localteClasspathEntry does not locate modules
+
+
 ### 3.1.7 (2018-04-25)
 
 * added World.file(FileNode useWorking, File file), World.file(FileNode useWorking, String filePath),

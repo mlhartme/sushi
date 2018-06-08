@@ -54,7 +54,7 @@ public class ZipNodeTest {
         List<? extends Node> list;
         List<? extends Node> tree;
 
-        jar = world.locateClasspathItem(Assert.class);
+        jar = world.locateClasspathEntry(Assert.class);
         rootPath = jar.getUri().toString() + "!/org/junit/Assert.class";
         locator = "jar:" + rootPath;
         assrt = (ZipNode) world.node(locator);
@@ -91,7 +91,7 @@ public class ZipNodeTest {
         ZipNode root;
         int count;
 
-        jar = world.locateClasspathItem(Assert.class);
+        jar = world.locateClasspathEntry(Assert.class);
         root = jar.openZip();
         count = 0;
         for (Node node : root.find("**/*")) {
@@ -142,7 +142,7 @@ public class ZipNodeTest {
         Node copy;
         ZipNode zip;
 
-        jar = world.locateClasspathItem(Assert.class);
+        jar = world.locateClasspathEntry(Assert.class);
         temp = world.getTemp().createTempDirectory();
         copy = temp.join(dir).mkdir().join(name);
         jar.copyFile(copy);
@@ -158,7 +158,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathItem(Object.class);
+        jar = world.locateClasspathEntry(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.newInputStream();
@@ -169,7 +169,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathItem(Object.class);
+        jar = world.locateClasspathEntry(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.readBytes();
@@ -180,7 +180,7 @@ public class ZipNodeTest {
         FileNode jar;
         Node node;
 
-        jar = world.locateClasspathItem(Object.class);
+        jar = world.locateClasspathEntry(Object.class);
         node = jar.openZip().getRoot().node("nosuchfile", null);
         assertFalse(node.exists());
         node.size();
@@ -190,7 +190,7 @@ public class ZipNodeTest {
     public void manifest() throws IOException {
         FileNode jar;
 
-        jar = world.locateClasspathItem(Object.class);
+        jar = world.locateClasspathEntry(Object.class);
         assertNotNull(jar.openZip().getRoot().readManifest());
     }
 
@@ -204,7 +204,7 @@ public class ZipNodeTest {
         if (beforeJdk144()) {
             return;
         }
-        root = world.locateClasspathItem(Assert.class).openZip().getRoot();
+        root = world.locateClasspathEntry(Assert.class).openZip().getRoot();
         entry = root.getZip().getEntry("org/junit");
         assertEquals("org/junit/", entry.getName());
         assertEquals(0, entry.getSize());
@@ -223,7 +223,7 @@ public class ZipNodeTest {
         if (!beforeJdk144()) {
             return;
         }
-        root = world.locateClasspathItem(Assert.class).openZip().getRoot();
+        root = world.locateClasspathEntry(Assert.class).openZip().getRoot();
         entry = root.getZip().getEntry("org/junit");
         assertEquals("org/junit", entry.getName());
         assertEquals(0, entry.getSize());

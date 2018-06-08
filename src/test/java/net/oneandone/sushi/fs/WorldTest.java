@@ -36,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /** Note: World.node methods are tested in NodeTest. */
 public class WorldTest {
@@ -103,10 +104,10 @@ public class WorldTest {
         assertTrue(node instanceof FileNode);
         assertEquals("home/mhm/bar.txt", node.getPath());
 
-        uri = getClass().getClassLoader().getResource("java/lang/Object.class").toURI();
+        uri = getClass().getClassLoader().getResource("org/junit/Test.class").toURI();
         node = world.node(uri);
         assertTrue(node instanceof ZipNode);
-        assertEquals("java/lang/Object.class", node.getPath());
+        assertEquals("org/junit/Test.class", node.getPath());
     }
 
     //--
@@ -193,32 +194,35 @@ public class WorldTest {
     //-- locating
 
     @Test
-    public void locateClasspath() throws IOException {
+    public void locateClasspathEntry() throws IOException {
         World world;
 
         world = World.createMinimal();
-        world.locateClasspathItem(World.class).checkDirectory(); // target/classes
-        world.locateClasspathItem(Reflect.resourceName(WorldTest.class)).checkDirectory();
-        world.locateClasspathItem(Test.class).checkFile(); // locate a dependency
-        assertEquals("foo bar.jar", world.locateClasspathItem(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        assertEquals("foo+bar.jar", world.locateClasspathItem(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        world.locateClasspathEntry(World.class).checkDirectory(); // target/classes
+        world.locateClasspathEntry(Reflect.resourceName(WorldTest.class)).checkDirectory();
+        world.locateClasspathEntry(Test.class).checkFile(); // locate a dependency
+        assertEquals("foo bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        assertEquals("foo+bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+
+        if (System.getProperty("java.version").startsWith("1.")) {
+            world.locateClasspathEntry(Object.class).checkFile();
+        } else {
+            try {
+                world.locateClasspathEntry(Object.class).checkFile();
+                fail();
+            } catch (RuntimeException e) {
+                // ok
+            }
+        }
     }
+
 
     @Test(expected=RuntimeException.class)
-    public void locateClasspathNotFound() {
+    public void locateClasspathEntryNotFound() {
         World world;
 
         world = World.createMinimal();
-        world.locateClasspathItem("/nosuchresource");
-    }
-
-    @Test
-    public void locateClasspathRuntime() throws IOException {
-        World world;
-
-        world = World.createMinimal();
-        world.locateClasspathItem(Object.class).checkFile();
-        world.locateClasspathItem("/java/lang/Object.class").checkFile();
+        world.locateClasspathEntry("/nosuchresource");
     }
 
     @Test
@@ -226,7 +230,7 @@ public class WorldTest {
         World world;
 
         world = World.createMinimal();
-        world.locateClasspathItem("/org/junit/Test.class").checkExists();
+        world.locateClasspathEntry("/org/junit/Test.class").checkExists();
     }
 
     @Test

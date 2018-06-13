@@ -126,7 +126,7 @@ public class WorldTest {
     }
 
     @Test
-    public void uripath() throws Exception {
+    public void uripath() {
         World world;
         List<FileNode> path;
 
@@ -204,7 +204,7 @@ public class WorldTest {
         assertEquals("foo bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
         assertEquals("foo+bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
 
-        if (System.getProperty("java.version").startsWith("1.")) {
+        if (beforeJava9()) {
             world.locateClasspathEntry(Object.class).checkFile();
         } else {
             try {
@@ -216,13 +216,35 @@ public class WorldTest {
         }
     }
 
+    private static boolean beforeJava9() {
+        return System.getProperty("java.version").startsWith("1.");
+    }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = ResourceNotFoundException.class)
     public void locateClasspathEntryNotFound() {
         World world;
 
         world = World.createMinimal();
         world.locateClasspathEntry("/nosuchresource");
+    }
+
+
+    @Test
+    public void locateClasspathEntryFromModule() throws IOException {
+        World world;
+
+        world = World.createMinimal();
+        if (beforeJava9()) {
+            world.locateClasspathEntry(Object.class).checkFile();
+
+        } else {
+            try {
+                world.locateClasspathEntry(Object.class);
+                fail();
+            } catch (ResourceFromModuleException e) {
+                // ok
+            }
+        }
     }
 
     @Test

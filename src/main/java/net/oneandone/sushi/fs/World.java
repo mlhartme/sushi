@@ -510,14 +510,14 @@ public class World implements AutoCloseable {
         return locateClasspathEntry(c, Reflect.resourceName(c));
     }
 
-    /** Throws a RuntimeException if the resource is not found */
+    /** @throws ResourceNotFoundException if the resource is not found */
     public FileNode locateClasspathEntry(Class<?> base, String resourcename) {
         URL url;
         FileNode file;
 
         url = base.getResource(resourcename);
         if (url == null) {
-            throw new RuntimeException("no such resource: " + resourcename);
+            throw new ResourceNotFoundException(resourcename);
         }
         file = locateClasspathEntry(url, resourcename);
         if (!file.exists()) {
@@ -586,10 +586,12 @@ public class World implements AutoCloseable {
             }
             filename = filename.substring(0, idx);
             try {
-				file = (FileNode) node(filename);
-			} catch (NodeInstantiationException | URISyntaxException e) {
-				throw new IllegalStateException(filename, e);
-			}
+                file = (FileNode) node(filename);
+            } catch (NodeInstantiationException | URISyntaxException e) {
+                throw new IllegalStateException(filename, e);
+            }
+        } else if ("jrt".equals(protocol)) {
+            throw new ResourceFromModuleException(url);
         } else {
             throw new RuntimeException("protocol not supported: " + protocol + " " + url);
         }

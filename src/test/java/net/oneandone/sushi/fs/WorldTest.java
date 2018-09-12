@@ -21,6 +21,7 @@ import net.oneandone.sushi.fs.file.FileNode;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.memory.MemoryNode;
 import net.oneandone.sushi.fs.zip.ZipNode;
+import net.oneandone.sushi.io.OS;
 import net.oneandone.sushi.util.Reflect;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import static net.oneandone.sushi.io.OS.beforeJava9;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -216,10 +218,6 @@ public class WorldTest {
         }
     }
 
-    private static boolean beforeJava9() {
-        return System.getProperty("java.version").startsWith("1.");
-    }
-
     @Test(expected = ResourceNotFoundException.class)
     public void locateClasspathEntryNotFound() {
         World world;
@@ -234,9 +232,8 @@ public class WorldTest {
         World world;
 
         world = World.createMinimal();
-        if (beforeJava9()) {
+        if (OS.beforeJava9()) {
             world.locateClasspathEntry(Object.class).checkFile();
-
         } else {
             try {
                 world.locateClasspathEntry(Object.class);

@@ -73,4 +73,8 @@ public enum OS {
     public String variable(String name) {
         return variablePrefix + name + variableSuffix;
     }
+
+    public static boolean beforeJava9() {
+        return System.getProperty("java.version").startsWith("1.");
+    }
 }

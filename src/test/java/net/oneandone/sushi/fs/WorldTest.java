@@ -210,14 +210,17 @@ public class WorldTest {
     public void locatePathEntry() throws IOException {
         World world;
         FileNode file;
+        Node zip;
 
-        world = World.createMinimal();
+        world = World.create();
         file = world.locatePathEntry(Object.class);
         file.checkFile();
         if (OS.beforeJava9()) {
             assertTrue(file.getName().endsWith(".jar"));
         } else {
             assertTrue(file.getName().endsWith(".jmod"));
+            zip = file.openZip();
+            zip.join("classes/java/lang/Object.class").checkExists();
         }
     }
 

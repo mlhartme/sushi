@@ -23,6 +23,7 @@ import net.oneandone.sushi.fs.memory.MemoryNode;
 import net.oneandone.sushi.fs.zip.ZipNode;
 import net.oneandone.sushi.io.OS;
 import net.oneandone.sushi.util.Reflect;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -115,7 +116,7 @@ public class WorldTest {
     //--
 
     @Test
-    public void path() throws Exception {
+    public void path() {
         World world;
         List<FileNode> path;
 
@@ -147,6 +148,16 @@ public class WorldTest {
         Node node;
 
         node = World.createMinimal().resource("testresource");
+        assertTrue(node instanceof FileNode);
+        assertTrue(node.isFile());
+        assertEquals("hello", node.readString());
+    }
+
+    @Ignore // TODO: returns object twice!?
+    public void classResource() throws Exception {
+        Node node;
+
+        node = World.create().resource("java/lang/Object.class");
         assertTrue(node instanceof FileNode);
         assertTrue(node.isFile());
         assertEquals("hello", node.readString());
@@ -196,6 +207,21 @@ public class WorldTest {
     //-- locating
 
     @Test
+    public void locatePathEntry() throws IOException {
+        World world;
+        FileNode file;
+
+        world = World.createMinimal();
+        file = world.locatePathEntry(Object.class);
+        file.checkFile();
+        if (OS.beforeJava9()) {
+            assertTrue(file.getName().endsWith(".jar"));
+        } else {
+            assertTrue(file.getName().endsWith(".jmod"));
+        }
+    }
+
+    @Test
     public void locateClasspathEntry() throws IOException {
         World world;
 
@@ -203,8 +229,8 @@ public class WorldTest {
         world.locateClasspathEntry(World.class).checkDirectory(); // target/classes
         world.locateClasspathEntry(Reflect.resourceName(WorldTest.class)).checkDirectory();
         world.locateClasspathEntry(Test.class).checkFile(); // locate a dependency
-        assertEquals("foo bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt").getPath());
-        assertEquals("foo+bar.jar", world.locateClasspathEntry(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt").getPath());
+        assertEquals("foo bar.jar", world.locateEntry(new URL("jar:file:/foo%20bar.jar!/some/file.txt"), "/some/file.txt", false).getPath());
+        assertEquals("foo+bar.jar", world.locateEntry(new URL("jar:file:/foo+bar.jar!/some/file.txt"), "/some/file.txt", false).getPath());
 
         if (beforeJava9()) {
             world.locateClasspathEntry(Object.class).checkFile();
@@ -226,23 +252,6 @@ public class WorldTest {
         world.locateClasspathEntry("/nosuchresource");
     }
 
-
-    @Test
-    public void locateClasspathEntryFromModule() throws IOException {
-        World world;
-
-        world = World.createMinimal();
-        if (OS.beforeJava9()) {
-            world.locateClasspathEntry(Object.class).checkFile();
-        } else {
-            try {
-                world.locateClasspathEntry(Object.class);
-                fail();
-            } catch (ResourceFromModuleException e) {
-                // ok
-            }
-        }
-    }
 
     @Test
     public void locateFromJar() throws IOException {

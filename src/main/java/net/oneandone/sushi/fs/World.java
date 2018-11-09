@@ -490,46 +490,6 @@ public class World implements AutoCloseable {
         return result;
     }
 
-    //-- classpath; does not locate module node!
-
-    /**
-     * Returns the file or directory containing the specified resource.
-     */
-    public FileNode locateClasspathEntry(String resourcename) {
-        return locateClasspathEntry(getClass(), resourcename);
-    }
-
-    /**
-     * Returns the file or directory containing the specified class.
-     *
-     * @param c the source class
-     *
-     * @return the physical file defining the class
-     */
-    public FileNode locateClasspathEntry(Class<?> c) {
-        return locateClasspathEntry(c, Reflect.resourceName(c));
-    }
-
-    /** @throws ResourceNotFoundException if the resource is not found */
-    public FileNode locateClasspathEntry(Class<?> base, String resourcename) {
-        URL url;
-        FileNode file;
-
-        url = base.getResource(resourcename);
-        if (url == null) {
-            throw new ResourceNotFoundException(resourcename);
-        }
-        file = locateClasspathEntry(url, resourcename);
-        if (!file.exists()) {
-            throw new RuntimeException(url + ": no such file or directory: " + file);
-        }
-        file = locateClasspathEntry(url, resourcename);
-        if (!file.exists()) {
-            throw new RuntimeException(url + ": no such file or directory: " + file);
-        }
-        return file;
-    }
-
     public FileNode guessProjectHome(Class<?> c) {
         FileNode node;
 
@@ -549,15 +509,57 @@ public class World implements AutoCloseable {
         return node;
     }
 
+    //-- classpath; does not locate module node!
+
     /**
-     * Returns the file of a certain class at a special location. e.g. jar files
-     *
-     * @param url the destination path to the resource
-     * @param resourcename  absolute resource name; redundant, but necessary to strip from urls
-     *
-     * @return the physical file referring to the class
+     * Returns the file or directory containing the specified resource.
      */
-    public FileNode locateClasspathEntry(URL url, String resourcename) {
+    public FileNode locateClasspathEntry(String resourcename) {
+        return locateEntry(getClass(), resourcename, false);
+    }
+
+    public FileNode locatePathEntry(String resourcename) {
+        return locateEntry(getClass(), resourcename, true);
+    }
+
+    /**
+     * Returns the file or directory containing the specified class.
+     *
+     * @param c the source class
+     *
+     * @return the physical file defining the class
+     */
+    public FileNode locateClasspathEntry(Class<?> c) {
+        return locateEntry(c, Reflect.resourceName(c), false);
+    }
+
+    public FileNode locatePathEntry(Class<?> c) {
+        return locateEntry(c, Reflect.resourceName(c), true);
+    }
+
+    //--
+
+    /** @throws ResourceNotFoundException if the resource is not found */
+    public FileNode locateEntry(Class<?> base, String resourcename, boolean withModules) {
+        URL url;
+        FileNode file;
+
+        url = base.getResource(resourcename);
+        if (url == null) {
+            throw new ResourceNotFoundException(resourcename);
+        }
+        file = locateEntry(url, resourcename, withModules);
+        if (!file.exists()) {
+            throw new RuntimeException(url + ": no such file or directory: " + file);
+        }
+        file = locateEntry(url, resourcename, withModules);
+        if (!file.exists()) {
+            throw new RuntimeException(url + ": no such file or directory: " + file);
+        }
+        return file;
+    }
+
+    public FileNode locateEntry(URL url, String resourcename, boolean withModules) {
         String filename;
         FileNode file;
         String protocol;
@@ -591,7 +593,19 @@ public class World implements AutoCloseable {
                 throw new IllegalStateException(filename, e);
             }
         } else if ("jrt".equals(protocol)) {
-            throw new ResourceFromModuleException(url);
+            if (withModules) {
+                // URI e.g. jre:/java.base/java/lang/Object.class
+                filename = url.getFile();
+                filename = Strings.removeLeft(filename, "/");
+                idx = filename.indexOf("/");
+                if (idx == -1) {
+                    throw new RuntimeException("unexpected jre url: " + url);
+                }
+                filename = filename.substring(0, idx);
+                file = file(System.getProperty("java.home")).join("jmods", filename + ".jmod");
+            } else {
+                throw new ResourceFromModuleException(url);
+            }
         } else {
             throw new RuntimeException("protocol not supported: " + protocol + " " + url);
         }

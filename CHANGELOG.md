@@ -2,10 +2,10 @@
 
 ### 3.2.0 (pending)
 
-* support Java 9 and 10 
-  * renamed World.locateClasspathItem() to locateClasspathEntry() to make possible Java 9 upgrade problems explicit: 
-    localteClasspathEntry does not locate modules. The new method throws distinguished RuntimeExceptions to report
-    if a resource is not found (ResourceNotFoundException) or if a resource is from a module (ResourceFromModuleException)
+* support Java 9+: replaced World.locateClasspathItem method by locateClasspathEntry and locatePathEntry methods;
+  locateClasspathEntry methods return jars only, locatePathEntry methods also return module files;
+  the new methods throw distinguished RuntimeExceptions to report if a resource is not found (ResourceNotFoundException) 
+  or if a resource is from a module (ResourceFromModuleException)
 * added OS.beforeJava9
 * update svnkit dependency 1.8.12 to 1.9.3
 * changed Serializer.serializeChildren(node/doc) to Serializer.serializeChildren(node/doc, format); the previous

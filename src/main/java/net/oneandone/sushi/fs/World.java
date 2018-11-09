@@ -516,18 +516,21 @@ public class World implements AutoCloseable {
     //-- classpath; does not locate module node!
 
     /**
-     * Returns the file or directory containing the specified resource.
+     * Returns the file or directory containing the specified resource. Does not search modules
      */
     public FileNode locateClasspathEntry(String resourcename) {
         return locateEntry(getClass(), resourcename, false);
     }
 
+    /**
+     * Returns the file or directory or module containing the specified resource.
+     */
     public FileNode locatePathEntry(String resourcename) {
         return locateEntry(getClass(), resourcename, true);
     }
 
     /**
-     * Returns the file or directory containing the specified class.
+     * Returns the file or directory containing the specified class. Does not search modules
      *
      * @param c the source class
      *
@@ -537,6 +540,13 @@ public class World implements AutoCloseable {
         return locateEntry(c, Reflect.resourceName(c), false);
     }
 
+    /**
+     * Returns the file or directory or module containing the specified class.
+     *
+     * @param c the source class
+     *
+     * @return the physical file defining the class
+     */
     public FileNode locatePathEntry(Class<?> c) {
         return locateEntry(c, Reflect.resourceName(c), true);
     }

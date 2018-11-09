@@ -155,9 +155,12 @@ public class WorldTest {
 
     @Test
     public void classResource() throws Exception {
+        Node<?> file;
         List<Node<?>> lst;
 
-        World.create().resource("java/lang/String.class").checkFile();
+        file = World.create().resource("java/lang/String.class");
+        file.checkFile();
+        file.getParent().checkDirectory();
         lst = World.create().resources("java/lang/Object.class");
         assertEquals(1, lst.size());
     }

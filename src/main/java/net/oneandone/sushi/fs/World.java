@@ -432,7 +432,11 @@ public class World implements AutoCloseable {
                 str = str.substring(0, str.length() - Filesystem.SEPARATOR_STRING.length());
                 uri = URI.create(str);
             }
-            add = node(uri);
+            if (str.startsWith("jrt:")) {
+                add = moduleFile(uri.toURL()).openZip().join("classes", name);
+            } else {
+                add = node(uri);
+            }
             if (result.contains(add)) {
                 if (rejectDuplicates) {
                     throw new IllegalStateException("duplicate classpath item: " + add);
@@ -594,15 +598,7 @@ public class World implements AutoCloseable {
             }
         } else if ("jrt".equals(protocol)) {
             if (withModules) {
-                // URI e.g. jre:/java.base/java/lang/Object.class
-                filename = url.getFile();
-                filename = Strings.removeLeft(filename, "/");
-                idx = filename.indexOf("/");
-                if (idx == -1) {
-                    throw new RuntimeException("unexpected jre url: " + url);
-                }
-                filename = filename.substring(0, idx);
-                file = file(System.getProperty("java.home")).join("jmods", filename + ".jmod");
+                file = moduleFile(url);
             } else {
                 throw new ResourceFromModuleException(url);
             }
@@ -610,6 +606,21 @@ public class World implements AutoCloseable {
             throw new RuntimeException("protocol not supported: " + protocol + " " + url);
         }
         return file;
+    }
+
+    // URI e.g. jre:/java.base/java/lang/Object.class
+    private FileNode moduleFile(URL url) {
+        String module;
+        int idx;
+
+        module = url.getFile();
+        module = Strings.removeLeft(module, "/");
+        idx = module.indexOf("/");
+        if (idx == -1) {
+            throw new RuntimeException("unexpected jre url: " + url);
+        }
+        module = module.substring(0, idx);
+        return file(System.getProperty("java.home")).join("jmods", module + ".jmod");
     }
 
     //--

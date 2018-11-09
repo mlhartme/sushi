@@ -153,14 +153,13 @@ public class WorldTest {
         assertEquals("hello", node.readString());
     }
 
-    @Ignore // TODO: returns object twice!?
+    @Test
     public void classResource() throws Exception {
-        Node node;
+        List<Node<?>> lst;
 
-        node = World.create().resource("java/lang/Object.class");
-        assertTrue(node instanceof FileNode);
-        assertTrue(node.isFile());
-        assertEquals("hello", node.readString());
+        World.create().resource("java/lang/String.class").checkFile();
+        lst = World.create().resources("java/lang/Object.class");
+        assertEquals(1, lst.size());
     }
 
     @Test

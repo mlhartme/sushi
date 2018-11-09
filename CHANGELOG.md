@@ -5,6 +5,7 @@
 Caution - contains some minor incompatibility
 
 * improved Java 9+ support
+  * support jrt uris in World.resource methods
   * replaced World.locateClasspathItem method by locateClasspathEntry and locatePathEntry methods;
     locateClasspathEntry methods return jars only, locatePathEntry methods also return module files;
     the new methods throw distinguished RuntimeExceptions to report if a resource is not found (ResourceNotFoundException) 

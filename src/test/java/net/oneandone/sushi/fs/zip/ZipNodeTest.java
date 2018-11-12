@@ -242,6 +242,8 @@ public class ZipNodeTest {
             if (version.startsWith("1.8.0_")) {
                 n = Integer.parseInt(version.substring(6));
                 return n < 144;
+            } else if (version.equals("1.8.0-adoptopenjdk")) {
+                return false;
             } else {
                 // 1.6, 1.7, ...
                 return true;

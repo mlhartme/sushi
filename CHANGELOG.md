@@ -1,6 +1,6 @@
 ## Changelog 
 
-### 3.2.0 (pending)
+### 3.2.0 (2018-11-12)
 
 Caution - contains some minor incompatibility
 

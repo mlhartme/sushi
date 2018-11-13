@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.2.1 (pending) 
+
+* update lazy-foss-parent 1.0.2 to 1.0.3
+
+
 ### 3.2.0 (2018-11-12)
 
 Caution - contains some minor incompatibility

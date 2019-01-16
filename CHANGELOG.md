@@ -3,6 +3,11 @@
 ### 3.2.1 (pending) 
 
 * update lazy-foss-parent 1.0.2 to 1.2.0
+* added Buffer methods:
+  * fill(InputStream in, int max);
+  * flush(OutputStream dest, int max);
+  * diff(byte[] bytes, int max);
+
 
 ### 3.2.0 (2018-11-12)
 

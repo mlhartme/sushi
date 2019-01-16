@@ -55,11 +55,13 @@ public class Buffer {
 
     /** read until the buffer is full or the stream is eof */
     public int fill(InputStream in) throws IOException {
-        int max;
+        return fill(in, buffer.length);
+    }
+
+    public int fill(InputStream in, int max) throws IOException {
         int chunk;
         int ofs;
 
-        max = buffer.length;
         for (ofs = 0; ofs < max; ofs += chunk) {
             chunk = in.read(buffer, ofs, max - ofs);
             if (chunk < 0) {
@@ -69,9 +71,20 @@ public class Buffer {
         return ofs;
     }
 
+    public void flush(OutputStream dest, int max) throws IOException {
+        dest.write(buffer, 0, max);
+    }
+
     public boolean diff(Buffer cmp, int length) {
+        return diff(cmp.buffer, length);
+    }
+
+    public boolean diff(byte[] cmpBuffer, int length) {
+        if (cmpBuffer.length < length || buffer.length < length) {
+            return false;
+        }
         for (int i = 0; i < length; i++) {
-            if (buffer[i] != cmp.buffer[i]) {
+            if (buffer[i] != cmpBuffer[i]) {
                 return true;
             }
         }

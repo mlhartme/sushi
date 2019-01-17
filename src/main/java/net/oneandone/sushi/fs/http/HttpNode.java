@@ -137,7 +137,7 @@ public class HttpNode extends Node<HttpNode> {
         for (int i = 0; i < keyValues.length; i += 2) {
             item = encode(keyValues[i]) + '=' + encode(keyValues[i + 1]);
             if (newQuery == null) {
-                newQuery = "?" + item;
+                newQuery = item;
             } else {
                 newQuery = newQuery + "&" + item;
             }

@@ -22,20 +22,24 @@ import net.oneandone.sushi.fs.http.HttpRoot;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.UUID;
 
 public class Request {
     private final HttpRoot root;
     private final String method;
-    private final String uri;
     private final HeaderList headerList;
+    private final String uri;
 
     public Request(String method, HttpNode resource) {
-        this.root = resource.getRoot();
-        this.headerList = new HeaderList();
+        this(resource.getRoot(), resource.allHeaders(), method, resource.getRequestPath());
+    }
+
+    public Request(HttpRoot root, HeaderList headers, String method, String uri) {
+        this.root = root;
+        this.headerList = headers;
         this.method = method;
-        this.uri = resource.getRequestPath();
-        resource.getRoot().addDefaultHeader(headerList);
+        this.uri = uri;
     }
 
     public String getUri() {
@@ -46,7 +50,7 @@ public class Request {
         headerList.add(name, value);
     }
 
-    public void bodyHeader(Body body) throws IOException {
+    public void bodyHeader(Body body) {
         Oauth oauth;
 
         if (body == null) {

@@ -34,6 +34,7 @@ import net.oneandone.sushi.fs.SetLastModifiedException;
 import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.http.model.Body;
 import net.oneandone.sushi.fs.http.model.Header;
+import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.Method;
 import net.oneandone.sushi.fs.http.model.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Name;
@@ -76,6 +77,9 @@ public class HttpNode extends Node<HttpNode> {
      */
     private final String encodedQuery;
 
+    /** null for no extra headers */
+    private final HeaderList headers;
+
     private boolean tryDir;
 
     private final Object tryLock;
@@ -85,18 +89,45 @@ public class HttpNode extends Node<HttpNode> {
 
     /** @param encodedQuery null or query without initial "?" */
     public HttpNode(HttpRoot root, String path, String encodedQuery, boolean tryDir, Boolean isDav) {
+        this(root, path, encodedQuery, null, tryDir, isDav);
+    }
+
+    private HttpNode(HttpRoot root, String path, String encodedQuery, HeaderList headers, boolean tryDir, Boolean isDav) {
         if (path.startsWith("/")) {
             throw new IllegalArgumentException(path);
         }
         if (encodedQuery != null && encodedQuery.startsWith("?")) {
             throw new IllegalArgumentException(path);
         }
+        this.headers = headers;
         this.root = root;
         this.path = path;
         this.encodedQuery = encodedQuery;
         this.tryDir = tryDir;
         this.tryLock = new Object();
         this.isDav = isDav;
+    }
+
+    public HeaderList allHeaders() {
+        HeaderList result;
+
+        result = new HeaderList();
+        getRoot().addDefaultHeader(result);
+        if (headers != null) {
+            result.addAll(headers);
+        }
+        return result;
+    }
+
+    public HttpNode withHeaders(HeaderList additional) {
+        HeaderList newHeaders;
+
+        newHeaders = new HeaderList();
+        if (headers != null) {
+            newHeaders.addAll(headers);
+        }
+        newHeaders.addAll(additional);
+        return new HttpNode(root, path, encodedQuery, newHeaders, tryDir, isDav);
     }
 
     @Override

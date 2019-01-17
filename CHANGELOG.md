@@ -2,6 +2,9 @@
 
 ### 3.2.1 (pending) 
 
+* HttpNode tweaks
+  * added withHeaders() to configure per-node headers; note that since nodes are immutable,
+    the method returns a new modifed node
 * update lazy-foss-parent 1.0.2 to 1.2.0
 * added Buffer methods:
   * fill(InputStream in, int max);

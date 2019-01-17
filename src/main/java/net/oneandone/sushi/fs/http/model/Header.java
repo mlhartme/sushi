@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.http.model;
 
+/** immutable */
 public class Header {
     public static final String CONNECTION = "Connection";
     public static final String CONTENT_ENCODING = "Content-Encoding";

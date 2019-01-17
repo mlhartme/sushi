@@ -23,6 +23,19 @@ import java.util.Iterator;
 import java.util.List;
 
 public class HeaderList implements Iterable<Header> {
+    public static HeaderList of(String... keyValues) {
+        HeaderList result;
+
+        if (keyValues.length % 2 != 0) {
+            throw new IllegalStateException();
+        }
+        result = new HeaderList();
+        for (int i = 0; i < keyValues.length; i += 2) {
+            result.add(keyValues[i], keyValues[i + 1]);
+        }
+        return result;
+    }
+
     public static HeaderList parse(AsciiInputStream src) throws IOException {
         HeaderList result;
         String line;
@@ -44,6 +57,12 @@ public class HeaderList implements Iterable<Header> {
 
     public HeaderList() {
         this.headers = new ArrayList<>();
+    }
+
+    public void addAll(HeaderList lst) {
+        for (Header header : lst) {
+            add(header);
+        }
     }
 
     public void add(Header header) {

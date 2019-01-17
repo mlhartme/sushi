@@ -51,8 +51,10 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.UserPrincipal;
 import java.text.ParseException;
@@ -117,6 +119,38 @@ public class HttpNode extends Node<HttpNode> {
             result.addAll(headers);
         }
         return result;
+    }
+
+    public HttpNode withEncodedQuery(String newEncodedQuery) {
+        return new HttpNode(root, path, newEncodedQuery, headers, tryDir, isDav);
+    }
+
+    public HttpNode withParameter(String key, String value) {
+        return withParameters(key, value);
+    }
+
+    public HttpNode withParameters(String... keyValues) {
+        String newQuery;
+        String item;
+
+        newQuery = encodedQuery;
+        for (int i = 0; i < keyValues.length; i += 2) {
+            item = encode(keyValues[i]) + '=' + encode(keyValues[i + 1]);
+            if (newQuery == null) {
+                newQuery = "?" + item;
+            } else {
+                newQuery = newQuery + "&" + item;
+            }
+        }
+        return withEncodedQuery(newQuery);
+    }
+
+    private String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public HttpNode withHeaders(HeaderList additional) {

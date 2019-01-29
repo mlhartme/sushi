@@ -126,7 +126,7 @@ Note: I used https://github.com/adamfisk/LittleProxy for proxy tests.
 
 ### Mac OS
 
-(tested with High Sierra)
+(tested with Mojave)
 
 * sudo apachectl start
 * /etc/apache2/httpd.conf: make sure the following lines are present

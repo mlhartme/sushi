@@ -14,7 +14,7 @@
 
   <groupId>net.oneandone</groupId>
   <artifactId>sushi</artifactId>
-  <version>3.2.1</version>
+  <version>3.2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <ciManagement>
@@ -60,7 +60,7 @@
     <connection>scm:git:ssh://git@github.com/mlhartme/sushi.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mlhartme/sushi.git</developerConnection>
     <url>https://github.com/mlhartme/sushi</url>
-    <tag>sushi-3.2.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>

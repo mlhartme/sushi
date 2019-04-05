@@ -1,6 +1,11 @@
 ## Changelog 
 
-### 3.2.1 (pending) 
+### 3.2.2 (pending) 
+
+* ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
+
+
+### 3.2.1 (2019-01-29) 
 
 * HttpNode tweaks
   * added withHeaders() to configure per-node headers; note that since nodes are immutable,

@@ -3,7 +3,9 @@
 ### 3.2.2 (pending) 
 
 * ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
-
+* HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 
+  and withParameter(name, int)
+  
 
 ### 3.2.1 (2019-01-29) 
 

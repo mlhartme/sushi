@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class HttpNode extends Node<HttpNode> {
@@ -125,6 +126,12 @@ public class HttpNode extends Node<HttpNode> {
         return new HttpNode(root, path, newEncodedQuery, headers, tryDir, isDav);
     }
 
+    public HttpNode withParameter(String key, boolean value) {
+        return withParameter(key, Boolean.toString(value));
+    }
+    public HttpNode withParameter(String key, int value) {
+        return withParameter(key, Integer.toString(value));
+    }
     public HttpNode withParameter(String key, String value) {
         return withParameters(key, value);
     }
@@ -136,6 +143,26 @@ public class HttpNode extends Node<HttpNode> {
         newQuery = encodedQuery;
         for (int i = 0; i < keyValues.length; i += 2) {
             item = encode(keyValues[i]) + '=' + encode(keyValues[i + 1]);
+            if (newQuery == null) {
+                newQuery = item;
+            } else {
+                newQuery = newQuery + "&" + item;
+            }
+        }
+        return withEncodedQuery(newQuery);
+    }
+
+    public HttpNode withParameters(Map<String, String> map) {
+        return withParameters("", map);
+    }
+
+    public HttpNode withParameters(String prefix, Map<String, String> map) {
+        String newQuery;
+        String item;
+
+        newQuery = encodedQuery;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            item = encode(prefix + entry.getKey()) + '=' + encode(entry.getValue());
             if (newQuery == null) {
                 newQuery = item;
             } else {

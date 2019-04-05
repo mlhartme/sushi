@@ -78,7 +78,7 @@ public class ZipRoot implements Root<ZipNode> {
         //   jar:file:/Users/mhm/Projects/github.com/net/oneandone/stool/stool/server/target/server-5.0.0-SNAPSHOT-springboot.jar!/BOOT-INF/classes!/stool.version
         // I didn't find this documented and I didn't find a spec that says this is valid.
         // So I don't know if that spring specific or in compliance with some specs ...
-        path.replace("!", "");
+        path = path.replace("!", "");
         return new ZipNode(this, path);
     }
 

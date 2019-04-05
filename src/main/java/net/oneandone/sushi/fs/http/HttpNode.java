@@ -152,17 +152,17 @@ public class HttpNode extends Node<HttpNode> {
         return withEncodedQuery(newQuery);
     }
 
-    public HttpNode withParameters(Map<String, String> map) {
+    public HttpNode withParameters(Map<String, ?> map) {
         return withParameters("", map);
     }
 
-    public HttpNode withParameters(String prefix, Map<String, String> map) {
+    public HttpNode withParameters(String prefix, Map<String, ?> map) {
         String newQuery;
         String item;
 
         newQuery = encodedQuery;
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            item = encode(prefix + entry.getKey()) + '=' + encode(entry.getValue());
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            item = encode(prefix + entry.getKey()) + '=' + encode(entry.getValue().toString());
             if (newQuery == null) {
                 newQuery = item;
             } else {

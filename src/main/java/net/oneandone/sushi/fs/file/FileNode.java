@@ -262,8 +262,8 @@ public class FileNode extends Node<FileNode> {
         return copyFileToImpl(dest, skip);
     }
 
-    public void copyFileFrom(InputStream dest) throws FileNotFoundException, CopyFileFromException {
-        copyFileFromImpl(dest);
+    public void copyFileFrom(InputStream src) throws FileNotFoundException, CopyFileFromException {
+        copyFileFromImpl(src);
     }
 
 

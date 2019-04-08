@@ -5,7 +5,8 @@
 * ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
 * HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 
   and withParameter(name, int)
-  
+* fixed argument name in `FileNode.readFrom(InputStream src)` (was `dest`)
+
 
 ### 3.2.1 (2019-01-29) 
 

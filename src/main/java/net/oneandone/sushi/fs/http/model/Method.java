@@ -67,7 +67,7 @@ public class Method {
                 case StatusCode.NOT_FOUND:
                 case StatusCode.GONE:
                 case StatusCode.MOVED_PERMANENTLY:
-                    throw new FileNotFoundException(resource);
+                    throw new FileNotFoundException(resource, new StatusException(response.getStatusLine(), response.getBodyBytes()));
                 default:
                     throw StatusException.forResponse(response);
             }

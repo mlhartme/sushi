@@ -67,9 +67,9 @@ public class Method {
                 case StatusCode.NOT_FOUND:
                 case StatusCode.GONE:
                 case StatusCode.MOVED_PERMANENTLY:
-                    throw new FileNotFoundException(resource, new StatusException(response.getStatusLine(), response.getBodyBytes()));
+                    throw new FileNotFoundException(resource, new StatusException(resource, response.getStatusLine(), response.getBodyBytes()));
                 default:
-                    throw StatusException.forResponse(response);
+                    throw StatusException.forResponse(resource, response);
             }
         }
     }
@@ -86,7 +86,7 @@ public class Method {
             case StatusCode.OK:
                 return header == null ? null : response.getHeaderList().getFirstValue(header);
             default:
-                throw StatusException.forResponse(response);
+                throw StatusException.forResponse(resource, response);
         }
     }
 
@@ -117,11 +117,11 @@ public class Method {
                 lst = MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBodyBytes());
                 ms = MultiStatus.lookupOne(lst, property.getName());
                 if (ms.status != StatusCode.OK) {
-                    throw new StatusException(new StatusLine(StatusLine.HTTP_1_1, ms.status), null);
+                    throw new StatusException(resource, new StatusLine(StatusLine.HTTP_1_1, ms.status), null);
                 }
                 return;
             default:
-                throw StatusException.forResponse(response);
+                throw StatusException.forResponse(resource, response);
         }
     }
 
@@ -151,7 +151,7 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(resource);
             default:
-                throw StatusException.forResponse(response);
+                throw StatusException.forResponse(resource, response);
         }
     }
 
@@ -172,7 +172,7 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(source);
             default:
-                throw StatusException.forResponse(response);
+                throw StatusException.forResponse(source, response);
         }
     }
 
@@ -183,7 +183,7 @@ public class Method {
         mkcol = new Request("MKCOL", resource);
         response = mkcol.request();
         if (response.getStatusLine().code != StatusCode.CREATED) {
-            throw StatusException.forResponse(response);
+            throw StatusException.forResponse(resource, response);
         }
     }
 
@@ -203,7 +203,7 @@ public class Method {
             case StatusCode.NOT_FOUND:
                 throw new FileNotFoundException(resource);
             default:
-                throw StatusException.forResponse(response);
+                throw StatusException.forResponse(resource, response);
         }
     }
 
@@ -230,7 +230,7 @@ public class Method {
                 reponse = put.finish(connection);
                 code = reponse.getStatusLine().code;
                 if (code != StatusCode.OK && code != StatusCode.NO_CONTENT && code != StatusCode.CREATED) {
-                    throw StatusException.forResponse(reponse);
+                    throw StatusException.forResponse(resource, reponse);
                 }
             }
         };
@@ -243,7 +243,7 @@ public class Method {
         post = new Request("POST", resource);
         response = post.request(body);
         if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw StatusException.forResponse(response);
+            throw StatusException.forResponse(resource, response);
         }
         return response.getBodyBytes();
     }
@@ -255,7 +255,7 @@ public class Method {
         patch = new Request("PATCH", resource);
         response = patch.request(body);
         if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw StatusException.forResponse(response);
+            throw StatusException.forResponse(resource, response);
         }
         return response.getBodyBytes();
     }

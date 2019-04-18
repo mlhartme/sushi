@@ -21,17 +21,23 @@ import net.oneandone.sushi.fs.http.model.StatusLine;
 import java.io.IOException;
 
 public class StatusException extends IOException {
-    public static StatusException forResponse(Response response) {
-        return new StatusException(response.getStatusLine(), response.getBodyBytes());
+    public static StatusException forResponse(HttpNode resource, Response response) {
+        return new StatusException(resource, response.getStatusLine(), response.getBodyBytes());
     }
 
+    private final HttpNode resource;
     private final StatusLine statusline;
     private final byte[] responseBytes;
 
-    public StatusException(StatusLine statusline, byte[] responseBytes) {
+    public StatusException(HttpNode resource, StatusLine statusline, byte[] responseBytes) {
         super(Integer.toString(statusline.code));
+        this.resource = resource;
         this.statusline = statusline;
         this.responseBytes = responseBytes;
+    }
+
+    public HttpNode getResurce() {
+        return resource;
     }
 
     public StatusLine getStatusLine() {

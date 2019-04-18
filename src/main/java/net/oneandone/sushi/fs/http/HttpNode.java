@@ -930,7 +930,7 @@ public class HttpNode extends Node<HttpNode> {
                 case StatusCode.MOVED_PERMANENTLY:
                     throw new FileNotFoundException(this);
                 default:
-                    throw StatusException.forResponse(response);
+                    throw StatusException.forResponse(this, response);
             }
         }
     }

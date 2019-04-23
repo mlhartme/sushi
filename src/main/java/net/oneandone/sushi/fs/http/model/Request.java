@@ -19,13 +19,43 @@ import net.oneandone.sushi.fs.http.Oauth;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.HttpRoot;
+import net.oneandone.sushi.fs.http.StatusException;
 
+import java.io.FilterInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Map;
+import java.io.InputStream;
 import java.util.UUID;
 
 public class Request {
+    /** @param body may be null */
+    public static InputStream stream(HttpNode resource, String method, Body body) throws IOException {
+        Request request;
+        Response response;
+
+        request = new Request(method, resource);
+        request.bodyHeader(body);
+        response = request.responseHeader(request.open(body));
+        if (response.getStatusLine().code == StatusCode.OK) {
+            return new FilterInputStream(response.getBody().content) {
+                private boolean freed = false;
+
+                @Override
+                public void close() throws IOException {
+                    if (!freed) {
+                        freed = true;
+                        request.free(response);
+                    }
+                    super.close();
+                }
+            };
+        } else {
+            request.free(response);
+            throw StatusException.forResponse(resource, response);
+        }
+    }
+
+    //--
+
     private final HttpRoot root;
     private final String method;
     private final HeaderList headerList;

@@ -40,29 +40,23 @@ public class Method {
     public static final String XML_RESPONSE = "response";
 
     public static InputStream get(HttpNode resource) throws IOException {
-        Request get;
+        return Request.stream(resource, "GET", null);
+    }
+
+    public static InputStream postStream(HttpNode resource, Body body) throws IOException {
+        return Request.stream(resource, "POST", body);
+    }
+
+    public static byte[] post(HttpNode resource, Body body) throws IOException {
+        Request post;
         Response response;
 
-        get = new Request("GET", resource);
-        get.bodyHeader(null);
-        response = get.responseHeader(get.open(null));
-        if (response.getStatusLine().code == StatusCode.OK) {
-            return new FilterInputStream(response.getBody().content) {
-                private boolean freed = false;
-
-                @Override
-                public void close() throws IOException {
-                    if (!freed) {
-                        freed = true;
-                        get.free(response);
-                    }
-                    super.close();
-                }
-            };
-        } else {
-            get.free(response);
+        post = new Request("POST", resource);
+        response = post.request(body);
+        if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
             throw StatusException.forResponse(resource, response);
         }
+        return response.getBodyBytes();
     }
 
     public static String head(HttpNode resource, String header) throws IOException {
@@ -225,44 +219,6 @@ public class Method {
                 }
             }
         };
-    }
-
-    public static byte[] post(HttpNode resource, Body body) throws IOException {
-        Request post;
-        Response response;
-
-        post = new Request("POST", resource);
-        response = post.request(body);
-        if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw StatusException.forResponse(resource, response);
-        }
-        return response.getBodyBytes();
-    }
-
-    public static InputStream postStream(HttpNode resource, Body body) throws IOException {
-        Request post;
-        Response response;
-
-        post = new Request("POST", resource);
-        post.bodyHeader(body);
-        response = post.responseHeader(post.open(body));
-        if (response.getStatusLine().code == StatusCode.OK) {
-            return new FilterInputStream(response.getBody().content) {
-                private boolean freed = false;
-
-                @Override
-                public void close() throws IOException {
-                    if (!freed) {
-                        freed = true;
-                        post.free(response);
-                    }
-                    super.close();
-                }
-            };
-        } else {
-            post.free(response);
-            throw StatusException.forResponse(resource, response);
-        }
     }
 
     public static byte[] patch(HttpNode resource, Body body) throws IOException {

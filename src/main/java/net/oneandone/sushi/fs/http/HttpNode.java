@@ -906,44 +906,27 @@ public class HttpNode extends Node<HttpNode> {
     public byte[] post(InputStream body) throws IOException {
         return post(new Body(null, null, -1, body, false));
     }
+
     public byte[] post(Body body) throws IOException {
         return Method.post(this, body);
     }
+
     public InputStream postStream(Body body) throws IOException {
-        Request post;
-        Response response;
-
-        post = new Request("POST", this);
-        post.bodyHeader(body);
-        response = post.responseHeader(post.open(body));
-        if (response.getStatusLine().code == StatusCode.OK) {
-            return new FilterInputStream(response.getBody().content) {
-                private boolean freed = false;
-
-                @Override
-                public void close() throws IOException {
-                    if (!freed) {
-                        freed = true;
-                        post.free(response);
-                    }
-                    super.close();
-                }
-            };
-        } else {
-            post.free(response);
-            switch (response.getStatusLine().code) {
+        try {
+            return Method.postStream(this, body);
+        } catch (StatusException e) {
+            switch (e.getStatusLine().code) {
                 case StatusCode.MOVED_TEMPORARILY:
-                    throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
+                    throw new MovedTemporarilyException(e.getHeaderList().getFirstValue("Location"));
                 case StatusCode.NOT_FOUND:
                 case StatusCode.GONE:
                 case StatusCode.MOVED_PERMANENTLY:
                     throw new FileNotFoundException(this);
                 default:
-                    throw StatusException.forResponse(this, response);
+                    throw e;
             }
         }
     }
-
 
 
     public String patch(String str) throws IOException {

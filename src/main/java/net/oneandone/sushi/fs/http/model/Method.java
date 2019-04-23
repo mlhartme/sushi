@@ -239,6 +239,32 @@ public class Method {
         return response.getBodyBytes();
     }
 
+    public static InputStream postStream(HttpNode resource, Body body) throws IOException {
+        Request post;
+        Response response;
+
+        post = new Request("POST", resource);
+        post.bodyHeader(body);
+        response = post.responseHeader(post.open(body));
+        if (response.getStatusLine().code == StatusCode.OK) {
+            return new FilterInputStream(response.getBody().content) {
+                private boolean freed = false;
+
+                @Override
+                public void close() throws IOException {
+                    if (!freed) {
+                        freed = true;
+                        post.free(response);
+                    }
+                    super.close();
+                }
+            };
+        } else {
+            post.free(response);
+            throw StatusException.forResponse(resource, response);
+        }
+    }
+
     public static byte[] patch(HttpNode resource, Body body) throws IOException {
         Request patch;
         Response response;

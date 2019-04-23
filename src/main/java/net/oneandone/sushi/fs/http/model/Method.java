@@ -40,11 +40,11 @@ public class Method {
     public static final String XML_RESPONSE = "response";
 
     public static InputStream get(HttpNode resource) throws IOException {
-        return Request.stream(resource, "GET", null);
+        return Request.streamResponse(resource, "GET", null, StatusCode.OK);
     }
 
     public static InputStream postStream(HttpNode resource, Body body) throws IOException {
-        return Request.stream(resource, "POST", body);
+        return Request.streamResponse(resource, "POST", body, StatusCode.OK, StatusCode.CREATED);
     }
 
     public static byte[] post(HttpNode resource, Body body) throws IOException {

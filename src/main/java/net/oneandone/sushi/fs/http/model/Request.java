@@ -28,14 +28,14 @@ import java.util.UUID;
 
 public class Request {
     /** @param body may be null */
-    public static InputStream stream(HttpNode resource, String method, Body body) throws IOException {
+    public static InputStream streamResponse(HttpNode resource, String method, Body body, int ... success) throws IOException {
         Request request;
         Response response;
 
         request = new Request(method, resource);
         request.bodyHeader(body);
         response = request.responseHeader(request.open(body));
-        if (response.getStatusLine().code == StatusCode.OK) {
+        if (contains(success, response.getStatusLine().code)) {
             return new FilterInputStream(response.getBody().content) {
                 private boolean freed = false;
 
@@ -52,6 +52,15 @@ public class Request {
             request.free(response);
             throw StatusException.forResponse(resource, response);
         }
+    }
+
+    private static boolean contains(int[] array, int code) {
+        for (int cmp : array) {
+            if (code == cmp) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //--

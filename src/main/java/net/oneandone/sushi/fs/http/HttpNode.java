@@ -906,11 +906,9 @@ public class HttpNode extends Node<HttpNode> {
     public byte[] post(InputStream body) throws IOException {
         return post(new Body(null, null, -1, body, false));
     }
-
     public byte[] post(Body body) throws IOException {
         return Method.post(this, body);
     }
-
     public InputStream postStream(Body body) throws IOException {
         try {
             return Method.postStream(this, body);

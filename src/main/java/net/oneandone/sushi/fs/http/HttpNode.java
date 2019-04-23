@@ -907,11 +907,13 @@ public class HttpNode extends Node<HttpNode> {
         return post(new Body(null, null, -1, body, false));
     }
     public byte[] post(Body body) throws IOException {
-        return Method.post(this, body);
+        try (InputStream src = postStream(body)) {
+            return getWorld().getBuffer().readBytes(src);
+        }
     }
     public InputStream postStream(Body body) throws IOException {
         try {
-            return Method.postStream(this, body);
+            return Method.post(this, body);
         } catch (StatusException e) {
             switch (e.getStatusLine().code) {
                 case StatusCode.MOVED_TEMPORARILY:

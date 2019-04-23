@@ -43,20 +43,8 @@ public class Method {
         return Request.streamResponse(resource, "GET", null, StatusCode.OK);
     }
 
-    public static InputStream postStream(HttpNode resource, Body body) throws IOException {
+    public static InputStream post(HttpNode resource, Body body) throws IOException {
         return Request.streamResponse(resource, "POST", body, StatusCode.OK, StatusCode.CREATED);
-    }
-
-    public static byte[] post(HttpNode resource, Body body) throws IOException {
-        Request post;
-        Response response;
-
-        post = new Request("POST", resource);
-        response = post.request(body);
-        if (response.getStatusLine().code != StatusCode.OK && response.getStatusLine().code != StatusCode.CREATED) {
-            throw StatusException.forResponse(resource, response);
-        }
-        return response.getBodyBytes();
     }
 
     public static String head(HttpNode resource, String header) throws IOException {

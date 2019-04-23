@@ -2,14 +2,16 @@
 
 ### 3.2.2 (pending) 
 
-* http.Method.get() now throws StatusException only - wrapping with Node specific exceptions was moved into HttpNode.newInputStream
-* update parent 1.2.0 to 1.2.1
-* StatusException now also returns the respective HttpNode and the header list 
-* improved Http.get 404 handling: the FileNotFoundException now contains a wrapped StageException to report the exact return code
+* http nodes
+  * generalized Method.post to return a stream - caution, this is an incompatible change
+  * Method.get() now throws StatusException only - wrapping with Node specific exceptions was moved into HttpNode.newInputStream
+  * HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 
+    and withParameter(name, int)
+  * StatusException now also returns the respective HttpNode and the header list 
+  * improved Http.get 404 handling: the FileNotFoundException now contains a wrapped StageException to report the exact return code
 * ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
-* HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 
-  and withParameter(name, int)
-* fixed argument name in `FileNode.readFrom(InputStream src)` (was `dest`)
+* FileNode: fixed argument name in `readFrom(InputStream src)` (was `dest`)
+* update parent 1.2.0 to 1.2.1
 
 
 ### 3.2.1 (2019-01-29) 

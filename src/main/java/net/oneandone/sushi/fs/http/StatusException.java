@@ -36,7 +36,7 @@ public class StatusException extends IOException {
         this.responseBytes = responseBytes;
     }
 
-    public HttpNode getResurce() {
+    public HttpNode getResource() {
         return resource;
     }
 

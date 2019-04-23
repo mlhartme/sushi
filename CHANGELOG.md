@@ -3,7 +3,7 @@
 ### 3.2.2 (pending) 
 
 * update parent 1.2.0 to 1.2.1
-* StatusException now stores the HttpNode 
+* StatusException now also returns HttpNode 
 * improved Http.get 404 handling: the FileNotFoundException now contains a wrapped StageException to report the exact return code
 * ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
 * HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 

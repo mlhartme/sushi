@@ -2,6 +2,7 @@
 
 ### 3.2.2 (pending) 
 
+* http.Method.get() now throws StatusException only - wrapping with Node specific exceptions was moved into HttpNode.newInputStream
 * update parent 1.2.0 to 1.2.1
 * StatusException now also returns the respective HttpNode and the header list 
 * improved Http.get 404 handling: the FileNotFoundException now contains a wrapped StageException to report the exact return code

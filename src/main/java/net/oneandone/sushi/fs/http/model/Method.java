@@ -61,16 +61,7 @@ public class Method {
             };
         } else {
             get.free(response);
-            switch (response.getStatusLine().code) {
-                case StatusCode.MOVED_TEMPORARILY:
-                    throw new MovedTemporarilyException(response.getHeaderList().getFirstValue("Location"));
-                case StatusCode.NOT_FOUND:
-                case StatusCode.GONE:
-                case StatusCode.MOVED_PERMANENTLY:
-                    throw new FileNotFoundException(resource, StatusException.forResponse(resource, response));
-                default:
-                    throw StatusException.forResponse(resource, response);
-            }
+            throw StatusException.forResponse(resource, response);
         }
     }
 

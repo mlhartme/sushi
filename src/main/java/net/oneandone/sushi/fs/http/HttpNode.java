@@ -588,7 +588,20 @@ public class HttpNode extends Node<HttpNode> {
         synchronized (tryLock) {
             tryDir = false;
             try {
-                return Method.get(this);
+                try {
+                    return Method.get(this);
+                } catch (StatusException e) {
+                    switch (e.getStatusLine().code) {
+                        case StatusCode.MOVED_TEMPORARILY:
+                            throw new MovedTemporarilyException(e.getHeaderList().getFirstValue("Location"));
+                        case StatusCode.NOT_FOUND:
+                        case StatusCode.GONE:
+                        case StatusCode.MOVED_PERMANENTLY:
+                            throw new FileNotFoundException(this, e);
+                        default:
+                            throw e;
+                    }
+                }
             } catch (FileNotFoundException e) {
                 throw e;
             } catch (IOException e) {

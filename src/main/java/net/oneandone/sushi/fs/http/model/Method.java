@@ -117,7 +117,7 @@ public class Method {
                 lst = MultiStatus.fromResponse(resource.getWorld().getXml(), response.getBodyBytes());
                 ms = MultiStatus.lookupOne(lst, property.getName());
                 if (ms.status != StatusCode.OK) {
-                    throw new StatusException(resource, new StatusLine(StatusLine.HTTP_1_1, ms.status), null);
+                    throw new StatusException(resource, response.getHeaderList(), new StatusLine(StatusLine.HTTP_1_1, ms.status), null);
                 }
                 return;
             default:

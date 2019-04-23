@@ -15,6 +15,7 @@
  */
 package net.oneandone.sushi.fs.http;
 
+import net.oneandone.sushi.fs.http.model.HeaderList;
 import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusLine;
 
@@ -22,22 +23,28 @@ import java.io.IOException;
 
 public class StatusException extends IOException {
     public static StatusException forResponse(HttpNode resource, Response response) {
-        return new StatusException(resource, response.getStatusLine(), response.getBodyBytes());
+        return new StatusException(resource, response.getHeaderList(), response.getStatusLine(), response.getBodyBytes());
     }
 
     private final HttpNode resource;
+    private final HeaderList headerList;
     private final StatusLine statusline;
     private final byte[] responseBytes;
 
-    public StatusException(HttpNode resource, StatusLine statusline, byte[] responseBytes) {
+    public StatusException(HttpNode resource, HeaderList headerList, StatusLine statusline, byte[] responseBytes) {
         super(Integer.toString(statusline.code));
         this.resource = resource;
+        this.headerList = headerList;
         this.statusline = statusline;
         this.responseBytes = responseBytes;
     }
 
     public HttpNode getResource() {
         return resource;
+    }
+
+    public HeaderList getHeaderList() {
+        return headerList;
     }
 
     public StatusLine getStatusLine() {

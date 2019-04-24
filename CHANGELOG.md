@@ -3,6 +3,7 @@
 ### 3.2.2 (pending) 
 
 * http nodes
+  * added Request.streamResponse to generically stream method responses
   * generalized Method.post to return a stream - caution, this is an incompatible change
   * Method.get() now throws StatusException only - wrapping with Node specific exceptions was moved into HttpNode.newInputStream
   * HttpNode: added withParameters(map), withParameters(prefix, map), withParameter(name, boolean) 

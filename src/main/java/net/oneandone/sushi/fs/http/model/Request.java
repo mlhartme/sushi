@@ -23,31 +23,54 @@ import net.oneandone.sushi.fs.http.StatusException;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 public class Request {
-    /** @param body may be null */
-    public static InputStream streamResponse(HttpNode resource, String method, Body body, int ... success) throws IOException {
+    public static class ResponseStream extends FilterInputStream {
+        private final Request request;
+        private final Response response;
+        private boolean freed;
+
+        public ResponseStream(Request request, Response response) {
+            super(response.getBody().content);
+
+            this.request = request;
+            this.response = response;
+            this.freed = false;
+        }
+
+        @Override
+        public void close() throws IOException {
+            if (!freed) {
+                freed = true;
+                request.free(response);
+            }
+            super.close();
+        }
+
+        public HeaderList getHeaderList() {
+            return response.getHeaderList();
+        }
+
+        public StatusLine getStatusLine() {
+            return response.getStatusLine();
+        }
+    }
+
+
+    /**
+     * @param body may be null
+     * @param success may be null to accept all response codes
+     */
+    public static ResponseStream streamResponse(HttpNode resource, String method, Body body, int ... success) throws IOException {
         Request request;
         Response response;
 
         request = new Request(method, resource);
         request.bodyHeader(body);
         response = request.responseHeader(request.open(body));
-        if (contains(success, response.getStatusLine().code)) {
-            return new FilterInputStream(response.getBody().content) {
-                private boolean freed = false;
-
-                @Override
-                public void close() throws IOException {
-                    if (!freed) {
-                        freed = true;
-                        request.free(response);
-                    }
-                    super.close();
-                }
-            };
+        if (success == null || contains(success, response.getStatusLine().code)) {
+            return new ResponseStream(request, response);
         } else {
             request.free(response);
             throw StatusException.forResponse(resource, response);

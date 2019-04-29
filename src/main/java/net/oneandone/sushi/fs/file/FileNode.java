@@ -41,6 +41,7 @@ import net.oneandone.sushi.fs.SizeException;
 import net.oneandone.sushi.fs.zip.ZipFilesystem;
 import net.oneandone.sushi.fs.zip.ZipNode;
 import net.oneandone.sushi.io.Buffer;
+import net.oneandone.sushi.launcher.Failure;
 import net.oneandone.sushi.launcher.Launcher;
 
 import java.io.File;
@@ -448,11 +449,11 @@ public class FileNode extends Node<FileNode> {
     //--
 
     /** Executes the specified program in this directory. Convenience Method. Don't forget to check the output. */
-    public String exec(String ... args) throws IOException {
+    public String exec(String ... args) throws Failure {
         return new Launcher(this, args).exec();
     }
 
-    public void execNoOutput(String ... args) throws IOException {
+    public void execNoOutput(String ... args) throws Failure {
         new Launcher(this, args).execNoOutput();
     }
 

@@ -260,7 +260,7 @@ public class HttpRoot implements Root<HttpNode> {
     public String toString() {
         return getProtocol() + "://" + getHostname() + ":" + getPort();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         HttpRoot root;

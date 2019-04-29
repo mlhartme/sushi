@@ -12,7 +12,9 @@
   * StatusException now also returns the respective HttpNode and the header list 
   * improved Http.get 404 handling: the FileNotFoundException now contains a wrapped StageException to report the exact return code
 * ZipRoot now ignores "!"s in nodes paths; this fixes resource handling when running with the springboot class loaded
-* FileNode: fixed argument name in `readFrom(InputStream src)` (was `dest`)
+* FileNode: 
+  * fixed argument name in `readFrom(InputStream src)` (was `dest`)
+  * fixed exec throws clause: only Failure exceptions can be thrown
 * update parent 1.2.0 to 1.2.1
 
 

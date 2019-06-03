@@ -61,4 +61,7 @@ public class Lcs {
     private static <T> List<T> longest(List<T> a, List<T> b) {
         return new ArrayList<>(a.size() >= b.size() ? a : b);
     }
+
+    private Lcs() {
+    }
 }

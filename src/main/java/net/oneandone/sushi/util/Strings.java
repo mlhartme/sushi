@@ -382,5 +382,8 @@ public class Strings {
         }
         return result.toString();
     }
+
+    private Strings() {
+    }
 }
 

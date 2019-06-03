@@ -19,7 +19,7 @@ import net.oneandone.sushi.util.Separator;
 
 public enum OS {
     LINUX("Linux", "$", "", ':', "\n"),
-    MAC(new String[] { "Mac" /* official Apple Jdks */, "Darwin" /* OpenJdk 7 for Mac OS BSD Port */ }, "$", "", ':', "\n"),
+    MAC(new String[]{"Mac" /* official Apple Jdks */, "Darwin" /* OpenJdk 7 for Mac OS BSD Port */}, "$", "", ':', "\n"),
     WINDOWS("Windows", "%", "%", ';', "\r\n");
 
     private static OS detect() {
@@ -47,11 +47,11 @@ public enum OS {
     public final Separator lineSeparator;
 
     OS(String substring, String variablePrefix, String variableSuffix, char listSeparatorChar, String lineSeparator) {
-        this(new String[] { substring }, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator);
+        this(new String[]{substring}, variablePrefix, variableSuffix, listSeparatorChar, lineSeparator);
     }
 
     OS(String[] substrings, String variablePrefix, String variableSuffix,
-            char listSeparatorChar, String lineSeparator) {
+       char listSeparatorChar, String lineSeparator) {
         this.substrings = substrings;
         this.variablePrefix = variablePrefix;
         this.variableSuffix = variableSuffix;
@@ -62,12 +62,12 @@ public enum OS {
     public String lines(String... lines) {
         StringBuilder result;
 
-    	result = new StringBuilder();
-    	for (String line : lines) {
-    		result.append(line);
-    		result.append(lineSeparator.getSeparator());
-    	}
-    	return result.toString();
+        result = new StringBuilder();
+        for (String line : lines) {
+            result.append(line);
+            result.append(lineSeparator.getSeparator());
+        }
+        return result.toString();
     }
 
     public String variable(String name) {

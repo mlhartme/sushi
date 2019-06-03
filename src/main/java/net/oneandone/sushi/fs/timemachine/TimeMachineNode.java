@@ -163,7 +163,7 @@ public class TimeMachineNode extends Node<TimeMachineNode> {
 
     @Override
     public boolean isLink() throws ExistsException {
-    	return node.isLink();
+        return node.isLink();
     }
 
     @Override

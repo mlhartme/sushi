@@ -571,11 +571,11 @@ public abstract class Node<T extends Node> {
         }
     }
 
-    public T writeBytes(byte ... bytes) throws IOException {
+    public T writeBytes(byte... bytes) throws IOException {
         return writeBytes(bytes, 0, bytes.length, false);
     }
 
-    public T appendBytes(byte ... bytes) throws IOException {
+    public T appendBytes(byte... bytes) throws IOException {
         return writeBytes(bytes, 0, bytes.length, true);
     }
 
@@ -586,11 +586,11 @@ public abstract class Node<T extends Node> {
         return (T) this;
     }
 
-    public T writeChars(char ... chars) throws IOException {
+    public T writeChars(char... chars) throws IOException {
         return writeChars(chars, 0, chars.length, false);
     }
 
-    public T appendChars(char ... chars) throws IOException {
+    public T appendChars(char... chars) throws IOException {
         return writeChars(chars, 0, chars.length, true);
     }
 
@@ -615,7 +615,7 @@ public abstract class Node<T extends Node> {
         return (T) this;
     }
 
-    public T writeStrings(String ... str) throws IOException {
+    public T writeStrings(String... str) throws IOException {
         return writeStrings(Arrays.asList(str));
     }
 
@@ -623,7 +623,7 @@ public abstract class Node<T extends Node> {
         return strings(newWriter(), strings);
     }
 
-    public T appendStrings(String ... str) throws IOException {
+    public T appendStrings(String... str) throws IOException {
         return appendStrings(Arrays.asList(str));
     }
 
@@ -640,7 +640,7 @@ public abstract class Node<T extends Node> {
     }
 
     /** @param line without tailing line separator */
-    public T writeLines(String ... line) throws IOException {
+    public T writeLines(String... line) throws IOException {
         return writeLines(Arrays.asList(line));
     }
 
@@ -655,7 +655,7 @@ public abstract class Node<T extends Node> {
     }
 
     /** @param line without tailing line separator */
-    public T appendLines(String ... line) throws IOException {
+    public T appendLines(String... line) throws IOException {
         return appendLines(Arrays.asList(line));
     }
 

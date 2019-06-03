@@ -100,16 +100,16 @@ public class Proxy {
     }
 
     public boolean excludes(URI uri) {
-        String host;
+        String hostname;
 
-        host = uri.getHost();
+        hostname = uri.getHost();
         for (String exclude : excludes) {
             if (exclude.startsWith("*")) {
-                if (host.endsWith(exclude.substring(1))) {
+                if (hostname.endsWith(exclude.substring(1))) {
                     return true;
                 }
             } else {
-                if (host.equals(exclude)) {
+                if (hostname.equals(exclude)) {
                     return true;
                 }
             }

@@ -44,7 +44,7 @@ public class HttpConnection implements Closeable {
     private boolean open;
 
     public HttpConnection(Socket socket, AsciiInputStream input, AsciiOutputStream output) {
-    	this.socket = socket;
+        this.socket = socket;
         this.input = input;
         this.output = output;
         this.open = true;
@@ -102,12 +102,12 @@ public class HttpConnection implements Closeable {
     //--
 
     public AsciiOutputStream getOutputStream() {
-    	return output;
+        return output;
     }
 
-	@Override
+    @Override
     public String toString() {
-		return "HttpConnection(" + socket.getPort() + ')';
+        return "HttpConnection(" + socket.getPort() + ')';
     }
 
     //--

@@ -15,21 +15,25 @@
  */
 package net.oneandone.sushi.fs;
 
-/** 
- * A file system root like the drive letter on Windows or the Host Name for HttpFilesystem. 
- * The root is not a node. A root node is a node with an empty path. 
+/**
+ * A file system root like the drive letter on Windows or the Host Name for HttpFilesystem.
+ * The root is not a node. A root node is a node with an empty path.
  */
 public interface Root<T extends Node> {
-    /** Backlink */
+    /**
+     * Backlink
+     */
     Filesystem getFilesystem();
 
-    /** Part of the URI between scheme (including ':') and path */
-    String getId();
-    
     /**
-     * Creates a new node with no base. The path has already been checked syntactically. 
+     * Part of the URI between scheme (including ':') and path
+     */
+    String getId();
+
+    /**
+     * Creates a new node with no base. The path has already been checked syntactically.
      * Never called with heading or tailing separator. The base of the resulting node must be null.
-     * TODO: expect splitted path? 
+     * TODO: expect splitted path?
      */
     T node(String path, String encodedQuery);
 }

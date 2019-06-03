@@ -375,7 +375,7 @@ public class FileNode extends Node<FileNode> {
     }
 
     /** Returns a launcher with working directory this. */
-    public Launcher launcher(String ... args) {
+    public Launcher launcher(String... args) {
         return new Launcher(this, args);
     }
 
@@ -449,11 +449,11 @@ public class FileNode extends Node<FileNode> {
     //--
 
     /** Executes the specified program in this directory. Convenience Method. Don't forget to check the output. */
-    public String exec(String ... args) throws Failure {
+    public String exec(String... args) throws Failure {
         return new Launcher(this, args).exec();
     }
 
-    public void execNoOutput(String ... args) throws Failure {
+    public void execNoOutput(String... args) throws Failure {
         new Launcher(this, args).execNoOutput();
     }
 

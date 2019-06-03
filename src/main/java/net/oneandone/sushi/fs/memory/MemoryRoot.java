@@ -36,7 +36,7 @@ public class MemoryRoot implements Root<MemoryNode> {
     public final int id;
     private final Map<String, MemoryNode> nodes;
     private final Map<String, Object> store;
-    
+
     public MemoryRoot(MemoryFilesystem filesystem, int id) {
         this.filesystem = filesystem;
         this.id = id;
@@ -55,7 +55,7 @@ public class MemoryRoot implements Root<MemoryNode> {
 
     public MemoryNode node(String path, String encodedQuery) {
         MemoryNode node;
-        
+
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
         }
@@ -66,7 +66,7 @@ public class MemoryRoot implements Root<MemoryNode> {
         }
         return node;
     }
-    
+
     public void add(MemoryNode node) {
         nodes.put(node.getPath(), node);
     }
@@ -90,12 +90,12 @@ public class MemoryRoot implements Root<MemoryNode> {
             return ((byte[]) obj).length;
         }
     }
-    
+
     public List<MemoryNode> list(String path) {
         String child;
         int idx;
         List<MemoryNode> result;
-        
+
         result = new ArrayList<>();
         for (MemoryNode node : nodes.values()) {
             child = node.getPath();
@@ -105,15 +105,15 @@ public class MemoryRoot implements Root<MemoryNode> {
                     result.add(node);
                 }
             }
-        }     
+        }
         return result;
     }
-    
+
     //--
-    
+
     InputStream open(String path) throws IOException {
         Object obj;
-        
+
         obj = store.get(path);
         if (obj instanceof FileNode) {
             return ((FileNode) obj).newInputStream();
@@ -134,12 +134,12 @@ public class MemoryRoot implements Root<MemoryNode> {
             return Arrays.copyOf(bytes, bytes.length);
         }
     }
-    
+
     void store(String path, byte[] data, int used) throws IOException {
         Object old;
         FileNode file;
         byte[] copy;
-        
+
         old = store.get(path);
         if (old instanceof FileNode) {
             ((FileNode) old).deleteTree();

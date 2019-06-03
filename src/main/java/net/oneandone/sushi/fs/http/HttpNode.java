@@ -64,9 +64,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class HttpNode extends Node<HttpNode> {
-	private final HttpRoot root;
+    private final HttpRoot root;
 
-	/**
+    /**
      * Never starts with a slash.
      * Without type - never with tailing /. With special characters - will be encoded in http requests
      */
@@ -77,17 +77,23 @@ public class HttpNode extends Node<HttpNode> {
      */
     private final String encodedQuery;
 
-    /** null for no extra headers */
+    /**
+     * null for no extra headers
+     */
     private final HeaderList headers;
 
     private boolean tryDir;
 
     private final Object tryLock;
 
-    /** true if this node is know to accep webdav commands, false if it's know to not accept them. Null if unknown */
+    /**
+     * true if this node is know to accep webdav commands, false if it's know to not accept them. Null if unknown
+     */
     private Boolean isDav;
 
-    /** @param encodedQuery null or query without initial "?" */
+    /**
+     * @param encodedQuery null or query without initial "?"
+     */
     public HttpNode(HttpRoot root, String path, String encodedQuery, boolean tryDir, Boolean isDav) {
         this(root, path, encodedQuery, null, tryDir, isDav);
     }
@@ -126,9 +132,11 @@ public class HttpNode extends Node<HttpNode> {
     public HttpNode withParameter(String key, boolean value) {
         return withParameter(key, Boolean.toString(value));
     }
+
     public HttpNode withParameter(String key, int value) {
         return withParameter(key, Integer.toString(value));
     }
+
     public HttpNode withParameter(String key, String value) {
         return withParameters(key, value);
     }
@@ -213,6 +221,10 @@ public class HttpNode extends Node<HttpNode> {
             }
         }
         return false;
+    }
+
+    public int hashCode() {
+        return path.hashCode();
     }
 
     @Override
@@ -514,9 +526,9 @@ public class HttpNode extends Node<HttpNode> {
             }
         } catch (FileNotFoundException e) {
             throw e;
-		} catch (IOException e) {
-			throw new MoveException(this, dest, e.getMessage(), e);
-		}
+        } catch (IOException e) {
+            throw new MoveException(this, dest, e.getMessage(), e);
+        }
         return dest;
     }
 
@@ -577,7 +589,7 @@ public class HttpNode extends Node<HttpNode> {
 
     @Override
     public boolean isLink() {
-    	return false;
+        return false;
     }
 
     @Override
@@ -702,54 +714,54 @@ public class HttpNode extends Node<HttpNode> {
         return false;
     }
 
-	private HttpNode createChild(URI href) {
-		String childPath;
-		boolean dir;
-		HttpNode result;
+    private HttpNode createChild(URI href) {
+        String childPath;
+        boolean dir;
+        HttpNode result;
 
         childPath = href.getPath();
-		dir = childPath.endsWith("/");
-		if (dir) {
-		    childPath = childPath.substring(0, childPath.length() - 1);
-		}
+        dir = childPath.endsWith("/");
+        if (dir) {
+            childPath = childPath.substring(0, childPath.length() - 1);
+        }
         childPath = Strings.removeLeft(childPath, "/");
         if (!childPath.startsWith(path)) {
             throw new IllegalStateException();
         }
-		result = new HttpNode(root, childPath, null, dir, isDav);
-		return result;
-	}
+        result = new HttpNode(root, childPath, null, dir, isDav);
+        return result;
+    }
 
     public String getAttribute(String name) throws HttpException {
-    	Property result;
-    	Name n;
+        Property result;
+        Name n;
 
-    	n = new Name(name, Method.DAV);
+        n = new Name(name, Method.DAV);
         try {
             synchronized (tryLock) {
-            	try {
-        		    result = getPropertyOpt(n);
-        	    } catch (MovedPermanentlyException e) {
+                try {
+                    result = getPropertyOpt(n);
+                } catch (MovedPermanentlyException e) {
                     tryDir = !tryDir;
-            		result = getPropertyOpt(n);
-            	}
+                    result = getPropertyOpt(n);
+                }
             }
-        	return result == null ? null : (String) result.getValue();
-		} catch (IOException e) {
-			throw new HttpException(this, e);
-		}
+            return result == null ? null : (String) result.getValue();
+        } catch (IOException e) {
+            throw new HttpException(this, e);
+        }
     }
 
     public void setAttribute(String name, String value) throws HttpException {
         try {
-        	setProperty(new Name(name, Method.DAV), value);
-		} catch (IOException e) {
-			throw new HttpException(this, e);
-		}
+            setProperty(new Name(name, Method.DAV), value);
+        } catch (IOException e) {
+            throw new HttpException(this, e);
+        }
     }
 
     private void setProperty(Name name, String value) throws IOException {
-    	Property prop;
+        Property prop;
 
         prop = new Property(name, value);
         synchronized (tryLock) {
@@ -762,9 +774,11 @@ public class HttpNode extends Node<HttpNode> {
         }
     }
 
-    /** @return never null */
+    /**
+     * @return never null
+     */
     private Property getProperty(Name name) throws IOException {
-    	Property result;
+        Property result;
 
         result = getPropertyOpt(name);
         if (result == null) {
@@ -853,7 +867,9 @@ public class HttpNode extends Node<HttpNode> {
 
     //--
 
-    /** see http://tools.ietf.org/html/rfc2616#section-5.1.2 */
+    /**
+     * see http://tools.ietf.org/html/rfc2616#section-5.1.2
+     */
     public String getRequestPath() {
         StringBuilder builder;
 
@@ -885,7 +901,7 @@ public class HttpNode extends Node<HttpNode> {
         put(getWorld().getSettings().bytes(str));
     }
 
-    public void put(byte ... bytes) throws IOException {
+    public void put(byte... bytes) throws IOException {
         try (OutputStream dest = Method.put(this)) {
             dest.write(bytes);
         }
@@ -897,17 +913,21 @@ public class HttpNode extends Node<HttpNode> {
         result = post(getWorld().getSettings().bytes(str));
         return getWorld().getSettings().string(result);
     }
+
     public byte[] post(byte[] body) throws IOException {
         return post(new Body(null, null, body.length, new ByteArrayInputStream(body), false));
     }
+
     public byte[] post(InputStream body) throws IOException {
         return post(new Body(null, null, -1, body, false));
     }
+
     public byte[] post(Body body) throws IOException {
         try (InputStream src = postStream(body)) {
             return getWorld().getBuffer().readBytes(src);
         }
     }
+
     public InputStream postStream(Body body) throws IOException {
         try {
             return Method.post(this, body);
@@ -933,12 +953,15 @@ public class HttpNode extends Node<HttpNode> {
         return getWorld().getSettings().string(result);
 
     }
+
     public byte[] patch(byte[] body) throws IOException {
         return patch(new Body(null, null, body.length, new ByteArrayInputStream(body), false));
     }
+
     public byte[] patch(InputStream body) throws IOException {
         return patch(new Body(null, null, -1, body, false));
     }
+
     public byte[] patch(Body body) throws IOException {
         return Method.patch(this, body);
     }

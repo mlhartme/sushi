@@ -68,7 +68,9 @@ import java.util.Map;
  * <p>TODO: Multi-threading. Currently, you need to know fs system internals to properly synchronized ...</p>
  */
 public class World implements AutoCloseable {
-    /** creates a standard world with netrc initialized */
+    /**
+     * creates a standard world with netrc initialized
+     */
 
     public static World create() throws IOException {
         return create(SshAgentSocket.isConfigured());
@@ -91,17 +93,23 @@ public class World implements AutoCloseable {
 
     public final OS os;
 
-    /** never null */
+    /**
+     * never null
+     */
     private final Buffer buffer;
 
     private final Settings settings;
 
-    /** never null */
+    /**
+     * never null
+     */
     private final Xml xml;
 
     private final FileNode home;
 
-    /** Intentionally not a file -- see Tempfiles for a rationale */
+    /**
+     * Intentionally not a file -- see Tempfiles for a rationale
+     */
     private FileNode temp;
     private FileNode working;
 
@@ -168,12 +176,16 @@ public class World implements AutoCloseable {
         return home;
     }
 
-    /** Current working directory. May be null. Use during node creation to resolve relative URIs and in Node.toString(). */
+    /**
+     * Current working directory. May be null. Use during node creation to resolve relative URIs and in Node.toString().
+     */
     public FileNode getWorking() {
         return working;
     }
 
-    /** current working directory */
+    /**
+     * current working directory
+     */
     public World setWorking(FileNode working) {
         this.working = working;
         return this;
@@ -201,9 +213,9 @@ public class World implements AutoCloseable {
     }
 
     public <T extends Filesystem> T addFilesystem(T filesystem) {
-    	String name;
+        String name;
 
-    	name = filesystem.getScheme();
+        name = filesystem.getScheme();
         if (filesystems.containsKey(name)) {
             throw new IllegalArgumentException("duplicate filesystem scheme: " + name);
         }
@@ -211,7 +223,7 @@ public class World implements AutoCloseable {
         return filesystem;
     }
 
-    public Filesystem addFilesystemOpt(String filesystemClass, Object ... args) {
+    public Filesystem addFilesystemOpt(String filesystemClass, Object... args) {
         Class<?> clazz;
         Constructor<?> constructor;
         Filesystem filesystem;
@@ -335,6 +347,7 @@ public class World implements AutoCloseable {
     public Node<?> node(String uri) throws URISyntaxException, NodeInstantiationException {
         return node(new URI(uri));
     }
+
     public Node<?> node(URI uri) throws NodeInstantiationException {
         return node(uri, null);
     }
@@ -372,7 +385,7 @@ public class World implements AutoCloseable {
         }
     }
 
-    public MemoryNode memoryNode(byte ... bytes) {
+    public MemoryNode memoryNode(byte... bytes) {
         try {
             return memoryNode().writeBytes(bytes);
         } catch (IOException e) {
@@ -380,35 +393,42 @@ public class World implements AutoCloseable {
         }
     }
 
-    /** @param name must not start with a slash */
+    /**
+     * @param name must not start with a slash
+     */
     public Node<?> resource(String name) throws IOException {
         List<Node<?>> result;
 
         result = resources(name);
         switch (result.size()) {
-        case 0:
-            throw new FileNotFoundException("no such resource: " + name);
-        case 1:
-            return result.get(0);
-        default:
-            throw new IOException("resource ambiguous: " + name + "(" + result + ")");
+            case 0:
+                throw new FileNotFoundException("no such resource: " + name);
+            case 1:
+                return result.get(0);
+            default:
+                throw new IOException("resource ambiguous: " + name + "(" + result + ")");
         }
     }
 
     /**
      * Throws an IllegalStateException is the classpath contains duplicate items
+     *
      * @param name must not start with a slash
      */
     public List<Node<?>> resources(String name) throws IOException {
         return resources(name, true);
     }
 
-    /** @param name must not start with a slash */
+    /**
+     * @param name must not start with a slash
+     */
     public List<Node<?>> resourcesUnchecked(String name) throws IOException {
         return resources(name, false);
     }
 
-    /** @param name must not start with a slash */
+    /**
+     * @param name must not start with a slash
+     */
     private List<Node<?>> resources(String name, boolean rejectDuplicates) throws IOException {
         Enumeration<URL> e;
         List<Node<?>> result;
@@ -468,7 +488,7 @@ public class World implements AutoCloseable {
         List<FileNode> result;
 
         result = new ArrayList<>();
-        for (String str: os.listSeparator.split(path)) {
+        for (String str : os.listSeparator.split(path)) {
             result.add(file(str));
         }
         return result;
@@ -488,7 +508,7 @@ public class World implements AutoCloseable {
         List<Node<?>> result;
 
         result = new ArrayList<>();
-        for (String str: os.listSeparator.split(path)) {
+        for (String str : os.listSeparator.split(path)) {
             result.add(node(str));
         }
         return result;
@@ -533,7 +553,6 @@ public class World implements AutoCloseable {
      * Returns the file or directory containing the specified class. Does not search modules
      *
      * @param c the source class
-     *
      * @return the physical file defining the class
      */
     public FileNode locateClasspathEntry(Class<?> c) {
@@ -544,7 +563,6 @@ public class World implements AutoCloseable {
      * Returns the file or directory or module containing the specified class.
      *
      * @param c the source class
-     *
      * @return the physical file defining the class
      */
     public FileNode locatePathEntry(Class<?> c) {
@@ -553,7 +571,9 @@ public class World implements AutoCloseable {
 
     //--
 
-    /** @throws ResourceNotFoundException if the resource is not found */
+    /**
+     * @throws ResourceNotFoundException if the resource is not found
+     */
     public FileNode locateEntry(Class<?> base, String resourcename, boolean withModules) {
         URL url;
         FileNode file;
@@ -646,7 +666,7 @@ public class World implements AutoCloseable {
         file = new File(value);
         if (!file.isDirectory()) {
             throw new IllegalStateException(
-                "property " + name + " does not point to a directory: " + value);
+                    "property " + name + " does not point to a directory: " + value);
         }
         return file(file);
     }
@@ -657,7 +677,9 @@ public class World implements AutoCloseable {
         return netRc;
     }
 
-    /** @return false when netrc does not exist */
+    /**
+     * @return false when netrc does not exist
+     */
     public boolean loadNetRcOpt() throws IOException {
         Node src;
 

@@ -41,11 +41,11 @@ import java.io.StringWriter;
 public class Serializer {
     private static final TransformerFactory FACTORY = TransformerFactory.newInstance();
 
-    private final Transformer format;
+    private final Transformer formatter;
     private final Transformer dumper;
 
     public Serializer() {
-        this.format = createFormatter();
+        this.formatter = createFormatter();
         this.dumper = createDumper();
     }
 
@@ -78,7 +78,7 @@ public class Serializer {
         Throwable cause;
 
         if (format) {
-            transformer = this.format;
+            transformer = this.formatter;
             if (encoding == null) {
                 transformer.getOutputProperties().remove(OutputKeys.ENCODING);
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -237,13 +237,13 @@ public class Serializer {
     // pretty-print script by M. Kay, see
     // http://www.cafeconleche.org/books/xmljava/chapters/ch17s02.html#d0e32721
     private static final String ID =
-        "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>" +
-        "  <xsl:output method='xml' indent='yes'/>" +
-        "  <xsl:strip-space elements='*'/>" +
-        "  <xsl:template match='/'>" +
-        "    <xsl:copy-of select='.'/>" +
-        "  </xsl:template>" +
-        "</xsl:stylesheet>";
+        "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>"
+        + "  <xsl:output method='xml' indent='yes'/>"
+        + "  <xsl:strip-space elements='*'/>"
+        + "  <xsl:template match='/'>"
+        + "    <xsl:copy-of select='.'/>"
+        + "  </xsl:template>"
+        + "</xsl:stylesheet>";
 
     private static final Templates FORMATTER;
 

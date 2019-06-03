@@ -257,8 +257,8 @@ public class ZipNode extends Node<ZipNode> {
             throw new DirectoryNotFoundException(this);
         }
         result = new ArrayList<>();
-        for (String path : paths) {
-            result.add(root.node(path, null));
+        for (String str : paths) {
+            result.add(root.node(str, null));
         }
         return result;
     }

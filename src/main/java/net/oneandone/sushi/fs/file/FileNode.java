@@ -73,7 +73,9 @@ import java.util.List;
 public class FileNode extends Node<FileNode> {
     private final FileRoot root;
 
-    /** never null, always absolute, never ends with a slash */
+    /**
+     * never null, always absolute, never ends with a slash
+     */
     private final Path path;
 
     public FileNode(FileRoot root, Path path) {
@@ -105,13 +107,15 @@ public class FileNode extends Node<FileNode> {
         return path;
     }
 
-    /** does not include the drive on windows */
+    /**
+     * does not include the drive on windows
+     */
     @Override
     public String getPath() {
-    	String result;
+        String result;
 
-    	result = path.toString().substring(getRoot().getAbsolute().length());
-    	return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
+        result = path.toString().substring(getRoot().getAbsolute().length());
+        return result.replace(File.separatorChar, Filesystem.SEPARATOR_CHAR);
     }
 
     public String getAbsolute() {
@@ -221,7 +225,9 @@ public class FileNode extends Node<FileNode> {
     //-- locating
 
 
-    /** @return null when called for a file; non-null otherwise */
+    /**
+     * @return null when called for a file; non-null otherwise
+     */
     @Override
     public List<FileNode> list() throws ListException, DirectoryNotFoundException {
         List<FileNode> result;
@@ -274,7 +280,7 @@ public class FileNode extends Node<FileNode> {
             if (append) {
                 return Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
             } else {
-                return Files.newOutputStream(path, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE );
+                return Files.newOutputStream(path, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
             }
         } catch (IOException e) {
             if (isDirectory()) {
@@ -295,14 +301,16 @@ public class FileNode extends Node<FileNode> {
 
     //-- create
 
-    /** calls createNewFile */
+    /**
+     * calls createNewFile
+     */
     @Override
     public FileNode mkfile() throws MkfileException {
-    	try {
+        try {
             Files.createFile(path);
-		} catch (IOException e) {
-			throw new MkfileException(this, e);
-		}
+        } catch (IOException e) {
+            throw new MkfileException(this, e);
+        }
         return this;
     }
 
@@ -329,11 +337,11 @@ public class FileNode extends Node<FileNode> {
 
     @Override
     public String readLink() throws ReadLinkException {
-    	try {
+        try {
             return Files.readSymbolicLink(path).toString();
         } catch (IOException e) {
-			throw new ReadLinkException(this, e);
-		}
+            throw new ReadLinkException(this, e);
+        }
     }
 
     @Override
@@ -345,22 +353,23 @@ public class FileNode extends Node<FileNode> {
 
     /**
      * Uses copy/remove to move between file systems.
+     *
      * @return dest
      */
     @Override
     public Node move(Node destNode, boolean overwrite) throws NodeNotFoundException, MoveException {
-    	FileNode dest;
+        FileNode dest;
 
         if (!(destNode instanceof FileNode)) {
             return super.move(destNode, overwrite);
         }
         dest = (FileNode) destNode;
         if (!overwrite) {
-      	    try {
-          		dest.checkNotExists();
-          	} catch (IOException e) {
-      	    	throw new MoveException(this, dest, "dest exists", e);
-      	    }
+            try {
+                dest.checkNotExists();
+            } catch (IOException e) {
+                throw new MoveException(this, dest, "dest exists", e);
+            }
         }
         try {
             Files.move(path, dest.path, StandardCopyOption.ATOMIC_MOVE);
@@ -368,13 +377,15 @@ public class FileNode extends Node<FileNode> {
             return super.move(destNode, overwrite);
         } catch (NoSuchFileException e) {
             throw new FileNotFoundException(this, e);
-		} catch (IOException e) {
-			throw new MoveException(this, dest, "os command failed", e);
-		}
+        } catch (IOException e) {
+            throw new MoveException(this, dest, "os command failed", e);
+        }
         return dest;
     }
 
-    /** Returns a launcher with working directory this. */
+    /**
+     * Returns a launcher with working directory this.
+     */
     public Launcher launcher(String... args) {
         return new Launcher(this, args);
     }
@@ -448,7 +459,9 @@ public class FileNode extends Node<FileNode> {
 
     //--
 
-    /** Executes the specified program in this directory. Convenience Method. Don't forget to check the output. */
+    /**
+     * Executes the specified program in this directory. Convenience Method. Don't forget to check the output.
+     */
     public String exec(String... args) throws Failure {
         return new Launcher(this, args).exec();
     }

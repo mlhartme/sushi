@@ -314,13 +314,15 @@ public class SvnNode extends Node<SvnNode> {
         return this;
     }
 
-    /** @return revision */
+    /**
+     * @return revision
+     */
     public long delete(String comment) throws SVNException {
         SVNCommitClient client;
         SVNCommitInfo info;
 
         client = root.getClientMananger().getCommitClient();
-        info = client.doDelete(new SVNURL[] { getSvnurl() }, comment);
+        info = client.doDelete(new SVNURL[]{getSvnurl()}, comment);
         return info.getNewRevision();
     }
 
@@ -330,7 +332,7 @@ public class SvnNode extends Node<SvnNode> {
 
         try {
             client = root.getClientMananger().getCommitClient();
-            client.doMkDir(new SVNURL[] { getSvnurl() }, root.getComment());
+            client.doMkDir(new SVNURL[]{getSvnurl()}, root.getComment());
             return this;
         } catch (SVNException e) {
             throw new MkdirException(this, e);
@@ -347,7 +349,9 @@ public class SvnNode extends Node<SvnNode> {
         throw unsupported("readLink()");
     }
 
-    /** @return revision */
+    /**
+     * @return revision
+     */
     public long doWriteTo(long revision, OutputStream dest) throws FileNotFoundException, SVNException {
         SVNRepository repository;
 
@@ -400,7 +404,7 @@ public class SvnNode extends Node<SvnNode> {
 
     @Override
     public boolean isLink() {
-    	return false;
+        return false;
     }
 
     private SVNNodeKind kind() throws ExistsException {
@@ -448,9 +452,11 @@ public class SvnNode extends Node<SvnNode> {
     }
 
 
-    /** @return revision */
+    /**
+     * @return revision
+     */
     public long copyFileFrom(InputStream content, String comment) throws SVNException {
-    	// does NOT use the CommitClient, because the commit client needs a physical file
+        // does NOT use the CommitClient, because the commit client needs a physical file
         boolean exists;
         ISVNEditor editor;
         SVNCommitInfo info;
@@ -542,7 +548,9 @@ public class SvnNode extends Node<SvnNode> {
         }
     }
 
-    /** @param workspace a file or directory */
+    /**
+     * @param workspace a file or directory
+     */
     public static SvnNode fromWorkspace(FileNode workspace) throws IOException {
         FileNode dir;
         SvnNode result;

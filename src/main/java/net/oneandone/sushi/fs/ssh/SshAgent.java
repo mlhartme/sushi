@@ -28,7 +28,9 @@ import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
 import java.io.IOException;
 import java.util.Vector;
 
-/** Some documentation: Mac OS: http://www.dribin.org/dave/blog/archives/2007/11/28/ssh_agent_leopard/ */
+/**
+ * Some documentation: Mac OS: http://www.dribin.org/dave/blog/archives/2007/11/28/ssh_agent_leopard/
+ */
 
 public class SshAgent {
     public static void configure(JSch jsch) throws IOException {
@@ -50,5 +52,8 @@ public class SshAgent {
                 throw new IllegalStateException(e);
             }
         }
+    }
+
+    private SshAgent() {
     }
 }

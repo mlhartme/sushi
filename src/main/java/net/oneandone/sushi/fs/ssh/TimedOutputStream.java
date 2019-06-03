@@ -28,7 +28,7 @@ public class TimedOutputStream extends FilterOutputStream {
         this.started = System.currentTimeMillis();
         this.duration = 0;
     }
-    
+
     @Override
     public void close() throws IOException {
         super.close();

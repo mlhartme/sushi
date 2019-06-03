@@ -218,4 +218,7 @@ public class Method {
         }
         return response.getBodyBytes();
     }
+
+    private Method() {
+    }
 }

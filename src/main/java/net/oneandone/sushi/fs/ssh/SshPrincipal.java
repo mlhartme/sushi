@@ -36,4 +36,8 @@ public class SshPrincipal implements UserPrincipal, GroupPrincipal {
         }
         return false;
     }
+
+    public int hashCode() {
+        return id;
+    }
 }

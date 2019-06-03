@@ -39,7 +39,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/** Represents an entry in a zip or jar file. Read-only */
+/**
+ * Represents an entry in a zip or jar file. Read-only
+ */
 public class ZipNode extends Node<ZipNode> {
     private final ZipRoot root;
     private final String path;
@@ -123,7 +125,7 @@ public class ZipNode extends Node<ZipNode> {
 
     @Override
     public ZipNode move(Node dest, boolean overwrite) throws MoveException {
-    	throw new MoveException(this, dest, "ZipNode cannot be moved");
+        throw new MoveException(this, dest, "ZipNode cannot be moved");
     }
 
     @Override
@@ -189,7 +191,7 @@ public class ZipNode extends Node<ZipNode> {
 
     @Override
     public boolean isLink() {
-    	return false;
+        return false;
     }
 
     @Override

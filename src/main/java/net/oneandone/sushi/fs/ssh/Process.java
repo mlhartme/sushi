@@ -25,7 +25,7 @@ import java.io.OutputStream;
 
 /** Process on the remote host */
 public class Process {
-    public static Process start(SshRoot root, boolean tty, OutputStream out, String ... command)
+    public static Process start(SshRoot root, boolean tty, OutputStream out, String... command)
     throws JSchException {
         TimedOutputStream dest;
         ChannelExec channel;

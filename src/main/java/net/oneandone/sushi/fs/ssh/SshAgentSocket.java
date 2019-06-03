@@ -24,4 +24,7 @@ public class SshAgentSocket {
         socket = System.getenv("SSH_AUTH_SOCK");
         return socket != null && !socket.isEmpty();
     }
+
+    private SshAgentSocket() {
+    }
 }

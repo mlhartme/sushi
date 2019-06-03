@@ -37,9 +37,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class HttpFilesystem extends Filesystem {
-	public static final Logger WIRE = Logger.getLogger("sushi.http.wire");
+    public static final Logger WIRE = Logger.getLogger("sushi.http.wire");
 
-	public static void wireLog(String file) {
+    public static void wireLog(String file) {
         Handler handler;
 
         WIRE.setLevel(Level.FINE);
@@ -49,26 +49,26 @@ public class HttpFilesystem extends Filesystem {
             throw new IllegalStateException(e);
         }
         handler.setFormatter(new Formatter() {
-                    @Override
-                    public String format(LogRecord record) {
-                        String message;
-                        Throwable e;
-                        StringBuilder result;
+            @Override
+            public String format(LogRecord record) {
+                String message;
+                Throwable e;
+                StringBuilder result;
 
-                        message = record.getMessage();
-                        result = new StringBuilder(message.length() + 1);
-                        result.append(message);
-                        result.append('\n');
-                        e = record.getThrown();
-                        if (e != null) {
-                            // TODO getStacktrace(e, result);
-                        }
-                        return result.toString();
-                    }
-                });
+                message = record.getMessage();
+                result = new StringBuilder(message.length() + 1);
+                result.append(message);
+                result.append('\n');
+                e = record.getThrown();
+                if (e != null) {
+                    // TODO getStacktrace(e, result);
+                }
+                return result.toString();
+            }
+        });
 
         WIRE.addHandler(handler);
-	}
+    }
 
     private int defaultConnectionTimeout;
     private int defaultSoTimeout;
@@ -130,7 +130,7 @@ public class HttpFilesystem extends Filesystem {
         // ignores url.getPath()
         port = uri.getPort();
         if (port == -1) {
-        	port = "https".equals(uri.getScheme()) ? 443 : 80;
+            port = "https".equals(uri.getScheme()) ? 443 : 80;
         }
         result = new HttpRoot(this, getScheme(), uri.getHost(), port, proxy(uri), defaultDav);
         info = uri.getUserInfo();

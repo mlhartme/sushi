@@ -103,6 +103,7 @@ public class HttpRoot implements Root<HttpNode> {
             setCredentials(userinfo.substring(0, idx), userinfo.substring(idx + 1));
         }
     }
+
     public String getUserInfo() {
         if (username == null) {
             return null;
@@ -119,10 +120,10 @@ public class HttpRoot implements Root<HttpNode> {
 
     //-- configuration
 
-    public void setCredentials(String username, String password) {
-        this.username = username;
-        this.password = password;
-    	authorization = "Basic " + Base64.getEncoder().encodeToString(filesystem.getWorld().getSettings().bytes(username + ":" + password));
+    public void setCredentials(String setUsername, String setPassword) {
+        this.username = setUsername;
+        this.password = setPassword;
+        authorization = "Basic " + Base64.getEncoder().encodeToString(filesystem.getWorld().getSettings().bytes(setUsername + ":" + setPassword));
     }
 
     public int getConnectionTimeout() {

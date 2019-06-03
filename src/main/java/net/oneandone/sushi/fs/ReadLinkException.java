@@ -16,11 +16,12 @@
 package net.oneandone.sushi.fs;
 
 public class ReadLinkException extends NodeException {
-	public ReadLinkException(Node node) {
-		super(node, "readLink failed");
-	}
-	public ReadLinkException(Node node, Throwable cause) {
-		this(node);
-		initCause(cause);
-	}
+    public ReadLinkException(Node node) {
+        super(node, "readLink failed");
+    }
+
+    public ReadLinkException(Node node, Throwable cause) {
+        this(node);
+        initCause(cause);
+    }
 }

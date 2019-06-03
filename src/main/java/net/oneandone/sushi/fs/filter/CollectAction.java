@@ -22,11 +22,11 @@ import java.util.Collection;
 
 public class CollectAction implements Action {
     private final Collection<Node> collection;
-    
+
     public CollectAction(Collection<Node> collection) {
         this.collection = collection;
     }
-    
+
     public void enter(Node node, boolean isLink) {
     }
 
@@ -36,7 +36,7 @@ public class CollectAction implements Action {
 
     public void leave(Node node, boolean isLink) {
     }
-    
+
     public void select(Node node, boolean isLink) {
         collection.add(node);
     }

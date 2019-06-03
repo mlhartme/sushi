@@ -16,8 +16,8 @@
 package net.oneandone.sushi.fs;
 
 public class MoveException extends NodeException {
-	public final Node dest;
-	
+    public final Node dest;
+
     public MoveException(Node src, Node dest, String msg) {
         super(src, "move failed: " + msg);
         this.dest = dest;

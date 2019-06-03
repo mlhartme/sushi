@@ -62,7 +62,7 @@ public class Request {
      * @param body may be null
      * @param success may be null to accept all response codes
      */
-    public static ResponseStream streamResponse(HttpNode resource, String method, Body body, int ... success) throws IOException {
+    public static ResponseStream streamResponse(HttpNode resource, String method, Body body, int... success) throws IOException {
         Request request;
         Response response;
 

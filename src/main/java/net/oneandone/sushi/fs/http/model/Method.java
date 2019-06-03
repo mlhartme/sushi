@@ -73,7 +73,7 @@ public class Method {
 
         xml = resource.getWorld().getXml();
         document = xml.getBuilder().createDocument("propertyupdate", DAV);
-        set = Builder.element(document.getDocumentElement(), "set" , DAV);
+        set = Builder.element(document.getDocumentElement(), "set", DAV);
         prop = Builder.element(set, XML_PROP, DAV);
         property.addXml(prop);
         proppatch = new Request("PROPPATCH", resource);

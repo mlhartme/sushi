@@ -106,23 +106,23 @@ public class Property {
     public Element addXml(Element parent) {
         Document document;
         Element elem;
-        Object value;
+        Object obj;
         Node n;
 
         document = parent.getOwnerDocument();
         elem = getName().addXml(parent);
-        value = getValue();
-        if (value != null) {
-            if (value instanceof Node) {
-                n = document.importNode((Node) value, true);
+        obj = getValue();
+        if (obj != null) {
+            if (obj instanceof Node) {
+                n = document.importNode((Node) obj, true);
                 elem.appendChild(n);
-            } else if (value instanceof Node[]) {
-                for (int i = 0; i < ((Node[]) value).length; i++) {
-                    n = document.importNode(((Node[]) value)[i], true);
+            } else if (obj instanceof Node[]) {
+                for (int i = 0; i < ((Node[]) obj).length; i++) {
+                    n = document.importNode(((Node[]) obj)[i], true);
                     elem.appendChild(n);
                 }
-            } else if (value instanceof Collection<?>) {
-                for (Object entry : (Collection<?>) value) {
+            } else if (obj instanceof Collection<?>) {
+                for (Object entry : (Collection<?>) obj) {
                     if (entry instanceof Node) {
                         n = document.importNode((Node) entry, true);
                         elem.appendChild(n);
@@ -131,7 +131,7 @@ public class Property {
                     }
                 }
             } else {
-                Dom.addTextOpt(elem, value.toString());
+                Dom.addTextOpt(elem, obj.toString());
             }
         }
         return elem;

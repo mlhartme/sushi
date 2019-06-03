@@ -31,11 +31,11 @@ public class MultiStatus {
     private static final String XML_STATUS = "status";
     private static final String XML_PROPSTAT = "propstat";
 
-	public static List<MultiStatus> fromResponse(Xml xml, byte[] responseBody) throws IOException {
+    public static List<MultiStatus> fromResponse(Xml xml, byte[] responseBody) throws IOException {
         Builder builder;
-		Element root;
-		List<MultiStatus> result;
-		ChildElements iter;
+        Element root;
+        List<MultiStatus> result;
+        ChildElements iter;
 
         try {
             builder = xml.getBuilder();
@@ -45,18 +45,18 @@ public class MultiStatus {
         } catch (SAXException e) {
             throw new IOException(e.getMessage(), e);
         }
-   		Dom.require(root, "multistatus", Method.DAV);
-		result = new ArrayList<>();
-		iter = Method.DAV.childElements(root, Method.XML_RESPONSE);
-		while (iter.hasNext()) {
-			fromXml(iter.next(), result);
-		}
-		return result;
+        Dom.require(root, "multistatus", Method.DAV);
+        result = new ArrayList<>();
+        iter = Method.DAV.childElements(root, Method.XML_RESPONSE);
+        while (iter.hasNext()) {
+            fromXml(iter.next(), result);
+        }
+        return result;
     }
 
     private static void fromXml(Element response, List<MultiStatus> result) throws IOException {
-		Element href;
-		String str;
+        Element href;
+        String str;
         ChildElements iter;
         Element propstat;
         String propstatStatus;
@@ -65,7 +65,7 @@ public class MultiStatus {
         ChildElements propIter;
 
         Dom.require(response, Method.XML_RESPONSE, Method.DAV);
-		href = Dom.getFirstChildElement(response, "href", Method.DAV);
+        href = Dom.getFirstChildElement(response, "href", Method.DAV);
         if (href == null) {
             throw new ProtocolException("missing href");
         }
@@ -98,29 +98,29 @@ public class MultiStatus {
     //--
 
     public static MultiStatus lookup(List<MultiStatus> lst, Name name, int status) {
-    	for (MultiStatus ms : lst) {
-    		if (status == ms.status && name.equals(ms.property.getName())) {
-    			return ms;
-    		}
-    	}
-    	return null;
+        for (MultiStatus ms : lst) {
+            if (status == ms.status && name.equals(ms.property.getName())) {
+                return ms;
+            }
+        }
+        return null;
     }
 
     public static MultiStatus lookupOne(List<MultiStatus> lst, Name name) {
-    	MultiStatus result;
+        MultiStatus result;
 
-    	result = null;
-    	for (MultiStatus ms : lst) {
-    		if (name.equals(ms.property.getName())) {
-    			if (result != null) {
-    				throw new IllegalStateException();
-    			}
-    			result = ms;
-    		}
-    	}
-    	if (result == null) {
-    		throw new IllegalStateException();
-    	}
-    	return result;
+        result = null;
+        for (MultiStatus ms : lst) {
+            if (name.equals(ms.property.getName())) {
+                if (result != null) {
+                    throw new IllegalStateException();
+                }
+                result = ms;
+            }
+        }
+        if (result == null) {
+            throw new IllegalStateException();
+        }
+        return result;
     }
 }

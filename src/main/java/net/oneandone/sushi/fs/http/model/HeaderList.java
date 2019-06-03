@@ -79,7 +79,7 @@ public class HeaderList implements Iterable<Header> {
         header = getFirst(name);
         return header == null ? null : header.value;
     }
-    
+
     public Header getFirst(String name) {
         for (Header header : this) {
             if (header.name.equalsIgnoreCase(name)) {

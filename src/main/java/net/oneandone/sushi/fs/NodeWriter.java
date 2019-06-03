@@ -29,13 +29,13 @@ public class NodeWriter extends OutputStreamWriter {
     }
 
     //--
-    
+
     private final Node node;
     private final String encoding;
-    
+
     public NodeWriter(Node node, OutputStream dest, String encoding) throws UnsupportedEncodingException {
         super(dest, encoding);
-        
+
         this.node = node;
         this.encoding = encoding;
     }
@@ -43,7 +43,7 @@ public class NodeWriter extends OutputStreamWriter {
     public Node getNode() {
         return node;
     }
-    
+
     @Override
     public String getEncoding() {
         return encoding;

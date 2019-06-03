@@ -32,18 +32,24 @@ public class SshRoot implements Root<SshNode>, Runnable {
 
     private final SshFilesystem filesystem;
 
-    /** connected session */
+    /**
+     * connected session
+     */
     private final Session session;
 
     // created on demand because it's only needed for nodes, not for "exec" stuff
     private ChannelSftp sftp;
 
-    /** @param password may be null */
+    /**
+     * @param password may be null
+     */
     public SshRoot(SshFilesystem filesystem, String host, String user, String password, int timeout) throws JSchException {
         this(filesystem, host, DEFAULT_PORT, user, password, timeout);
     }
 
-    /** @param password may be null */
+    /**
+     * @param password may be null
+     */
     public SshRoot(SshFilesystem filesystem, String host, int port, String user, String password, int timeout) throws JSchException {
         this(filesystem, filesystem.connect(host, port, user, password, timeout));
     }
@@ -138,22 +144,22 @@ public class SshRoot implements Root<SshNode>, Runnable {
         session.disconnect();
     }
 
-    public Process start(boolean tty, String ... command) throws JSchException {
+    public Process start(boolean tty, String... command) throws JSchException {
         return start(tty, MultiOutputStream.createNullStream(), command);
     }
 
-    public Process start(boolean tty, OutputStream out, String ... command) throws JSchException {
+    public Process start(boolean tty, OutputStream out, String... command) throws JSchException {
         return Process.start(this, tty, out, command);
     }
 
     //-- exec methods
     //    I'd like to align this with Launcher execution, but I cannot set a working directory in Ssh Execution
 
-    public String exec(String ... command) throws JSchException, ExitCode {
+    public String exec(String... command) throws JSchException, ExitCode {
         return exec(true, command);
     }
 
-    public String exec(boolean tty, String ... command) throws JSchException, ExitCode {
+    public String exec(boolean tty, String... command) throws JSchException, ExitCode {
         ByteArrayOutputStream out;
 
         out = new ByteArrayOutputStream();
@@ -165,7 +171,7 @@ public class SshRoot implements Root<SshNode>, Runnable {
         return filesystem.getWorld().getSettings().string(out);
     }
 
-    public void exec(boolean tty, OutputStream out, String ... command) throws JSchException, ExitCode {
+    public void exec(boolean tty, OutputStream out, String... command) throws JSchException, ExitCode {
         try {
             start(tty, out, command).waitFor();
         } catch (ExitCode e) {

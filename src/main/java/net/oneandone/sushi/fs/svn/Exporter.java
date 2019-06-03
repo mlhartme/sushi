@@ -32,12 +32,14 @@ import org.tmatesoft.svn.core.io.diff.SVNDiffWindow;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/** See https://wiki.svnkit.com/Updating_From_A_Repository */
+/**
+ * See https://wiki.svnkit.com/Updating_From_A_Repository
+ */
 public class Exporter implements ISVNReporterBaton, ISVNEditor {
     private final long revision;
     private final Node dest;
     private final SVNDeltaProcessor working;
-    
+
     public Exporter(long revision, Node dest) {
         this.revision = revision;
         this.dest = dest;
@@ -59,7 +61,7 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
         try {
             node(path).mkdir();
         } catch (MkdirException e) {
-            throw exception(e); 
+            throw exception(e);
         }
     }
 
@@ -80,7 +82,7 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
             throw exception(e);
         }
     }
-    
+
     public void openFile(String path, long revision) {
     }
 
@@ -89,7 +91,7 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
 
     public void applyTextDelta(String path, String baseChecksum) throws SVNException {
         Node target = node(path);
-        
+
         try {
             if (!target.exists()) {
                 target.writeBytes();
@@ -103,11 +105,11 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
     public OutputStream textDeltaChunk(String path, SVNDiffWindow diff) throws SVNException {
         return working.textDeltaChunk(diff);
     }
- 
+
     public void textDeltaEnd(String path) throws SVNException {
         working.textDeltaEnd();
     }
-    
+
     public void closeFile(String path, String textChecksum) throws SVNException {
     }
 
@@ -135,13 +137,13 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
 
     public void changeFileProperty(String arg0, String arg1, SVNPropertyValue arg2) throws SVNException {
     }
-    
+
     //-- 
-        
-    private static SVNException exception(IOException e) { 
-        return new SVNException(SVNErrorMessage.create(SVNErrorCode.IO_ERROR, e.getMessage()), e);            
+
+    private static SVNException exception(IOException e) {
+        return new SVNException(SVNErrorMessage.create(SVNErrorCode.IO_ERROR, e.getMessage()), e);
     }
-        
+
     private Node node(String path) {
         return dest.join(path);
     }

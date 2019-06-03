@@ -27,19 +27,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-/** For MultiStatus */
+/**
+ * For MultiStatus
+ */
 public class Property {
     public static Property fromXml(Element propertyElement) {
         Name name;
         Object value;
         List<?> content;
-        
+
         name = Name.fromXml(propertyElement);
         content = getChildElementsOrTexts(propertyElement);
         switch (content.size()) {
             case 0:
-            	value = null;
-            	break;
+                value = null;
+                break;
             case 1:
                 Node n = (Node) content.get(0);
                 if (n instanceof Element) {
@@ -107,22 +109,22 @@ public class Property {
         Object value;
         Node n;
 
-    	document = parent.getOwnerDocument();
+        document = parent.getOwnerDocument();
         elem = getName().addXml(parent);
         value = getValue();
         if (value != null) {
             if (value instanceof Node) {
-                n = document.importNode((Node)value, true);
+                n = document.importNode((Node) value, true);
                 elem.appendChild(n);
             } else if (value instanceof Node[]) {
-                for (int i = 0; i < ((Node[])value).length; i++) {
-                    n = document.importNode(((Node[])value)[i], true);
+                for (int i = 0; i < ((Node[]) value).length; i++) {
+                    n = document.importNode(((Node[]) value)[i], true);
                     elem.appendChild(n);
                 }
             } else if (value instanceof Collection<?>) {
                 for (Object entry : (Collection<?>) value) {
                     if (entry instanceof Node) {
-                        n = document.importNode((Node)entry, true);
+                        n = document.importNode((Node) entry, true);
                         elem.appendChild(n);
                     } else {
                         Dom.addTextOpt(elem, entry.toString());

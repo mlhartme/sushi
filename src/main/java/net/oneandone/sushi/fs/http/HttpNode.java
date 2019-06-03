@@ -40,14 +40,11 @@ import net.oneandone.sushi.fs.http.model.MultiStatus;
 import net.oneandone.sushi.fs.http.model.Name;
 import net.oneandone.sushi.fs.http.model.Property;
 import net.oneandone.sushi.fs.http.model.ProtocolException;
-import net.oneandone.sushi.fs.http.model.Request;
-import net.oneandone.sushi.fs.http.model.Response;
 import net.oneandone.sushi.fs.http.model.StatusCode;
 import net.oneandone.sushi.util.Strings;
 import net.oneandone.sushi.util.Util;
 
 import java.io.ByteArrayInputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

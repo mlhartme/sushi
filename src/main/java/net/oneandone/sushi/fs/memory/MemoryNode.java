@@ -42,20 +42,30 @@ import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 
-/** You'll normally use World.memoryNode() to create instances */
+/**
+ * You'll normally use World.memoryNode() to create instances
+ */
 public class MemoryNode extends Node<MemoryNode> {
-    /** never null */
+    /**
+     * never null
+     */
     private final MemoryRoot root;
 
-    /** never null */
+    /**
+     * never null
+     */
     private final String path;
 
-    /** never null */
+    /**
+     * never null
+     */
     private Type type;
 
     private long lastModified;
 
-    /** Do not call - use create instead. */
+    /**
+     * Do not call - use create instead.
+     */
     public MemoryNode(MemoryRoot root, String path, Type type) {
         this.root = root;
         this.path = path;
@@ -98,7 +108,7 @@ public class MemoryNode extends Node<MemoryNode> {
 
     @Override
     public boolean isLink() {
-    	return false;
+        return false;
     }
 
     @Override

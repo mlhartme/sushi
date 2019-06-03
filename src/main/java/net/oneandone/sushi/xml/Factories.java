@@ -32,21 +32,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Create SaxParser- and DocumentBuilder Factories. 
+ * Create SaxParser- and DocumentBuilder Factories.
  * Kind of a FactoryFactory to encapsulates xml parser selection.
- * 
- * I have to use jaxp 1.2 (in particular: I cannot use setSchema from jaxp 1.3) because 
- * old Jaxp and Xerces Parsers from JBoss and Tariff/Castor pollute our classpath. 
- * I wasn't able to force Jdk's built-in xerces by directly instantiating the respective 
- * Factory because JBoss didn't find the getSchema method in its endorsed xpi-apis.jar. 
+ * <p>
+ * I have to use jaxp 1.2 (in particular: I cannot use setSchema from jaxp 1.3) because
+ * old Jaxp and Xerces Parsers from JBoss and Tariff/Castor pollute our classpath.
+ * I wasn't able to force Jdk's built-in xerces by directly instantiating the respective
+ * Factory because JBoss didn't find the getSchema method in its endorsed xpi-apis.jar.
  */
 public class Factories {
     private static final Logger LOG = Logger.getLogger(Factories.class.getName());
-    
+
     public static SAXParser saxParser(Node schema) throws IOException {
         SAXParserFactory factory;
         SAXParser parser;
-        
+
         factory = sax();
         factory.setValidating(true);
         factory.setNamespaceAware(false);
@@ -62,7 +62,7 @@ public class Factories {
 
     public static SAXParser saxParser() {
         SAXParserFactory factory;
-        
+
         factory = sax();
         factory.setValidating(false);
         factory.setNamespaceAware(false);
@@ -77,11 +77,11 @@ public class Factories {
         return SAXParserFactory.newInstance();
     }
 
-    
+
     public static DocumentBuilderFactory document(Node schema) throws IOException, SAXException {
         DocumentBuilderFactory factory;
         Throwable throwable;
-        
+
         factory = document();
         try {
             setJaxp13Validating(factory, schema);
@@ -99,7 +99,7 @@ public class Factories {
     private static void setJaxp13Validating(DocumentBuilderFactory factory, Node schema) throws IOException, SAXException {
         SchemaFactory sf;
         Source src;
-        
+
         sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         src = new StreamSource(schema.newInputStream());
         factory.setSchema(sf.newSchema(src));
@@ -114,14 +114,15 @@ public class Factories {
             throw new RuntimeException(factory.getClass().getName() + ": parser does not support JAXP 1.2", x);
         }
         factory.setAttribute(JAXP_SCHEMA_SOURCE, new ByteArrayInputStream(schema.readBytes()));
-        
+
     }
+
     public static DocumentBuilderFactory document() {
-        return DocumentBuilderFactory.newInstance(); 
+        return DocumentBuilderFactory.newInstance();
     }
 
     //--
-    
+
     private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
     private static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";

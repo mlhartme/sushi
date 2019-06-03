@@ -19,7 +19,6 @@ import net.oneandone.sushi.fs.FileNotFoundException;
 import net.oneandone.sushi.fs.http.HttpConnection;
 import net.oneandone.sushi.fs.http.HttpNode;
 import net.oneandone.sushi.fs.http.MovedPermanentlyException;
-import net.oneandone.sushi.fs.http.MovedTemporarilyException;
 import net.oneandone.sushi.fs.http.StatusException;
 import net.oneandone.sushi.fs.http.io.ChunkedOutputStream;
 import net.oneandone.sushi.xml.Builder;
@@ -28,7 +27,6 @@ import net.oneandone.sushi.xml.Xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

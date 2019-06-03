@@ -37,7 +37,7 @@ public class Name {
     }
 
     //--
-    
+
     private final String name;
     private final Namespace namespace;
 
@@ -61,13 +61,13 @@ public class Name {
     }
 
     public Element addXml(Element parent) {
-    	return Builder.element(parent, name, namespace);
+        return Builder.element(parent, name, namespace);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         Name n;
-        
+
         if (obj instanceof Name) {
             n = (Name) obj;
             return name.equals(n.name) && namespace.equals(n.namespace);

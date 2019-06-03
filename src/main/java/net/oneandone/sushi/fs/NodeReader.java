@@ -29,13 +29,13 @@ public class NodeReader extends InputStreamReader {
     }
 
     //--
-    
+
     private final Node node;
     private final String encoding;
-    
+
     public NodeReader(Node node, InputStream source, String encoding) throws UnsupportedEncodingException {
         super(source, encoding);
-        
+
         this.node = node;
         this.encoding = encoding;
     }
@@ -43,7 +43,7 @@ public class NodeReader extends InputStreamReader {
     public Node getNode() {
         return node;
     }
-    
+
     @Override
     public String getEncoding() {
         return encoding;

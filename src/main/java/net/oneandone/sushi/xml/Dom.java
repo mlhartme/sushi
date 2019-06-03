@@ -25,17 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dom {
-	/** @return element */
+    /**
+     * @return element
+     */
     public static Element addTextOpt(Element element, String text) {
         if ("".equals(text)) {
-        	// nothing to do 
+            // nothing to do
         } else {
-        	Text txt = element.getOwnerDocument().createTextNode(text);
-        	element.appendChild(txt);
+            Text txt = element.getOwnerDocument().createTextNode(text);
+            element.appendChild(txt);
         }
         return element;
     }
-	
+
     // TODO: replace by iterator?
     public static List<Element> getAllChildElements(Element parent) {
         List<Element> result;
@@ -61,12 +63,12 @@ public class Dom {
 
         result = Dom.getChildElements(ele, name);
         switch (result.size()) {
-        case 0:
-            return null;
-        case 1:
-            return result.get(0);
-        default:
-            throw new DomException("too many elements: " + name);
+            case 0:
+                return null;
+            case 1:
+                return result.get(0);
+            default:
+                throw new DomException("too many elements: " + name);
         }
     }
 
@@ -75,12 +77,12 @@ public class Dom {
 
         result = Dom.getChildElements(ele, name);
         switch (result.size()) {
-        case 0:
-            throw new DomException("missing element: " + name);
-        case 1:
-            return result.get(0);
-        default:
-            throw new DomException("too many elements: " + name);
+            case 0:
+                throw new DomException("missing element: " + name);
+            case 1:
+                return result.get(0);
+            default:
+                throw new DomException("too many elements: " + name);
         }
     }
 
@@ -95,10 +97,12 @@ public class Dom {
         return null;
     }
 
-    /** Steps may be empty strings */
-    public static List<Element> getChildElements(Element root, String ... steps) {
+    /**
+     * Steps may be empty strings
+     */
+    public static List<Element> getChildElements(Element root, String... steps) {
         List<Element> lst;
-        
+
         lst = new ArrayList<>();
         doGetChildElements(root, steps, 0, lst);
         return lst;
@@ -138,7 +142,7 @@ public class Dom {
     }
 
     //--
-    
+
     public static String getString(Node node) {
         if (node instanceof Attr) {
             return ((Attr) node).getValue();
@@ -155,7 +159,7 @@ public class Dom {
         int i;
         int max;
         Node node;
-        
+
         buffer = new StringBuilder();
         nodes = root.getChildNodes();
         max = nodes.getLength();
@@ -164,17 +168,17 @@ public class Dom {
             if (node instanceof Text) {
                 buffer.append(node.getNodeValue());
             } else {
-          		throw new IllegalArgumentException(node.getClass().getName());
+                throw new IllegalArgumentException(node.getClass().getName());
             }
         }
         return buffer.toString();
     }
-    
+
     //--
-    
+
     public static String getAttribute(Element element, String name) {
         String attr;
-        
+
         attr = getAttributeOpt(element, name);
         if (attr == null) {
             throw new DomException("missing attribute '" + name + "' in element '" + element.getTagName() + "'");
@@ -191,33 +195,33 @@ public class Dom {
 
     public static String getAttributeOpt(Element element, String name) {
         Attr attr;
-        
+
         attr = element.getAttributeNode(name);
         if (attr == null) {
             return null;
         }
         return attr.getValue();
     }
-    
+
     //--
-    
+
     public static void require(Element ele, String expected) {
         String got;
-        
+
         got = ele.getTagName();
         if (!expected.equals(ele.getTagName())) {
             throw new DomException("'" + expected + "' element expected, got '" + got + "'");
         }
     }
-    
+
     public static void require(Node node, String local, Namespace namespace) {
         if (!Dom.matches(node, local, namespace)) {
-        	throw new DomException("no such node in namespace " + namespace + ": " + local);
+            throw new DomException("no such node in namespace " + namespace + ": " + local);
         }
     }
 
     //--
-    
+
     public static boolean matches(Node node, String requiredLocalName, Namespace requiredNamespace) {
         return hasNamespace(node, requiredNamespace) && matchingLocalName(node, requiredLocalName);
     }

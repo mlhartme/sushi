@@ -22,9 +22,9 @@ import java.util.List;
 
 public class Reflect {
     public static String resourceName(Class<?> clazz) {
-        return "/" + clazz.getName().replace('.', '/') + ".class";        
+        return "/" + clazz.getName().replace('.', '/') + ".class";
     }
-    
+
     public static String importName(Class<?> clazz) {
         String name;
 
@@ -33,13 +33,13 @@ public class Reflect {
     }
 
     private static final List<?> PRIMITIVE_TYPES = Arrays.asList(
-        Void.TYPE, Boolean.TYPE, Byte.TYPE, Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE
+            Void.TYPE, Boolean.TYPE, Byte.TYPE, Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE
     );
-    
+
     private static final List<?> WRAPPER_TYPES = Arrays.asList(
-        Void.class, Boolean.class, Byte.class, Character.class, Integer.class, Long.class, Float.class, Double.class
+            Void.class, Boolean.class, Byte.class, Character.class, Integer.class, Long.class, Float.class, Double.class
     );
-    
+
     public static Class<?> getWrapper(Class<?> primitive) {
         int idx;
 
@@ -72,14 +72,14 @@ public class Reflect {
     }
 
     public static Method lookup(Class<?> task, String rawName) {
-        return lookup(task, rawName, new Class[] {});
+        return lookup(task, rawName, new Class[]{});
     }
 
     public static Method lookup(Class<?> task, String rawName, Class<?> arg) {
-        return lookup(task, rawName, new Class[] { arg });
+        return lookup(task, rawName, new Class[]{arg});
     }
 
-    public static Method lookup(Class<?> task, String rawName, Class<?> ... args) {
+    public static Method lookup(Class<?> task, String rawName, Class<?>... args) {
         Method[] methods;
         int i;
         Method m;
@@ -113,12 +113,12 @@ public class Reflect {
         }
         return true;
     }
-    
+
     //--
-    
+
     public static <T extends Enum<?>> T[] getValues(Class<T> clazz) {
         Method m;
-        
+
         try {
             m = clazz.getDeclaredMethod("values");
         } catch (SecurityException | NoSuchMethodException e) {
@@ -131,7 +131,7 @@ public class Reflect {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static boolean matches(Class<?>[] formals, Object[] actuals) {
         int max;
         Class<?> formal;

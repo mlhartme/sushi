@@ -32,7 +32,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-/** Represents a Zip or Jar file. For Zip files, the manifest is null. */
+/**
+ * Represents a Zip or Jar file. For Zip files, the manifest is null.
+ */
 public class Archive {
     public static final String META_INF = "META-INF";
     public static final String MANIFEST = META_INF + "/MANIFEST.MF";
@@ -55,19 +57,21 @@ public class Archive {
 
     private static String getPath(ZipEntry entry) {
         String path;
-        
+
         path = entry.getName();
         if (entry.isDirectory()) {
             path = path.substring(0, path.length() - 1);
         }
         return path;
     }
-    
+
     //--
-    
+
     public final Node<?> data;
 
-    /** null for zip files, not null for jars */
+    /**
+     * null for zip files, not null for jars
+     */
     public final Manifest manifest;
 
     public final String pathRoot;
@@ -82,12 +86,14 @@ public class Archive {
         this.pathRoot = pathRoot;
     }
 
-    /** @return this */
+    /**
+     * @return this
+     */
     public Archive read(Node file) throws IOException {
         Buffer buffer;
         ZipEntry entry;
         Node node;
-        
+
         buffer = file.getWorld().getBuffer();
         try (ZipInputStream zip = new ZipInputStream(file.newInputStream())) {
             while (true) {
@@ -115,13 +121,13 @@ public class Archive {
     }
 
     private boolean isManifest(Node node) {
-        return manifest != null && MANIFEST.equals(node.getPath());        
+        return manifest != null && MANIFEST.equals(node.getPath());
     }
-    
+
     public void mergeManifest(Manifest rightManifest) {
         Map<String, Attributes> rightSections;
         Attributes left;
-        
+
         manifest.getMainAttributes().putAll(rightManifest.getMainAttributes());
         rightSections = rightManifest.getEntries();
         for (String name : rightSections.keySet()) {
@@ -144,7 +150,7 @@ public class Archive {
     public Archive save(OutputStream dest) throws IOException {
         List<Node<?>> content;
         List<Node<?>> files;
-        
+
         try (ZipOutputStream out = new ZipOutputStream(dest)) {
             if (manifest != null) {
                 out.putNextEntry(new ZipEntry(MANIFEST));

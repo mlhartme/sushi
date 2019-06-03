@@ -40,7 +40,7 @@ public class CheckedByteArrayOutputStream extends ByteArrayOutputStream {
     }
 
     @Override
-    public void write(byte b[], int off, int len) {
+    public void write(byte[] b, int off, int len) {
         ensureOpen();
         super.write(b, off, len);
     }

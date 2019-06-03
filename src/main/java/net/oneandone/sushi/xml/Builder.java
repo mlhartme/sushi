@@ -118,7 +118,7 @@ public class Builder {
         return doc;
     }
 
-    //-- create methods 
+    //-- create methods
 
     public static void add(Element parent, NodeList list) {
         int size;
@@ -165,8 +165,8 @@ public class Builder {
     public static Element standaloneElement(Document doc, String name, Namespace namespace) {
         if (namespace != null) {
             String prefixname =
-                    Namespace.EMPTY_NAMESPACE.equals(namespace) || Namespace.EMPTY_NAMESPACE.getPrefix().equals(namespace.getPrefix()) ?
-                            name : namespace.getPrefix() + ":" + name;
+                    Namespace.EMPTY_NAMESPACE.equals(namespace) || Namespace.EMPTY_NAMESPACE.getPrefix().equals(namespace.getPrefix())
+                            ? name : namespace.getPrefix() + ":" + name;
             return doc.createElementNS(namespace.getUri(), prefixname);
         } else {
             return doc.createElement(name);

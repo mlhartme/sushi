@@ -29,13 +29,13 @@ public abstract class Filesystem {
      * Separator in URIs and paths. You'll rarely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
-	public static final char SEPARATOR_CHAR = '/';
+    public static final char SEPARATOR_CHAR = '/';
 
     /**
      * Separator in URIs and paths. You'll rarely use this constant, in particular, it doesn't make sense to
      * use it in URI or path constants.
      */
-	public static final String SEPARATOR_STRING = Character.toString(SEPARATOR_CHAR);
+    public static final String SEPARATOR_STRING = Character.toString(SEPARATOR_CHAR);
 
     public static final Separator SEPARATOR = Separator.on(SEPARATOR_CHAR);
 
@@ -60,12 +60,14 @@ public abstract class Filesystem {
     }
 
     public String getScheme() {
-    	return scheme;
+        return scheme;
     }
 
     public abstract Node node(URI uri, Object extra) throws NodeInstantiationException;
 
-    /** Helper Method for opaquePath implementations */
+    /**
+     * Helper Method for opaquePath implementations
+     */
     public String after(String schemeSpecific, String separator) {
         int idx;
 

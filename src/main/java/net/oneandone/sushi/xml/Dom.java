@@ -239,5 +239,6 @@ public class Dom {
         }
     }
 
-
+    private Dom() {
+    }
 }

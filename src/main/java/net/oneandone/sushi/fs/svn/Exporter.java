@@ -36,18 +36,18 @@ import java.io.OutputStream;
  * See https://wiki.svnkit.com/Updating_From_A_Repository
  */
 public class Exporter implements ISVNReporterBaton, ISVNEditor {
-    private final long revision;
+    private final long exportRevision;
     private final Node dest;
     private final SVNDeltaProcessor working;
 
-    public Exporter(long revision, Node dest) {
-        this.revision = revision;
+    public Exporter(long exportRevision, Node dest) {
+        this.exportRevision = exportRevision;
         this.dest = dest;
         this.working = new SVNDeltaProcessor();
     }
 
     public void report(ISVNReporter reporter) throws SVNException {
-        reporter.setPath("", null, revision, true);
+        reporter.setPath("", null, exportRevision, true);
         reporter.finishReport();
     }
 
@@ -138,7 +138,7 @@ public class Exporter implements ISVNReporterBaton, ISVNEditor {
     public void changeFileProperty(String arg0, String arg1, SVNPropertyValue arg2) throws SVNException {
     }
 
-    //-- 
+    //--
 
     private static SVNException exception(IOException e) {
         return new SVNException(SVNErrorMessage.create(SVNErrorCode.IO_ERROR, e.getMessage()), e);

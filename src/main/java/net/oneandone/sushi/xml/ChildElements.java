@@ -42,7 +42,7 @@ public class ChildElements implements Iterator<Element> {
 
         this.localName = localName;
         this.namespace = namespace;
-        
+
         lst = parent.getChildNodes();
         for (int i = 0; i < lst.getLength(); i++) {
             node = lst.item(i);

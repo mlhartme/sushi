@@ -21,31 +21,31 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class InputLogStream extends FilterInputStream {
-	private final OutputStream log;
+    private final OutputStream log;
 
-	public InputLogStream(InputStream src, OutputStream log) {
-		super(src);
-		this.log = log;
+    public InputLogStream(InputStream src, OutputStream log) {
+        super(src);
+        this.log = log;
     }
 
-	@Override
+    @Override
     public int read() throws IOException {
         int c;
-        
+
         c = in.read();
         if (c != -1) {
             log.write((char) c);
             if (c == '\n') {
-            	log.flush();
+                log.flush();
             }
         }
         return c;
     }
-	
+
     @Override
     public int read(byte b[], int off, int len) throws IOException {
         int result;
-        
+
         result = in.read(b, off, len);
         if (result != -1) {
             log.write(b, off, result);

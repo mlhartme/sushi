@@ -34,7 +34,7 @@ public class LoggingAsciiOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         logger.log(b, off, len);
         dest.write(b, off, len);
     }

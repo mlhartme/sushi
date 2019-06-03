@@ -16,6 +16,7 @@
   * fixed argument name in `readFrom(InputStream src)` (was `dest`)
   * fixed exec throws clause: only Failure exceptions can be thrown
 * update parent 1.2.0 to 1.2.1
+* checkstyle fixes
 
 
 ### 3.2.1 (2019-01-29) 

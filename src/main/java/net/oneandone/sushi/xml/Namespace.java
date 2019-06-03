@@ -18,7 +18,7 @@ package net.oneandone.sushi.xml;
 import org.w3c.dom.Element;
 
 public class Namespace {
-    public static final Namespace EMPTY_NAMESPACE = Namespace.getNamespace("","");
+    public static final Namespace EMPTY_NAMESPACE = Namespace.getNamespace("", "");
     public static final Namespace XML_NAMESPACE = Namespace.getNamespace("xml", "http://www.w3.org/XML/1998/namespace");
 
     private final String prefix;
@@ -52,7 +52,7 @@ public class Namespace {
             return true;
         }
         if (obj instanceof Namespace) {
-            return uri.equals(((Namespace)obj).uri);
+            return uri.equals(((Namespace) obj).uri);
         }
         return false;
     }

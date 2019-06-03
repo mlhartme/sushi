@@ -186,8 +186,8 @@ public class World implements AutoCloseable {
     /**
      * current working directory
      */
-    public World setWorking(FileNode working) {
-        this.working = working;
+    public World setWorking(FileNode directory) {
+        this.working = directory;
         return this;
     }
 
@@ -195,8 +195,8 @@ public class World implements AutoCloseable {
         return temp;
     }
 
-    public World setTemp(FileNode temp) {
-        this.temp = temp;
+    public World setTemp(FileNode directory) {
+        this.temp = directory;
         return this;
     }
 

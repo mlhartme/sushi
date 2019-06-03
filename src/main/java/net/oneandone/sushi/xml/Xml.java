@@ -23,7 +23,7 @@ public class Xml {
     private Builder builder;
     private Selector selector;
     private Serializer serializer;
-    
+
     public Xml() {
         this.builder = null;
         this.selector = null;

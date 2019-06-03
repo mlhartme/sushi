@@ -219,7 +219,7 @@ public abstract class Node<T extends Node> {
         } catch (ExistsException e) {
             throw new MkdirException(this, e);
         }
-        return (T)this;
+        return (T) this;
     }
 
     public T mkdirs() throws MkdirException {

@@ -30,7 +30,9 @@ public class FileRoot implements Root<FileNode> {
 
     private final FileFilesystem filesystem;
     private final File file;
-    /** file.getAbsolutePath().toUpperCase() */
+    /**
+     * file.getAbsolutePath().toUpperCase()
+     */
     private final String absolute;
     private final String id;
 
@@ -64,9 +66,9 @@ public class FileRoot implements Root<FileNode> {
         if (encodedQuery != null) {
             throw new IllegalArgumentException(encodedQuery);
         }
-    	if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
-    		path = path.replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
-    	}
+        if (File.separatorChar != Filesystem.SEPARATOR_CHAR) {
+            path = path.replace(Filesystem.SEPARATOR_CHAR, File.separatorChar);
+        }
         if (path.startsWith(Filesystem.SEPARATOR_STRING)) {
             throw new IllegalArgumentException();
         }

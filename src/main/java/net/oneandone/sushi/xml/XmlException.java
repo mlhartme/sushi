@@ -17,7 +17,7 @@ package net.oneandone.sushi.xml;
 
 public class XmlException extends Exception {
     private static final long serialVersionUID = 8847745909613374505L;
-    
+
     public XmlException(String msg) {
         super(msg);
     }

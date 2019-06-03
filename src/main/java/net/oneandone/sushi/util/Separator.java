@@ -101,8 +101,8 @@ public class Separator {
     }
 
     /** Trim elements before joining or after splitting */
-    public Separator trim(LineFormat.Trim trim) {
-        return new Separator(separator, pattern, trim, skipEmpty, forNull, skipNull);
+    public Separator trim(LineFormat.Trim withTrim) {
+        return new Separator(separator, pattern, withTrim, skipEmpty, forNull, skipNull);
     }
 
     /** Do not join empty elements and to not return them from splitting. */
@@ -110,8 +110,8 @@ public class Separator {
         return new Separator(separator, pattern, trim, true, forNull, skipNull);
     }
 
-    public Separator forNull(String forNull) {
-        return new Separator(separator, pattern, trim, skipEmpty, forNull, skipNull);
+    public Separator forNull(String withForNull) {
+        return new Separator(separator, pattern, trim, skipEmpty, withForNull, skipNull);
     }
 
     public Separator skipNull() {
@@ -132,7 +132,7 @@ public class Separator {
         return result.toString();
     }
 
-    public String join(Object first, Object second, Object ... rest) {
+    public String join(Object first, Object second, Object... rest) {
         int count;
         StringBuilder result;
 

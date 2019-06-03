@@ -26,16 +26,16 @@ public class MultiOutputStream extends OutputStream {
         return new MultiOutputStream();
     }
 
-    public static MultiOutputStream createTeeStream(OutputStream ... dests) {
+    public static MultiOutputStream createTeeStream(OutputStream... dests) {
         MultiOutputStream result;
-        
+
         result = new MultiOutputStream();
         result.dests.addAll(Arrays.asList(dests));
         return result;
     }
-    
+
     private final List<OutputStream> dests;
-    
+
     public MultiOutputStream() {
         dests = new ArrayList<>();
     }
@@ -45,7 +45,7 @@ public class MultiOutputStream extends OutputStream {
     }
 
     //--
-    
+
     @Override
     public void write(int c) throws IOException {
         for (OutputStream dest : dests) {

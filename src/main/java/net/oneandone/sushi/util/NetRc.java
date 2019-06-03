@@ -32,8 +32,7 @@ import java.util.Objects;
  * @author Mirko Friedenhagen
  */
 public class NetRc {
-
-    private final static CharSequence ADDITIONAL_CHARS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+    private static final CharSequence ADDITIONAL_CHARS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
     private final HashMap<String, Authenticator> authenticators = new HashMap<>();
 
@@ -51,10 +50,10 @@ public class NetRc {
 
         private final HashMap<String, Authenticator> authenticators;
         private final NetRcStreamTokenizer tokenizer;
-        String entryName;
-        String login;
-        String password;
-        String toplevel;
+        public String entryName;
+        public String login;
+        public String password;
+        public String toplevel;
 
         private Parser(Reader in, HashMap<String, Authenticator> authenticators) {
             this.tokenizer = new NetRcStreamTokenizer(in);
@@ -64,7 +63,9 @@ public class NetRc {
         private void parse() throws IOException {
             while (true) {
                 resetFields();
-                if (!parseMachineOrDefault()) break;
+                if (!parseMachineOrDefault()) {
+                    break;
+                }
                 parseAfterMachineOrDefault();
             }
         }

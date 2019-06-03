@@ -87,9 +87,9 @@ public class Launcher {
     }
 
     /** You'll normally use the dir(FileNode) method instead. */
-    public Launcher dir(File dir, String encoding) {
+    public Launcher dir(File dir, String theEncoding) {
         this.builder.directory(dir);
-        this.encoding = encoding;
+        this.encoding = theEncoding;
         return this;
     }
 

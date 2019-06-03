@@ -17,7 +17,7 @@ package net.oneandone.sushi.util;
 
 
 public class SubstitutionException extends Exception {
-	public SubstitutionException(String msg) {
-		super(msg);
-	}
+    public SubstitutionException(String msg) {
+        super(msg);
+    }
 }

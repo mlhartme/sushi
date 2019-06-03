@@ -31,4 +31,6 @@ public class Pid {
         return Integer.parseInt(str.substring(0, idx));
     }
 
+    private Pid() {
+    }
 }

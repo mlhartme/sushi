@@ -48,12 +48,14 @@ public class Buffer {
     }
 
     //--
-    
+
     public int size() {
         return buffer.length;
     }
 
-    /** read until the buffer is full or the stream is eof */
+    /**
+     * read until the buffer is full or the stream is eof
+     */
     public int fill(InputStream in) throws IOException {
         return fill(in, buffer.length);
     }
@@ -92,10 +94,10 @@ public class Buffer {
     }
 
     //--
-    
+
     public void digest(InputStream src, MessageDigest digest) throws IOException {
         int numRead;
-        
+
         while (true) {
             numRead = src.read(buffer);
             if (numRead < 0) {
@@ -134,9 +136,9 @@ public class Buffer {
 
     //--
 
-    /** 
+    /**
      * Copies all bytes.
-     * 
+     *
      * @return number of bytes actually copied
      */
     public long copy(InputStream in, Node dest) throws IOException {
@@ -147,26 +149,26 @@ public class Buffer {
         }
         return result;
     }
-    
-    /** 
+
+    /**
      * Copies all bytes.
-     * 
+     *
      * @return number of bytes actually copied
      */
     public long copy(InputStream in, OutputStream out) throws IOException {
         return copy(in, out, Integer.MAX_VALUE);
     }
-    
+
     /**
      * Copies up to max bytes.
-     * 
+     *
      * @return number of bytes actually copied
      */
     public long copy(InputStream in, OutputStream out, long max) throws IOException {
         int chunk;
         long all;
         long remaining;
-        
+
         remaining = max;
         all = 0;
         while (remaining > 0) {
@@ -183,7 +185,9 @@ public class Buffer {
         return all;
     }
 
-    /** skip the specified number of bytes - or less, if eof is reached */
+    /**
+     * skip the specified number of bytes - or less, if eof is reached
+     */
     public long skip(InputStream src, long n) throws IOException {
         long done;
         int chunk;

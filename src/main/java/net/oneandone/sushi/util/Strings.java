@@ -26,7 +26,7 @@ public class Strings {
     //-- one string
     //
 
-    public static String toHex(byte ... bytes) {
+    public static String toHex(byte... bytes) {
         StringBuilder result;
 
         result = new StringBuilder();
@@ -34,7 +34,7 @@ public class Strings {
         return result.toString();
     }
 
-    public static void toHex(StringBuilder result, byte ... bytes) {
+    public static void toHex(StringBuilder result, byte... bytes) {
         for (byte b : bytes) {
             result.append(Integer.toString(b >> 4 & 0xf, 16));
             result.append(Integer.toString(b & 0xf, 16));
@@ -270,13 +270,12 @@ public class Strings {
 
     //-- string collections or arrays
 
-    public static final String[] NONE = new String[] {};
+    public static final String[] NONE = new String[]{};
 
     /**
      * Turns a list of Strings into an array.
      *
-     * @param coll   collection of Strings
-     *
+     * @param coll collection of Strings
      * @return never null
      */
     public static String[] toArray(Collection<String> coll) {
@@ -287,7 +286,7 @@ public class Strings {
         return ar;
     }
 
-    public static Map<String, String> toMap(String ... args) {
+    public static Map<String, String> toMap(String... args) {
         Map<String, String> result;
 
         result = new HashMap<>();
@@ -297,7 +296,7 @@ public class Strings {
         return result;
     }
 
-    public static ArrayList<String> toList(String ... elements) {
+    public static ArrayList<String> toList(String... elements) {
         return new ArrayList<>(Arrays.asList(elements));
     }
 
@@ -322,7 +321,7 @@ public class Strings {
         return result;
     }
 
-    public static String[] append(String[] ...args) {
+    public static String[] append(String[]... args) {
         String[] result;
         int length;
         int ofs;
@@ -340,7 +339,9 @@ public class Strings {
         return result;
     }
 
-    /** escape Strings as in Java String literals */
+    /**
+     * escape Strings as in Java String literals
+     */
     public static String escape(String str) {
         int i, max;
         StringBuilder result;

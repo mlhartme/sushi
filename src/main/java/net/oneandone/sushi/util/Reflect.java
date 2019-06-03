@@ -158,4 +158,6 @@ public class Reflect {
         return true;
     }
 
+    private Reflect() {
+    }
 }

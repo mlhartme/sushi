@@ -216,8 +216,7 @@ public class IntBitRelation {
                     return false;
                 }
             } else {
-                if ((sub.line[i] != null) &&
-                    !line[i].containsAll(sub.line[i])) {
+                if ((sub.line[i] != null) && !line[i].containsAll(sub.line[i])) {
                     return false;
                 }
             }

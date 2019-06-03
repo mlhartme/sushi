@@ -24,12 +24,12 @@ import java.util.List;
 public class Tree {
     public final Node node;
     public final List<Tree> children;
-    
+
     public Tree(Node node) {
         this.node = node;
         this.children = new ArrayList<>();
     }
-    
+
     @Override
     public String toString() {
         return node.getName();

@@ -34,10 +34,12 @@ public class Glob {
             throw new IllegalStateException();
         }
     }
-    
-    /** @return Pattern or String */
+
+    /**
+     * @return Pattern or String
+     */
     public static Object compile(String glob, boolean ignoreCase) {
-    	StringBuilder regex;
+        StringBuilder regex;
 
         switch (glob) {
             case "**":
@@ -57,13 +59,13 @@ public class Glob {
     public static boolean matches(Pattern pattern, String str) {
         return pattern.matcher(str).matches();
     }
-    
+
     //--
-    
+
     private static Pattern doCompile(String regexp, boolean ignoreCase) {
         return Pattern.compile(regexp, ignoreCase ? Pattern.CASE_INSENSITIVE : 0);
     }
-    
+
     private static String translate(String glob) {
         StringBuilder result;
 
@@ -82,7 +84,7 @@ public class Glob {
         int j;
         String stuff;
         int escaped;
-        
+
         escaped = 0;
         max = glob.length();
         for (i = 0; i < max;) {
@@ -107,7 +109,7 @@ public class Glob {
                 } else {
                     stuff = glob.substring(i, j);
                     stuff = Strings.replace(stuff, "\\", "\\\\");
-                    i = j+1;
+                    i = j + 1;
                     if (stuff.charAt(0) == '!') {
                         stuff = '^' + stuff.substring(1);
                     } else if (stuff.charAt(0) == '^') {
@@ -118,7 +120,7 @@ public class Glob {
                     result.append(']');
                 }
             } else {
-            	escaped++;
+                escaped++;
                 result.append(escape(c));
             }
         }
@@ -132,5 +134,9 @@ public class Glob {
         } else {
             return "\\" + c;
         }
+    }
+
+
+    private Glob() {
     }
 }

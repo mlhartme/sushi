@@ -26,10 +26,10 @@ import java.util.List;
 
 public class Diff {
     private final boolean brief;
-	private final String lineSeparator;
+    private final String lineSeparator;
 
     public Diff(boolean brief) {
-    	this(brief, OS.CURRENT.lineSeparator.getSeparator());
+        this(brief, OS.CURRENT.lineSeparator.getSeparator());
     }
 
     public Diff(boolean brief, String lineSeparator) {
@@ -40,36 +40,36 @@ public class Diff {
     //-- scan directories for relevant files
 
     public List<String> paths(Node dir, Filter filter) throws IOException {
-    	List<String> result;
+        List<String> result;
 
-    	result = new ArrayList<>();
-    	paths(dir, filter, result);
-    	return result;
+        result = new ArrayList<>();
+        paths(dir, filter, result);
+        return result;
     }
 
     public void paths(Node<?> dir, Filter filter, List<String> result) throws IOException {
-    	String path;
+        String path;
 
-    	for (Node<?> node : dir.find(filter)) {
-    		path = node.getRelative(dir);
-    		if (!result.contains(path)) {
-    			result.add(path);
-    		}
-    	}
+        for (Node<?> node : dir.find(filter)) {
+            path = node.getRelative(dir);
+            if (!result.contains(path)) {
+                result.add(path);
+            }
+        }
     }
 
     //-- diff
 
     public String directory(Node leftdir, Node rightdir, Filter filter) throws IOException {
-    	List<String> paths;
+        List<String> paths;
 
-    	paths = paths(leftdir, filter);
-    	paths(rightdir, filter, paths);
-    	return directory(leftdir, rightdir, paths);
+        paths = paths(leftdir, filter);
+        paths(rightdir, filter, paths);
+        return directory(leftdir, rightdir, paths);
     }
 
-    public String directory(Node leftdir, Node rightdir, String ... paths) throws IOException {
-    	return directory(leftdir, rightdir, Arrays.asList(paths));
+    public String directory(Node leftdir, Node rightdir, String... paths) throws IOException {
+        return directory(leftdir, rightdir, Arrays.asList(paths));
     }
 
     public String directory(Node leftdir, Node rightdir, List<String> paths) throws IOException {
@@ -137,7 +137,7 @@ public class Diff {
         } else if (left.diff(right)) {
             header('M', relative, result);
         } else if (left.getRoot().getFilesystem().getFeatures().modes
-        		&& !left.getPermissions().equals(right.getPermissions())) {
+                && !left.getPermissions().equals(right.getPermissions())) {
             header('m', relative, result);
         } else {
             // nothing

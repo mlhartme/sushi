@@ -82,7 +82,7 @@ public class ConsoleNode extends Node<ConsoleNode> {
 
     @Override
     public ConsoleNode move(Node dest, boolean overwrite) throws MoveException {
-    	throw new MoveException(this, dest, "ConsoleNode cannot be moved");
+        throw new MoveException(this, dest, "ConsoleNode cannot be moved");
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ConsoleNode extends Node<ConsoleNode> {
 
     @Override
     public boolean isLink() {
-    	return false;
+        return false;
     }
 
     @Override

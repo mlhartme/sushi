@@ -97,17 +97,17 @@ public class Filter {
     }
 
     public Filter followLinks() {
-    	followLinks = true;
-    	return this;
-    }
-
-    public Filter minDepth(int minDepth) {
-        this.minDepth = minDepth;
+        followLinks = true;
         return this;
     }
 
-    public Filter maxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
+    public Filter minDepth(int min) {
+        this.minDepth = min;
+        return this;
+    }
+
+    public Filter maxDepth(int max) {
+        this.maxDepth = max;
         return this;
     }
 
@@ -241,7 +241,7 @@ public class Filter {
         return matches(0, segments, new ArrayList<>(includes), new ArrayList<>(excludes));
     }
 
-    private boolean matches(int currentSegment, List<String> segments, List<Object[]> includes, List<Object[]> excludes) {
+    private boolean matches(int currentSegment, List<String> segments, List<Object[]> theIncludes, List<Object[]> theExcludes) {
         List<Object[]> remainingIncludes;
         List<Object[]> remainingExcludes;
         String name;
@@ -254,8 +254,8 @@ public class Filter {
         name = segments.get(currentSegment);
         remainingIncludes = new ArrayList<>();
         remainingExcludes = new ArrayList<>();
-        in = doMatch(name, includes, remainingIncludes);
-        ex = doMatch(name, excludes, remainingExcludes);
+        in = doMatch(name, theIncludes, remainingIncludes);
+        ex = doMatch(name, theExcludes, remainingExcludes);
         if (in && !ex) {
             return true;
         }

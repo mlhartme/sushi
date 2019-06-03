@@ -19,7 +19,7 @@ public class MkdirException extends NodeException {
     public MkdirException(Node node) {
         super(node, "mkdir failed");
     }
-    
+
     public MkdirException(Node node, Throwable e) {
         this(node);
         initCause(e);

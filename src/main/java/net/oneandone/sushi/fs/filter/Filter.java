@@ -275,7 +275,7 @@ public class Filter {
         doInvoke(0, root, root.isLink(), new ArrayList<>(includes), new ArrayList<>(excludes), result);
     }
 
-    private void doInvoke(int currentDepth, Node parent, boolean parentIsLink, List<Object[]> includes, List<Object[]> excludes, Action result)
+    private void doInvoke(int currentDepth, Node parent, boolean parentIsLink, List<Object[]> theIncludes, List<Object[]> theExcludes, Action result)
     throws IOException {
         List<? extends Node> children;
         List<Object[]> remainingIncludes;
@@ -292,7 +292,7 @@ public class Filter {
             return;
         }
         try {
-            children = list(parent, includes);
+            children = list(parent, theIncludes);
         } catch (IOException e) {
             result.enterFailed(parent, parentIsLink, e);
             return;
@@ -307,8 +307,8 @@ public class Filter {
                 childIsLink = child.isLink();
                 remainingIncludes = new ArrayList<>();
                 remainingExcludes = new ArrayList<>();
-                in = doMatch(name, includes, remainingIncludes);
-                ex = doMatch(name, excludes, remainingExcludes);
+                in = doMatch(name, theIncludes, remainingIncludes);
+                ex = doMatch(name, theExcludes, remainingExcludes);
                 if (in && !ex && currentDepth >= minDepth && matchPredicates(child, childIsLink)) {
                     result.select(child, childIsLink);
                 }
@@ -321,18 +321,18 @@ public class Filter {
     }
 
     // avoids node.list() call if there is exactly 1 include with a literal head
-    private List<? extends Node> list(Node<?> node, List<Object[]> includes) throws IOException {
-    	Node child;
+    private List<? extends Node> list(Node<?> node, List<Object[]> theIncludes) throws IOException {
+        Node child;
 
-    	if (includes.size() == 1 && includes.get(0)[0] instanceof String) {
-            child = node.join((String) includes.get(0)[0]);
+        if (theIncludes.size() == 1 && theIncludes.get(0)[0] instanceof String) {
+            child = node.join((String) theIncludes.get(0)[0]);
             if (child.exists()) {
                 return Collections.singletonList(child);
             } else {
                 return Collections.emptyList();
             }
-    	} else {
-        	return node.list();
+        } else {
+            return node.list();
         }
     }
 
@@ -394,12 +394,13 @@ public class Filter {
         }
         return found;
     }
+
     private static boolean matches(Object stringOrPattern, String name) {
-    	if (stringOrPattern instanceof String) {
-    		return name.equals(stringOrPattern);
-    	} else {
-    		return Glob.matches((Pattern) stringOrPattern, name);
-    	}
+        if (stringOrPattern instanceof String) {
+            return name.equals(stringOrPattern);
+        } else {
+            return Glob.matches((Pattern) stringOrPattern, name);
+        }
     }
 
     @Override

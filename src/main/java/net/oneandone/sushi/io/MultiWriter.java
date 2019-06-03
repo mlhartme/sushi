@@ -26,7 +26,7 @@ public class MultiWriter extends Writer {
         return new MultiWriter();
     }
 
-    public static MultiWriter createTeeWriter(Writer ... dests) {
+    public static MultiWriter createTeeWriter(Writer... dests) {
         MultiWriter result;
 
         result = new MultiWriter();
@@ -45,7 +45,7 @@ public class MultiWriter extends Writer {
     }
 
     //--
-    
+
     @Override
     public void write(int c) throws IOException {
         for (Writer dest : dests) {

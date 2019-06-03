@@ -59,4 +59,7 @@ public class Arrays {
     public static Class<?> getArrayClass(Class<?> component) {
         return Array.newInstance(component, 0).getClass();
     }
+
+    private Arrays() {
+    }
 }

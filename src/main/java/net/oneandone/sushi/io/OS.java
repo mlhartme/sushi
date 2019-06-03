@@ -59,8 +59,8 @@ public enum OS {
         this.lineSeparator = Separator.on(lineSeparator);
     }
 
-    public String lines(String ... lines) {
-    	StringBuilder result;
+    public String lines(String... lines) {
+        StringBuilder result;
 
     	result = new StringBuilder();
     	for (String line : lines) {

@@ -76,7 +76,7 @@ public class PrefixWriter extends PrintWriter {
     }
 
     @Override
-    public void write(char cbuf[], int off, int len) {
+    public void write(char[] cbuf, int off, int len) {
         char c;
 
         for (int i = 0; i < len; i++) {

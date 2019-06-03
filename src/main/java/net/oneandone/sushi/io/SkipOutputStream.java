@@ -44,11 +44,11 @@ public class SkipOutputStream extends OutputStream {
         }
     }
 
-    public void write(byte b[]) throws IOException {
+    public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         if (skip > 0) {
             if (skip >= len) {
                 skip -= len;

@@ -43,7 +43,7 @@ import java.util.List;
  */
 
 public class IntBitSet implements IntCollection, Serializable {
-    public static IntBitSet with(int ... elements) {
+    public static IntBitSet with(int... elements) {
         IntBitSet result;
 
         result = new IntBitSet();

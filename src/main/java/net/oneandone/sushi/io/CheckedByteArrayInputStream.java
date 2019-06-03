@@ -32,7 +32,7 @@ public class CheckedByteArrayInputStream extends ByteArrayInputStream {
     }
 
     @Override
-    public int read(byte b[], int off, int len) {
+    public int read(byte[] b, int off, int len) {
         ensureOpen();
         return super.read(b, off, len);
     }
@@ -42,7 +42,7 @@ public class CheckedByteArrayInputStream extends ByteArrayInputStream {
         closed = true;
         super.close();
     }
-    
+
     public void ensureOpen() {
         if (closed) {
             throw new IllegalStateException();

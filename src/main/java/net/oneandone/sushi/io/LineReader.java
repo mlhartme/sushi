@@ -153,7 +153,7 @@ public class LineReader implements AutoCloseable {
         private int end;
         private char[] chars;
 
-        public CharArraySequence(int start, int end, char[] chars) {
+        CharArraySequence(int start, int end, char[] chars) {
             this.start = start;
             this.end = end;
             this.chars = chars;
@@ -170,8 +170,8 @@ public class LineReader implements AutoCloseable {
         }
 
         @Override
-        public CharSequence subSequence(int start, int end) {
-            return new CharArraySequence(this.start + start, this.start + end, this.chars);
+        public CharSequence subSequence(int startOfs, int endOfs) {
+            return new CharArraySequence(this.start + startOfs, this.start + endOfs, this.chars);
         }
 
         public boolean isEmpty() {

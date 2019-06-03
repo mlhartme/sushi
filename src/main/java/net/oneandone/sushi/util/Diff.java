@@ -197,7 +197,7 @@ public class Diff {
         public int delete;
         public final List<String> add;
 
-        public Chunk(int left, int common, int right) {
+        private Chunk(int left, int common, int right) {
             this.left = left;
             this.right = right;
             this.common = common;
@@ -211,5 +211,8 @@ public class Diff {
         public String range() {
             return "@@ -" + (left + 1) + "," + delete + " +" + (right + 1) + "," + add.size() + " @@\n";
         }
+    }
+
+    private Diff() {
     }
 }

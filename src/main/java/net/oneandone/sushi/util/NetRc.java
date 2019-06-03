@@ -210,7 +210,7 @@ public class NetRc {
 
     private static class NetRcStreamTokenizer extends StreamTokenizer {
 
-        public NetRcStreamTokenizer(Reader r) {
+        NetRcStreamTokenizer(Reader r) {
             super(r);
         }
         {

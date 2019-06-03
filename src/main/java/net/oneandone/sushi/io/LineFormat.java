@@ -32,7 +32,7 @@ public class LineFormat {
 
     public static final LineFormat RAW_FORMAT = new LineFormat(GENERIC_SEPARATOR, Trim.NOTHING);
 
-    public static Pattern excludes(boolean empty, String ... comments) {
+    public static Pattern excludes(boolean empty, String... comments) {
         StringBuilder builder;
 
         if (!empty && comments.length == 0) {

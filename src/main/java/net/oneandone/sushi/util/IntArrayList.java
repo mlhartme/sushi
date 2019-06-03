@@ -71,7 +71,7 @@ public class IntArrayList implements IntCollection, Serializable {
     public int hashCode() {
         return size();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         IntArrayList operand;

@@ -25,15 +25,15 @@ public class TreeAction implements Action {
     private final List<Node> nodes;
     private final List<Tree> trees;
     private Tree result;
-    
+
     public TreeAction() {
         this.nodes = new ArrayList<>();
         this.trees = new ArrayList<>();
     }
-    
+
     public void enter(Node node, boolean isLink) {
         Tree parent;
-        
+
         if (trees.size() > 0) {
             parent = trees.get(trees.size() - 1);
             if (parent != null) {
@@ -49,24 +49,24 @@ public class TreeAction implements Action {
         nodes.add(node);
         trees.add(null);
     }
-    
+
     public void enterFailed(Node node, boolean isLink, IOException e) throws IOException {
         throw e;
     }
 
     public void leave(Node node, boolean isLink) {
         int idx;
-        
+
         idx = nodes.size() - 1;
         nodes.remove(idx);
         result = trees.remove(idx);
     }
-    
+
     public void select(Node node, boolean isLink) {
         Tree added;
         Tree current;
-        
-        added = new Tree(node); 
+
+        added = new Tree(node);
         for (int i = trees.size() - 1; i >= 0; i--) {
             current = trees.get(i);
             if (current == null) {

@@ -43,7 +43,7 @@ public class InputLogStream extends FilterInputStream {
     }
 
     @Override
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         int result;
 
         result = in.read(b, off, len);

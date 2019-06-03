@@ -37,7 +37,7 @@ public class LineReader implements AutoCloseable {
     private final LineFormat format;
 
     /** current line number */
-    private int line;
+    private int lineNumber;
 
     private final CharArraySequence buffer;
 
@@ -48,7 +48,7 @@ public class LineReader implements AutoCloseable {
     public LineReader(Reader reader, LineFormat format, int initialBufferSize) {
         this.reader = reader;
         this.format = format;
-        this.line = 0;
+        this.lineNumber = 0;
         this.buffer = new CharArraySequence(0, 0, new char[initialBufferSize]);
     }
 
@@ -56,7 +56,7 @@ public class LineReader implements AutoCloseable {
 
     /** @return number of the line return by the last call to next. First line has number 1. */
     public int getLine() {
-        return line;
+        return lineNumber;
     }
 
     public Reader getReader() {
@@ -73,7 +73,7 @@ public class LineReader implements AutoCloseable {
 
     //--
 
-    /** Never closes the underlying reader. @return next line of null for end of file */
+    /** Never closes the underlying reader. @return next line or null for end of file */
     public String next() throws IOException {
         String result;
         int len;
@@ -113,8 +113,8 @@ public class LineReader implements AutoCloseable {
                 }
             }
 
-            // always bump, even if we don't return the line 
-            line++;
+            // always bump, even if we don't return the line
+            lineNumber++;
             if (format.trim == LineFormat.Trim.ALL) {
                 result = result.trim();
             }

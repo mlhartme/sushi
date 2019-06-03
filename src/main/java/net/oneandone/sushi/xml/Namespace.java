@@ -61,7 +61,7 @@ public class Namespace {
         return new ChildElements(parent, childLocalName, this);
     }
 
-    
+
     public static Namespace getNamespace(String prefix, String uri) {
         if (prefix == null) {
             prefix = EMPTY_NAMESPACE.getPrefix();

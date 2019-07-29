@@ -1,5 +1,10 @@
 ## Changelog 
 
+### 3.2.3 (pending)
+
+* fixed FileNode.canRead and canWrite
+
+
 ### 3.2.2 (2019-06-24) 
 
 * http nodes

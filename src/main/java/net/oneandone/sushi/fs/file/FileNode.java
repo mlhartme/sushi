@@ -140,11 +140,11 @@ public class FileNode extends Node<FileNode> {
     }
 
     public boolean canWrite() {
-        return Files.isReadable(path);
+        return Files.isWritable(path);
     }
 
     public boolean canRead() {
-        return Files.isWritable(path);
+        return Files.isReadable(path);
     }
 
     //--

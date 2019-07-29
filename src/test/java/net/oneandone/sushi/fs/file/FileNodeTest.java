@@ -202,8 +202,8 @@ public class FileNodeTest extends NodeTest<FileNode> {
         assertTrue(node.canRead());
         assertTrue(node.canWrite());
         checkMode(node, "---------");
-        assertFalse(node.canRead());
-        assertFalse(node.canWrite());
+        assertFalse(node.getPermissions(), node.canRead());
+        assertFalse(node.getPermissions(), node.canWrite());
         checkMode(node, "rwxrwxrwx");
         assertTrue(node.canRead());
         assertTrue(node.canWrite());

@@ -390,6 +390,16 @@ public abstract class Node<T extends Node> {
         return name.substring(idx + 1);
     }
 
+    /** @return name without extension */
+    public String getBasename() {
+        String name;
+        int idx;
+
+        name = getName();
+        idx = name.lastIndexOf('.');
+        return idx < 0 ? name : name.substring(0, idx);
+    }
+
 
     public T getParent() {
         String path;

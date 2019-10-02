@@ -3,6 +3,7 @@
 ### 3.2.3 (pending)
 
 * added Node.getBasename()
+* minor diff tweaks
 * fixed FileNode.canRead and canWrite
 
 

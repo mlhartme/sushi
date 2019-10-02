@@ -53,7 +53,7 @@ public class Diff {
             }
             ci = Math.max(chunk.common - context, c == 0 ? 0 : chunks.get(c - 1).common);
             for (int i = ci; i < chunk.common; i++) {
-                result.append(" ").append(commons.get(i));
+                result.append(' ').append(commons.get(i));
             }
             if (chunk.delete > 0) {
                 for (int i = chunk.left; i < chunk.left + chunk.delete; i++) {
@@ -63,13 +63,13 @@ public class Diff {
             }
             if (chunk.add.size() > 0) {
                 for (String line : chunk.add) {
-                    result.append("+");
+                    result.append('+');
                     appendEscaped(line, escape, result);
                 }
             }
             ci = Math.min(chunk.common + context, c == chunks.size() - 1 ? commons.size() : chunks.get(c + 1).common - context);
             for (int i = chunk.common; i < ci; i++) {
-                result.append(" ").append(commons.get(i));
+                result.append(' ').append(commons.get(i));
             }
             last = chunk;
         }

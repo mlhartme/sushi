@@ -1,1 +1,1 @@
-maven()
+maven(foo: "bar")

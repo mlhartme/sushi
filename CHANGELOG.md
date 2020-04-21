@@ -2,6 +2,7 @@
 
 ### 3.2.3 (pending)
 
+* update parent 1.3.0 to 1.3.5
 * added Node.getBasename()
 * minor diff tweaks
 * fixed FileNode.canRead and canWrite

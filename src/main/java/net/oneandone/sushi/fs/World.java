@@ -86,7 +86,7 @@ public class World implements AutoCloseable {
     }
 
     public static World createMinimal() {
-        return new World(OS.CURRENT, new Settings(), new Buffer(), null, null, "**/.svn", "**/.svn/**/*");
+        return new World(OS.CURRENT, new Settings(), new Buffer(), null, null, "**/.svn", "**/.svn/**/*", "**/.git", "**/.git/**/*");
     }
 
     //--

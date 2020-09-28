@@ -437,7 +437,7 @@ public class World implements AutoCloseable {
         String str;
 
         if (name.startsWith("/")) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(name);
         }
         e = getClass().getClassLoader().getResources(name);
         result = new ArrayList<>();

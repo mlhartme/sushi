@@ -2,6 +2,7 @@
 
 ### 3.2.3 (pending)
 
+* World.resource(s): improved error message if path starts with a slash
 * added "**/.git" and "**/.git/**/*" to default excludes (thanks to Sergii)
 * update parent 1.3.0 to 1.3.5
 * added Node.getBasename()

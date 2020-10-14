@@ -4,7 +4,8 @@
 
 * World.resource(s): improved error message if path starts with a slash
 * added "**/.git" and "**/.git/**/*" to default excludes (thanks to Sergii)
-* update parent 1.3.0 to 1.3.5
+* update parent 1.3.0 to 1.4.0
+* update to junit 4.13.1
 * added Node.getBasename()
 * minor diff tweaks
 * fixed FileNode.canRead and canWrite

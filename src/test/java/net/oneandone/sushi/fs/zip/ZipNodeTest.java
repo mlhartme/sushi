@@ -105,7 +105,7 @@ public class ZipNodeTest {
                 assertFalse(node.isFile());
             }
         }
-        assertEquals(323, count);
+        assertEquals(387, count);
     }
 
     @Test

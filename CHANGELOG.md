@@ -1,10 +1,10 @@
 ## Changelog 
 
-### 3.2.3 (2021-01-08)
+### 3.3.0 (2021-01-08)
 
+* update parent 1.3.0 to 1.4.2. CAUTION: as a result, sushi requires Java 11 now.
 * World.resource(s): improved error message if path starts with a slash
 * added "**/.git" and "**/.git/**/*" to default excludes (thanks to Sergii)
-* update parent 1.3.0 to 1.4.0
 * update to junit 4.13.1
 * added Node.getBasename()
 * minor diff tweaks

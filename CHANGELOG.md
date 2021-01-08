@@ -1,6 +1,6 @@
 ## Changelog 
 
-### 3.2.3 (pending)
+### 3.2.3 (2021-01-08)
 
 * World.resource(s): improved error message if path starts with a slash
 * added "**/.git" and "**/.git/**/*" to default excludes (thanks to Sergii)
